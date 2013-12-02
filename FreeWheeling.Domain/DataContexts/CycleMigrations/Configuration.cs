@@ -22,9 +22,13 @@ namespace FreeWheeling.Domain.DataContexts.CycleMigrations
             //  to avoid creating duplicate seed data. E.g.
 
             Group HJs = new Group { name = "HJs Group", IsPrivate = false };
+            Group Pats = new Group { name = "Pats", IsPrivate = false };
 
             context.Groups.AddOrUpdate(
               HJs
+            );
+            context.Groups.AddOrUpdate(
+              Pats
             );
             
         }
