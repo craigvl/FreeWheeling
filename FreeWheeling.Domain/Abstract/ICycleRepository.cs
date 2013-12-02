@@ -9,7 +9,15 @@ namespace FreeWheeling.Domain.Abstract
     public interface ICycleRepository
     {
 
+        //Group
         IEnumerable<Group> GetGroups();
+        Group GetGroupByID(int id);
+
+        //Member
+        void AddMember(string UserId, Group _Group);
+
+        void Save();
+       
 
     }
 }

@@ -33,25 +33,28 @@ namespace FreeWheeling.UI.Controllers
         }
 
         //// GET: /Group/Details/5
-        //public ActionResult Join(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
+        public ActionResult Join(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
-        //    Group group = db.Groups.Find(id);
-        //    if (group == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
+            Group group = repository.GetGroupByID(2);
 
-        //    var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            if (group == null)
+            {
+                return HttpNotFound();
+            }
 
-        //    NewMember.AddMember(currentUser.Id, group);
-            
-        //    return View(group);
-        //}
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+
+            repository.AddMember(currentUser.Id, group);
+            repository.Save();
+            //NewMember.AddMember(currentUser.Id, group);
+
+            return View(group);
+        }
 
         //// GET: /Group/Details/5
         //public ActionResult Details(int? id)

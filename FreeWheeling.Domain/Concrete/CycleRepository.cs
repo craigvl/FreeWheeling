@@ -16,5 +16,24 @@ namespace FreeWheeling.Domain.Concrete
         {
             return context.Groups.ToList(); 
         }
+
+        public Group GetGroupByID(int id)
+        {
+            Group group = context.Groups.Find(id);
+
+            return group;
+        }
+
+        public void AddMember(string UserId, Group _Group)
+        {
+            Member NewMember = new Member { userId = UserId, Group = _Group };
+            context.Members.Add(NewMember);
+            context.Entry(NewMember).State = System.Data.Entity.EntityState.Added;
+        }
+
+        public void Save()
+        {
+            context.SaveChanges();
+        }
     }
 }
