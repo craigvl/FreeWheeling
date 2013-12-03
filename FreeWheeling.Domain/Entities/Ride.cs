@@ -8,8 +8,7 @@ namespace FreeWheeling.Domain
 {
     public class Ride
     {
-
         public int id { get; set; }
-
+        public Group Group { get; set; }
     }
 }

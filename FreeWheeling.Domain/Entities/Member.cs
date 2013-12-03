@@ -11,9 +11,6 @@ namespace FreeWheeling.Domain
         public int id { get; set; }
         public string userId { get; set; }
         public Group Group { get; set; }    
-
     }
-
-   
 
 }
