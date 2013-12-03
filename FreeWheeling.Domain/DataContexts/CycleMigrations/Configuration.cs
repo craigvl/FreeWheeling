@@ -10,7 +10,7 @@ namespace FreeWheeling.Domain.DataContexts.CycleMigrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
             MigrationsDirectory = @"DataContexts\CycleMigrations";
         }
 

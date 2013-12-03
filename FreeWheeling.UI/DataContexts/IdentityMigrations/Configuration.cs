@@ -9,7 +9,7 @@ namespace FreeWheeling.UI.DataContexts.IdentityMigrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
             MigrationsDirectory = @"DataContexts\IdentityMigrations";
         }
 

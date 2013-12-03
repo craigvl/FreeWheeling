@@ -7,18 +7,18 @@ namespace FreeWheeling.Domain.DataContexts.CycleMigrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.0.1-21010")]
-    public sealed partial class CycleEntityUpdate : IMigrationMetadata
+    public sealed partial class AddFKeys : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(CycleEntityUpdate));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddFKeys));
         
         string IMigrationMetadata.Id
         {
-            get { return "201312030601165_CycleEntityUpdate"; }
+            get { return "201312030853141_AddFKeys"; }
         }
         
         string IMigrationMetadata.Source
         {
-            get { return Resources.GetString("Source"); }
+            get { return null; }
         }
         
         string IMigrationMetadata.Target
