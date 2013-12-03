@@ -1,0 +1,6 @@
+
+update-database -ConfigurationTypeName FreeWheeling.Domain.DataContexts.CycleMigrations.Configuration -verbose
+update-database -ConfigurationTypeName FreeWheeling.UI.DataContexts.IdentityMigrations.Configuration -verbose
+
+
+add-migration -ConfigurationTypeName FreeWheeling.Domain.DataContexts.CycleMigrations.Configuration "AddFKeys" -verbose
