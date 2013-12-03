@@ -53,6 +53,14 @@
     <Compile Include="DataContexts\CycleMigrations\201312010843110_Initial Create.Designer.cs">
       <DependentUpon>201312010843110_Initial Create.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201312030601165_CycleEntityUpdate.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201312030601165_CycleEntityUpdate.Designer.cs">
+      <DependentUpon>201312030601165_CycleEntityUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201312030636104_AddFKeys.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201312030636104_AddFKeys.Designer.cs">
+      <DependentUpon>201312030636104_AddFKeys.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\Group.cs" />
     <Compile Include="Entities\Member.cs" />
@@ -67,6 +75,12 @@
   <ItemGroup>
     <EmbeddedResource Include="DataContexts\CycleMigrations\201312010843110_Initial Create.resx">
       <DependentUpon>201312010843110_Initial Create.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201312030601165_CycleEntityUpdate.resx">
+      <DependentUpon>201312030601165_CycleEntityUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201312030636104_AddFKeys.resx">
+      <DependentUpon>201312030636104_AddFKeys.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
