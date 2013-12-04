@@ -1,3 +1,5 @@
 cd "C:\Users\craig\Documents\Visual Studio 2013\Projects\FreeWheeling"
 
-git pull stick craigslaptop
+git pull stick CraigsLaptop
+
+git push stick CraigLaptop
