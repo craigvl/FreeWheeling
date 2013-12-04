@@ -14,6 +14,7 @@ using FreeWheeling.UI.Models;
 
 namespace FreeWheeling.UI.Controllers
 {
+    [Authorize]
     public class GroupController : Controller
     {
         private IdentityDb idb = new IdentityDb(); 
@@ -53,19 +54,19 @@ namespace FreeWheeling.UI.Controllers
             repository.AddMember(currentUser.Id, group);
             repository.Save();
 
-            return View(group);
+            return View("Index", repository.GetGroups());
         }
 
         public ViewResult MyGroups()
         {
 
-            MyGroupsModels GroupModel = new MyGroupsModels();
+            MyGroupsModel GroupModel = new MyGroupsModel();
 
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
-            GroupModel._Groups = repository.GetGroups().Where(u => u.Members.Any(m => m.userId == currentUser.Id)).ToList();
+            GroupModel.CycleGroups = repository.GetGroups().Where(u => u.Members.Any(m => m.userId == currentUser.Id)).ToList();
 
-            return View();
+            return View(GroupModel);
 
 
         }

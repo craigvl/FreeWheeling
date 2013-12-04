@@ -33,14 +33,22 @@ namespace FreeWheeling.Domain.DataContexts.CycleMigrations
               HJs
             );
 
-            context.SaveChanges();
-
             context.Groups.AddOrUpdate(
               Pats
             );
 
+
+            Ride HJRide1 = new Ride { Group = HJs, RideDate = new DateTime(2013, 12, 5), RideTime = "5:15am" };
+            Ride HJRide2 = new Ride { Group = HJs, RideDate = new DateTime(2013, 12, 10), RideTime = "5:15am" };
+
+            context.Rides.AddOrUpdate(HJRide1);
+            context.Rides.AddOrUpdate(HJRide2);
+
+            //Rider
+
             context.SaveChanges();
-            
+
+         
         }
     }
 }

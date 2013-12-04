@@ -27,9 +27,17 @@ namespace FreeWheeling.Domain.Concrete
 
         public void AddMember(string UserId, Group _Group)
         {
-            Member NewMember = new Member { userId = UserId, Group = _Group };
-            context.Members.Add(NewMember);
-            context.Entry(NewMember).State = System.Data.Entity.EntityState.Added;
+            List<Group> CurrentGroups = context.Groups.Where(u => u.Members.Any(m => m.userId == UserId 
+                                                             && u.id == _Group.id)).ToList();
+
+            if (CurrentGroups != null)
+            {
+                Member NewMember = new Member { userId = UserId, Group = _Group };
+                context.Members.Add(NewMember);
+                context.Entry(NewMember).State = System.Data.Entity.EntityState.Added;
+            }
+
+            
         }
 
         public void Save()

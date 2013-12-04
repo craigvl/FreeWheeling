@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace FreeWheeling.Domain.Entities
 {
-    public class Ride
+    public class Rider
     {
         public int id { get; set; }
-        public DateTime RideDate { get; set; }
-        public string RideTime { get; set; }
-        public Group Group { get; set; }
-        public List<Rider> Riders { get; set; }
+        public string userId { get; set; }
+        public Ride Ride { get; set; }
+        public string PercentKeen { get; set; }
     }
 }

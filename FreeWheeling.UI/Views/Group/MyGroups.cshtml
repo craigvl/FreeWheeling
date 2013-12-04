@@ -1,0 +1,24 @@
+﻿@model FreeWheeling.UI.Models.MyGroupsModel
+@using FreeWheeling.Domain.Entities
+
+@{
+    ViewBag.Title = "My Groups";
+}
+
+<h2>My Groups</h2>
+
+<table class="table">
+    <tr>
+        <th></th>
+    </tr>
+
+@foreach (Group item in @Model.CycleGroups) {
+    <tr>
+        <td>@item.name</td>
+        <td>
+            @Html.ActionLink("View Rides", "Rides", new { id = item.id })
+        </td>
+    </tr>
+}
+
+</table>

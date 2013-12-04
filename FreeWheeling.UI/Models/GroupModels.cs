@@ -7,9 +7,10 @@ using System.Web;
 
 namespace FreeWheeling.UI.Models
 {
-    public class MyGroupsModels
+    public class MyGroupsModel
     {
-        public List<Group> _Groups { get;set; }
+        public int id { get; set; }
+        public List<Group> CycleGroups { get;set; }
 
     }
 }
