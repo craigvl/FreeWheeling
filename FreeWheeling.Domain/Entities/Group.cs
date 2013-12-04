@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FreeWheeling.Domain
+namespace FreeWheeling.Domain.Entities
 {
     public class Group
     {
@@ -14,5 +14,7 @@ namespace FreeWheeling.Domain
         public List<Member> Members { get; set; }
         public List<Ride> Rides { get; set; }
         public List<Route> Routes { get; set; }
+        public List<CycleDays> RideDays { get; set; }
+        public string RideTime { get; set; }
     }
 }

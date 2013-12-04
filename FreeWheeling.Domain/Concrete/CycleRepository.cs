@@ -1,5 +1,6 @@
 ﻿using FreeWheeling.Domain.Abstract;
 using FreeWheeling.Domain.DataContexts;
+using FreeWheeling.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace FreeWheeling.Domain.Concrete
 
         public IEnumerable<Group> GetGroups()
         {
-            return context.Groups.ToList(); 
+            return context.Groups.Include("Members").ToList(); 
         }
 
         public Group GetGroupByID(int id)

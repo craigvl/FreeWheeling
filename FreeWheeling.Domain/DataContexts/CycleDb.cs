@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
-using FreeWheeling.Domain;
+using FreeWheeling.Domain.Entities;
 
 namespace FreeWheeling.Domain.DataContexts
 {

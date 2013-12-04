@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace FreeWheeling.Domain.Entities
 {
-    public class Member
+    public class CycleDays
     {
         public int id { get; set; }
-        public string userId { get; set; }
-        public Group Group { get; set; }    
+        public string DayOfWeek { get; set; }
     }
-
 }

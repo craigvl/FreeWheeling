@@ -6,10 +6,11 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using FreeWheeling.Domain;
+using FreeWheeling.Domain.Entities;
 using FreeWheeling.UI.DataContexts;
 using Microsoft.AspNet.Identity;
 using FreeWheeling.Domain.Abstract;
+using FreeWheeling.UI.Models;
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -33,14 +34,14 @@ namespace FreeWheeling.UI.Controllers
         }
 
         //// GET: /Group/Details/5
-        public ActionResult Join(int? id)
+        public ActionResult Join(int id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Group group = repository.GetGroupByID(2);
+            Group group = repository.GetGroupByID(id);
 
             if (group == null)
             {
@@ -51,9 +52,22 @@ namespace FreeWheeling.UI.Controllers
 
             repository.AddMember(currentUser.Id, group);
             repository.Save();
-            //NewMember.AddMember(currentUser.Id, group);
 
             return View(group);
+        }
+
+        public ViewResult MyGroups()
+        {
+
+            MyGroupsModels GroupModel = new MyGroupsModels();
+
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+
+            GroupModel._Groups = repository.GetGroups().Where(u => u.Members.Any(m => m.userId == currentUser.Id)).ToList();
+
+            return View();
+
+
         }
 
         //// GET: /Group/Details/5
