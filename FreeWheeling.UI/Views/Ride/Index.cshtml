@@ -1,0 +1,10 @@
+﻿@model FreeWheeling.UI.Models.RideModelIndex
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Ride for @Model.Group.name</h2>
+
+@Model.Rides.FirstOrDefault().RideDate
+
+

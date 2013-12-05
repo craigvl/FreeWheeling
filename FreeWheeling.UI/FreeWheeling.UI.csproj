@@ -176,6 +176,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RideController.cs" />
     <Compile Include="DataContexts\IdentityDb.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201312010840320_Initial Create.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201312010840320_Initial Create.Designer.cs">
@@ -188,6 +189,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\GroupModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\RideModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -245,6 +247,7 @@
     <Content Include="Views\Group\Edit.cshtml" />
     <Content Include="Views\Group\Index.cshtml" />
     <Content Include="Views\Group\MyGroups.cshtml" />
+    <Content Include="Views\Ride\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

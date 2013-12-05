@@ -15,12 +15,12 @@ namespace FreeWheeling.Domain.Concrete
 
         public IEnumerable<Group> GetGroups()
         {
-            return context.Groups.Include("Members").ToList(); 
+            return context.Groups.Include("Members").Include("Rides").ToList(); 
         }
 
         public Group GetGroupByID(int id)
         {
-            Group group = context.Groups.Find(id);
+            Group group = context.Groups.Include("Members").Include("Rides").Where(i => i.id == id).FirstOrDefault();
 
             return group;
         }

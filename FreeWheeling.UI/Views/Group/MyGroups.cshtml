@@ -16,7 +16,7 @@
     <tr>
         <td>@item.name</td>
         <td>
-            @Html.ActionLink("View Rides", "Rides", new { id = item.id })
+            @Html.ActionLink("View Rides", "Index", "Ride", new { groupid = item.id }, null)
         </td>
     </tr>
 }
