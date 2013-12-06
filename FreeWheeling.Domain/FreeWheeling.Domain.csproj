@@ -69,6 +69,10 @@
     <Compile Include="DataContexts\CycleMigrations\201312042212117_Added_Rider.Designer.cs">
       <DependentUpon>201312042212117_Added_Rider.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201312060631503_Added_Rider_Name.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201312060631503_Added_Rider_Name.Designer.cs">
+      <DependentUpon>201312060631503_Added_Rider_Name.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\CycleDays.cs" />
     <Compile Include="Entities\Group.cs" />
@@ -97,6 +101,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\CycleMigrations\201312042212117_Added_Rider.resx">
       <DependentUpon>201312042212117_Added_Rider.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201312060631503_Added_Rider_Name.resx">
+      <DependentUpon>201312060631503_Added_Rider_Name.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

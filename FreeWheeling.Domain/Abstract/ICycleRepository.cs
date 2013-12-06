@@ -12,10 +12,15 @@ namespace FreeWheeling.Domain.Abstract
 
         //Group
         IEnumerable<Group> GetGroups();
+        IEnumerable<Group> GetGroupsWithRiders();
         Group GetGroupByID(int id);
+        Ride GetRideByID(int id);
+        List<Rider> GetRidersForRide(int id);
 
         //Member
         void AddMember(string UserId, Group _Group);
+
+        void AddRider(string UserId, string RiderName, Ride _Ride, Group _Group, string Percent);
 
         void Save();
        

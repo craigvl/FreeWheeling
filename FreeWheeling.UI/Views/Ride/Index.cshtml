@@ -1,10 +1,37 @@
 ﻿@model FreeWheeling.UI.Models.RideModelIndex
+@using FreeWheeling.Domain.Entities
+@using Microsoft.AspNet.Identity;
+
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Ride for @Model.Group.name</h2>
 
-@Model.Rides.FirstOrDefault().RideDate
+@Model.Ride.RideDate
 
+<p></p>
 
+@{
+    
+    foreach (Rider item in @Model.Riders)
+    {
+        
+       @item.Name @item.PercentKeen
+       <p></p>
+        
+    }
+       
+}
+
+<p></p>
+@Html.ActionLink("Will be 100% there!", "Attend", "Ride", new {RideId = @Model.Ride.id, commitment = "100", Groupid = @Model.Group.id }, new { @class = "btn btn-primary" })
+
+<p></p>
+@Html.ActionLink("I am a good chance (80%)", "Attend", "Ride", new { RideId = @Model.Ride.id, commitment = "80", Groupid = @Model.Group.id }, new { @class = "btn btn-primary" })
+
+<p></p>
+@Html.ActionLink("Will see how I feel 1 hour before (60%)", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "60", Groupid = @Model.Group.id }, new { @class = "btn btn-primary" })
+
+<p></p>
+@Html.ActionLink("Sick (0%)", "Attend", "Ride", new { RideId = @Model.Ride.id, commitment = "0" }, new { @class = "btn btn-primary" })
