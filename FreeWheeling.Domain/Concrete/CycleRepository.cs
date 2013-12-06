@@ -47,7 +47,11 @@ namespace FreeWheeling.Domain.Concrete
 
         public void AddRider(string UserId, string RiderName, Ride _Ride, Group _Group, string Percent)
         {
-            Rider CurrentRiders = context.Rides.Where(r => r.Group.id == _Group.id && r.Riders.Any(t => t.userId == UserId)).Select(y => y.Riders.FirstOrDefault()).FirstOrDefault();
+            Rider CurrentRiders = context.Riders.Where(o => o.userId == UserId && o.Ride.id == _Ride.id).FirstOrDefault();
+           
+            //Rider CurrentRiders = context.Rides.Where(r => r.Group.id == _Group.id && r.Riders.Any(t => t.userId == UserId))).FirstOrDefault();
+
+
 
             if (CurrentRiders != null)
             {
@@ -56,7 +60,7 @@ namespace FreeWheeling.Domain.Concrete
                 {
                     CurrentRiders.PercentKeen = Percent;
                     CurrentRiders.Name = RiderName;
-                    context.Riders.Attach(CurrentRiders);
+                    //context.Riders.Attach(CurrentRiders);
                     context.Entry(CurrentRiders).State = System.Data.Entity.EntityState.Modified; 
                 }
                 else
