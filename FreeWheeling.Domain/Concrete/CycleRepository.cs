@@ -51,8 +51,6 @@ namespace FreeWheeling.Domain.Concrete
            
             //Rider CurrentRiders = context.Rides.Where(r => r.Group.id == _Group.id && r.Riders.Any(t => t.userId == UserId))).FirstOrDefault();
 
-
-
             if (CurrentRiders != null)
             {
 
@@ -97,6 +95,23 @@ namespace FreeWheeling.Domain.Concrete
         public List<Rider> GetRidersForRide(int id)
         {
             return context.Riders.Where(r => r.Ride.id == id).ToList();
+        }
+
+
+        public List<int> CurrentGroupsForUser(string UserId)
+        {
+            List<int> GroupMemeberOf = new List<int>();
+            List<Group> Groups = context.Groups.Where(u => u.Members.Any(m => m.userId == UserId)).ToList();
+
+            foreach (Group item in Groups)
+            {
+
+                GroupMemeberOf.Add(item.id);
+
+            }
+
+            return (GroupMemeberOf);
+
         }
     }
 }

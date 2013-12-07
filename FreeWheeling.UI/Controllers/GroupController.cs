@@ -31,18 +31,24 @@ namespace FreeWheeling.UI.Controllers
         // GET: /Group/
         public ActionResult Index()
         {
-            return View(repository.GetGroups());
+            var errMsg = TempData["ErrorMessage"] as string;
+            GroupModel GroupModel = new GroupModel();
+            GroupModel._Groups = repository.GetGroups().ToList();
+
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+
+            GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
+
+            return View(GroupModel);
         }
 
         //// GET: /Group/Details/5
         public ActionResult Join(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
+           
             Group group = repository.GetGroupByID(id);
+            GroupModel GroupModel = new GroupModel();
+            GroupModel._Groups = repository.GetGroups().ToList();
 
             if (group == null)
             {
@@ -54,7 +60,9 @@ namespace FreeWheeling.UI.Controllers
             repository.AddMember(currentUser.Id, group);
             repository.Save();
 
-            return View("Index", repository.GetGroups());
+            GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
+
+            return View("Index", GroupModel);
         }
 
         public ViewResult MyGroups()

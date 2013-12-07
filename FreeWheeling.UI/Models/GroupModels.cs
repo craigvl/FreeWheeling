@@ -7,6 +7,14 @@ using System.Web;
 
 namespace FreeWheeling.UI.Models
 {
+
+    public class GroupModel
+    {
+        public string Name;
+        public List<Group> _Groups;
+        public List<int> CurrentGroupMembership;
+    }
+
     public class MyGroupsModel
     {
         public int id { get; set; }

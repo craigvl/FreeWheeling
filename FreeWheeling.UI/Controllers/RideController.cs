@@ -32,8 +32,20 @@ namespace FreeWheeling.UI.Controllers
             Group _Group = repository.GetGroupByID(groupid);
 
             RideModel.Ride = _Group.Rides.Where(u => u.RideDate >= DateTime.Now).OrderBy(i => i.RideDate).FirstOrDefault();
-            RideModel.Group = _Group;
-            RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
+
+            if (RideModel.Ride != null)
+            {
+
+                RideModel.Group = _Group;
+                RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
+
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "This is the message";
+                return RedirectToAction("Index", "Group");
+
+            }
 
             return View(RideModel);
         }

@@ -1,28 +1,39 @@
-﻿@model IEnumerable<FreeWheeling.Domain.Entities.Group>
+﻿@model FreeWheeling.UI.Models.GroupModel
+@using FreeWheeling.Domain.Entities 
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Groups</h2>
+<div class="row">
+    <div class="col-md-12">      
+        <p class="text-center">
+            <h3 class="text-left"><span class="label label-primary">Groups</span></h3>
+            <h4 class="text-left"><span class="label label-primary">Townsville</span></h4>
+                
+                @foreach (Group item in Model._Groups)
+                {
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.name)
-        </th>
-        <th></th>
-    </tr>
+                    bool isMember = Model.CurrentGroupMembership.Contains(item.id);
+                    if (isMember)
+                    {
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.name)
-        </td>
-        <td>
-            @Html.ActionLink("Join", "Join", new { id = item.id })
-        </td>
-    </tr>
-}
-
-</table>
+                        <h3 class="text-left">
+                       
+                            @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-default" }) 
+                       
+                         @Html.ActionLink("View Rides", "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-success" })</h3>
+                    
+                    }
+                    else
+                    {
+                 
+                    <h3 class="text-left">
+                   @Html.ActionLink(item.name, "Join", "Group", new { id = item.id }, new { @class = "btn btn-default" }) 
+                  @Html.ActionLink("Join!", "Join", "Group", new { id = item.id }, new { @class = "btn btn-success" })</h3>
+                    }
+                    isMember = false;
+                }
+</p>
+</div>
+</div>
