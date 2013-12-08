@@ -42,8 +42,12 @@ namespace FreeWheeling.UI.Controllers
             }
             else
             {
-                TempData["ErrorMessage"] = "This is the message";
-                return RedirectToAction("Index", "Group");
+                
+                GroupModel GroupModel = new GroupModel();
+                GroupModel._Groups = repository.GetGroups().ToList();  
+                var currentUser = idb.Users.Find(User.Identity.GetUserId());
+                GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
+                return RedirectToAction("index", "group", GroupModel);
 
             }
 
@@ -69,6 +73,60 @@ namespace FreeWheeling.UI.Controllers
             RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
 
             return View("Index", RideModel);
+        }
+
+        public ActionResult AttendNext(int RideId, string Commitment, int Groupid)
+        {
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            Ride _Ride = new Ride();
+            Group _Group = new Group();
+
+
+            _Ride = repository.GetRideByID(RideId);
+            _Group = repository.GetGroupByID(Groupid);
+
+            repository.AddRider(currentUser.Id, currentUser.UserName, _Ride, _Group, Commitment);
+            repository.Save();
+
+            RideModelIndex RideModel = new RideModelIndex();
+            RideModel.Ride = _Ride;
+            RideModel.Group = _Group;
+            RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
+
+            return View("NextRide", RideModel);
+        }
+
+        public ActionResult NextRide(int RideId, int Groupid)
+        {
+
+            RideModelIndex RideModel = new RideModelIndex();
+
+            Group _Group = repository.GetGroupByID(Groupid);
+
+            DateTime PreviousRide = _Group.Rides.Where(r => r.id == RideId).Select(u => u.RideDate).FirstOrDefault();
+
+            RideModel.Ride = _Group.Rides.Where(u => u.RideDate > PreviousRide).OrderBy(i => i.RideDate).FirstOrDefault();
+
+            if (RideModel.Ride != null)
+            {
+
+                RideModel.Group = _Group;
+                RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
+
+            }
+            else
+            {
+
+                GroupModel GroupModel = new GroupModel();
+                GroupModel._Groups = repository.GetGroups().ToList();
+                var currentUser = idb.Users.Find(User.Identity.GetUserId());
+                GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
+                return RedirectToAction("index", "group", GroupModel);
+
+            }
+
+            return View(RideModel);
+
         }
 	}
 }

@@ -9,8 +9,8 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
-    padding-top:50px;
-    background-image: url('/../Content/Images/bike.jpg');
+    padding-top:20px;
+    /*background-image: url('/../Content/Images/bike.jpg');*/
     background-repeat:no-repeat;
     background-position-x:0px;
     height:200px;
@@ -46,4 +46,18 @@ input[type="checkbox"].input-validation-error {
 
 .validation-summary-valid {
     display: none;
+}
+
+/*Bootstrap over writes*/
+.label {
+display: inline;
+padding: .2em .6em .3em;
+font-size: 75%;
+font-weight:normal;
+line-height: 1;
+color: #ffffff;
+text-align: center;
+white-space: nowrap;
+vertical-align: baseline;
+border-radius: .25em;
 }

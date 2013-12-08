@@ -7,18 +7,32 @@
 
 <h2>My Groups</h2>
 
-<table class="table">
-    <tr>
-        <th></th>
-    </tr>
+<div class="row">
+    <div class="col-md-12">
 
-@foreach (Group item in @Model.CycleGroups) {
-    <tr>
-        <td>@item.name</td>
-        <td>
-            @Html.ActionLink("View Rides", "Index", "Ride", new { groupid = item.id }, null)
-        </td>
-    </tr>
-}
+        @foreach (Group item in @Model.CycleGroups)
+        {
+             @:<h3 class="text-left">
+                       
+                         @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-default" }) 
+                         
+                         if (item.Rides.Count > 0 )
+                         {
+                             
+                             @Html.ActionLink("View Rides", "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-success" })
+                             
+                        @:</h3> 
+                             
+                         }
+                         else
+                         {
+                             
+                              @:<span class="label label-warning">No Rides</span>
+                             
+                         }
+        }
+        <p></p>
+        @Html.ActionLink("Join More Groups", "Index", "Group", null, new { @class = "btn btn-success" })
 
-</table>
+    </div>
+</div>

@@ -5,9 +5,12 @@
     ViewBag.Title = "Index";
 }
 
+@Html.ValidationSummary()
+
 <div class="row">
     <div class="col-md-12">      
         <p class="text-center">
+
             <h3 class="text-left"><span class="label label-primary">Groups</span></h3>
             <h4 class="text-left"><span class="label label-primary">Townsville</span></h4>
                 
@@ -15,21 +18,36 @@
                 {
 
                     bool isMember = Model.CurrentGroupMembership.Contains(item.id);
+                    
                     if (isMember)
                     {
-
-                        <h3 class="text-left">
+            
+                        @:<h3 class="text-left">
                        
-                            @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-default" }) 
-                       
-                         @Html.ActionLink("View Rides", "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-success" })</h3>
+                         @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-default" }) 
+                         
                     
+                         if (item.Rides.Count > 0 )
+                         {
+                             
+                             @Html.ActionLink("View Rides", "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-success" })
+                             
+                        @:</h3> 
+                             
+                         }
+                         else
+                         {
+                             
+                              @:<span class="label label-warning">No Rides</span>
+                             
+                         }
+                          
                     }
                     else
                     {
                  
                     <h3 class="text-left">
-                   @Html.ActionLink(item.name, "Join", "Group", new { id = item.id }, new { @class = "btn btn-default" }) 
+                  @Html.ActionLink(item.name, "Join", "Group", new { id = item.id }, new { @class = "btn btn-default" }) 
                   @Html.ActionLink("Join!", "Join", "Group", new { id = item.id }, new { @class = "btn btn-success" })</h3>
                     }
                     isMember = false;

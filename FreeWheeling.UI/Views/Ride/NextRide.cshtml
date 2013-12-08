@@ -11,7 +11,7 @@
 @Html.ActionLink("Back To Groups <---", "Index", "Group", null, new { @class = "btn btn-info" })
 
 <p></p>
-@Html.ActionLink("Next Ride -->", "NextRide", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id }, new { @class = "btn btn-default" })
+@Html.ActionLink("<-- Previous Ride", "Index", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id }, new { @class = "btn btn-default" })
 
 
 <h2 class="text-left"><span class="label label-primary">@Model.Ride.RideDate.DayOfWeek Ride for @Model.Group.name</span></h2>
@@ -56,20 +56,20 @@
 <h4><span class="label label-success">Actions</span></h4>
 
     <p></p>
-    @Html.ActionLink("Will be 100% there!", "Attend", "Ride", new { RideId = @Model.Ride.id, commitment = "100", Groupid = @Model.Group.id }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Will be 100% there!", "AttendNext", "Ride", new { RideId = @Model.Ride.id, commitment = "100", Groupid = @Model.Group.id }, new { @class = "btn btn-primary" })
 
     <p></p>
-    @Html.ActionLink("I am a good chance (80%)", "Attend", "Ride", new { RideId = @Model.Ride.id, commitment = "80", Groupid = @Model.Group.id }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("I am a good chance (80%)", "AttendNext", "Ride", new { RideId = @Model.Ride.id, commitment = "80", Groupid = @Model.Group.id }, new { @class = "btn btn-primary" })
 
     <p></p>
-    @Html.ActionLink("Will see how I feel 1 hour before (60%)", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "60", Groupid = @Model.Group.id }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Will see how I feel 1 hour before (60%)", "AttendNext", "Ride", new { RideId = @Model.Ride.id, Commitment = "60", Groupid = @Model.Group.id }, new { @class = "btn btn-primary" })
 
     <p></p>
-    @Html.ActionLink("Sick (0%)", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "CantMake", Groupid = @Model.Group.id }, new { @class = "btn btn-danger" })
+    @Html.ActionLink("Sick (0%)", "AttendNext", "Ride", new { RideId = @Model.Ride.id, Commitment = "CantMake", Groupid = @Model.Group.id }, new { @class = "btn btn-danger" })
 
     <p></p>
-    @Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "OnWay", Groupid = @Model.Group.id }, new { @class = "btn btn-success" })
+    @Html.ActionLink("On My Way!", "AttendNext", "Ride", new { RideId = @Model.Ride.id, Commitment = "OnWay", Groupid = @Model.Group.id }, new { @class = "btn btn-success" })
     
     <p></p>
     
-   
+    

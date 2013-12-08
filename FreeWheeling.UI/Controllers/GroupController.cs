@@ -32,14 +32,21 @@ namespace FreeWheeling.UI.Controllers
         public ActionResult Index()
         {
             var errMsg = TempData["ErrorMessage"] as string;
-            GroupModel GroupModel = new GroupModel();
-            GroupModel._Groups = repository.GetGroups().ToList();
+            GroupModel _GroupModel = new GroupModel();
+            _GroupModel._Groups = repository.GetGroups().ToList();
+
+            foreach (Group item in _GroupModel._Groups)
+            {
+
+                item.Rides = item.Rides.Where(t => t.RideDate >= DateTime.Now).ToList();
+
+            }
 
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
-            GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
+            _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
 
-            return View(GroupModel);
+            return View(_GroupModel);
         }
 
         //// GET: /Group/Details/5
