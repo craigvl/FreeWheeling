@@ -1,3 +1,5 @@
+cd "C:\inetpub\wwwroot\FreeWheeling"
+//lap
 cd "C:\Users\craig\Documents\Visual Studio 2013\Projects\FreeWheeling"
 
 git pull stick CraigsLaptop

@@ -113,5 +113,12 @@ namespace FreeWheeling.Domain.Concrete
             return (GroupMemeberOf);
 
         }
+
+        public Ride GetNextRideForGroup(Group _Group)
+        {
+            //Group _group = context.Groups.Include("Rides").Where(t => t.id == _Group.id).FirstOrDefault();
+            Ride _Ride = context.Rides.Include("Riders").Where(t => t.Group.id == _Group.id && t.RideDate >= DateTime.Now).OrderBy(r => r.RideDate).FirstOrDefault();
+            return _Ride; 
+        }
     }
 }

@@ -11,6 +11,8 @@
     <div class="col-md-12">      
         <p class="text-center">
 
+            @Html.ActionLink("Back Home <---", "Index", "Home", null, new { @class = "btn btn-info" })
+
             <h3 class="text-left"><span class="label label-primary">Groups</span></h3>
             <h4 class="text-left"><span class="label label-primary">Townsville</span></h4>
                 
@@ -18,6 +20,8 @@
                 {
 
                     bool isMember = Model.CurrentGroupMembership.Contains(item.id);
+                    int RiderCount = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(g => g.NumberofRiders).FirstOrDefault();
+                    DateTime NextRideDate = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(g => g.Date).FirstOrDefault();
                     
                     if (isMember)
                     {
@@ -26,11 +30,11 @@
                        
                          @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-default" }) 
                          
-                    
+                         
                          if (item.Rides.Count > 0 )
                          {
-                             
-                             @Html.ActionLink("View Rides", "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-success" })
+                            
+                             @Html.ActionLink(string.Concat("View Rides (",RiderCount, " very keen rider/s for ", NextRideDate.DayOfWeek,")")   , "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-success" })
                              
                         @:</h3> 
                              

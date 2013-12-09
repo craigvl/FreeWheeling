@@ -13,6 +13,7 @@ namespace FreeWheeling.UI.Models
         public string Name;
         public List<Group> _Groups;
         public List<int> CurrentGroupMembership;
+        public List<NextRideDetails> _NextRideDetails;
     }
 
     public class MyGroupsModel
@@ -20,5 +21,12 @@ namespace FreeWheeling.UI.Models
         public int id { get; set; }
         public List<Group> CycleGroups { get;set; }
 
+    }
+
+    public class NextRideDetails
+    {
+        public int GroupId { get; set; }
+        public DateTime Date { get; set; }
+        public int NumberofRiders { get; set; }
     }
 }

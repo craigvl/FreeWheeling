@@ -61,3 +61,7 @@ white-space: nowrap;
 vertical-align: baseline;
 border-radius: .25em;
 }
+
+.btn {
+margin-right: 20px;
+}

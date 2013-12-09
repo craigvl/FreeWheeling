@@ -16,6 +16,7 @@ namespace FreeWheeling.Domain.Abstract
         Group GetGroupByID(int id);
         Ride GetRideByID(int id);
         List<Rider> GetRidersForRide(int id);
+        Ride GetNextRideForGroup(Group _Group);
 
         List<int> CurrentGroupsForUser(string UserId);
 

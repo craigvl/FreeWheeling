@@ -31,17 +31,24 @@ namespace FreeWheeling.UI.Controllers
         // GET: /Group/
         public ActionResult Index()
         {
-            var errMsg = TempData["ErrorMessage"] as string;
             GroupModel _GroupModel = new GroupModel();
             _GroupModel._Groups = repository.GetGroups().ToList();
+            _GroupModel._NextRideDetails = new List<NextRideDetails>();
 
             foreach (Group item in _GroupModel._Groups)
             {
 
                 item.Rides = item.Rides.Where(t => t.RideDate >= DateTime.Now).ToList();
-
+                Ride NextRide = repository.GetNextRideForGroup(item);
+                
+                if (NextRide != null)
+                {
+                    _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100") .Count() });    
+                }
+                
             }
 
+          
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
             _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
@@ -75,14 +82,29 @@ namespace FreeWheeling.UI.Controllers
         public ViewResult MyGroups()
         {
 
-            MyGroupsModel GroupModel = new MyGroupsModel();
-
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
-            GroupModel.CycleGroups = repository.GetGroups().Where(u => u.Members.Any(m => m.userId == currentUser.Id)).ToList();
+            GroupModel _GroupModel = new GroupModel();
+            _GroupModel._Groups = repository.GetGroups().Where(u => u.Members.Any(m => m.userId == currentUser.Id)).ToList();
+            _GroupModel._NextRideDetails = new List<NextRideDetails>();
 
-            return View(GroupModel);
+            foreach (Group item in _GroupModel._Groups)
+            {
 
+                item.Rides = item.Rides.Where(t => t.RideDate >= DateTime.Now).ToList();
+                Ride NextRide = repository.GetNextRideForGroup(item);
+
+                if (NextRide != null)
+                {
+                    _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
+                }
+
+            }
+
+
+            _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
+
+            return View("Index",_GroupModel);
 
         }
 
