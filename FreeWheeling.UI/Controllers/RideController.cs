@@ -64,6 +64,11 @@ namespace FreeWheeling.UI.Controllers
             _Ride = repository.GetRideByID(RideId);
             _Group = repository.GetGroupByID(Groupid);
 
+            if (Commitment == "OnWay")
+            {
+                Commitment = "OnWay," + DateTime.Now.TimeOfDay.ToString();
+            }
+
             repository.AddRider(currentUser.Id, currentUser.UserName, _Ride, _Group, Commitment);
             repository.Save();
 
