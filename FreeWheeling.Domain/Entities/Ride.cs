@@ -13,5 +13,6 @@ namespace FreeWheeling.Domain.Entities
         public string RideTime { get; set; }
         public Group Group { get; set; }
         public List<Rider> Riders { get; set; }
+        public List<Comment> Comments { get; set; } 
     }
 }

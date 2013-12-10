@@ -1,0 +1,18 @@
+﻿@model FreeWheeling.UI.Models.RideCommentModel
+@{
+    ViewBag.Title = "AddComment";
+}
+
+<h4><span class="label label-success">Add a Comment</span></h4>
+
+@using (Html.BeginForm())
+{
+    <div>
+        
+        @Html.TextAreaFor(model => model.Comment, new { @class = "form-control" })
+    </div>
+    <p></p>
+    <input class="btn btn-primary" type="submit" name="CommentSubmit" value="Add Comment" />
+
+}
+

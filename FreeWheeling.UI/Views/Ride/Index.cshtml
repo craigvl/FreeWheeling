@@ -32,7 +32,7 @@
         {
         case "OnWay":
             <text>
-                <p><span class="label label-success">@item.Name is on the way!</span></p>
+                <p><span class="label label-success">@item.Name is on the way! Left at @item.LeaveTime</span></p>
             </text>
             break;  // Always break each case
         case "CantMake":
@@ -57,6 +57,10 @@
        
 }
 <br />
+
+@Html.ActionLink("View Comments", "AddComment", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id }, new { @class = "btn btn-success" })
+
+
 <h4><span class="label label-success">Actions</span></h4>
 
     <p></p>

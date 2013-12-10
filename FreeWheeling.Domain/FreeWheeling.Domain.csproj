@@ -73,7 +73,20 @@
     <Compile Include="DataContexts\CycleMigrations\201312060631503_Added_Rider_Name.Designer.cs">
       <DependentUpon>201312060631503_Added_Rider_Name.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201312092314097_Add_LeaveTime.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201312092314097_Add_LeaveTime.Designer.cs">
+      <DependentUpon>201312092314097_Add_LeaveTime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201312100243515_Add_Comments.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201312100243515_Add_Comments.Designer.cs">
+      <DependentUpon>201312100243515_Add_Comments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201312100324102_Add_Comments_Date.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201312100324102_Add_Comments_Date.Designer.cs">
+      <DependentUpon>201312100324102_Add_Comments_Date.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
+    <Compile Include="Entities\Comment.cs" />
     <Compile Include="Entities\CycleDays.cs" />
     <Compile Include="Entities\Group.cs" />
     <Compile Include="Entities\Member.cs" />
@@ -104,6 +117,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\CycleMigrations\201312060631503_Added_Rider_Name.resx">
       <DependentUpon>201312060631503_Added_Rider_Name.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201312092314097_Add_LeaveTime.resx">
+      <DependentUpon>201312092314097_Add_LeaveTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201312100243515_Add_Comments.resx">
+      <DependentUpon>201312100243515_Add_Comments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201312100324102_Add_Comments_Date.resx">
+      <DependentUpon>201312100324102_Add_Comments_Date.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

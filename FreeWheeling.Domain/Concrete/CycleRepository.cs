@@ -45,9 +45,9 @@ namespace FreeWheeling.Domain.Concrete
             
         }
 
-        public void AddRider(string UserId, string RiderName, Ride _Ride, Group _Group, string Percent)
+        public void AddRider(Rider _Rider, Group _Group)
         {
-            Rider CurrentRiders = context.Riders.Where(o => o.userId == UserId && o.Ride.id == _Ride.id).FirstOrDefault();
+            Rider CurrentRiders = context.Riders.Where(o => o.userId == _Rider.userId && o.Ride.id == _Rider.Ride.id).FirstOrDefault();
            
             //Rider CurrentRiders = context.Rides.Where(r => r.Group.id == _Group.id && r.Riders.Any(t => t.userId == UserId))).FirstOrDefault();
 
@@ -56,15 +56,15 @@ namespace FreeWheeling.Domain.Concrete
 
                 if (CurrentRiders.id != 0)
                 {
-                    CurrentRiders.PercentKeen = Percent;
-                    CurrentRiders.Name = RiderName;
-                    //context.Riders.Attach(CurrentRiders);
+                    CurrentRiders.PercentKeen = _Rider.PercentKeen;
+                    CurrentRiders.LeaveTime = _Rider.LeaveTime;
+                    CurrentRiders.Name = _Rider.Name;
                     context.Entry(CurrentRiders).State = System.Data.Entity.EntityState.Modified; 
                 }
                 else
                 {
 
-                    Rider NewRider = new Rider { userId = UserId, PercentKeen = Percent, Ride = _Ride, Name = RiderName };
+                    Rider NewRider = new Rider { userId = _Rider.userId, PercentKeen = _Rider.PercentKeen, Ride = _Rider.Ride, Name = _Rider.Name, LeaveTime = _Rider.LeaveTime };
                     context.Riders.Add(NewRider);
                     context.Entry(NewRider).State = System.Data.Entity.EntityState.Added;
 
@@ -74,7 +74,7 @@ namespace FreeWheeling.Domain.Concrete
             else
             {
 
-                Rider NewRider = new Rider { userId = UserId, PercentKeen = Percent, Ride = _Ride, Name = RiderName };
+                Rider NewRider = new Rider { userId = _Rider.userId, PercentKeen = _Rider.PercentKeen, Ride = _Rider.Ride, Name = _Rider.Name, LeaveTime = _Rider.LeaveTime };
                 context.Riders.Add(NewRider);
                 context.Entry(NewRider).State = System.Data.Entity.EntityState.Added;
 
@@ -119,6 +119,17 @@ namespace FreeWheeling.Domain.Concrete
             //Group _group = context.Groups.Include("Rides").Where(t => t.id == _Group.id).FirstOrDefault();
             Ride _Ride = context.Rides.Include("Riders").Where(t => t.Group.id == _Group.id && t.RideDate >= DateTime.Now).OrderBy(r => r.RideDate).FirstOrDefault();
             return _Ride; 
+        }
+
+
+        public void AddRideComment(string Comment, int RideId, string UserId)
+        {
+            Comment _comment = new Comment { CommentText = Comment, Ride = context.Rides.Where(t => t.id == RideId).FirstOrDefault(),
+                                             Rider = context.Riders.Where(e => e.userId == UserId).FirstOrDefault(), Date = DateTime.Now };
+
+            context.Comment.Add(_comment);
+            context.Entry(_comment).State = System.Data.Entity.EntityState.Added;
+
         }
     }
 }
