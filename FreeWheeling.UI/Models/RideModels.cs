@@ -11,7 +11,8 @@ namespace FreeWheeling.UI.Models
         public DateTime RideDate { get; set; }
         public string RideTime { get; set; }
         public Group Group { get; set; }
-        public Ride Ride { get; set; } 
+        public Ride Ride { get; set; }
+        public Ride NextRide { get; set; }
         public List<Rider> Riders { get; set; } 
         public List<Route> Routes { get; set; }
     }

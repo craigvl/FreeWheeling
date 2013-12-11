@@ -34,12 +34,11 @@ namespace FreeWheeling.UI.Controllers
             if (rideid == -1)
             {
                 RideModel.Ride = _Group.Rides.Where(u => u.RideDate >= DateTime.Now).OrderBy(i => i.RideDate).FirstOrDefault();
-            }
+                RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();            }
             else
             {
                 int _rideid = rideid;
                 RideModel.Ride = repository.GetRideByID(rideid);
-
             }
 
             if (RideModel.Ride != null)
@@ -145,7 +144,7 @@ namespace FreeWheeling.UI.Controllers
 
             DateTime PreviousRide = _Group.Rides.Where(r => r.id == RideId).Select(u => u.RideDate).FirstOrDefault();
 
-            RideModel.Ride = _Group.Rides.Where(u => u.RideDate > PreviousRide).OrderBy(i => i.RideDate).FirstOrDefault();
+            RideModel.Ride = _Group.Rides.Where(u =>u.id == RideId).OrderBy(i => i.RideDate).FirstOrDefault();
 
             if (RideModel.Ride != null)
             {
