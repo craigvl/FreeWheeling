@@ -250,6 +250,7 @@
     <Content Include="Views\Ride\Index.cshtml" />
     <Content Include="Views\Ride\NextRide.cshtml" />
     <Content Include="Views\Ride\AddComment.cshtml" />
+    <Content Include="Views\Ride\AddCommentNext.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

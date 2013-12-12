@@ -13,6 +13,7 @@ namespace FreeWheeling.UI.Models
         public Group Group { get; set; }
         public Ride Ride { get; set; }
         public Ride NextRide { get; set; }
+        public Ride PreviousRide { get; set; }
         public List<Rider> Riders { get; set; } 
         public List<Route> Routes { get; set; }
     }
@@ -23,6 +24,8 @@ namespace FreeWheeling.UI.Models
         public Ride Ride { get; set; }
         public string Comment { get; set; }
         public int GroupId { get; set; }
+        public Ride NextRide { get; set; }
+        public Ride PreviousRide { get; set; }
     }
 
     public class RideModel

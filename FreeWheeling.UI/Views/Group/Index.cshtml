@@ -21,6 +21,7 @@
 
                     bool isMember = Model.CurrentGroupMembership.Contains(item.id);
                     int RiderCount = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(g => g.NumberofRiders).FirstOrDefault();
+                   
                     DateTime NextRideDate = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(g => g.Date).FirstOrDefault();
                     
                     if (isMember)

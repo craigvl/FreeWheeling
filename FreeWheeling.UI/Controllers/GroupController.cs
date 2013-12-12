@@ -61,8 +61,9 @@ namespace FreeWheeling.UI.Controllers
         {
            
             Group group = repository.GetGroupByID(id);
-            GroupModel GroupModel = new GroupModel();
-            GroupModel._Groups = repository.GetGroups().ToList();
+            GroupModel _GroupModel = new GroupModel();
+            _GroupModel._Groups = repository.GetGroups().ToList();
+            _GroupModel._NextRideDetails = new List<NextRideDetails>();
 
             if (group == null)
             {
@@ -74,9 +75,22 @@ namespace FreeWheeling.UI.Controllers
             repository.AddMember(currentUser.Id, group);
             repository.Save();
 
-            GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
+            _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
 
-            return View("Index", GroupModel);
+            foreach (Group item in _GroupModel._Groups)
+            {
+
+                item.Rides = item.Rides.Where(t => t.RideDate >= DateTime.Now).ToList();
+                Ride NextRide = repository.GetNextRideForGroup(item);
+
+                if (NextRide != null)
+                {
+                    _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
+                }
+
+            }
+
+            return View("Index", _GroupModel);
         }
 
         public ViewResult MyGroups()
