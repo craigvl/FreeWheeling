@@ -11,6 +11,7 @@ namespace FreeWheeling.Domain.Entities
         public int id { get; set; }
         public string name { get; set; }
         public bool IsPrivate {get;set;}
+        public Location Location { get; set; }
         public List<Member> Members { get; set; }
         public List<Ride> Rides { get; set; }
         public List<Route> Routes { get; set; }

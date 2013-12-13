@@ -131,5 +131,10 @@ namespace FreeWheeling.Domain.Concrete
             context.Entry(_comment).State = System.Data.Entity.EntityState.Added;
 
         }
+
+        public IEnumerable<Location> GetLocations()
+        {
+            return context.Locations.ToList();
+        }
     }
 }

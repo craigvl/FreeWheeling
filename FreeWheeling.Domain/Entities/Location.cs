@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace FreeWheeling.Domain.Entities
 {
-    public class Member
+    public class Location
     {
         public int id { get; set; }
-        public string userId { get; set; }
-        public Group Group { get; set; }
-        public Location Location { get; set; }
+        public string Name { get; set; }
     }
-
 }

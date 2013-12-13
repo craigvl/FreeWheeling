@@ -17,39 +17,38 @@ namespace FreeWheeling.Domain.DataContexts.CycleMigrations
 
         protected override void Seed(FreeWheeling.Domain.DataContexts.CycleDb context)
         {
-            //  This method will be called after migrating to the latest version.
+           
+            //List<Location> Locations = new List<Location>();
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
+            //Locations.Add(new Location { Name = "Townsville" });
+            //Locations.Add(new Location { Name = "Cairns" });
 
-            List<CycleDays> RideDaysHJs = new List<CycleDays>();
-            RideDaysHJs.Add(new CycleDays { DayOfWeek = "Thursday" });
-            RideDaysHJs.Add(new CycleDays { DayOfWeek = "Tusday" });
+            //List<CycleDays> RideDaysHJs = new List<CycleDays>();
+            //RideDaysHJs.Add(new CycleDays { DayOfWeek = "Thursday" });
+            //RideDaysHJs.Add(new CycleDays { DayOfWeek = "Tusday" });
 
-            Group HJs = new Group { name = "HJs Group", IsPrivate = false, RideDays = RideDaysHJs.ToList(), RideTime = "5:15am" };
-            Group Pats = new Group { name = "Pats", IsPrivate = false, RideDays = RideDaysHJs.ToList(), RideTime = "5:15am" };
+            //Group HJs = new Group { name = "HJs Group", IsPrivate = false, RideDays = RideDaysHJs.ToList(), RideTime = "5:15am",
+            //                        Location = Locations.Where(l => l.Name == "Townsville").FirstOrDefault() };
+            //Group Pats = new Group { name = "Pats", IsPrivate = false, RideDays = RideDaysHJs.ToList(), RideTime = "5:15am",
+            //                         Location = Locations.Where(l => l.Name == "Townsville").FirstOrDefault()
+            //};
 
-            context.Groups.AddOrUpdate(
-              HJs
-            );
+            //context.Groups.AddOrUpdate(
+            //  HJs
+            //);
 
-            context.Groups.AddOrUpdate(
-              Pats
-            );
-
-
-            Ride HJRide1 = new Ride { Group = HJs, RideDate = new DateTime(2013, 12, 5,5,30,0), RideTime = "5:15am" };
-            Ride HJRide2 = new Ride { Group = HJs, RideDate = new DateTime(2013, 12, 28,5,15,0), RideTime = "5:15am" };
-
-            context.Rides.AddOrUpdate(HJRide1);
-            context.Rides.AddOrUpdate(HJRide2);
-
-            //Rider
+            //context.Groups.AddOrUpdate(
+            //  Pats
+            //);
 
 
+            //Ride HJRide1 = new Ride { Group = HJs, RideDate = new DateTime(2013, 12, 5,5,30,0), RideTime = "5:15am" };
+            //Ride HJRide2 = new Ride { Group = HJs, RideDate = new DateTime(2013, 12, 28,5,15,0), RideTime = "5:15am" };
 
-            //context.SaveChanges();
+            //context.Rides.AddOrUpdate(HJRide1);
+            //context.Rides.AddOrUpdate(HJRide2);
 
+            
          
         }
     }

@@ -14,11 +14,12 @@
             @Html.ActionLink("Back Home <---", "Index", "Home", null, new { @class = "btn btn-info" })
 
             <h3 class="text-left"><span class="label label-primary">Groups</span></h3>
-            <h4 class="text-left"><span class="label label-primary">Townsville</span></h4>
                 
-                @foreach (Group item in Model._Groups)
+                @if (@Model._Groups.Count > 0 )
                 {
-
+                foreach (Group item in Model._Groups)
+                {
+                    @item.Location.Name
                     bool isMember = Model.CurrentGroupMembership.Contains(item.id);
                     int RiderCount = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(g => g.NumberofRiders).FirstOrDefault();
                    
@@ -56,6 +57,13 @@
                   @Html.ActionLink("Join!", "Join", "Group", new { id = item.id }, new { @class = "btn btn-success" })</h3>
                     }
                     isMember = false;
+                }
+                }
+                else
+                {
+                    
+                    @Html.ActionLink("Your not in any Groups! Join some!", "Index", "Group", null, new { @class = "btn btn-default" }) 
+                    
                 }
 </p>
 </div>
