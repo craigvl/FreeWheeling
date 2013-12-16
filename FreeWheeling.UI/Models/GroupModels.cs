@@ -14,6 +14,8 @@ namespace FreeWheeling.UI.Models
         public List<Group> _Groups;
         public List<int> CurrentGroupMembership;
         public List<NextRideDetails> _NextRideDetails;
+        public string UserLocation;
+        public string title;
     }
 
     public class MyGroupsModel

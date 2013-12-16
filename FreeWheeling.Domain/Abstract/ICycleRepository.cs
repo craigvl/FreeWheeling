@@ -12,15 +12,17 @@ namespace FreeWheeling.Domain.Abstract
 
         //Group
         IEnumerable<Group> GetGroups();
+        IEnumerable<Group> GetGroupsByLocation(int LocationID);
         IEnumerable<Group> GetGroupsWithRiders();
         IEnumerable<Location> GetLocations();
         Group GetGroupByID(int id);
         Ride GetRideByID(int id);
         List<Rider> GetRidersForRide(int id);
         Ride GetNextRideForGroup(Group _Group);
+        Location GetMemberLocation(string UserId);
+        Member GetMemberByUserID(string id);
 
         List<int> CurrentGroupsForUser(string UserId);
-
 
         //Member
         void AddMember(string UserId, Group _Group);
@@ -29,8 +31,9 @@ namespace FreeWheeling.Domain.Abstract
 
         void AddRideComment(string Comment, int RideId, string UserId);
 
-        void Save();
-       
+        void SetMemberLocation(string UserId, int Locationid);
 
+        void Save();
+      
     }
 }

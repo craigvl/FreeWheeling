@@ -13,40 +13,53 @@ namespace FreeWheeling.Domain.DataContexts.CycleMigrations
         {
             AutomaticMigrationsEnabled = false;
             MigrationsDirectory = @"DataContexts\CycleMigrations";
+            
         }
 
         protected override void Seed(FreeWheeling.Domain.DataContexts.CycleDb context)
         {
-           
-            //List<Location> Locations = new List<Location>();
+            
+            Location Townsville = new Location { Name = "Townsivlle" };
+            Location Cairns = new Location { Name = "Cairns" };
 
-            //Locations.Add(new Location { Name = "Townsville" });
-            //Locations.Add(new Location { Name = "Cairns" });
+            context.Locations.AddOrUpdate(Townsville);
+            context.Locations.AddOrUpdate(Cairns);
 
-            //List<CycleDays> RideDaysHJs = new List<CycleDays>();
-            //RideDaysHJs.Add(new CycleDays { DayOfWeek = "Thursday" });
-            //RideDaysHJs.Add(new CycleDays { DayOfWeek = "Tusday" });
+            List<CycleDays> RideDaysHJs = new List<CycleDays>();
+            RideDaysHJs.Add(new CycleDays { DayOfWeek = "Thursday" });
+            RideDaysHJs.Add(new CycleDays { DayOfWeek = "Tusday" });
 
-            //Group HJs = new Group { name = "HJs Group", IsPrivate = false, RideDays = RideDaysHJs.ToList(), RideTime = "5:15am",
-            //                        Location = Locations.Where(l => l.Name == "Townsville").FirstOrDefault() };
-            //Group Pats = new Group { name = "Pats", IsPrivate = false, RideDays = RideDaysHJs.ToList(), RideTime = "5:15am",
-            //                         Location = Locations.Where(l => l.Name == "Townsville").FirstOrDefault()
-            //};
+            Group HJs = new Group
+            {
+                name = "HJs Group",
+                IsPrivate = false,
+                RideDays = RideDaysHJs.ToList(),
+                RideTime = "5:15am",
+                Location = Townsville
+            };
+            Group Pats = new Group
+            {
+                name = "Pats",
+                IsPrivate = false,
+                RideDays = RideDaysHJs.ToList(),
+                RideTime = "5:15am",
+                Location = Cairns
+            };
 
-            //context.Groups.AddOrUpdate(
-            //  HJs
-            //);
+            context.Groups.AddOrUpdate(
+              HJs
+            );
 
-            //context.Groups.AddOrUpdate(
-            //  Pats
-            //);
+            context.Groups.AddOrUpdate(
+              Pats
+            );
 
 
-            //Ride HJRide1 = new Ride { Group = HJs, RideDate = new DateTime(2013, 12, 5,5,30,0), RideTime = "5:15am" };
-            //Ride HJRide2 = new Ride { Group = HJs, RideDate = new DateTime(2013, 12, 28,5,15,0), RideTime = "5:15am" };
+            Ride HJRide1 = new Ride { Group = HJs, RideDate = new DateTime(2013, 12, 5, 5, 30, 0), RideTime = "5:15am" };
+            Ride HJRide2 = new Ride { Group = HJs, RideDate = new DateTime(2013, 12, 28, 5, 15, 0), RideTime = "5:15am" };
 
-            //context.Rides.AddOrUpdate(HJRide1);
-            //context.Rides.AddOrUpdate(HJRide2);
+            context.Rides.AddOrUpdate(HJRide1);
+            context.Rides.AddOrUpdate(HJRide2);
 
             
          

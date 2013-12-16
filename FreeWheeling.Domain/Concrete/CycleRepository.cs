@@ -15,12 +15,17 @@ namespace FreeWheeling.Domain.Concrete
 
         public IEnumerable<Group> GetGroups()
         {
-            return context.Groups.Include("Members").Include("Rides").ToList(); 
+            return context.Groups.Include("Members").Include("Rides").Include("Location").ToList(); 
+        }
+
+        public IEnumerable<Group> GetGroupsByLocation(int LocationID)
+        {
+            return context.Groups.Include("Members").Include("Rides").Include("Location").Where(g => g.Location.id == LocationID).ToList();
         }
 
         public Group GetGroupByID(int id)
         {
-            Group group = context.Groups.Include("Members").Include("Rides").Where(i => i.id == id).FirstOrDefault();
+            Group group = context.Groups.Include("Members").Include("Rides").Include("Location").Where(i => i.id == id).FirstOrDefault();
 
             return group;
         }
@@ -135,6 +140,42 @@ namespace FreeWheeling.Domain.Concrete
         public IEnumerable<Location> GetLocations()
         {
             return context.Locations.ToList();
+        }
+
+
+        public void SetMemberLocation(string UserId, int Locationid)
+        {
+
+            Member _Member = context.Members.Where(i => i.userId == UserId).FirstOrDefault();
+            Location _Location = context.Locations.Where(l => l.id == Locationid).FirstOrDefault();
+
+            _Member.Location = _Location;
+            context.Entry(_Member).State = System.Data.Entity.EntityState.Modified;
+
+
+        }
+
+
+        public Location GetMemberLocation(string UserId)
+        {
+            Member _Member = context.Members.Include("Location").Where(i => i.userId == UserId).FirstOrDefault();
+            //Location _Location = new Location();
+
+            //if (_Member.Location != null)
+            //{
+
+            //    _Location = context.Locations.Where(l => l.id == _Member.Location.id).FirstOrDefault();
+    
+            //}
+
+
+            return _Member.Location;
+        }
+
+
+        public Member GetMemberByUserID(string id)
+        {
+            return context.Members.Include("Location").Where(m => m.userId == id).FirstOrDefault();
         }
     }
 }

@@ -6,10 +6,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FreeWheeling.UI.Models;
+using Microsoft.AspNet.Identity;
+using FreeWheeling.Domain.Entities;
 
 
 namespace FreeWheeling.UI.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
 
@@ -26,8 +29,64 @@ namespace FreeWheeling.UI.Controllers
         {
             HomeIndexModel _HomeIndexModel = new HomeIndexModel();
             _HomeIndexModel.Locations = repository.GetLocations().ToList();
-            _HomeIndexModel.LocationsId = "4";
 
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            Location _Location = repository.GetMemberLocation(currentUser.Id);
+            
+            if (_Location != null)
+            {
+
+
+            _HomeIndexModel.LocationsId = _Location.id ;
+            _HomeIndexModel.CurrentUserLocation = _Location.Name;
+
+            }
+            else
+            {
+
+                _HomeIndexModel.CurrentUserLocation = "Please set a Location";
+
+
+            }
+
+
+            return View(_HomeIndexModel);
+        }
+
+        [HttpPost]
+        public ActionResult Index(HomeIndexModel _HomeIndexModel)
+        {
+           
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            
+            if (_HomeIndexModel.LocationsId != null)
+            {
+
+                _HomeIndexModel.Locations = repository.GetLocations().ToList();
+
+                repository.SetMemberLocation(currentUser.Id, _HomeIndexModel.LocationsId);
+                repository.Save();
+
+            }
+            else
+            {
+
+                _HomeIndexModel.LocationsId = 0;
+
+            }
+
+            Location _Location = repository.GetMemberLocation(currentUser.Id);
+
+            if (_Location != null)
+            {
+                _HomeIndexModel.CurrentUserLocation = _Location.Name;
+            }
+            else
+            {
+
+                _HomeIndexModel.CurrentUserLocation = "Please set a Location";
+
+            }
             return View(_HomeIndexModel);
         }
 

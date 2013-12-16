@@ -10,7 +10,8 @@ namespace FreeWheeling.UI.Models
 
     public class HomeIndexModel
     {
-        public string LocationsId { get; set; }
+        public int LocationsId { get; set; }
+        public string CurrentUserLocation { get; set; }
         public List<Location> Locations { get; set; }
     }
 
