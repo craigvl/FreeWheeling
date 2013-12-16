@@ -58,8 +58,76 @@ namespace FreeWheeling.UI.Controllers
             return View(_GroupModel);
         }
 
+        public ActionResult RemoveFromFavouriteList(int id, string title)
+        {
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            Member _Member = repository.GetMemberByUserID(currentUser.Id);
+            Group group = repository.GetGroupByID(id);
+
+            GroupModel _GroupModel = new GroupModel();
+            _GroupModel._Groups = repository.GetGroupsByLocation(_Member.Location.id).ToList();
+            _GroupModel._NextRideDetails = new List<NextRideDetails>();
+            _GroupModel.UserLocation = _Member.Location.Name;
+            _GroupModel.title = title;
+
+            if (group == null)
+            {
+                return HttpNotFound();
+            }
+
+            repository.RemoveMember(currentUser.Id, group);
+            repository.Save();
+
+            _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
+
+            foreach (Group item in _GroupModel._Groups)
+            {
+
+                item.Rides = item.Rides.Where(t => t.RideDate >= DateTime.Now).ToList();
+                Ride NextRide = repository.GetNextRideForGroup(item);
+
+                if (NextRide != null)
+                {
+                    _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
+                }
+
+            }
+
+            if (title == "Favourite Groups")
+	        {
+
+                _GroupModel._Groups = repository.GetGroups().Where(u => u.Members.Any(m => m.userId == currentUser.Id)).ToList();
+                _GroupModel._Groups = repository.GetGroupsByLocation(_Member.Location.id).Where(u => u.Members.Any(m => m.userId == currentUser.Id)).ToList();
+                _GroupModel.title = "Favourite Groups";
+
+                _GroupModel._NextRideDetails = new List<NextRideDetails>();
+                _GroupModel.UserLocation = _Member.Location.Name;
+
+                foreach (Group item in _GroupModel._Groups)
+                {
+
+                    item.Rides = item.Rides.Where(t => t.RideDate >= DateTime.Now).ToList();
+                    Ride NextRide = repository.GetNextRideForGroup(item);
+
+                    if (NextRide != null)
+                    {
+                        _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
+                    }
+
+                }
+
+
+                _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
+
+		 
+	        }
+            
+            return View("Index", _GroupModel);
+
+        }
+
         //// GET: /Group/Details/5
-        public ActionResult Join(int id)
+        public ActionResult Join(int id, string title)
         {
 
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
@@ -69,6 +137,7 @@ namespace FreeWheeling.UI.Controllers
             _GroupModel._Groups = repository.GetGroupsByLocation(_Member.Location.id).ToList();
             _GroupModel._NextRideDetails = new List<NextRideDetails>();
             _GroupModel.UserLocation = _Member.Location.Name;
+            _GroupModel.title = title;
 
             if (group == null)
             {

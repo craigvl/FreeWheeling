@@ -27,6 +27,8 @@ namespace FreeWheeling.Domain.Abstract
         //Member
         void AddMember(string UserId, Group _Group);
 
+        void RemoveMember(string UserId, Group _Group);
+
         void AddRider(Rider _Rider, Group _Group);
 
         void AddRideComment(string Comment, int RideId, string UserId);

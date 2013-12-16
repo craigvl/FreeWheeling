@@ -49,6 +49,8 @@
                               @:<span class="label label-danger">No Rides</span>
                              
                          }
+                                               
+                         @Html.ActionLink("Remove from favourites", "RemoveFromFavouriteList", "Group", new { id = item.id, title = @Model.title  }, new { @class = "btn btn-danger" })
                           
                     }
                     else
@@ -73,13 +75,9 @@
                               @:<span class="label label-danger">No Rides</span>
                              
                          }
-                    
-                    
-
-
-                 
+                           
                   
-                    @Html.ActionLink("Add to favourites", "Join", "Group", new { id = item.id }, new { @class = "btn btn-warning" })
+                    @Html.ActionLink("Add to favourites", "Join", "Group", new { id = item.id, title = @Model.title }, new { @class = "btn btn-warning" })
                      @:</h3>
                     }
                     isMember = false;
@@ -88,7 +86,7 @@
                 else
                 {
                     
-                    @Html.ActionLink("Your not in any Groups! Join some!", "Index", "Group", null, new { @class = "btn btn-default" }) 
+                    @Html.ActionLink("You dont have any favourite groups! Get some!", "Index", "Group", null, new { @class = "btn btn-default" }) 
                     
                 }
 </p>

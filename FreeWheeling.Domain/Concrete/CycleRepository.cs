@@ -46,8 +46,14 @@ namespace FreeWheeling.Domain.Concrete
                 context.Members.Add(NewMember);
                 context.Entry(NewMember).State = System.Data.Entity.EntityState.Added;
             }
+       
+        }
 
-            
+        public void RemoveMember(string UserId, Group _Group)
+        {
+            Member CurrentMember = context.Members.Where(g => g.Group.id == _Group.id && g.userId == UserId).FirstOrDefault();
+            context.Members.Remove(CurrentMember);
+            context.Entry(CurrentMember).State = System.Data.Entity.EntityState.Deleted;
         }
 
         public void AddRider(Rider _Rider, Group _Group)
@@ -159,16 +165,7 @@ namespace FreeWheeling.Domain.Concrete
         public Location GetMemberLocation(string UserId)
         {
             Member _Member = context.Members.Include("Location").Where(i => i.userId == UserId).FirstOrDefault();
-            //Location _Location = new Location();
-
-            //if (_Member.Location != null)
-            //{
-
-            //    _Location = context.Locations.Where(l => l.id == _Member.Location.id).FirstOrDefault();
-    
-            //}
-
-
+            
             return _Member.Location;
         }
 
