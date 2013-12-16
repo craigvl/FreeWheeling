@@ -6,3 +6,5 @@ update-database -ConfigurationTypeName FreeWheeling.UI.DataContexts.IdentityMigr
 add-migration -ConfigurationTypeName FreeWheeling.Domain.DataContexts.CycleMigrations.Configuration "Add_Comments_Date" -verbose
 
 add-migration -ConfigurationTypeName FreeWheeling.Domain.DataContexts.CycleMigrations.Configuration "Added_Ride_Details" -verbose
+
+add-migration -ConfigurationTypeName FreeWheeling.UI.DataContexts.IdentityMigrations.Configuration "Added_Location_Profile" -verbose

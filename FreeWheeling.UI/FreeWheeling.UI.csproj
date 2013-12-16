@@ -182,6 +182,14 @@
     <Compile Include="DataContexts\IdentityMigrations\201312010840320_Initial Create.Designer.cs">
       <DependentUpon>201312010840320_Initial Create.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201312160523002_Added_Location_Profile.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201312160523002_Added_Location_Profile.Designer.cs">
+      <DependentUpon>201312160523002_Added_Location_Profile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201312160601338_Change_Location_Profile_To_Int.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201312160601338_Change_Location_Profile_To_Int.Designer.cs">
+      <DependentUpon>201312160601338_Change_Location_Profile_To_Int.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -272,6 +280,12 @@
   <ItemGroup>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201312010840320_Initial Create.resx">
       <DependentUpon>201312010840320_Initial Create.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201312160523002_Added_Location_Profile.resx">
+      <DependentUpon>201312160523002_Added_Location_Profile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201312160601338_Change_Location_Profile_To_Int.resx">
+      <DependentUpon>201312160601338_Change_Location_Profile_To_Int.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -18,7 +18,7 @@ namespace FreeWheeling.Domain.Concrete
             return context.Groups.Include("Members").Include("Rides").Include("Location").ToList(); 
         }
 
-        public IEnumerable<Group> GetGroupsByLocation(int LocationID)
+        public IEnumerable<Group> GetGroupsByLocation(int? LocationID)
         {
             return context.Groups.Include("Members").Include("Rides").Include("Location").Where(g => g.Location.id == LocationID).ToList();
         }
@@ -47,6 +47,14 @@ namespace FreeWheeling.Domain.Concrete
                 context.Entry(NewMember).State = System.Data.Entity.EntityState.Added;
             }
        
+        }
+
+        public string GetLocationName(int? id)
+        {
+
+
+            return context.Locations.Where(l => l.id == id).Select(o => o.Name).FirstOrDefault();
+
         }
 
         public void RemoveMember(string UserId, Group _Group)
@@ -146,27 +154,6 @@ namespace FreeWheeling.Domain.Concrete
         public IEnumerable<Location> GetLocations()
         {
             return context.Locations.ToList();
-        }
-
-
-        public void SetMemberLocation(string UserId, int Locationid)
-        {
-
-            Member _Member = context.Members.Where(i => i.userId == UserId).FirstOrDefault();
-            Location _Location = context.Locations.Where(l => l.id == Locationid).FirstOrDefault();
-
-            _Member.Location = _Location;
-            context.Entry(_Member).State = System.Data.Entity.EntityState.Modified;
-
-
-        }
-
-
-        public Location GetMemberLocation(string UserId)
-        {
-            Member _Member = context.Members.Include("Location").Where(i => i.userId == UserId).FirstOrDefault();
-            
-            return _Member.Location;
         }
 
 

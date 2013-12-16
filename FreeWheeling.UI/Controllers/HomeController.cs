@@ -31,24 +31,21 @@ namespace FreeWheeling.UI.Controllers
             _HomeIndexModel.Locations = repository.GetLocations().ToList();
 
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            Location _Location = repository.GetMemberLocation(currentUser.Id);
+            Member _CurrentMember = repository.GetMemberByUserID(currentUser.Id);
+
+            Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
             
-            if (_Location != null)
+            if (currentUser.LocationID != null)
             {
-
-
-            _HomeIndexModel.LocationsId = _Location.id ;
-            _HomeIndexModel.CurrentUserLocation = _Location.Name;
-
+                _HomeIndexModel.LocationsId = _Location.id;
+                _HomeIndexModel.CurrentUserLocation = _Location.Name;
             }
             else
             {
 
                 _HomeIndexModel.CurrentUserLocation = "Please set a Location";
 
-
             }
-
 
             return View(_HomeIndexModel);
         }
@@ -64,8 +61,8 @@ namespace FreeWheeling.UI.Controllers
 
                 _HomeIndexModel.Locations = repository.GetLocations().ToList();
 
-                repository.SetMemberLocation(currentUser.Id, _HomeIndexModel.LocationsId);
-                repository.Save();
+                currentUser.LocationID = repository.GetLocations().Where(l => l.id == _HomeIndexModel.LocationsId ).Select(o => o.id).FirstOrDefault();
+                idb.SaveChanges();
 
             }
             else
@@ -75,11 +72,9 @@ namespace FreeWheeling.UI.Controllers
 
             }
 
-            Location _Location = repository.GetMemberLocation(currentUser.Id);
-
-            if (_Location != null)
+            if (currentUser.LocationID != null)
             {
-                _HomeIndexModel.CurrentUserLocation = _Location.Name;
+                _HomeIndexModel.CurrentUserLocation = repository.GetLocations().Where(i => i.id == currentUser.LocationID).Select(o => o.Name).FirstOrDefault();
             }
             else
             {

@@ -35,9 +35,9 @@ namespace FreeWheeling.UI.Controllers
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Member _Member = repository.GetMemberByUserID(currentUser.Id);
             GroupModel _GroupModel = new GroupModel();
-            _GroupModel._Groups = repository.GetGroupsByLocation(_Member.Location.id).ToList();
+            _GroupModel._Groups = repository.GetGroupsByLocation(currentUser.LocationID).ToList();
             _GroupModel._NextRideDetails = new List<NextRideDetails>();
-            _GroupModel.UserLocation = _Member.Location.Name;
+            _GroupModel.UserLocation = repository.GetLocationName(currentUser.LocationID);
             _GroupModel.title = "All Groups";
 
             foreach (Group item in _GroupModel._Groups)
@@ -65,9 +65,9 @@ namespace FreeWheeling.UI.Controllers
             Group group = repository.GetGroupByID(id);
 
             GroupModel _GroupModel = new GroupModel();
-            _GroupModel._Groups = repository.GetGroupsByLocation(_Member.Location.id).ToList();
+            _GroupModel._Groups = repository.GetGroupsByLocation(currentUser.LocationID).ToList();
             _GroupModel._NextRideDetails = new List<NextRideDetails>();
-            _GroupModel.UserLocation = _Member.Location.Name;
+            _GroupModel.UserLocation = repository.GetLocationName(currentUser.LocationID);
             _GroupModel.title = title;
 
             if (group == null)
@@ -97,11 +97,11 @@ namespace FreeWheeling.UI.Controllers
 	        {
 
                 _GroupModel._Groups = repository.GetGroups().Where(u => u.Members.Any(m => m.userId == currentUser.Id)).ToList();
-                _GroupModel._Groups = repository.GetGroupsByLocation(_Member.Location.id).Where(u => u.Members.Any(m => m.userId == currentUser.Id)).ToList();
+                _GroupModel._Groups = repository.GetGroupsByLocation(currentUser.LocationID).Where(u => u.Members.Any(m => m.userId == currentUser.Id)).ToList();
                 _GroupModel.title = "Favourite Groups";
 
                 _GroupModel._NextRideDetails = new List<NextRideDetails>();
-                _GroupModel.UserLocation = _Member.Location.Name;
+                _GroupModel.UserLocation = _GroupModel.UserLocation = repository.GetLocationName(currentUser.LocationID);
 
                 foreach (Group item in _GroupModel._Groups)
                 {
@@ -134,9 +134,9 @@ namespace FreeWheeling.UI.Controllers
             Member _Member = repository.GetMemberByUserID(currentUser.Id);
             Group group = repository.GetGroupByID(id);
             GroupModel _GroupModel = new GroupModel();
-            _GroupModel._Groups = repository.GetGroupsByLocation(_Member.Location.id).ToList();
+            _GroupModel._Groups = repository.GetGroupsByLocation(currentUser.LocationID).ToList();
             _GroupModel._NextRideDetails = new List<NextRideDetails>();
-            _GroupModel.UserLocation = _Member.Location.Name;
+            _GroupModel.UserLocation = _GroupModel.UserLocation = repository.GetLocationName(currentUser.LocationID);
             _GroupModel.title = title;
 
             if (group == null)
@@ -172,12 +172,12 @@ namespace FreeWheeling.UI.Controllers
             Member _Member = repository.GetMemberByUserID(currentUser.Id);
 
             GroupModel _GroupModel = new GroupModel();
-            _GroupModel._Groups = repository.GetGroups().Where(u => u.Members.Any(m => m.userId == currentUser.Id)).ToList();
-            _GroupModel._Groups = repository.GetGroupsByLocation(_Member.Location.id).Where(u => u.Members.Any(m => m.userId == currentUser.Id)).ToList();
+
+            _GroupModel._Groups = repository.GetGroupsByLocation(currentUser.LocationID).Where(u => u.Members.Any(m => m.userId == currentUser.Id)).ToList();
             _GroupModel.title = "Favourite Groups";
 
             _GroupModel._NextRideDetails = new List<NextRideDetails>();
-            _GroupModel.UserLocation = _Member.Location.Name;
+            _GroupModel.UserLocation = repository.GetLocationName(currentUser.LocationID);
 
             foreach (Group item in _GroupModel._Groups)
             {
