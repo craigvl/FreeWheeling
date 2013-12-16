@@ -77,6 +77,7 @@ namespace FreeWheeling.UI.Controllers
 
                 RideModel.Group = _Group;
                 RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
+                RideModel.Comments = repository.GetCommentsForRide(RideModel.Ride.id);
 
             }
             else
@@ -99,7 +100,7 @@ namespace FreeWheeling.UI.Controllers
             RideCommentModel _RideCommentModel = new RideCommentModel();
             _RideCommentModel.RideId = RideId;
             _RideCommentModel.GroupId = groupid;
-            _RideCommentModel.NextRide = 
+            
 
             _RideCommentModel.Ride = repository.GetRideByID(RideId);
 
@@ -118,6 +119,7 @@ namespace FreeWheeling.UI.Controllers
             RideModel.Ride = repository.GetRideByID(RideComment.RideId);
             RideModel.Group = repository.GetGroupByID(RideComment.GroupId);
             RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
+            RideModel.Comments = repository.GetCommentsForRide(RideModel.Ride.id);
 
             return View("Index",RideModel);
 
@@ -133,6 +135,24 @@ namespace FreeWheeling.UI.Controllers
             _RideCommentModel.Ride = repository.GetRideByID(RideId);
 
             return View("AddCommentNext",_RideCommentModel);
+
+        }
+
+        [HttpPost]
+        public ActionResult AddCommentNext(RideCommentModel RideComment)
+        {
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            repository.AddRideComment(RideComment.Comment, RideComment.RideId, currentUser.Id);
+            repository.Save();
+
+            RideModelIndex RideModel = new RideModelIndex();
+            RideModel.Ride = repository.GetRideByID(RideComment.RideId);
+            RideModel.Group = repository.GetGroupByID(RideComment.GroupId);
+            RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
+            RideModel.Comments = repository.GetCommentsForRide(RideModel.Ride.id);
+            RideModel.PreviousRide = repository.GetPreviousRideForGroup(RideModel.Group);
+
+            return View("NextRide", RideModel);
 
         }
 
@@ -179,6 +199,7 @@ namespace FreeWheeling.UI.Controllers
             RideModel.Group = _Group;
             RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
             RideModel.PreviousRide = repository.GetRideByID(PreviousRideID);
+            
 
             return View("NextRide", RideModel);
         }

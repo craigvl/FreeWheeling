@@ -67,7 +67,10 @@
 
 <div>
 
-    @foreach (Comment item in @Model.Comments)
+    @if (@Model.Comments != null)
+    {
+    
+        foreach (Comment item in Model.Comments)
     {
         
      <text> At </text> 
@@ -77,6 +80,11 @@
         @:<p></p>
         
     }
+        
+            
+    }
+
+    
 
 
 </div>

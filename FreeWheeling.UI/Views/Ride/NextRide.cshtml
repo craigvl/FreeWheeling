@@ -58,6 +58,32 @@
 }
 <br />
 
+<div>
+
+    @if (@Model.Comments != null)
+    {
+
+        foreach (Comment item in Model.Comments)
+        {
+
+            <text> At </text>
+            @item.Date.ToShortDateString() @item.Date.ToShortTimeString()
+            @item.Rider.Name <text>Said</text>
+            @item.CommentText
+            @:<p></p>
+
+
+        }
+
+
+    }
+
+
+
+
+</div>
+
+
 @Html.ActionLink("Add Comment", "AddCommentNext", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id, PreviousRideID = @Model.PreviousRide.id }, new { @class = "btn btn-success" })
 
 <h4><span class="label label-success">Actions</span></h4>

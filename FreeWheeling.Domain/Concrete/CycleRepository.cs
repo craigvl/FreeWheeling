@@ -140,6 +140,14 @@ namespace FreeWheeling.Domain.Concrete
             return _Ride; 
         }
 
+        public Ride GetPreviousRideForGroup(Group _Group)
+        {
+            //Group _group = context.Groups.Include("Rides").Where(t => t.id == _Group.id).FirstOrDefault();
+            Ride _NextRide = context.Rides.Include("Riders").Where(t => t.Group.id == _Group.id && t.RideDate >= DateTime.Now).OrderBy(r => r.RideDate).FirstOrDefault();
+            Ride PreviousRide = context.Rides.Include("Riders").Where(x => x.Group.id == _Group.id && x.RideDate <= _NextRide.RideDate).OrderBy(r => r.RideDate).FirstOrDefault();
+            return PreviousRide;
+        }
+
 
         public void AddRideComment(string Comment, int RideId, string UserId)
         {
