@@ -16,6 +16,7 @@ namespace FreeWheeling.UI.Models
         public Ride PreviousRide { get; set; }
         public List<Rider> Riders { get; set; } 
         public List<Route> Routes { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 
     public class RideCommentModel

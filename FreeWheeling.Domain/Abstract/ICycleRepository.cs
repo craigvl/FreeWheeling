@@ -20,7 +20,8 @@ namespace FreeWheeling.Domain.Abstract
         Ride GetRideByID(int id);
         List<Rider> GetRidersForRide(int id);
         Ride GetNextRideForGroup(Group _Group);
-    
+        List<Comment> GetCommentsForRide(int Rideid);
+
         Member GetMemberByUserID(string id);
         string GetLocationName(int? id);
         List<int> CurrentGroupsForUser(string UserId);

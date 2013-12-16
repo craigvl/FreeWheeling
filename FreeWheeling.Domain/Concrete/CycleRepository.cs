@@ -159,7 +159,13 @@ namespace FreeWheeling.Domain.Concrete
 
         public Member GetMemberByUserID(string id)
         {
-            return context.Members.Include("Location").Where(m => m.userId == id).FirstOrDefault();
+            return context.Members.Where(m => m.userId == id).FirstOrDefault();
+        }
+
+
+        public List<Comment> GetCommentsForRide(int Rideid)
+        {
+            return context.Comment.Include("Rider").Where(c => c.Ride.id == Rideid).ToList();
         }
     }
 }

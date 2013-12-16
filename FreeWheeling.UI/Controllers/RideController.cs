@@ -47,6 +47,7 @@ namespace FreeWheeling.UI.Controllers
             {
                 RideModel.Group = _Group;
                 RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
+                RideModel.Comments = repository.GetCommentsForRide(RideModel.Ride.id);
             }
             else
             {         
@@ -114,7 +115,7 @@ namespace FreeWheeling.UI.Controllers
             repository.Save();
 
             RideModelIndex RideModel = new RideModelIndex();
-            RideModel.Ride = RideComment.Ride;
+            RideModel.Ride = repository.GetRideByID(RideComment.RideId);
             RideModel.Group = repository.GetGroupByID(RideComment.GroupId);
             RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
 
