@@ -12,6 +12,6 @@ namespace FreeWheeling.Domain.Entities
         public string CommentText { get; set; }
         public DateTime Date { get; set; }
         public Ride Ride { get; set; }
-        public Rider Rider { get; set; }
+        public string userName { get; set; }
     }
 }

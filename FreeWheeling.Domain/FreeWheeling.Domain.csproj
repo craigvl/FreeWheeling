@@ -97,6 +97,10 @@
     <Compile Include="DataContexts\CycleMigrations\201312160626466_Remove_Member_Location.Designer.cs">
       <DependentUpon>201312160626466_Remove_Member_Location.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201312161044122_Update_To_Comments.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201312161044122_Update_To_Comments.Designer.cs">
+      <DependentUpon>201312161044122_Update_To_Comments.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\Comment.cs" />
     <Compile Include="Entities\Location.cs" />
@@ -149,6 +153,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\CycleMigrations\201312160626466_Remove_Member_Location.resx">
       <DependentUpon>201312160626466_Remove_Member_Location.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201312161044122_Update_To_Comments.resx">
+      <DependentUpon>201312161044122_Update_To_Comments.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

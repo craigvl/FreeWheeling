@@ -149,10 +149,11 @@ namespace FreeWheeling.Domain.Concrete
         }
 
 
-        public void AddRideComment(string Comment, int RideId, string UserId)
+        public void AddRideComment(string Comment, int RideId, string UserName)
         {
+          
             Comment _comment = new Comment { CommentText = Comment, Ride = context.Rides.Where(t => t.id == RideId).FirstOrDefault(),
-                                             Rider = context.Riders.Where(e => e.userId == UserId).FirstOrDefault(), Date = DateTime.Now };
+                                              userName = UserName , Date = DateTime.Now };
 
             context.Comment.Add(_comment);
             context.Entry(_comment).State = System.Data.Entity.EntityState.Added;
@@ -173,7 +174,7 @@ namespace FreeWheeling.Domain.Concrete
 
         public List<Comment> GetCommentsForRide(int Rideid)
         {
-            return context.Comment.Include("Rider").Where(c => c.Ride.id == Rideid).ToList();
+            return context.Comment.Where(c => c.Ride.id == Rideid).ToList();
         }
     }
 }

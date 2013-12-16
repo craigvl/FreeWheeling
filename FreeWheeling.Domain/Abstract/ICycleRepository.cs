@@ -34,7 +34,7 @@ namespace FreeWheeling.Domain.Abstract
 
         void AddRider(Rider _Rider, Group _Group);
 
-        void AddRideComment(string Comment, int RideId, string UserId);
+        void AddRideComment(string Comment, int RideId, string UserName);
 
         void Save();
       

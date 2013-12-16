@@ -34,13 +34,15 @@ namespace FreeWheeling.UI.Controllers
             if (rideid == -1)
             {
                 RideModel.Ride = _Group.Rides.Where(u => u.RideDate >= DateTime.Now).OrderBy(i => i.RideDate).FirstOrDefault();
-                RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault(); 
+                RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
+                RideModel.Comments = repository.GetCommentsForRide(RideModel.Ride.id);
             }
             else
             {
                 int _rideid = rideid;
                 RideModel.Ride = repository.GetRideByID(rideid);
-                RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault(); 
+                RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
+                RideModel.Comments = repository.GetCommentsForRide(RideModel.Ride.id);
             }
 
             if (RideModel.Ride != null)
@@ -112,7 +114,7 @@ namespace FreeWheeling.UI.Controllers
         public ActionResult AddComment(RideCommentModel RideComment)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            repository.AddRideComment(RideComment.Comment, RideComment.RideId, currentUser.Id);
+            repository.AddRideComment(RideComment.Comment, RideComment.RideId, currentUser.UserName);
             repository.Save();
 
             RideModelIndex RideModel = new RideModelIndex();
@@ -142,7 +144,7 @@ namespace FreeWheeling.UI.Controllers
         public ActionResult AddCommentNext(RideCommentModel RideComment)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            repository.AddRideComment(RideComment.Comment, RideComment.RideId, currentUser.Id);
+            repository.AddRideComment(RideComment.Comment, RideComment.RideId, currentUser.UserName);
             repository.Save();
 
             RideModelIndex RideModel = new RideModelIndex();
