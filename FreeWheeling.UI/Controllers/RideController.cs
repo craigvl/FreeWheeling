@@ -175,6 +175,7 @@ namespace FreeWheeling.UI.Controllers
             RideModel.Ride = _Ride;
             RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
             RideModel.Group = _Group;
+            RideModel.Comments = repository.GetCommentsForRide(RideModel.Ride.id);
             RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
 
             return View("Index", RideModel);
@@ -198,6 +199,7 @@ namespace FreeWheeling.UI.Controllers
             RideModel.Ride = _Ride;
             RideModel.Group = _Group;
             RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
+            RideModel.Comments = repository.GetCommentsForRide(RideModel.Ride.id);
             RideModel.PreviousRide = repository.GetRideByID(PreviousRideID);
             
 
