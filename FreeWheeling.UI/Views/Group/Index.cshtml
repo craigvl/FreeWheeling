@@ -17,8 +17,7 @@
                 
                 @if (@Model._Groups.Count > 0 )
                 {
-                    
-                    
+                                     
                 foreach (Group item in Model._Groups)
                 {
                    
@@ -31,13 +30,10 @@
                     {
             
                         @:<h3 class="text-left">
-                       
-                         @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-default" }) 
-                         
-                         
+                   
                          if (item.Rides.Count > 0 )
                          {
-                            
+                             @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-default" }) 
                              @Html.ActionLink(string.Concat("View Rides (", RiderCount, " 100% Rider/s for ", NextRideDate.DayOfWeek, ")"), "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-success" })
                              
                         @:</h3> 
@@ -45,7 +41,7 @@
                          }
                          else
                          {
-                             
+                               @Html.Label(item.name)
                               @:<span class="label label-danger">No Rides</span>
                              
                          }
@@ -57,21 +53,17 @@
                     {
                  
                     @:<h3 class="text-left">
-                       
-                         @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-default" }) 
-                         
-                         
+                            
                          if (item.Rides.Count > 0 )
                          {
                             
+                             @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-default" }) 
                              @Html.ActionLink(string.Concat("View Rides (",RiderCount, " 100% Rider/s for ", NextRideDate.DayOfWeek,")")   , "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-success" })
-                             
-                        
-                             
+                                   
                          }
                          else
                          {
-                             
+                             @Html.Label(item.name)
                               @:<span class="label label-danger">No Rides</span>
                              
                          }

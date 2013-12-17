@@ -32,7 +32,11 @@ namespace FreeWheeling.Domain.Abstract
 
         void RemoveMember(string UserId, Group _Group);
 
+        Group PopulateRideDates(Group _Group);
+
         void AddRider(Rider _Rider, Group _Group);
+
+        void AddGroup(Group _Group);
 
         void AddRideComment(string Comment, int RideId, string UserName);
 

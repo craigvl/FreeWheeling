@@ -1,48 +1,72 @@
-﻿@model FreeWheeling.Domain.Group
+﻿@model FreeWheeling.UI.Models.GroupCreateModel
 
 @{
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
+<h2>Create a new Group</h2>
 
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
     
-    <div class="form-horizontal">
-        <h4>Group</h4>
-        <hr />
-        @Html.ValidationSummary(true)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.name, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.name)
-                @Html.ValidationMessageFor(model => model.name)
-            </div>
+    <div><span class="RequiredField">*&nbsp;</span>Group Name:</div>
+        <div>
+            @Html.TextBoxFor(model => model.Name)
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsPrivate, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.IsPrivate)
-                @Html.ValidationMessageFor(model => model.IsPrivate)
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
+    <div>
+        <p></p>
+        @Html.DropDownListFor(
+             x => x.LocationsId,
+    new SelectList(
+        Model.Locations.ToList().Select(
+                     x => new { Value = x.id, Text = x.Name }
+        ),
+        "Value",
+                 "Text", Model.LocationsId
+    ), "-- Group Location --", new { @class = "form-control" }
+)
+        <p></p>
     </div>
+    
+    <div>   Days Of Week</div>
+        <div>
+            @for (int i = 0; i < Model.DaysOfWeek.Count; i++)
+            {
+                <div>
+                    @Html.HiddenFor(x => x.DaysOfWeek[i].Name)
+                    @Html.CheckBoxFor(x => x.DaysOfWeek[i].Checked)
+                    @Html.LabelFor(x => x.DaysOfWeek[i].Checked, Model.DaysOfWeek[i].Name)
+                </div>
+            }
+        </div>
+        <hr />
+    <div>Time</div>
+        <div><span class="RequiredField">*&nbsp;</span>Hour</div>
+        <div>
+            @Html.TextBoxFor(model => model.Hour)
+        </div>
+    
+        <div><span class="RequiredField">*&nbsp;</span>Minute</div>
+        <div>
+            @Html.TextBoxFor(model => model.Minute)
+        </div>
+    
+        <div><span class="RequiredField">*&nbsp;</span>Minute</div>
+        
+        <div> 
+            @Html.DropDownListFor(model => model.AM_PM, Model.AM_PMList)
+        </div>
+    
+        <div>
+            <p></p>
+            <input id="btnSubmit" type="submit" value="Create Group" />
+        </div>
+    
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

@@ -6,9 +6,9 @@
     ViewBag.Title = "Index";
 }
 
-@Html.ActionLink("Back To My Groups <---", "MyGroups", "Group", null, new { @class = "btn btn-info" })
+@Html.ActionLink("Favourite Groups <---", "MyGroups", "Group", null, new { @class = "btn btn-info" })
 
-@Html.ActionLink("Back To Groups <---", "Index", "Group", null, new { @class = "btn btn-info" })
+@*@Html.ActionLink("Back To Groups <---", "Index", "Group", null, new { @class = "btn btn-info" })*@
 
 <p></p>
 @Html.ActionLink("<-- Previous Ride", "Index", "Ride", new { RideId = @Model.PreviousRide.id, Groupid = @Model.Group.id }, new { @class = "btn btn-default" })
@@ -66,11 +66,10 @@
         foreach (Comment item in Model.Comments)
         {
 
-            <text> At </text>
-            @item.Date.ToShortDateString() @item.Date.ToShortTimeString()
-            @item.userName <text>Said </text>
-            @item.CommentText
-            @:<p></p>
+            @item.Date.ToShortDateString() @Html.Raw(" ")  @item.Date.ToShortTimeString() @Html.Raw(" ")
+        @item.userName <text>: </text>
+        @item.CommentText
+        @:<p></p>
 
 
         }

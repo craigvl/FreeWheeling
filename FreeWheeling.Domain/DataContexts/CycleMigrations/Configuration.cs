@@ -55,7 +55,7 @@ namespace FreeWheeling.Domain.DataContexts.CycleMigrations
             );
 
 
-            Ride HJRide1 = new Ride { Group = HJs, RideDate = new DateTime(2013, 12, 5, 5, 30, 0), RideTime = "5:15am" };
+            Ride HJRide1 = new Ride { Group = HJs, RideDate = new DateTime(2014, 1, 1, 5, 30, 0), RideTime = "5:15am" };
             Ride HJRide2 = new Ride { Group = HJs, RideDate = new DateTime(2013, 12, 28, 5, 15, 0), RideTime = "5:15am" };
 
             context.Rides.AddOrUpdate(HJRide1);

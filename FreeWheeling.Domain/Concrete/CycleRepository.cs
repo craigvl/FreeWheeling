@@ -176,5 +176,106 @@ namespace FreeWheeling.Domain.Concrete
         {
             return context.Comment.Where(c => c.Ride.id == Rideid).ToList();
         }
+
+
+        public void AddGroup(Group _Group)
+        {
+            context.Groups.Add(_Group);
+            context.Entry(_Group).State = System.Data.Entity.EntityState.Added;
+        }
+
+
+        public Group PopulateRideDates(Group _Group)
+        {
+
+            List<DayOfWeek> RideDays = new List<DayOfWeek>();
+
+            foreach (CycleDays item in _Group.RideDays)
+            {
+                if (item.DayOfWeek == "Sunday"){ RideDays.Add(DayOfWeek.Sunday); }
+                if (item.DayOfWeek == "Monday") { RideDays.Add(DayOfWeek.Monday); }
+                if (item.DayOfWeek == "Tuesday") { RideDays.Add(DayOfWeek.Tuesday); }
+                if (item.DayOfWeek == "Wednesday") { RideDays.Add(DayOfWeek.Wednesday); }
+                if (item.DayOfWeek == "Thurday") { RideDays.Add(DayOfWeek.Tuesday); }
+                if (item.DayOfWeek == "Friday") { RideDays.Add(DayOfWeek.Friday); }
+                if (item.DayOfWeek == "Saturday") { RideDays.Add(DayOfWeek.Saturday); }
+            }
+
+            foreach (DayOfWeek day in RideDays)
+            {
+                
+                DateTime nextdate = GetNextDateForDay(DateTime.Now, day );
+                Ride NewRide = new Ride { Group = _Group, RideTime = _Group.RideTime, RideDate = nextdate };
+                _Group.Rides.Add(NewRide);
+            }
+
+            return _Group;
+
+        }
+
+
+        /// <summary>
+        /// Finds the next date whose day of the week equals the specified day of the week.
+        /// </summary>
+        /// <param name="startDate">
+        ///		The date to begin the search.
+        /// </param>
+        /// <param name="desiredDay">
+        ///		The desired day of the week whose date will be returneed.
+        /// </param>
+        /// <returns>
+        ///		The returned date occurs on the given date's week.
+        ///		If the given day occurs before given date, the date for the
+        ///		following week's desired day is returned.
+        /// </returns>
+        public static DateTime GetNextDateForDay(DateTime startDate, DayOfWeek desiredDay)
+        {
+            // Given a date and day of week,
+            // find the next date whose day of the week equals the specified day of the week.
+            return startDate.AddDays(DaysToAdd(startDate.DayOfWeek, desiredDay));
+        }
+
+        /// <summary>
+        /// Calculates the number of days to add to the given day of
+        /// the week in order to return the next occurrence of the
+        /// desired day of the week.
+        /// </summary>
+        /// <param name="current">
+        ///		The starting day of the week.
+        /// </param>
+        /// <param name="desired">
+        ///		The desired day of the week.
+        /// </param>
+        /// <returns>
+        ///		The number of days to add to <var>current</var> day of week
+        ///		in order to achieve the next <var>desired</var> day of week.
+        /// </returns>
+        public static int DaysToAdd(DayOfWeek current, DayOfWeek desired)
+        {
+            // f( c, d ) = g( c, d ) mod 7, g( c, d ) > 7
+            //           = g( c, d ), g( c, d ) < = 7
+            //   where 0 <= c < 7 and 0 <= d < 7
+
+            int c = (int)current;
+            int d = (int)desired;
+            int n = (7 - c + d);
+
+            return (n > 7) ? n % 7 : n;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }
