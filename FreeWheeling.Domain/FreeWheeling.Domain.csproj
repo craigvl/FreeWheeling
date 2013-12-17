@@ -101,6 +101,14 @@
     <Compile Include="DataContexts\CycleMigrations\201312161044122_Update_To_Comments.Designer.cs">
       <DependentUpon>201312161044122_Update_To_Comments.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201312170553098_Update_To_Group.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201312170553098_Update_To_Group.Designer.cs">
+      <DependentUpon>201312170553098_Update_To_Group.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201312170635528_Update_To_AdHoc.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201312170635528_Update_To_AdHoc.Designer.cs">
+      <DependentUpon>201312170635528_Update_To_AdHoc.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\Comment.cs" />
     <Compile Include="Entities\Location.cs" />
@@ -156,6 +164,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\CycleMigrations\201312161044122_Update_To_Comments.resx">
       <DependentUpon>201312161044122_Update_To_Comments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201312170553098_Update_To_Group.resx">
+      <DependentUpon>201312170553098_Update_To_Group.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201312170635528_Update_To_AdHoc.resx">
+      <DependentUpon>201312170635528_Update_To_AdHoc.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

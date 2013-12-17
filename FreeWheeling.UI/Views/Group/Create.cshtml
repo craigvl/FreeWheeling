@@ -60,13 +60,24 @@
             @Html.DropDownListFor(model => model.AM_PM, Model.AM_PMList)
         </div>
     
+        <div><span class="RequiredField">*&nbsp;</span>Start Location</div>
+        
+        <div> 
+            @Html.TextBoxFor(model => model.StartLocation)
+        </div>
+    
+    <div><span class="RequiredField">*&nbsp;</span>Average Speed</div>
+        
+        <div> 
+            @Html.TextBoxFor(model => model.AverageSpeed)
+        </div>
+    
         <div>
             <p></p>
             <input id="btnSubmit" type="submit" value="Create Group" />
         </div>
     
 }
-
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

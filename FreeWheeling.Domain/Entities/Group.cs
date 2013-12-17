@@ -17,5 +17,7 @@ namespace FreeWheeling.Domain.Entities
         public List<Route> Routes { get; set; }
         public List<CycleDays> RideDays { get; set; }
         public string RideTime { get; set; }
+        public string StartLocation { get; set; }
+        public string AverageSpeed { get; set; }
     }
 }

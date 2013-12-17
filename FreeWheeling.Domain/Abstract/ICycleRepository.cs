@@ -40,6 +40,8 @@ namespace FreeWheeling.Domain.Abstract
 
         void AddGroup(Group _Group);
 
+        void AddAdHocRide(Ad_HocRide _AdHocRide);
+
         void AddRideComment(string Comment, int RideId, string UserName);
 
         void Save();

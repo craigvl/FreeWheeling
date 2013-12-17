@@ -260,6 +260,7 @@
     <Content Include="Views\Ride\NextRide.cshtml" />
     <Content Include="Views\Ride\AddComment.cshtml" />
     <Content Include="Views\Ride\AddCommentNext.cshtml" />
+    <Content Include="Views\Group\CreateAdHoc.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

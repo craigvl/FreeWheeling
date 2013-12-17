@@ -68,6 +68,40 @@ namespace FreeWheeling.UI.Controllers
             return View(_GroupModel);
         }
 
+        public ActionResult CreateAdHoc()
+        {
+
+            AdHocCreateModel _Ad_HocRide = new AdHocCreateModel();
+            _Ad_HocRide.Locations = repository.GetLocations().ToList();
+
+            return View(_Ad_HocRide);
+
+        }
+
+        [HttpPost]
+        public ActionResult CreateAdHoc(AdHocCreateModel _AdHocCreateModel)
+        {
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            Location _Location = repository.GetLocations().Where(l => l.id == _AdHocCreateModel.LocationsId).FirstOrDefault();
+            Ad_HocRide NewAdHoc = new Ad_HocRide
+            {
+                Name = _AdHocCreateModel.Name,
+                AverageSpeed = _AdHocCreateModel.AverageSpeed,
+                Location = _Location,
+                RideDate = _AdHocCreateModel.RideDate,
+                Creator = currentUser.UserName,
+                StartLocation = _AdHocCreateModel.StartLocation,
+                RideTime = _AdHocCreateModel.RideDate.TimeOfDay.ToString()
+            };
+
+            repository.AddAdHocRide(NewAdHoc);
+            repository.Save();
+
+            return View(_AdHocCreateModel);
+
+        }
+
+
         public ActionResult Create()
         {
 
@@ -78,6 +112,7 @@ namespace FreeWheeling.UI.Controllers
 
         }
 
+        
         [HttpPost]
         public ActionResult Create(GroupCreateModel _GroupCreateModel)
         {
@@ -102,14 +137,16 @@ namespace FreeWheeling.UI.Controllers
             {
                 name = _GroupCreateModel.Name,
                 RideTime = _GroupCreateModel.Hour.ToString() +":"+ _GroupCreateModel.Minute.ToString() + " " + _GroupCreateModel.AM_PM,
-                RideDays = _CycleDays, Location = _Location, Rides = new List<Ride>()
+                RideDays = _CycleDays, Location = _Location, Rides = new List<Ride>(), AverageSpeed = _GroupCreateModel.AverageSpeed, 
+                StartLocation = _GroupCreateModel.StartLocation
             };
-
-            NewGroup = repository.PopulateRideDates(NewGroup);
 
             repository.AddGroup(NewGroup);
             repository.Save();
 
+            NewGroup = repository.PopulateRideDates(NewGroup);
+            repository.Save();
+            
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Member _Member = repository.GetMemberByUserID(currentUser.Id);
             GroupModel _GroupModel = new GroupModel();

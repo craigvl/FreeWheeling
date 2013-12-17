@@ -192,6 +192,12 @@ namespace FreeWheeling.Domain.Concrete
             context.Entry(_Group).State = System.Data.Entity.EntityState.Added;
         }
 
+        public void AddAdHocRide(Ad_HocRide _AdHocRide)
+        {
+            context.Ad_HocRide.Add(_AdHocRide);
+            context.Entry(_AdHocRide).State = System.Data.Entity.EntityState.Added;
+        }
+
 
         public void PopulateRideDatesFromDate(Group _Group, DateTime _DateTime)
         {
@@ -300,5 +306,8 @@ namespace FreeWheeling.Domain.Concrete
         }
 
 
+
+
+       
     }
 }

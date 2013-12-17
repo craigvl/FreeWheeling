@@ -24,7 +24,38 @@ namespace FreeWheeling.UI.Models
         public string Name { get; set; }
         public bool Checked { get; set; }
     }
-        
+
+    public class AdHocCreateModel
+    {
+        public DateTime RideDate { get; set; }
+        public string AM_PM { get; set; }
+        public IEnumerable<SelectListItem> AM_PMList
+        {
+            get
+            {
+                return new[]
+            {
+                new SelectListItem { Value = "AM", Text = "AM" },
+                new SelectListItem { Value = "PM", Text = "PM" }
+            };
+            }
+        }
+
+        [Required]
+        public string Name { get; set; }
+        [Required]
+        public int Hour { get; set; }
+        [Required]
+        public int Minute { get; set; }
+        [Required]
+        public int LocationsId { get; set; }
+        public List<Location> Locations { get; set; }
+        public string StartLocation { get; set; }
+        public string AverageSpeed { get; set; }
+        public string Creator { get; set; }
+
+    }
+    
     public class GroupCreateModel
     {
 
@@ -65,6 +96,8 @@ namespace FreeWheeling.UI.Models
     [Required]
     public int LocationsId { get; set; }
     public List<Location> Locations { get; set; }
+    public string StartLocation { get; set; }
+    public string AverageSpeed { get; set; }
 
     }
 
