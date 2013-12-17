@@ -27,7 +27,7 @@ namespace FreeWheeling.Domain.DataContexts.CycleMigrations
 
             List<CycleDays> RideDaysHJs = new List<CycleDays>();
             RideDaysHJs.Add(new CycleDays { DayOfWeek = "Thursday" });
-            RideDaysHJs.Add(new CycleDays { DayOfWeek = "Tusday" });
+            RideDaysHJs.Add(new CycleDays { DayOfWeek = "Tuesday" });
 
             Group HJs = new Group
             {

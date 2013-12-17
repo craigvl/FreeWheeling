@@ -34,6 +34,8 @@ namespace FreeWheeling.Domain.Abstract
 
         Group PopulateRideDates(Group _Group);
 
+        void PopulateRideDatesFromDate(Group _Group, DateTime _DateTime);
+
         void AddRider(Rider _Rider, Group _Group);
 
         void AddGroup(Group _Group);

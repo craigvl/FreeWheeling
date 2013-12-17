@@ -50,6 +50,16 @@ namespace FreeWheeling.UI.Controllers
                 {
                     _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100") .Count() });    
                 }
+                else
+                {
+                    if (item.RideDays != null)
+                    {
+                        repository.PopulateRideDates(item);
+                        repository.Save();
+                    }
+                    
+
+                }
                 
             }
 
@@ -182,7 +192,7 @@ namespace FreeWheeling.UI.Controllers
                     {
                         _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
                     }
-
+                    
                 }
 
 
@@ -257,6 +267,16 @@ namespace FreeWheeling.UI.Controllers
                 if (NextRide != null)
                 {
                     _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
+                }
+                else
+                {
+
+                    if (item.RideDays != null)
+                    {
+                        repository.PopulateRideDates(item);
+                        repository.Save();
+                    }
+
                 }
 
             }

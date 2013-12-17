@@ -15,17 +15,17 @@ namespace FreeWheeling.Domain.Concrete
 
         public IEnumerable<Group> GetGroups()
         {
-            return context.Groups.Include("Members").Include("Rides").Include("Location").ToList(); 
+            return context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").ToList(); 
         }
 
         public IEnumerable<Group> GetGroupsByLocation(int? LocationID)
         {
-            return context.Groups.Include("Members").Include("Rides").Include("Location").Where(g => g.Location.id == LocationID).ToList();
+            return context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").Where(g => g.Location.id == LocationID).ToList();
         }
 
         public Group GetGroupByID(int id)
         {
-            Group group = context.Groups.Include("Members").Include("Rides").Include("Location").Where(i => i.id == id).FirstOrDefault();
+            Group group = context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").Where(i => i.id == id).FirstOrDefault();
 
             return group;
         }
@@ -135,8 +135,16 @@ namespace FreeWheeling.Domain.Concrete
 
         public Ride GetNextRideForGroup(Group _Group)
         {
-            //Group _group = context.Groups.Include("Rides").Where(t => t.id == _Group.id).FirstOrDefault();
+            
             Ride _Ride = context.Rides.Include("Riders").Where(t => t.Group.id == _Group.id && t.RideDate >= DateTime.Now).OrderBy(r => r.RideDate).FirstOrDefault();
+
+            if (context.Rides.Where(t => t.Group.id == _Group.id && t.RideDate >= DateTime.Now).Count() == 1)
+            {
+
+                PopulateRideDatesFromDate(_Group, _Ride.RideDate); 
+
+            }
+
             return _Ride; 
         }
 
@@ -185,6 +193,33 @@ namespace FreeWheeling.Domain.Concrete
         }
 
 
+        public void PopulateRideDatesFromDate(Group _Group, DateTime _DateTime)
+        {
+            List<DayOfWeek> RideDays = new List<DayOfWeek>();
+
+            foreach (CycleDays item in _Group.RideDays)
+            {
+                if (item.DayOfWeek == "Sunday") { RideDays.Add(DayOfWeek.Sunday); }
+                if (item.DayOfWeek == "Monday") { RideDays.Add(DayOfWeek.Monday); }
+                if (item.DayOfWeek == "Tuesday") { RideDays.Add(DayOfWeek.Tuesday); }
+                if (item.DayOfWeek == "Wednesday") { RideDays.Add(DayOfWeek.Wednesday); }
+                if (item.DayOfWeek == "Thursday") { RideDays.Add(DayOfWeek.Thursday); }
+                if (item.DayOfWeek == "Friday") { RideDays.Add(DayOfWeek.Friday); }
+                if (item.DayOfWeek == "Saturday") { RideDays.Add(DayOfWeek.Saturday); }
+            }
+
+            foreach (DayOfWeek day in RideDays)
+            {
+
+                DateTime nextdate = GetNextDateForDay(_DateTime, day);
+                Ride NewRide = new Ride { Group = _Group, RideTime = _Group.RideTime, RideDate = nextdate };
+                _Group.Rides.Add(NewRide);
+            }
+
+            context.Entry(_Group).State = System.Data.Entity.EntityState.Modified;
+            context.SaveChanges();
+        }
+
         public Group PopulateRideDates(Group _Group)
         {
 
@@ -196,7 +231,7 @@ namespace FreeWheeling.Domain.Concrete
                 if (item.DayOfWeek == "Monday") { RideDays.Add(DayOfWeek.Monday); }
                 if (item.DayOfWeek == "Tuesday") { RideDays.Add(DayOfWeek.Tuesday); }
                 if (item.DayOfWeek == "Wednesday") { RideDays.Add(DayOfWeek.Wednesday); }
-                if (item.DayOfWeek == "Thurday") { RideDays.Add(DayOfWeek.Tuesday); }
+                if (item.DayOfWeek == "Thursday") { RideDays.Add(DayOfWeek.Thursday); }
                 if (item.DayOfWeek == "Friday") { RideDays.Add(DayOfWeek.Friday); }
                 if (item.DayOfWeek == "Saturday") { RideDays.Add(DayOfWeek.Saturday); }
             }
@@ -209,6 +244,7 @@ namespace FreeWheeling.Domain.Concrete
                 _Group.Rides.Add(NewRide);
             }
 
+            context.Entry(_Group).State = System.Data.Entity.EntityState.Modified;
             return _Group;
 
         }
@@ -262,19 +298,6 @@ namespace FreeWheeling.Domain.Concrete
 
             return (n > 7) ? n % 7 : n;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     }
