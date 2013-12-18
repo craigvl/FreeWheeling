@@ -27,6 +27,7 @@ namespace FreeWheeling.UI.Models
 
     public class AdHocCreateModel
     {
+        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy HH:mm}")]
         public DateTime RideDate { get; set; }
         public string AM_PM { get; set; }
         public IEnumerable<SelectListItem> AM_PMList
@@ -43,10 +44,6 @@ namespace FreeWheeling.UI.Models
 
         [Required]
         public string Name { get; set; }
-        [Required]
-        public int Hour { get; set; }
-        [Required]
-        public int Minute { get; set; }
         [Required]
         public int LocationsId { get; set; }
         public List<Location> Locations { get; set; }
