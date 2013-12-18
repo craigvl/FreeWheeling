@@ -27,6 +27,7 @@ namespace FreeWheeling.UI.Models
 
     public class AdHocCreateModel
     {
+        [DataType(DataType.Date, ErrorMessage = "Please enter a valid date in the format dd/mm/yyyy")]
         [DisplayFormat(DataFormatString = "{0:dd MMM yyyy HH:mm}")]
         public DateTime RideDate { get; set; }
         public string AM_PM { get; set; }
