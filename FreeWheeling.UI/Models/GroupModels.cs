@@ -28,8 +28,13 @@ namespace FreeWheeling.UI.Models
     public class AdHocCreateModel
     {
         [DataType(DataType.Date, ErrorMessage = "Please enter a valid date in the format dd/mm/yyyy")]
-        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy HH:mm}")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime RideDate { get; set; }
+        [Required]
+        public int Hour { get; set; }
+        [Required]
+        public int Minute { get; set; }
+
         public string AM_PM { get; set; }
         public IEnumerable<SelectListItem> AM_PMList
         {
@@ -51,7 +56,6 @@ namespace FreeWheeling.UI.Models
         public string StartLocation { get; set; }
         public string AverageSpeed { get; set; }
         public string Creator { get; set; }
-
     }
     
     public class GroupCreateModel

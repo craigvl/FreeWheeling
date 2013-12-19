@@ -74,6 +74,7 @@ namespace FreeWheeling.UI.Controllers
             AdHocCreateModel _Ad_HocRide = new AdHocCreateModel();
             _Ad_HocRide.Locations = repository.GetLocations().ToList();
             _Ad_HocRide.RideDate = DateTime.Now;
+       
 
             return View(_Ad_HocRide);
 
@@ -85,9 +86,7 @@ namespace FreeWheeling.UI.Controllers
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Location _Location = repository.GetLocations().Where(l => l.id == _AdHocCreateModel.LocationsId).FirstOrDefault();
 
-
-            DateTime da = new DateTime(_AdHocCreateModel.RideDate.Year, _AdHocCreateModel.RideDate.Month, _AdHocCreateModel.RideDate.Day,_AdHocCreateModel.RideDate.Hour, _AdHocCreateModel.RideDate.Minute, _AdHocCreateModel.RideDate.Second);
-
+            DateTime da = new DateTime(_AdHocCreateModel.RideDate.Day, _AdHocCreateModel.RideDate.Month, _AdHocCreateModel.RideDate.Year,_AdHocCreateModel.Hour, _AdHocCreateModel.Minute,0);
 
             Ad_HocRide NewAdHoc = new Ad_HocRide
             {

@@ -6,7 +6,6 @@
 
 <h2>Create Ad Hoc Ride</h2>
 
-
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
@@ -32,19 +31,34 @@
     </div>
     
     <div>
-    </div>
-        
-        <div><span class="RequiredField">*&nbsp;</span>Date and Time</div>
+    </div>      
+        @*<div><span class="RequiredField">*&nbsp;</span>Date and Time</div>
         <div>
             <div class='input-group date' id='datetimepicker1'>
-                @Html.TextBoxFor(model => model.RideDate, new { @class = "form-control", data_format = "DD/MM/YYYY H:mm:ss" })
+                @Html.EditorFor(model => model.RideDate, "{0:dd/MM/yyyy}", new {id = "RideDate", @class = "form-control", data_format = "DD/MM/YYYY" })
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
-            </div>
-          
+                <span> @Html.ValidationMessageFor(m => m.RideDate, null, new { @class = "help-inline" }) </span>
+            </div>        
+        </div>*@
+        
+        <div><span class="RequiredField">*&nbsp;</span>Date</div>
+        <div>
+            @Html.EditorFor(model => model.RideDate, "{0:dd/MM/yyyy}", new { id = "RideDate", @class = "form-control", data_format = "DD/MM/YYYY" })
+            <span> @Html.ValidationMessageFor(m => m.RideDate, null, new { @class = "help-inline" }) </span>
         </div>
     
+        <div><span class="RequiredField">*&nbsp;</span>Hour</div>
+        <div>
+            @Html.TextBoxFor(model => model.Hour)
+        </div>
+    
+        <div><span class="RequiredField">*&nbsp;</span>Minute</div>
+        <div>
+            @Html.TextBoxFor(model => model.Minute)
+        </div>
+        
         <hr />
     
         <div><span class="RequiredField">*&nbsp;</span>Start Location</div>
@@ -62,26 +76,8 @@
         <div>
             <p></p>
             <input id="btnSubmit" type="submit" value="Create Ad Hoc Ride" />
-        </div>
-    
+        </div>    
 }
-
-<div class="container">
-    <div class="col-md-10">
-        <div class='well'>
-            <div class="form-group">
-                <div class='input-group date' id='datetimepicker1'>
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-        </div>
-        
-    </div>
-</div>
-
 
 @section Scripts {
 @Scripts.Render("~/bundles/jqueryval")
@@ -90,10 +86,9 @@
 
 <script type="text/javascript">
     $(function () {
-        $('#datetimepicker1').datetimepicker();
+        //$('#datetimepicker1').datetimepicker({
+        //    pickTime: false
+        //});
     });
 </script>
-
-
-
 }
