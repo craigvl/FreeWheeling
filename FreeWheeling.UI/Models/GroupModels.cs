@@ -116,4 +116,10 @@ namespace FreeWheeling.UI.Models
         public DateTime Date { get; set; }
         public int NumberofRiders { get; set; }
     }
+
+    public class MoreGroupDetailsModel
+    {
+        public string StartLocation {get;set;}
+        public string AverageSpeed {get;set;}
+    }
 }

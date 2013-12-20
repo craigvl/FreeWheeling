@@ -58,7 +58,6 @@ namespace FreeWheeling.UI.Controllers
                         repository.Save();
                     }
                     
-
                 }
                 
             }
@@ -66,6 +65,22 @@ namespace FreeWheeling.UI.Controllers
             _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
 
             return View(_GroupModel);
+        }
+
+        public PartialViewResult GetGroupDetails(int id)
+        {
+
+            Group _Group = new Group();
+
+            _Group = repository.GetGroupByID(id);
+
+            MoreGroupDetailsModel _MoreGroupDetailsModel = new MoreGroupDetailsModel();
+
+            _MoreGroupDetailsModel.AverageSpeed = _Group.AverageSpeed;
+            _MoreGroupDetailsModel.StartLocation = _Group.StartLocation;
+
+            //Name of our PartialView is Restaurant
+            return PartialView("_GroupDetailPartial", _MoreGroupDetailsModel);
         }
 
         public ActionResult CreateAdHoc()
@@ -86,7 +101,7 @@ namespace FreeWheeling.UI.Controllers
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Location _Location = repository.GetLocations().Where(l => l.id == _AdHocCreateModel.LocationsId).FirstOrDefault();
 
-            DateTime da = new DateTime(_AdHocCreateModel.RideDate.Day, _AdHocCreateModel.RideDate.Month, _AdHocCreateModel.RideDate.Year,_AdHocCreateModel.Hour, _AdHocCreateModel.Minute,0);
+            DateTime da = new DateTime(_AdHocCreateModel.RideDate.Year, _AdHocCreateModel.RideDate.Month, _AdHocCreateModel.RideDate.Day,_AdHocCreateModel.Hour, _AdHocCreateModel.Minute,0);
 
             Ad_HocRide NewAdHoc = new Ad_HocRide
             {
@@ -96,13 +111,35 @@ namespace FreeWheeling.UI.Controllers
                 RideDate = da,
                 Creator = currentUser.UserName,
                 StartLocation = _AdHocCreateModel.StartLocation,
-                RideTime = _AdHocCreateModel.RideDate.TimeOfDay.ToString()
+                RideTime = da.TimeOfDay.ToString()
             };
 
             repository.AddAdHocRide(NewAdHoc);
             repository.Save();
 
-            return View(_AdHocCreateModel);
+            Member _Member = repository.GetMemberByUserID(currentUser.Id);
+            GroupModel _GroupModel = new GroupModel();
+            _GroupModel._Groups = repository.GetGroupsByLocation(currentUser.LocationID).ToList();
+            _GroupModel._NextRideDetails = new List<NextRideDetails>();
+            _GroupModel.UserLocation = repository.GetLocationName(currentUser.LocationID);
+            _GroupModel.title = "All Groups";
+
+            foreach (Group item in _GroupModel._Groups)
+            {
+
+                item.Rides = item.Rides.Where(t => t.RideDate >= DateTime.Now).ToList();
+                Ride NextRide = repository.GetNextRideForGroup(item);
+
+                if (NextRide != null)
+                {
+                    _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
+                }
+
+            }
+
+            _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
+
+            return RedirectToAction("index", "home");   
 
         }
 

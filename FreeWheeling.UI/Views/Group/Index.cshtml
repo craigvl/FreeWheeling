@@ -14,21 +14,21 @@
             @Html.ActionLink("Back Home <---", "Index", "Home", null, new { @class = "btn btn-info" })
 
             <h3 class="text-left"><span class="label label-primary">@Model.title in @Model.UserLocation</span></h3>
-                
+                           
                 @if (@Model._Groups.Count > 0 )
                 {
                                      
                 foreach (Group item in Model._Groups)
                 {
-                   
+                    
                     bool isMember = Model.CurrentGroupMembership.Contains(item.id);
                     int RiderCount = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(g => g.NumberofRiders).FirstOrDefault();
-                   
+
                     DateTime NextRideDate = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(g => g.Date).FirstOrDefault();
-                    
+
                     if (isMember)
                     {
-            
+
                         @:<h3 class="text-left">
                    
                          if (item.Rides.Count > 0 )
@@ -73,6 +73,23 @@
                      @:</h3>
                     }
                     isMember = false;
+                    
+                    
+                    
+                    @Ajax.ActionLink("View Details", // <-- Text to display
+                     "GetGroupDetails", // <-- Action Method Name
+                 new { id = item.id },
+                 new AjaxOptions
+                 {
+                     UpdateTargetId = "GroupInfo"+item.id.ToString(), // <-- DOM element ID to update
+                     InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+                     HttpMethod = "POST",
+                     OnSuccess = "HideInfoLink"
+                 })
+                    
+                     <div class="Ginfo" id="@("GroupInfo" + @item.id)"></div>
+                    
+                  
                 }
                 }
                 else
@@ -81,6 +98,17 @@
                     @Html.ActionLink("You dont have any favourite groups! Get some!", "Index", "Group", null, new { @class = "btn btn-default" }) 
                     
                 }
+
 </p>
 </div>
 </div>
+@section scripts{
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+<script>
+    
+    function HideInfoLink(){
+        alert("hello");
+    }
+  
+</script>
+}

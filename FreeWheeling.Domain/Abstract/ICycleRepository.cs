@@ -26,6 +26,7 @@ namespace FreeWheeling.Domain.Abstract
         Member GetMemberByUserID(string id);
         string GetLocationName(int? id);
         List<int> CurrentGroupsForUser(string UserId);
+        int GetUpCommingAd_HocCount(Location _Location);
 
         //Member
         void AddMember(string UserId, Group _Group);

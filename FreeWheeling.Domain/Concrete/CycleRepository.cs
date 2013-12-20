@@ -302,6 +302,10 @@ namespace FreeWheeling.Domain.Concrete
             int n = (7 - c + d);
             return (n > 7) ? n % 7 : n;
         }
-     
+
+        public int GetUpCommingAd_HocCount(Location _Location)
+        {
+            return context.Ad_HocRide.Where(l => l.Location.id == _Location.id && l.RideDate >= DateTime.Now).Count();
+        }
     }
 }

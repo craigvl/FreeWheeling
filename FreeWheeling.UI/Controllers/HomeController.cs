@@ -29,8 +29,10 @@ namespace FreeWheeling.UI.Controllers
         {
             HomeIndexModel _HomeIndexModel = new HomeIndexModel();
             _HomeIndexModel.Locations = repository.GetLocations().ToList();
+            
 
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            _HomeIndexModel.UpCommingAd_HocCount = repository.GetUpCommingAd_HocCount(repository.GetLocations().Where(o => o.id == currentUser.LocationID).FirstOrDefault());
             Member _CurrentMember = repository.GetMemberByUserID(currentUser.Id);
 
             Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();

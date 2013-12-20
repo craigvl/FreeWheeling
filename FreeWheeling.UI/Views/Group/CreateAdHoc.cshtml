@@ -49,7 +49,7 @@
             <span> @Html.ValidationMessageFor(m => m.RideDate, null, new { @class = "help-inline" }) </span>
         </div>
     
-        <div><span class="RequiredField">*&nbsp;</span>Hour</div>
+        <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
         <div>
             @Html.TextBoxFor(model => model.Hour)
         </div>
@@ -81,8 +81,8 @@
 
 @section Scripts {
 @Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/moment.min.js"></script>
-<script src="~/Scripts/bootstrap-datetimepicker.js"></script>
+@*<script src="~/Scripts/moment.min.js"></script>
+<script src="~/Scripts/bootstrap-datetimepicker.js"></script>*@
 
 <script type="text/javascript">
     $(function () {
