@@ -16,7 +16,7 @@
 
 <h2 class="text-left"><span class="label label-primary">@Model.Ride.RideDate.DayOfWeek Ride for @Model.Group.name</span></h2>
 
-<p><span class="label label-primary">@Model.Ride.RideDate</span></p>
+<p><span class="label label-primary">@Model.Ride.RideDate.ToLongDateString()</span></p>
 
 <h4><span class="label label-success">Riders</span></h4>
 
@@ -62,7 +62,8 @@
 
     @if (@Model.Comments != null)
     {
-
+    <h4><span class="label label-success">Comments</span></h4>
+        
         foreach (Comment item in Model.Comments)
         {
 

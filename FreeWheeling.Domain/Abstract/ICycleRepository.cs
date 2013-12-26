@@ -23,6 +23,8 @@ namespace FreeWheeling.Domain.Abstract
         Ride GetPreviousRideForGroup(Group _Group);
         List<Comment> GetCommentsForRide(int Rideid);
 
+        List<Ad_HocRide> GetAdHocRides(Location _Location);
+
         Member GetMemberByUserID(string id);
         string GetLocationName(int? id);
         List<int> CurrentGroupsForUser(string UserId);

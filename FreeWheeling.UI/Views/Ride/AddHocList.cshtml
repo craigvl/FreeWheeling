@@ -1,0 +1,16 @@
+﻿@model FreeWheeling.UI.Models.AdHocRidesModel
+@using FreeWheeling.Domain.Entities
+
+@{
+    ViewBag.Title = "AddHocList";
+}
+
+<h2>AddHocList</h2>
+
+@foreach (Ad_HocRide item in @Model._Ad_HocRide)
+{
+   
+    @item.RideTime
+    
+}
+

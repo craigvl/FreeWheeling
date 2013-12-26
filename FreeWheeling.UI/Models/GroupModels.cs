@@ -19,6 +19,11 @@ namespace FreeWheeling.UI.Models
         public string title;
     }
 
+    public class AdHocRidesModel
+    {
+        public List<Ad_HocRide> _Ad_HocRide;
+    }
+
     public class DayOfWeekViewModel
     {
         public string Name { get; set; }

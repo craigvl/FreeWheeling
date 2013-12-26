@@ -1,6 +1,7 @@
 ﻿using FreeWheeling.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -8,6 +9,7 @@ namespace FreeWheeling.UI.Models
 {
     public class RideModelIndex
     {
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime RideDate { get; set; }
         public string RideTime { get; set; }
         public Group Group { get; set; }

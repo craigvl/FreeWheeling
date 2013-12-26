@@ -307,5 +307,11 @@ namespace FreeWheeling.Domain.Concrete
         {
             return context.Ad_HocRide.Where(l => l.Location.id == _Location.id && l.RideDate >= DateTime.Now).Count();
         }
+
+
+        public List<Ad_HocRide> GetAdHocRides(Location _Location)
+        {
+            return context.Ad_HocRide.Where(l => l.Location.id == _Location.id && l.RideDate >= DateTime.Now).ToList();          
+        }
     }
 }
