@@ -3,7 +3,7 @@ namespace FreeWheeling.UI.DataContexts.IdentityMigrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialCreate : DbMigration
+    public partial class Initial_Create : DbMigration
     {
         public override void Up()
         {
@@ -24,6 +24,7 @@ namespace FreeWheeling.UI.DataContexts.IdentityMigrations
                         UserName = c.String(),
                         PasswordHash = c.String(),
                         SecurityStamp = c.String(),
+                        LocationID = c.Int(),
                         Discriminator = c.String(nullable: false, maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id);

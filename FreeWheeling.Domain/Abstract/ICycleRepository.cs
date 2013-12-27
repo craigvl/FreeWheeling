@@ -18,6 +18,11 @@ namespace FreeWheeling.Domain.Abstract
 
         Group GetGroupByID(int id);
         Ride GetRideByID(int id);
+        Ad_HocRide GetAdHocRideByID(int id);
+        List<AdHocComment> GetCommentsForAdHocRide(int AdHocRideid);
+        List<AdHocRider> GetRidersForAdHocRide(int AdHocRideid);
+
+
         List<Rider> GetRidersForRide(int id);
         Ride GetNextRideForGroup(Group _Group);
         Ride GetPreviousRideForGroup(Group _Group);

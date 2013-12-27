@@ -49,73 +49,19 @@
     <Compile Include="Abstract\ICycleRepository.cs" />
     <Compile Include="Concrete\CycleRepository.cs" />
     <Compile Include="DataContexts\CycleDb.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201312010843110_Initial Create.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201312010843110_Initial Create.Designer.cs">
-      <DependentUpon>201312010843110_Initial Create.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201312030853141_AddFKeys.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201312030853141_AddFKeys.Designer.cs">
-      <DependentUpon>201312030853141_AddFKeys.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201312040104530_Added_Ride_Details.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201312040104530_Added_Ride_Details.Designer.cs">
-      <DependentUpon>201312040104530_Added_Ride_Details.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201312040124492_Added_Ride_Days.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201312040124492_Added_Ride_Days.Designer.cs">
-      <DependentUpon>201312040124492_Added_Ride_Days.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201312042212117_Added_Rider.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201312042212117_Added_Rider.Designer.cs">
-      <DependentUpon>201312042212117_Added_Rider.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201312060631503_Added_Rider_Name.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201312060631503_Added_Rider_Name.Designer.cs">
-      <DependentUpon>201312060631503_Added_Rider_Name.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201312092314097_Add_LeaveTime.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201312092314097_Add_LeaveTime.Designer.cs">
-      <DependentUpon>201312092314097_Add_LeaveTime.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201312100243515_Add_Comments.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201312100243515_Add_Comments.Designer.cs">
-      <DependentUpon>201312100243515_Add_Comments.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201312100324102_Add_Comments_Date.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201312100324102_Add_Comments_Date.Designer.cs">
-      <DependentUpon>201312100324102_Add_Comments_Date.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201312131118578_Add_Location_And_AdHocRide.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201312131118578_Add_Location_And_AdHocRide.Designer.cs">
-      <DependentUpon>201312131118578_Add_Location_And_AdHocRide.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201312131211212_Add_Member_Location.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201312131211212_Add_Member_Location.Designer.cs">
-      <DependentUpon>201312131211212_Add_Member_Location.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201312160626466_Remove_Member_Location.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201312160626466_Remove_Member_Location.Designer.cs">
-      <DependentUpon>201312160626466_Remove_Member_Location.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201312161044122_Update_To_Comments.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201312161044122_Update_To_Comments.Designer.cs">
-      <DependentUpon>201312161044122_Update_To_Comments.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201312170553098_Update_To_Group.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201312170553098_Update_To_Group.Designer.cs">
-      <DependentUpon>201312170553098_Update_To_Group.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201312170635528_Update_To_AdHoc.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201312170635528_Update_To_AdHoc.Designer.cs">
-      <DependentUpon>201312170635528_Update_To_AdHoc.cs</DependentUpon>
+    <Compile Include="DataContexts\CycleMigrations\201312270039557_Initial_Create.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201312270039557_Initial_Create.Designer.cs">
+      <DependentUpon>201312270039557_Initial_Create.cs</DependentUpon>
     </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
+    <Compile Include="Entities\AdHocComment.cs" />
     <Compile Include="Entities\Comment.cs" />
     <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\CycleDays.cs" />
     <Compile Include="Entities\Group.cs" />
     <Compile Include="Entities\Member.cs" />
     <Compile Include="Entities\Ad_HocRide.cs" />
+    <Compile Include="Entities\AdHocRider.cs" />
     <Compile Include="Entities\Rider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\Ride.cs" />
@@ -126,50 +72,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201312010843110_Initial Create.resx">
-      <DependentUpon>201312010843110_Initial Create.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201312030853141_AddFKeys.resx">
-      <DependentUpon>201312030853141_AddFKeys.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201312040104530_Added_Ride_Details.resx">
-      <DependentUpon>201312040104530_Added_Ride_Details.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201312040124492_Added_Ride_Days.resx">
-      <DependentUpon>201312040124492_Added_Ride_Days.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201312042212117_Added_Rider.resx">
-      <DependentUpon>201312042212117_Added_Rider.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201312060631503_Added_Rider_Name.resx">
-      <DependentUpon>201312060631503_Added_Rider_Name.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201312092314097_Add_LeaveTime.resx">
-      <DependentUpon>201312092314097_Add_LeaveTime.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201312100243515_Add_Comments.resx">
-      <DependentUpon>201312100243515_Add_Comments.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201312100324102_Add_Comments_Date.resx">
-      <DependentUpon>201312100324102_Add_Comments_Date.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201312131118578_Add_Location_And_AdHocRide.resx">
-      <DependentUpon>201312131118578_Add_Location_And_AdHocRide.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201312131211212_Add_Member_Location.resx">
-      <DependentUpon>201312131211212_Add_Member_Location.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201312160626466_Remove_Member_Location.resx">
-      <DependentUpon>201312160626466_Remove_Member_Location.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201312161044122_Update_To_Comments.resx">
-      <DependentUpon>201312161044122_Update_To_Comments.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201312170553098_Update_To_Group.resx">
-      <DependentUpon>201312170553098_Update_To_Group.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201312170635528_Update_To_AdHoc.resx">
-      <DependentUpon>201312170635528_Update_To_AdHoc.cs</DependentUpon>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201312270039557_Initial_Create.resx">
+      <DependentUpon>201312270039557_Initial_Create.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

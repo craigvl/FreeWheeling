@@ -7,13 +7,13 @@ namespace FreeWheeling.Domain.DataContexts.CycleMigrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.0.1-21010")]
-    public sealed partial class Added_Rider : IMigrationMetadata
+    public sealed partial class Initial_Create : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Added_Rider));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial_Create));
         
         string IMigrationMetadata.Id
         {
-            get { return "201312042212117_Added_Rider"; }
+            get { return "201312270039557_Initial_Create"; }
         }
         
         string IMigrationMetadata.Source

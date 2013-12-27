@@ -94,8 +94,16 @@
                 }
                 else
                 {
-                    
-                    @Html.ActionLink("You dont have any favourite groups! Get some!", "Index", "Group", null, new { @class = "btn btn-default" }) 
+                    if (@Model.title == "Favourite Groups")
+                    {
+                      @Html.ActionLink("You dont have any favourite groups! Get some!", "Index", "Group", null, new { @class = "btn btn-default" })                   
+                    }
+                    else
+                    {
+                        
+                      @Html.ActionLink("No Groups yet, please create some!", "Create", "Group", null, new { @class = "btn btn-default" }) 
+                        
+                    }
                     
                 }
 

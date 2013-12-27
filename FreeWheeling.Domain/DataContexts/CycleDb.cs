@@ -23,6 +23,8 @@ namespace FreeWheeling.Domain.DataContexts
         public DbSet<Comment> Comment { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Ad_HocRide> Ad_HocRide { get; set; }
+        public DbSet<AdHocRider> AdHocRider { get; set; }
+        public DbSet<AdHocComment> AdHocComment { get; set; }
   
     }
 }

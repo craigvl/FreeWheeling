@@ -14,8 +14,8 @@ namespace FreeWheeling.Domain.Entities
         public DateTime RideDate { get; set; }
         public string RideTime { get; set; }
         public Location Location { get; set; }
-        public List<Rider> Riders { get; set; }
-        public List<Comment> Comments { get; set; }
+        public List<AdHocRider> Riders { get; set; }
+        public List<AdHocComment> Comments { get; set; }
         public string StartLocation { get; set; }
         public string AverageSpeed { get; set; }
     }
