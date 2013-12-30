@@ -327,7 +327,7 @@ namespace FreeWheeling.Domain.Concrete
 
         public List<AdHocComment> GetCommentsForAdHocRide(int AdHocRideid)
         {
-            throw new NotImplementedException();
+            return context.AdHocComment.Where(r => r.AdHocRide.id == AdHocRideid).ToList();
         }
 
         public List<AdHocRider> GetRidersForAdHocRide(int AdHocRideid)
@@ -335,5 +335,48 @@ namespace FreeWheeling.Domain.Concrete
             return context.AdHocRider.Where(r => r.AdHocRide.id == AdHocRideid).ToList();
         }
 
+
+
+        public void AddAdHocRider(AdHocRider _Rider, Ad_HocRide _Ride)
+        {
+            AdHocRider CurrentRiders = context.AdHocRider.Where(o => o.userId == _Rider.userId && o.AdHocRide.id == _Ride.id).FirstOrDefault();
+
+            //Rider CurrentRiders = context.Rides.Where(r => r.Group.id == _Group.id && r.Riders.Any(t => t.userId == UserId))).FirstOrDefault();
+
+            if (CurrentRiders != null)
+            {
+
+                if (CurrentRiders.id != 0)
+                {
+                    CurrentRiders.PercentKeen = _Rider.PercentKeen;
+                    CurrentRiders.LeaveTime = _Rider.LeaveTime;
+                    CurrentRiders.Name = _Rider.Name;
+                    context.Entry(CurrentRiders).State = System.Data.Entity.EntityState.Modified;
+                }
+                else
+                {
+
+                    AdHocRider NewRider = new AdHocRider { userId = _Rider.userId, PercentKeen = _Rider.PercentKeen, AdHocRide = _Ride, Name = _Rider.Name, LeaveTime = _Rider.LeaveTime };
+                    context.AdHocRider.Add(NewRider);
+                    context.Entry(NewRider).State = System.Data.Entity.EntityState.Added;
+
+                }
+
+            }
+            else
+            {
+
+                AdHocRider NewRider = new AdHocRider { userId = _Rider.userId, PercentKeen = _Rider.PercentKeen, AdHocRide = _Ride, Name = _Rider.Name, LeaveTime = _Rider.LeaveTime };
+                context.AdHocRider.Add(NewRider);
+                context.Entry(NewRider).State = System.Data.Entity.EntityState.Added;
+
+            }
+
+        }
+
+        public void AddAdHocRideComment(string Comment, int RideId, string UserName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -78,10 +78,11 @@ namespace FreeWheeling.UI.Controllers
         public ActionResult ViewAdHocRide(int adhocrideid)
         {
             Ad_HocRide Ah = repository.GetAdHocRideByID(adhocrideid);
+            AdHocViewModel adHocViewModel = new AdHocViewModel { Ride = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime,  };
+            adHocViewModel.Riders = repository.GetRidersForAdHocRide(adhocrideid);
+            adHocViewModel.Comments = repository.GetCommentsForAdHocRide(adhocrideid);
 
-
-
-            return View();
+            return View(adHocViewModel);
         }
 
         public ActionResult NextRide(int RideId, int Groupid, int PreviousRideID)
@@ -195,13 +196,37 @@ namespace FreeWheeling.UI.Controllers
             repository.Save();
 
             RideModelIndex RideModel = new RideModelIndex();
+           
             RideModel.Ride = _Ride;
+            RideModel.RideDate = RideModel.Ride.RideDate;
             RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
             RideModel.Group = _Group;
             RideModel.Comments = repository.GetCommentsForRide(RideModel.Ride.id);
             RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
 
             return View("Index", RideModel);
+        }
+
+        public ActionResult AttendAdHocRider(int adhocrideid, string Commitment)
+        {
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            Ad_HocRide _Ride = new Ad_HocRide();
+            Group _Group = new Group();
+
+
+            _Ride = repository.GetAdHocRideByID(adhocrideid);
+
+            AdHocRider _Rider = new AdHocRider { userId = currentUser.Id, Name = currentUser.UserName, AdHocRide = _Ride, LeaveTime = DateTime.Now.ToShortTimeString(), PercentKeen = Commitment };
+
+            repository.AddAdHocRider(_Rider, _Ride);
+            repository.Save();
+
+            Ad_HocRide Ah = repository.GetAdHocRideByID(adhocrideid);
+            AdHocViewModel adHocViewModel = new AdHocViewModel { Ride = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime, };
+            adHocViewModel.Riders = repository.GetRidersForAdHocRide(adhocrideid);
+            adHocViewModel.Comments = repository.GetCommentsForAdHocRide(adhocrideid);
+
+            return View("ViewAdHocRide", adHocViewModel);
         }
 
         public ActionResult AttendNext(int RideId, string Commitment, int Groupid, int PreviousRideID)

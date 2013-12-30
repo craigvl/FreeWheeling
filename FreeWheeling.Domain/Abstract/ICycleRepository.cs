@@ -45,12 +45,15 @@ namespace FreeWheeling.Domain.Abstract
         void PopulateRideDatesFromDate(Group _Group, DateTime _DateTime);
 
         void AddRider(Rider _Rider, Group _Group);
+        void AddAdHocRider(AdHocRider _Rider, Ad_HocRide _Ride);
+
 
         void AddGroup(Group _Group);
 
         void AddAdHocRide(Ad_HocRide _AdHocRide);
 
         void AddRideComment(string Comment, int RideId, string UserName);
+        void AddAdHocRideComment(string Comment, int RideId, string UserName);
 
         void Save();
       

@@ -31,10 +31,14 @@ namespace FreeWheeling.UI.Models
         public Ride PreviousRide { get; set; }
     }
 
-    public class RideModel
+    public class AdHocViewModel
     {
-
-
-
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime RideDate { get; set; }
+        public string RideTime { get; set; }
+        public Ad_HocRide Ride { get; set; }
+        public List<AdHocRider> Riders { get; set; }
+        public List<Route> Routes { get; set; }
+        public List<AdHocComment> Comments { get; set; }
     }
 }
