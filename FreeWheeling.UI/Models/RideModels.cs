@@ -41,4 +41,11 @@ namespace FreeWheeling.UI.Models
         public List<Route> Routes { get; set; }
         public List<AdHocComment> Comments { get; set; }
     }
+
+    public class AdHocRideCommentModel
+    {
+        public int adhocrideid { get; set; }
+        public Ad_HocRide Ride { get; set; }
+        public string Comment { get; set; }
+    }
 }

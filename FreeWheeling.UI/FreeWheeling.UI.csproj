@@ -310,6 +310,7 @@
     <Content Include="Views\Shared\_GroupDetailPartial.cshtml" />
     <Content Include="Views\Ride\AddHocList.cshtml" />
     <Content Include="Views\Ride\ViewAdHocRide.cshtml" />
+    <Content Include="Views\Ride\AddAdHocComment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

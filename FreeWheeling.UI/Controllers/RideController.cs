@@ -119,6 +119,34 @@ namespace FreeWheeling.UI.Controllers
 
         }
 
+        public ActionResult AddAdHocComment(int adhocrideid)
+        {
+
+            AdHocRideCommentModel _RideCommentModel = new AdHocRideCommentModel();
+            _RideCommentModel.adhocrideid = adhocrideid;
+
+            _RideCommentModel.Ride = repository.GetAdHocRideByID(adhocrideid);
+
+            return View(_RideCommentModel);
+
+        }
+
+        [HttpPost]
+        public ActionResult AddAdHocComment(AdHocRideCommentModel RideComment)
+        {
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            repository.AddAdHocRideComment(RideComment.Comment, RideComment.adhocrideid, currentUser.UserName);
+            repository.Save();
+
+            Ad_HocRide Ah = repository.GetAdHocRideByID(RideComment.adhocrideid);
+            AdHocViewModel adHocViewModel = new AdHocViewModel { Ride = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime, };
+            adHocViewModel.Riders = repository.GetRidersForAdHocRide(RideComment.adhocrideid);
+            adHocViewModel.Comments = repository.GetCommentsForAdHocRide(RideComment.adhocrideid);
+
+            return View("ViewAdHocRide", adHocViewModel);
+
+        }
+
         public ActionResult AddComment(int groupid, int RideId)
         {
             RideCommentModel _RideCommentModel = new RideCommentModel();

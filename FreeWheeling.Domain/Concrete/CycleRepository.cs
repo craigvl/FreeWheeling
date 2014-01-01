@@ -376,7 +376,16 @@ namespace FreeWheeling.Domain.Concrete
 
         public void AddAdHocRideComment(string Comment, int RideId, string UserName)
         {
-            throw new NotImplementedException();
+            AdHocComment _comment = new AdHocComment
+            {
+                CommentText = Comment,
+                AdHocRide = context.Ad_HocRide.Where(t => t.id == RideId).FirstOrDefault(),
+                userName = UserName,
+                Date = DateTime.Now
+            };
+
+            context.AdHocComment.Add(_comment);
+            context.Entry(_comment).State = System.Data.Entity.EntityState.Added;
         }
     }
 }
