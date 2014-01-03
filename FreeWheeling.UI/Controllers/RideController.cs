@@ -219,7 +219,7 @@ namespace FreeWheeling.UI.Controllers
             _Ride = repository.GetRideByID(RideId);
             _Group = repository.GetGroupByID(Groupid);
 
-            Rider _Rider = new Rider { userId = currentUser.Id, Name = currentUser.UserName, Ride = _Ride, LeaveTime = DateTime.Now.ToShortTimeString(), PercentKeen = Commitment };
+            Rider _Rider = new Rider { userId = currentUser.Id, Name = currentUser.UserName, Ride = _Ride, LeaveTime = DateTime.Now.ToLocalTime().ToShortTimeString(), PercentKeen = Commitment };
 
             repository.AddRider(_Rider, _Group);
             repository.Save();
