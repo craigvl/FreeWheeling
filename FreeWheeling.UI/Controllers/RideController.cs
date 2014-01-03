@@ -170,6 +170,7 @@ namespace FreeWheeling.UI.Controllers
             RideModelIndex RideModel = new RideModelIndex();
             RideModel.Ride = repository.GetRideByID(RideComment.RideId);
             RideModel.Group = repository.GetGroupByID(RideComment.GroupId);
+            RideModel.NextRide = RideModel.Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
             RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
             RideModel.Comments = repository.GetCommentsForRide(RideModel.Ride.id);
 
