@@ -42,7 +42,8 @@
         {
         case "OnWay":
             <text>
-                <p><span class="label label-success">@item.Name is on the way! Left at @item.LeaveTime</span></p>
+                <p><span class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime">@item.LeaveTime</abbr></span></p>
+                
             </text>
             break;  // Always break each case
         case "CantMake":
@@ -113,3 +114,14 @@
     @Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "OnWay", Groupid = @Model.Group.id }, new { @class = "btn btn-success" })
     
     <p></p>
+
+@section scripts{
+    @Scripts.Render("~/Scripts/jquery.timeago.js")
+    <script>
+
+        jQuery(document).ready(function () {
+            jQuery("abbr.timeago").timeago();
+        });
+
+    </script>
+}
