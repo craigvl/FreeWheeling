@@ -27,6 +27,7 @@ namespace FreeWheeling.UI.Controllers
         public ActionResult Index(int groupid, int rideid = -1)
         {
             //var TimeZone = TimeZoneInfo.Local.Id;
+            
             RideModelIndex RideModel = new RideModelIndex();
 
             Group _Group = repository.GetGroupByID(groupid);
@@ -54,6 +55,9 @@ namespace FreeWheeling.UI.Controllers
                 RideModel.Comments = repository.GetCommentsForRide(RideModel.Ride.id);
 
                 TimeZoneInfo EST = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+
+                //string format = @"dd/MM/yyyy H:m:s zzz";
+                //TimeSpan serverOffset = new TimeSpan(10, 0, 0);
 
                 foreach (Rider r in RideModel.Riders)
                 {

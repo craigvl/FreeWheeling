@@ -42,7 +42,7 @@
         {
         case "OnWay":
             <text>
-                <p><span class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString()">@item.LeaveTime.ToString()</abbr></span></p>
+                <p><span class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
                 
             </text>
             break;  // Always break each case
