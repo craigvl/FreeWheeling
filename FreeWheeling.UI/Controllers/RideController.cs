@@ -51,21 +51,9 @@ namespace FreeWheeling.UI.Controllers
             if (RideModel.Ride != null)
             {
                 RideModel.Group = _Group;
-                RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
+                TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+                RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id,TZone);
                 RideModel.Comments = repository.GetCommentsForRide(RideModel.Ride.id);
-
-                TimeZoneInfo EST = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
-
-                //string format = @"dd/MM/yyyy H:m:s zzz";
-                //TimeSpan serverOffset = new TimeSpan(10, 0, 0);
-
-                foreach (Rider r in RideModel.Riders)
-                {
-
-                    r.LeaveTime = TimeZoneInfo.ConvertTimeFromUtc(r.LeaveTime, EST);
-
-                }
-
             }
             else
             {         
@@ -93,7 +81,10 @@ namespace FreeWheeling.UI.Controllers
         {
             Ad_HocRide Ah = repository.GetAdHocRideByID(adhocrideid);
             AdHocViewModel adHocViewModel = new AdHocViewModel { Ride = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime,  };
-            adHocViewModel.Riders = repository.GetRidersForAdHocRide(adhocrideid);
+
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            adHocViewModel.Riders = repository.GetRidersForAdHocRide(adhocrideid,TZone);
+           
             adHocViewModel.Comments = repository.GetCommentsForAdHocRide(adhocrideid);
 
             return View(adHocViewModel);
@@ -114,7 +105,9 @@ namespace FreeWheeling.UI.Controllers
             {
 
                 RideModel.Group = _Group;
-                RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
+
+                TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+                RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id,TZone);
                 RideModel.Comments = repository.GetCommentsForRide(RideModel.Ride.id);
 
             }
@@ -154,7 +147,10 @@ namespace FreeWheeling.UI.Controllers
 
             Ad_HocRide Ah = repository.GetAdHocRideByID(RideComment.adhocrideid);
             AdHocViewModel adHocViewModel = new AdHocViewModel { Ride = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime, };
-            adHocViewModel.Riders = repository.GetRidersForAdHocRide(RideComment.adhocrideid);
+
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            adHocViewModel.Riders = repository.GetRidersForAdHocRide(RideComment.adhocrideid,TZone);
+        
             adHocViewModel.Comments = repository.GetCommentsForAdHocRide(RideComment.adhocrideid);
 
             return View("ViewAdHocRide", adHocViewModel);
@@ -185,7 +181,10 @@ namespace FreeWheeling.UI.Controllers
             RideModel.Ride = repository.GetRideByID(RideComment.RideId);
             RideModel.Group = repository.GetGroupByID(RideComment.GroupId);
             RideModel.NextRide = RideModel.Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
-            RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
+
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id,TZone);
+
             RideModel.Comments = repository.GetCommentsForRide(RideModel.Ride.id);
 
             return View("Index",RideModel);
@@ -215,7 +214,10 @@ namespace FreeWheeling.UI.Controllers
             RideModelIndex RideModel = new RideModelIndex();
             RideModel.Ride = repository.GetRideByID(RideComment.RideId);
             RideModel.Group = repository.GetGroupByID(RideComment.GroupId);
-            RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
+
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id,TZone);
+
             RideModel.Comments = repository.GetCommentsForRide(RideModel.Ride.id);
             RideModel.PreviousRide = repository.GetPreviousRideForGroup(RideModel.Group);
 
@@ -245,17 +247,10 @@ namespace FreeWheeling.UI.Controllers
             RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
             RideModel.Group = _Group;
             RideModel.Comments = repository.GetCommentsForRide(RideModel.Ride.id);
-            RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
 
-            TimeZoneInfo EST = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
 
-            foreach (Rider r in RideModel.Riders)
-            {
-
-                r.LeaveTime = TimeZoneInfo.ConvertTimeFromUtc(r.LeaveTime, EST);
-
-            }
-
+            RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id, TZone);
 
             return View("Index", RideModel);
         }
@@ -276,7 +271,10 @@ namespace FreeWheeling.UI.Controllers
 
             Ad_HocRide Ah = repository.GetAdHocRideByID(adhocrideid);
             AdHocViewModel adHocViewModel = new AdHocViewModel { Ride = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime, };
-            adHocViewModel.Riders = repository.GetRidersForAdHocRide(adhocrideid);
+
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            adHocViewModel.Riders = repository.GetRidersForAdHocRide(adhocrideid, TZone);
+
             adHocViewModel.Comments = repository.GetCommentsForAdHocRide(adhocrideid);
 
             return View("ViewAdHocRide", adHocViewModel);
@@ -299,7 +297,11 @@ namespace FreeWheeling.UI.Controllers
             RideModelIndex RideModel = new RideModelIndex();
             RideModel.Ride = _Ride;
             RideModel.Group = _Group;
-            RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
+
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+
+            RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id,TZone);
+
             RideModel.Comments = repository.GetCommentsForRide(RideModel.Ride.id);
             RideModel.PreviousRide = repository.GetRideByID(PreviousRideID);
             

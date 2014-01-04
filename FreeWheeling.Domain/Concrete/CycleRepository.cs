@@ -111,9 +111,17 @@ namespace FreeWheeling.Domain.Concrete
             return context.Rides.Where(r => r.id == id).FirstOrDefault();
         }
 
-        public List<Rider> GetRidersForRide(int id)
+        public List<Rider> GetRidersForRide(int id, TimeZoneInfo TimeZone)
         {
-            return context.Riders.Where(r => r.Ride.id == id).ToList();
+
+            List<Rider> Riders = context.Riders.Where(r => r.Ride.id == id).ToList();
+
+            foreach (Rider R in Riders)
+	        {
+                R.LeaveTime = TimeZoneInfo.ConvertTimeFromUtc(R.LeaveTime, TimeZone);
+	        }
+
+            return Riders;
         }
 
 
@@ -330,11 +338,20 @@ namespace FreeWheeling.Domain.Concrete
             return context.AdHocComment.Where(r => r.AdHocRide.id == AdHocRideid).ToList();
         }
 
-        public List<AdHocRider> GetRidersForAdHocRide(int AdHocRideid)
+        public List<AdHocRider> GetRidersForAdHocRide(int AdHocRideid, TimeZoneInfo TimeZone)
         {
-            return context.AdHocRider.Where(r => r.AdHocRide.id == AdHocRideid).ToList();
-        }
 
+            List<AdHocRider> AList = context.AdHocRider.Where(r => r.AdHocRide.id == AdHocRideid).ToList();
+
+            foreach (AdHocRider AdHoc in AList)
+	        {
+                AdHoc.LeaveTime = TimeZoneInfo.ConvertTimeFromUtc(AdHoc.LeaveTime, TimeZone);
+	        }
+
+
+        return AList;
+
+        }
 
 
         public void AddAdHocRider(AdHocRider _Rider, Ad_HocRide _Ride)

@@ -20,10 +20,10 @@ namespace FreeWheeling.Domain.Abstract
         Ride GetRideByID(int id);
         Ad_HocRide GetAdHocRideByID(int id);
         List<AdHocComment> GetCommentsForAdHocRide(int AdHocRideid);
-        List<AdHocRider> GetRidersForAdHocRide(int AdHocRideid);
+        List<AdHocRider> GetRidersForAdHocRide(int AdHocRideid, TimeZoneInfo TimeZone);
 
 
-        List<Rider> GetRidersForRide(int id);
+        List<Rider> GetRidersForRide(int id, TimeZoneInfo TimeZone);
         Ride GetNextRideForGroup(Group _Group);
         Ride GetPreviousRideForGroup(Group _Group);
         List<Comment> GetCommentsForRide(int Rideid);
