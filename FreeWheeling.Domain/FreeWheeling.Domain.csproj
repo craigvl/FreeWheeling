@@ -53,6 +53,10 @@
     <Compile Include="DataContexts\CycleMigrations\201312270039557_Initial_Create.Designer.cs">
       <DependentUpon>201312270039557_Initial_Create.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201401042048412_Update_To_LocalTime.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201401042048412_Update_To_LocalTime.Designer.cs">
+      <DependentUpon>201401042048412_Update_To_LocalTime.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\AdHocComment.cs" />
     <Compile Include="Entities\Comment.cs" />
@@ -74,6 +78,9 @@
   <ItemGroup>
     <EmbeddedResource Include="DataContexts\CycleMigrations\201312270039557_Initial_Create.resx">
       <DependentUpon>201312270039557_Initial_Create.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201401042048412_Update_To_LocalTime.resx">
+      <DependentUpon>201401042048412_Update_To_LocalTime.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

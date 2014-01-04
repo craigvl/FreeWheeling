@@ -12,7 +12,7 @@ namespace FreeWheeling.Domain.Entities
         public string userId { get; set; }
         public Ride Ride { get; set; }
         public string PercentKeen { get; set; }
-        public string LeaveTime { get; set; }
+        public DateTime LeaveTime { get; set; }
         public string Name { get; set; }
     }
 }

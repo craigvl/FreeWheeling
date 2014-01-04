@@ -26,7 +26,7 @@ namespace FreeWheeling.UI.Controllers
 
         public ActionResult Index(int groupid, int rideid = -1)
         {
-
+            //var TimeZone = TimeZoneInfo.Local.Id;
             RideModelIndex RideModel = new RideModelIndex();
 
             Group _Group = repository.GetGroupByID(groupid);
@@ -52,6 +52,16 @@ namespace FreeWheeling.UI.Controllers
                 RideModel.Group = _Group;
                 RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
                 RideModel.Comments = repository.GetCommentsForRide(RideModel.Ride.id);
+
+                TimeZoneInfo EST = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+
+                foreach (Rider r in RideModel.Riders)
+                {
+
+                    r.LeaveTime = TimeZoneInfo.ConvertTimeFromUtc(r.LeaveTime, EST);
+
+                }
+
             }
             else
             {         
@@ -219,8 +229,8 @@ namespace FreeWheeling.UI.Controllers
             _Ride = repository.GetRideByID(RideId);
             _Group = repository.GetGroupByID(Groupid);
 
-            Rider _Rider = new Rider { userId = currentUser.Id, Name = currentUser.UserName, Ride = _Ride, LeaveTime = DateTime.Now.ToUniversalTime().ToLocalTime().ToString(), PercentKeen = Commitment };
-
+            Rider _Rider = new Rider { userId = currentUser.Id, Name = currentUser.UserName, Ride = _Ride, LeaveTime = DateTime.UtcNow, PercentKeen = Commitment };
+                
             repository.AddRider(_Rider, _Group);
             repository.Save();
 
@@ -232,6 +242,16 @@ namespace FreeWheeling.UI.Controllers
             RideModel.Group = _Group;
             RideModel.Comments = repository.GetCommentsForRide(RideModel.Ride.id);
             RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id);
+
+            TimeZoneInfo EST = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+
+            foreach (Rider r in RideModel.Riders)
+            {
+
+                r.LeaveTime = TimeZoneInfo.ConvertTimeFromUtc(r.LeaveTime, EST);
+
+            }
+
 
             return View("Index", RideModel);
         }
@@ -245,7 +265,7 @@ namespace FreeWheeling.UI.Controllers
 
             _Ride = repository.GetAdHocRideByID(adhocrideid);
 
-            AdHocRider _Rider = new AdHocRider { userId = currentUser.Id, Name = currentUser.UserName, AdHocRide = _Ride, LeaveTime = DateTime.Now.ToShortTimeString(), PercentKeen = Commitment };
+            AdHocRider _Rider = new AdHocRider { userId = currentUser.Id, Name = currentUser.UserName, AdHocRide = _Ride, LeaveTime = DateTime.UtcNow, PercentKeen = Commitment };
 
             repository.AddAdHocRider(_Rider, _Ride);
             repository.Save();
@@ -267,7 +287,7 @@ namespace FreeWheeling.UI.Controllers
             _Ride = repository.GetRideByID(RideId);
             _Group = repository.GetGroupByID(Groupid);
 
-            Rider _Rider = new Rider { userId = currentUser.Id, Name = currentUser.UserName, Ride = _Ride, LeaveTime = DateTime.Now.ToShortTimeString(), PercentKeen = Commitment };
+            Rider _Rider = new Rider { userId = currentUser.Id, Name = currentUser.UserName, Ride = _Ride, LeaveTime = DateTime.UtcNow, PercentKeen = Commitment };
 
             repository.AddRider(_Rider, _Group);
             repository.Save();
