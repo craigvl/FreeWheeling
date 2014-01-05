@@ -14,11 +14,11 @@
 
 
 
-
+<hr />
 
 <h4><span class="label label-success">Riders</span></h4>
 
-<p></p>
+
 
 @{
 
@@ -58,7 +58,7 @@
 <br />
 
 <div>
-
+<hr />
     @if (@Model.Comments != null)
     {
         <h4><span class="label label-success">Comments</span></h4>
@@ -71,18 +71,14 @@
             @item.CommentText
             @:<p></p>
 
-
-
-
         }
-
-
     }
 
 </div>
 
 @Html.ActionLink("Add Comment", "AddAdHocComment", "Ride", new { adhocrideid = @Model.Ride.id }, new { @class = "btn btn-success" })
 
+<hr />
 
 <h4><span class="label label-success">Actions</span></h4>
 
