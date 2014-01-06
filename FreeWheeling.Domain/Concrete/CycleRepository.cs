@@ -250,16 +250,16 @@ namespace FreeWheeling.Domain.Concrete
             }
 
             foreach (DayOfWeek day in RideDays)
-            {
-                
-                DateTime nextdate = GetNextDateForDay(DateTime.Now, day );
+            {              
+                var dateNow = DateTime.UtcNow;
+                DateTime nextdate = GetNextDateForDay(dateNow , day);
+
                 Ride NewRide = new Ride { Group = _Group, RideTime = _Group.RideTime, RideDate = nextdate };
                 _Group.Rides.Add(NewRide);
             }
 
             context.Entry(_Group).State = System.Data.Entity.EntityState.Modified;
             return _Group;
-
         }
 
 
