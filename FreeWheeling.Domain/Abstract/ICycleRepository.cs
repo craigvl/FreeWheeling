@@ -24,16 +24,16 @@ namespace FreeWheeling.Domain.Abstract
 
 
         List<Rider> GetRidersForRide(int id, TimeZoneInfo TimeZone);
-        Ride GetNextRideForGroup(Group _Group);
+        Ride GetNextRideForGroup(Group _Group, TimeZoneInfo TimeZone);
         Ride GetPreviousRideForGroup(Group _Group);
         List<Comment> GetCommentsForRide(int Rideid);
 
-        List<Ad_HocRide> GetAdHocRides(Location _Location);
+        List<Ad_HocRide> GetAdHocRides(Location _Location, TimeZoneInfo TimeZone);
 
         Member GetMemberByUserID(string id);
         string GetLocationName(int? id);
         List<int> CurrentGroupsForUser(string UserId);
-        int GetUpCommingAd_HocCount(Location _Location);
+        int GetUpCommingAd_HocCount(Location _Location, TimeZoneInfo TimeZone);
 
         //Member
         void AddMember(string UserId, Group _Group);
