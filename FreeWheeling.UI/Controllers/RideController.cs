@@ -32,9 +32,12 @@ namespace FreeWheeling.UI.Controllers
 
             Group _Group = repository.GetGroupByID(groupid);
 
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
+
             if (rideid == -1)
             {
-                RideModel.Ride = _Group.Rides.Where(u => u.RideDate >= DateTime.Now).OrderBy(i => i.RideDate).FirstOrDefault();
+                RideModel.Ride = _Group.Rides.Where(u => u.RideDate.AddHours(2) >= LocalNow).OrderBy(i => i.RideDate).FirstOrDefault();
                 RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
                 RideModel.Comments = repository.GetCommentsForRide(RideModel.Ride.id);
                 RideModel.RideDate = RideModel.Ride.RideDate;
@@ -51,7 +54,6 @@ namespace FreeWheeling.UI.Controllers
             if (RideModel.Ride != null)
             {
                 RideModel.Group = _Group;
-                TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
                 RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id,TZone);
                 RideModel.Comments = repository.GetCommentsForRide(RideModel.Ride.id);
             }
@@ -72,7 +74,8 @@ namespace FreeWheeling.UI.Controllers
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Member _Member = repository.GetMemberByUserID(currentUser.Id);
             AdHocRidesModel _AdHocRidesModel = new AdHocRidesModel();
-            _AdHocRidesModel._Ad_HocRide = repository.GetAdHocRides(repository.GetLocations().Where(o => o.id == currentUser.LocationID).FirstOrDefault());
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            _AdHocRidesModel._Ad_HocRide = repository.GetAdHocRides(repository.GetLocations().Where(o => o.id == currentUser.LocationID).FirstOrDefault(),TZone);
 
             return View(_AdHocRidesModel);
         }

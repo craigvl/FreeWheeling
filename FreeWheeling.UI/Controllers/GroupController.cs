@@ -40,11 +40,15 @@ namespace FreeWheeling.UI.Controllers
             _GroupModel.UserLocation = repository.GetLocationName(currentUser.LocationID);
             _GroupModel.title = "All Groups";
 
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
+
+
             foreach (Group item in _GroupModel._Groups)
             {
 
-                item.Rides = item.Rides.Where(t => t.RideDate >= DateTime.Now).ToList();
-                Ride NextRide = repository.GetNextRideForGroup(item);
+                item.Rides = item.Rides.Where(t => t.RideDate >= LocalNow).ToList();
+                Ride NextRide = repository.GetNextRideForGroup(item,TZone);
                 
                 if (NextRide != null)
                 {
@@ -101,6 +105,8 @@ namespace FreeWheeling.UI.Controllers
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Location _Location = repository.GetLocations().Where(l => l.id == _AdHocCreateModel.LocationsId).FirstOrDefault();
 
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+
             DateTime da = new DateTime(_AdHocCreateModel.RideDate.Year, _AdHocCreateModel.RideDate.Month, _AdHocCreateModel.RideDate.Day,_AdHocCreateModel.Hour, _AdHocCreateModel.Minute,0);
 
             Ad_HocRide NewAdHoc = new Ad_HocRide
@@ -108,10 +114,12 @@ namespace FreeWheeling.UI.Controllers
                 Name = _AdHocCreateModel.Name,
                 AverageSpeed = _AdHocCreateModel.AverageSpeed,
                 Location = _Location,
-                RideDate = da,
+                RideDate = da.Date.Add(new TimeSpan(_AdHocCreateModel.Hour,_AdHocCreateModel.Minute,0)),
                 Creator = currentUser.UserName,
                 StartLocation = _AdHocCreateModel.StartLocation,
-                RideTime = da.TimeOfDay.ToString()
+                RideTime = da.TimeOfDay.ToString(),
+                RideHour = da.Hour,
+                RideMinute = da.Minute
             };
 
             repository.AddAdHocRide(NewAdHoc);
@@ -128,7 +136,7 @@ namespace FreeWheeling.UI.Controllers
             {
 
                 item.Rides = item.Rides.Where(t => t.RideDate >= DateTime.Now).ToList();
-                Ride NextRide = repository.GetNextRideForGroup(item);
+                Ride NextRide = repository.GetNextRideForGroup(item,TZone);
 
                 if (NextRide != null)
                 {
@@ -161,6 +169,7 @@ namespace FreeWheeling.UI.Controllers
 
             List<CycleDays> _CycleDays = new List<CycleDays>();
             Location _Location = repository.GetLocations().Where(l => l.id == _GroupCreateModel.LocationsId).FirstOrDefault();
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
 
             foreach (DayOfWeekViewModel item in _GroupCreateModel.DaysOfWeek)
             {
@@ -180,7 +189,9 @@ namespace FreeWheeling.UI.Controllers
                 name = _GroupCreateModel.Name,
                 RideTime = _GroupCreateModel.Hour.ToString() +":"+ _GroupCreateModel.Minute.ToString() + " " + _GroupCreateModel.AM_PM,
                 RideDays = _CycleDays, Location = _Location, Rides = new List<Ride>(), AverageSpeed = _GroupCreateModel.AverageSpeed, 
-                StartLocation = _GroupCreateModel.StartLocation
+                StartLocation = _GroupCreateModel.StartLocation,
+                RideHour = _GroupCreateModel.Hour,
+                RideMinute = _GroupCreateModel.Minute
             };
 
             repository.AddGroup(NewGroup);
@@ -201,7 +212,7 @@ namespace FreeWheeling.UI.Controllers
             {
 
                 item.Rides = item.Rides.Where(t => t.RideDate >= DateTime.Now).ToList();
-                Ride NextRide = repository.GetNextRideForGroup(item);
+                Ride NextRide = repository.GetNextRideForGroup(item,TZone);
 
                 if (NextRide != null)
                 {
@@ -221,6 +232,8 @@ namespace FreeWheeling.UI.Controllers
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Member _Member = repository.GetMemberByUserID(currentUser.Id);
             Group group = repository.GetGroupByID(id);
+
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
 
             GroupModel _GroupModel = new GroupModel();
             _GroupModel._Groups = repository.GetGroupsByLocation(currentUser.LocationID).ToList();
@@ -242,7 +255,7 @@ namespace FreeWheeling.UI.Controllers
             {
 
                 item.Rides = item.Rides.Where(t => t.RideDate >= DateTime.Now).ToList();
-                Ride NextRide = repository.GetNextRideForGroup(item);
+                Ride NextRide = repository.GetNextRideForGroup(item,TZone);
 
                 if (NextRide != null)
                 {
@@ -265,7 +278,7 @@ namespace FreeWheeling.UI.Controllers
                 {
 
                     item.Rides = item.Rides.Where(t => t.RideDate >= DateTime.Now).ToList();
-                    Ride NextRide = repository.GetNextRideForGroup(item);
+                    Ride NextRide = repository.GetNextRideForGroup(item,TZone);
 
                     if (NextRide != null)
                     {
@@ -296,6 +309,7 @@ namespace FreeWheeling.UI.Controllers
             _GroupModel._NextRideDetails = new List<NextRideDetails>();
             _GroupModel.UserLocation = _GroupModel.UserLocation = repository.GetLocationName(currentUser.LocationID);
             _GroupModel.title = title;
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
 
             if (group == null)
             {
@@ -311,7 +325,7 @@ namespace FreeWheeling.UI.Controllers
             {
 
                 item.Rides = item.Rides.Where(t => t.RideDate >= DateTime.Now).ToList();
-                Ride NextRide = repository.GetNextRideForGroup(item);
+                Ride NextRide = repository.GetNextRideForGroup(item,TZone);
 
                 if (NextRide != null)
                 {
@@ -328,7 +342,7 @@ namespace FreeWheeling.UI.Controllers
 
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Member _Member = repository.GetMemberByUserID(currentUser.Id);
-
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
             GroupModel _GroupModel = new GroupModel();
 
             _GroupModel._Groups = repository.GetGroupsByLocation(currentUser.LocationID).Where(u => u.Members.Any(m => m.userId == currentUser.Id)).ToList();
@@ -341,7 +355,7 @@ namespace FreeWheeling.UI.Controllers
             {
 
                 item.Rides = item.Rides.Where(t => t.RideDate >= DateTime.Now).ToList();
-                Ride NextRide = repository.GetNextRideForGroup(item);
+                Ride NextRide = repository.GetNextRideForGroup(item,TZone);
 
                 if (NextRide != null)
                 {
@@ -353,7 +367,6 @@ namespace FreeWheeling.UI.Controllers
                     if (item.RideDays != null)
                     {
                         repository.PopulateRideDates(item);
-                        repository.Save();
                     }
 
                 }

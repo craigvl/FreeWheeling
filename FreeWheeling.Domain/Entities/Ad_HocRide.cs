@@ -18,5 +18,7 @@ namespace FreeWheeling.Domain.Entities
         public List<AdHocComment> Comments { get; set; }
         public string StartLocation { get; set; }
         public string AverageSpeed { get; set; }
+        public int RideHour { get; set; }
+        public int RideMinute { get; set; }
     }
 }

@@ -141,12 +141,12 @@ namespace FreeWheeling.Domain.Concrete
 
         }
 
-        public Ride GetNextRideForGroup(Group _Group)
+        public Ride GetNextRideForGroup(Group _Group, TimeZoneInfo TimeZone)
         {
-            
-            Ride _Ride = context.Rides.Include("Riders").Where(t => t.Group.id == _Group.id && t.RideDate >= DateTime.Now).OrderBy(r => r.RideDate).FirstOrDefault();
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZone);
+            Ride _Ride = context.Rides.Include("Riders").Where(t => t.Group.id == _Group.id && t.RideDate >= LocalNow).OrderBy(r => r.RideDate).FirstOrDefault();
 
-            if (context.Rides.Where(t => t.Group.id == _Group.id && t.RideDate >= DateTime.Now).Count() == 1)
+            if (context.Rides.Where(t => t.Group.id == _Group.id && t.RideDate >= LocalNow).Count() == 1)
             {
 
                 PopulateRideDatesFromDate(_Group, _Ride.RideDate); 
@@ -163,7 +163,6 @@ namespace FreeWheeling.Domain.Concrete
             return PreviousRide;
         }
 
-
         public void AddRideComment(string Comment, int RideId, string UserName)
         {
           
@@ -179,7 +178,6 @@ namespace FreeWheeling.Domain.Concrete
         {
             return context.Locations.ToList();
         }
-
 
         public Member GetMemberByUserID(string id)
         {
@@ -223,14 +221,13 @@ namespace FreeWheeling.Domain.Concrete
 
             foreach (DayOfWeek day in RideDays)
             {
-
                 DateTime nextdate = GetNextDateForDay(_DateTime, day);
-                Ride NewRide = new Ride { Group = _Group, RideTime = _Group.RideTime, RideDate = nextdate };
-                _Group.Rides.Add(NewRide);
+                Ride NewRide = new Ride { Group = _Group, RideTime = _Group.RideTime, RideDate = nextdate.Date.Add(new TimeSpan(_Group.RideHour, _Group.RideMinute, 0)) };
+                context.Rides.Add(NewRide);
+                context.Entry(NewRide).State = System.Data.Entity.EntityState.Added;
+                context.SaveChanges();
             }
-
-            context.Entry(_Group).State = System.Data.Entity.EntityState.Modified;
-            context.SaveChanges();
+        
         }
 
         public Group PopulateRideDates(Group _Group)
@@ -254,11 +251,12 @@ namespace FreeWheeling.Domain.Concrete
                 var dateNow = DateTime.UtcNow;
                 DateTime nextdate = GetNextDateForDay(dateNow , day);
 
-                Ride NewRide = new Ride { Group = _Group, RideTime = _Group.RideTime, RideDate = nextdate };
-                _Group.Rides.Add(NewRide);
+                Ride NewRide = new Ride { Group = _Group, RideTime = _Group.RideTime, RideDate = nextdate.Date.Add(new TimeSpan(_Group.RideHour,_Group.RideMinute,0)) };
+                context.Rides.Add(NewRide);
+                context.Entry(NewRide).State = System.Data.Entity.EntityState.Added;
+                context.SaveChanges();
             }
 
-            context.Entry(_Group).State = System.Data.Entity.EntityState.Modified;
             return _Group;
         }
 
@@ -311,17 +309,17 @@ namespace FreeWheeling.Domain.Concrete
             return (n > 7) ? n % 7 : n;
         }
 
-        public int GetUpCommingAd_HocCount(Location _Location)
+        public int GetUpCommingAd_HocCount(Location _Location, TimeZoneInfo TimeZone)
         {
-            return context.Ad_HocRide.Where(l => l.Location.id == _Location.id && l.RideDate >= DateTime.Now).Count();
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZone);
+            return context.Ad_HocRide.Where(l => l.Location.id == _Location.id && l.RideDate >= LocalNow).Count();
         }
 
-
-        public List<Ad_HocRide> GetAdHocRides(Location _Location)
+        public List<Ad_HocRide> GetAdHocRides(Location _Location, TimeZoneInfo TimeZone)
         {
-            return context.Ad_HocRide.Where(l => l.Location.id == _Location.id && l.RideDate >= DateTime.Now).ToList();          
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZone);
+            return context.Ad_HocRide.Where(l => l.Location.id == _Location.id && l.RideDate >= LocalNow).ToList();          
         }
-
 
         public Ad_HocRide GetAdHocRideByID(int id)
         {
@@ -331,7 +329,6 @@ namespace FreeWheeling.Domain.Concrete
 
             return Ad;
         }
-
 
         public List<AdHocComment> GetCommentsForAdHocRide(int AdHocRideid)
         {
