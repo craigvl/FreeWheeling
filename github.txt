@@ -2,6 +2,6 @@ cd "C:\inetpub\wwwroot\FreeWheeling"
 //lap
 cd "C:\Users\craig\Documents\Visual Studio 2013\Projects\FreeWheeling"
 
-git pull stick CraigsLaptop
+git pull stick master
 
-git push stick CraigsLaptop
+git push stick master

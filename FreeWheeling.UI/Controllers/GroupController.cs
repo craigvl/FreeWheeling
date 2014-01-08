@@ -43,7 +43,6 @@ namespace FreeWheeling.UI.Controllers
             TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
 
-
             foreach (Group item in _GroupModel._Groups)
             {
 
