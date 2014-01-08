@@ -203,9 +203,13 @@ namespace FreeWheeling.Domain.Concrete
             context.Entry(_AdHocRide).State = System.Data.Entity.EntityState.Added;
         }
 
-
         public void PopulateRideDatesFromDate(Group _Group, DateTime _DateTime)
         {
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
+
+            _DateTime = TimeZoneInfo.ConvertTimeFromUtc(_DateTime, TZone);
+
             List<DayOfWeek> RideDays = new List<DayOfWeek>();
 
             foreach (CycleDays item in _Group.RideDays)
@@ -233,6 +237,9 @@ namespace FreeWheeling.Domain.Concrete
         public Group PopulateRideDates(Group _Group)
         {
 
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
+
             List<DayOfWeek> RideDays = new List<DayOfWeek>();
 
             foreach (CycleDays item in _Group.RideDays)
@@ -248,13 +255,30 @@ namespace FreeWheeling.Domain.Concrete
 
             foreach (DayOfWeek day in RideDays)
             {              
-                var dateNow = DateTime.UtcNow;
-                DateTime nextdate = GetNextDateForDay(dateNow , day);
+                
+                if (LocalNow.DayOfWeek == day)
+                {
 
-                Ride NewRide = new Ride { Group = _Group, RideTime = _Group.RideTime, RideDate = nextdate.Date.Add(new TimeSpan(_Group.RideHour,_Group.RideMinute,0)) };
-                context.Rides.Add(NewRide);
-                context.Entry(NewRide).State = System.Data.Entity.EntityState.Added;
-                context.SaveChanges();
+                   if (LocalNow.TimeOfDay <= (new TimeSpan(_Group.RideHour, _Group.RideMinute, 0)))
+                   {
+                       Ride NewRide = new Ride { Group = _Group, RideTime = _Group.RideTime, RideDate = LocalNow.Date.Add(new TimeSpan(_Group.RideHour, _Group.RideMinute, 0)) };
+                       context.Rides.Add(NewRide);
+                       context.Entry(NewRide).State = System.Data.Entity.EntityState.Added;
+                       context.SaveChanges();
+                   }
+                   else
+                   {
+                       DateTime nextdate = GetNextDateForDay(LocalNow, day);
+
+                        Ride NewRide = new Ride { Group = _Group, RideTime = _Group.RideTime, RideDate = nextdate.Date.Add(new TimeSpan(_Group.RideHour, _Group.RideMinute, 0)) };
+                        context.Rides.Add(NewRide);
+                        context.Entry(NewRide).State = System.Data.Entity.EntityState.Added;
+                        context.SaveChanges();
+                        
+                   }
+
+                }
+     
             }
 
             return _Group;
