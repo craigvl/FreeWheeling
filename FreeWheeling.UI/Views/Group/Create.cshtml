@@ -47,7 +47,7 @@
         </div>
         <hr />
     <div>Time</div>
-        <div><span class="RequiredField">*&nbsp;</span>Hour</div>
+        <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
         <div>
             @Html.TextBoxFor(model => model.Hour)
         </div>
@@ -55,25 +55,20 @@
         <div><span class="RequiredField">*&nbsp;</span>Minute</div>
         <div>
             @Html.TextBoxFor(model => model.Minute) 
-            @Html.DropDownListFor(model => model.AM_PM, Model.AM_PMList)
-
-
+            @*@Html.DropDownListFor(model => model.AM_PM, Model.AM_PMList)*@
         </div>
-        
-        <div> 
-        </div>
-    
+           
         <div><span class="RequiredField">*&nbsp;</span>Start Location</div>
         
         <div> 
             @Html.TextBoxFor(model => model.StartLocation)
         </div>
     
-    <div><span class="RequiredField">*&nbsp;</span>Average Speed</div>
+    @*<div><span class="RequiredField">*&nbsp;</span>Average Speed</div>
         
         <div> 
             @Html.TextBoxFor(model => model.AverageSpeed)
-        </div>
+        </div>*@
     
         <div>
             <p></p>

@@ -4,6 +4,7 @@
     ViewBag.Title = "Create Ad Hoc Ride";
 }
 
+
 @Html.ActionLink("Back Home <---", "Index", "Home", null, new { @class = "btn btn-info" })
 
 <h2>Create Ad Hoc Ride</h2>
@@ -46,11 +47,15 @@
         </div>*@
         
         <div><span class="RequiredField">*&nbsp;</span>Date</div>
+        
+    
+    
         <div>
-            @Html.EditorFor(model => model.RideDate, "{0:dd/MM/yyyy}", new { id = "RideDate", @class = "form-control", data_format = "DD/MM/YYYY" })
-            <span> @Html.ValidationMessageFor(m => m.RideDate, null, new { @class = "help-inline" }) </span>
+            @Html.TextBoxFor(model => model.DateString, null, new { id = "MyDate", @class = ""})
         </div>
     
+        
+            
         <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
         <div>
             @Html.TextBoxFor(model => model.Hour)
@@ -60,7 +65,7 @@
         <div>
             @Html.TextBoxFor(model => model.Minute)
         </div>
-        
+           
         <hr />
     
         <div><span class="RequiredField">*&nbsp;</span>Start Location</div>
@@ -69,11 +74,11 @@
             @Html.TextBoxFor(model => model.StartLocation)
         </div>
     
-    <div><span class="RequiredField">*&nbsp;</span>Average Speed</div>
+    @*<div><span class="RequiredField">*&nbsp;</span>Average Speed</div>
         
         <div> 
             @Html.TextBoxFor(model => model.AverageSpeed)
-        </div>
+        </div>*@
     
         <div>
             <p></p>
@@ -83,14 +88,12 @@
 
 @section Scripts {
 @Scripts.Render("~/bundles/jqueryval")
-@*<script src="~/Scripts/moment.min.js"></script>
-<script src="~/Scripts/bootstrap-datetimepicker.js"></script>*@
-
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
     $(function () {
-        //$('#datetimepicker1').datetimepicker({
-        //    pickTime: false
-        //});
+        $('#MyDate').datepicker({
+            format: "dd/mm/yyyy"
+        });
     });
 </script>
 }

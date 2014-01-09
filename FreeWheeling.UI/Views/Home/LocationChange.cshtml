@@ -1,0 +1,23 @@
+﻿@model FreeWheeling.UI.Models.LocationChangeModel
+@{
+    ViewBag.Title = "Change Location";
+}
+
+<h2>Change Location</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.DropDownListFor(
+             x => x.LocationsId,
+    new SelectList(
+        Model.Locations.ToList().Select(
+                     x => new { Value = x.id, Text = x.Name }
+        ),
+        "Value",
+                 "Text", Model.LocationsId
+    ), "-- Set a Location --", new {@class = "form-control" }
+)
+    <p></p>
+    <input type="submit" value="Set Location" class="btn btn-primary" />
+
+}
