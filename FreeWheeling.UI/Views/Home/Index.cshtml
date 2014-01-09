@@ -3,42 +3,36 @@
     ViewBag.Title = "Home Page";
 }
 
-<div >
-    
-</div>
-Your current location is: @Model.CurrentUserLocation
-<p></p>
-
-<div class="row">
-    <div class="col-md-12">
-@using (Html.BeginForm())
+@if (Model.LocationsId != 0)
 {
+  <span class="btn btn-primary"> @Model.CurrentUserLocation </span>  @Html.ActionLink("Change", "LocationChange", "Home", new { }, new { @class = "btn btn-success" }) 
+}
+else
+{
+
+    using (Html.BeginForm())
+    {
         @Html.DropDownListFor(
              x => x.LocationsId,
-    new SelectList(
-        Model.Locations.ToList().Select(
-                     x => new { Value = x.id, Text = x.Name }
-        ),
-        "Value",
-                 "Text", Model.LocationsId
-    ), "-- Set a Location --", new {@class = "form-control" }
-)
-    <p></p>
-    <input type="submit" value="Set Location" class="btn btn-primary" />
-
+             new SelectList(
+             Model.Locations.ToList().Select(
+             x => new { Value = x.id, Text = x.Name }
+            ),
+            "Value",
+            "Text", Model.LocationsId
+            ), "-- Set a Location --", new {@class = "form-control" }
+            )
+        <p></p>
+        <input type="submit" value="Set Location" class="btn btn-primary" />
+    }    
 }
-        <p></p>
-        <hr />
-        <p></p>
-        @if (Model.LocationsId != 0)
+    <p></p>
+    <hr />
+    <p></p>
+    @if (Model.LocationsId != 0)
         {
-            <p class="text-left">@Html.ActionLink("Groups", "Index", "Group", new { }, new { @class = "btn btn-primary" })</p>
+            <p class="text-left">@Html.ActionLink("Groups", "Index", "Group", new { }, new { @class = "btn btn-primary" }) @Html.ActionLink("+", "Create", "Group", new { }, new { @class = "btn btn-success" }) </p>
             <p class="text-left">@Html.ActionLink("Favourite Groups", "MyGroups", "Group", new { }, new { @class = "btn btn-primary" })</p>
-            <p class="text-left">@Html.ActionLink("Up Comming Ad Hoc Rides (" + @Model.UpCommingAd_HocCount + ")", "AddHocList", "Ride", new { }, new { @class = "btn btn-primary" })</p>
-            <hr />
-            <p class="text-left">@Html.ActionLink("Create Group", "Create", "Group", new { }, new { @class = "btn btn-success" })</p>
-            <p class="text-left">@Html.ActionLink("Create Ad Hoc Ride", "CreateAdHoc", "Group", new { }, new { @class = "btn btn-success" })</p>        
+            <p class="text-left">@Html.ActionLink("Up Comming Ad Hoc Rides (" + @Model.UpCommingAd_HocCount + ")", "AddHocList", "Ride", new { }, new { @class = "btn btn-primary" }) @Html.ActionLink("+", "CreateAdHoc", "Group", new { }, new { @class = "btn btn-success" }) </p>
+            <hr />     
         }
-        
-    </div>
-</div>

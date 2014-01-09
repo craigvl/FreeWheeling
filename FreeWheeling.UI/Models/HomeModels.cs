@@ -16,4 +16,11 @@ namespace FreeWheeling.UI.Models
         public int UpCommingAd_HocCount { get; set; }
     }
 
+    public class LocationChangeModel
+    {
+        public int LocationsId { get; set; }
+        public string CurrentUserLocation { get; set; }
+        public List<Location> Locations { get; set; }
+    }
+
 }

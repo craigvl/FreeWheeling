@@ -87,6 +87,41 @@ namespace FreeWheeling.UI.Controllers
             return View(_HomeIndexModel);
         }
 
+        public ActionResult LocationChange()
+        {
+            LocationChangeModel _LocationChangeModel = new LocationChangeModel();
+
+            _LocationChangeModel.Locations = repository.GetLocations().ToList();
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
+
+            _LocationChangeModel.LocationsId = _Location.id;
+            _LocationChangeModel.CurrentUserLocation = _Location.Name;
+
+            return View(_LocationChangeModel);
+
+        }
+
+        [HttpPost]
+        public ActionResult LocationChange(LocationChangeModel _LocationChangeModel)
+        {
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            currentUser.LocationID = repository.GetLocations().Where(l => l.id == _LocationChangeModel.LocationsId).Select(o => o.id).FirstOrDefault();
+            idb.SaveChanges();
+
+            Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
+            HomeIndexModel _HomeIndexModel = new HomeIndexModel();
+            _HomeIndexModel.Locations = repository.GetLocations().ToList();
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+
+            _HomeIndexModel.LocationsId = _Location.id;
+            _HomeIndexModel.CurrentUserLocation = _Location.Name;
+            _HomeIndexModel.UpCommingAd_HocCount = repository.GetUpCommingAd_HocCount(repository.GetLocations().Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone);
+
+            return View("Index",_HomeIndexModel);
+
+        }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
