@@ -39,7 +39,7 @@ namespace FreeWheeling.UI.Models
         public int Hour { get; set; }
         [Required]
         public int Minute { get; set; }
-
+        public string DateString { get; set; }
         public string AM_PM { get; set; }
         public IEnumerable<SelectListItem> AM_PMList
         {

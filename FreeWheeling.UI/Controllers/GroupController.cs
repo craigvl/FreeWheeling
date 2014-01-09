@@ -88,10 +88,12 @@ namespace FreeWheeling.UI.Controllers
 
         public ActionResult CreateAdHoc()
         {
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
 
             AdHocCreateModel _Ad_HocRide = new AdHocCreateModel();
             _Ad_HocRide.Locations = repository.GetLocations().ToList();
-            _Ad_HocRide.RideDate = DateTime.Now;
+            _Ad_HocRide.RideDate = LocalNow;
        
 
             return View(_Ad_HocRide);
@@ -106,19 +108,22 @@ namespace FreeWheeling.UI.Controllers
 
             TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
 
-            DateTime da = new DateTime(_AdHocCreateModel.RideDate.Year, _AdHocCreateModel.RideDate.Month, _AdHocCreateModel.RideDate.Day,_AdHocCreateModel.Hour, _AdHocCreateModel.Minute,0);
+            //DateTime da = new DateTime(_AdHocCreateModel.RideDate.Year, _AdHocCreateModel.RideDate.Month, _AdHocCreateModel.RideDate.Day,_AdHocCreateModel.Hour, _AdHocCreateModel.Minute,0);
+
+            DateTime da = DateTime.ParseExact(_AdHocCreateModel.DateString, "dd/mm/yyyy",null);
+            DateTime _RideDate = da.Date.Add(new TimeSpan(_AdHocCreateModel.Hour, _AdHocCreateModel.Minute, 0));
 
             Ad_HocRide NewAdHoc = new Ad_HocRide
             {
                 Name = _AdHocCreateModel.Name,
                 AverageSpeed = _AdHocCreateModel.AverageSpeed,
                 Location = _Location,
-                RideDate = da.Date.Add(new TimeSpan(_AdHocCreateModel.Hour,_AdHocCreateModel.Minute,0)),
+                RideDate = _RideDate,
                 Creator = currentUser.UserName,
                 StartLocation = _AdHocCreateModel.StartLocation,
-                RideTime = da.TimeOfDay.ToString(),
-                RideHour = da.Hour,
-                RideMinute = da.Minute
+                RideTime = _RideDate.TimeOfDay.ToString(),
+                RideHour = _RideDate.Hour,
+                RideMinute = _RideDate.Minute
             };
 
             repository.AddAdHocRide(NewAdHoc);
@@ -379,108 +384,5 @@ namespace FreeWheeling.UI.Controllers
 
         }
 
-        //// GET: /Group/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Group group = db.Groups.Find(id);
-        //    if (group == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(group);
-        //}
-
-        //// GET: /Group/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //// POST: /Group/Create
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include="id,name,IsPrivate")] Group group)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Groups.Add(group);
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    return View(group);
-        //}
-
-        //// GET: /Group/Edit/5
-        //public ActionResult Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Group group = db.Groups.Find(id);
-        //    if (group == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(group);
-        //}
-
-        //// POST: /Group/Edit/5
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include="id,name,IsPrivate")] Group group)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(group).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(group);
-        //}
-
-        //// GET: /Group/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Group group = db.Groups.Find(id);
-        //    if (group == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(group);
-        //}
-
-        //// POST: /Group/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeleteConfirmed(int id)
-        //{
-        //    Group group = db.Groups.Find(id);
-        //    db.Groups.Remove(group);
-        //    db.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
-
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //    {
-        //        db.Dispose();
-        //    }
-        //    base.Dispose(disposing);
-        //}
     }
 }

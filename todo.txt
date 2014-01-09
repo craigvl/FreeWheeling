@@ -1,0 +1,2 @@
+- Need to update the adhoc page to pass in the local format so that the date picker can use this form, that is update the javascript 
+- Need to update the CreateAdHoc post function so that the ParseExact uses the same format that was passed via the javascript. 
