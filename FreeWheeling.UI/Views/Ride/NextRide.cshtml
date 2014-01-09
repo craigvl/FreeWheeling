@@ -10,6 +10,8 @@
     @Model.Group.name
 </h2>
 
+@Html.ActionLink("Back <---", "Index", "Group", null, new { @class = "btn btn-info" })
+
 @Html.ActionLink("<-- Previous Ride", "Index", "Ride", new { RideId = @Model.PreviousRide.id, Groupid = @Model.Group.id }, new { @class = "btn btn-default" })
 <hr />
 
