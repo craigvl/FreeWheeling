@@ -5,7 +5,7 @@
 
 @if (Model.LocationsId != 0)
 {
-  <span class="btn btn-primary"> @Model.CurrentUserLocation </span>  @Html.ActionLink("Change", "LocationChange", "Home", new { }, new { @class = "btn btn-success" }) 
+  <span class="btn btn-primary"> @Model.CurrentUserLocation </span>  @Html.ActionLink(" ", "LocationChange", "Home", new { }, new { @class = "glyphicon glyphicon-pencil" }) 
 }
 else
 {

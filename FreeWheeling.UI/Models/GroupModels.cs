@@ -26,7 +26,7 @@ namespace FreeWheeling.UI.Models
 
     public class DayOfWeekViewModel
     {
-        public string Name { get; set; }
+        public string Name { get; set; }    
         public bool Checked { get; set; }
     }
 

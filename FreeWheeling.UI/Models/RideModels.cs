@@ -19,6 +19,7 @@ namespace FreeWheeling.UI.Models
         public List<Rider> Riders { get; set; } 
         public List<Route> Routes { get; set; }
         public List<Comment> Comments { get; set; }
+        public int CommentCount { get; set; }
     }
 
     public class RideCommentModel
@@ -40,6 +41,7 @@ namespace FreeWheeling.UI.Models
         public List<AdHocRider> Riders { get; set; }
         public List<Route> Routes { get; set; }
         public List<AdHocComment> Comments { get; set; }
+        public int CommentCount { get; set; }
     }
 
     public class AdHocRideCommentModel
@@ -47,5 +49,18 @@ namespace FreeWheeling.UI.Models
         public int adhocrideid { get; set; }
         public Ad_HocRide Ride { get; set; }
         public string Comment { get; set; }
+    }
+
+    public class AllRideComments
+    {
+        public List<Comment> Comments { get; set; }
+        public int RideId { get; set; }
+        public int GroupId { get; set; }
+    }
+
+    public class AllAdHocRideComments
+    {
+        public List<AdHocComment> Comments { get; set; }
+        public int adhocrideid { get; set; }
     }
 }

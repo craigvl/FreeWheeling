@@ -185,9 +185,14 @@ namespace FreeWheeling.Domain.Concrete
         }
 
 
-        public List<Comment> GetCommentsForRide(int Rideid)
+        public List<Comment> GetTop2CommentsForRide(int Rideid)
         {
-            return context.Comment.Where(c => c.Ride.id == Rideid).ToList();
+            return context.Comment.Where(c => c.Ride.id == Rideid).OrderByDescending(t => t.Date).Take(2).ToList();
+        }
+
+        public List<Comment> GetAllCommentsForRide(int Rideid)
+        {
+            return context.Comment.Where(c => c.Ride.id == Rideid).OrderByDescending(t => t.Date).ToList();
         }
 
 
@@ -356,9 +361,14 @@ namespace FreeWheeling.Domain.Concrete
             return Ad;
         }
 
-        public List<AdHocComment> GetCommentsForAdHocRide(int AdHocRideid)
+        public List<AdHocComment> GetTop2CommentsForAdHocRide(int AdHocRideid)
         {
-            return context.AdHocComment.Where(r => r.AdHocRide.id == AdHocRideid).ToList();
+            return context.AdHocComment.Where(r => r.AdHocRide.id == AdHocRideid).OrderByDescending(r => r.Date).Take(2).ToList();
+        }
+
+        public List<AdHocComment> GetAllCommentsForAdHocRide(int AdHocRideid)
+        {
+            return context.AdHocComment.Where(r => r.AdHocRide.id == AdHocRideid).OrderByDescending(r => r.Date).ToList();
         }
 
         public List<AdHocRider> GetRidersForAdHocRide(int AdHocRideid, TimeZoneInfo TimeZone)
@@ -426,6 +436,17 @@ namespace FreeWheeling.Domain.Concrete
 
             context.AdHocComment.Add(_comment);
             context.Entry(_comment).State = System.Data.Entity.EntityState.Added;
+        }
+
+
+        public int GetCommentCountForAdHocRide(int AdHocRideid)
+        {
+            return context.AdHocComment.Where(r => r.AdHocRide.id == AdHocRideid).Count();
+        }
+
+        public int GetCommentCountForRide(int Rideid)
+        {
+            return context.Comment.Where(r => r.Ride.id == Rideid).Count();
         }
     }
 }

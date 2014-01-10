@@ -68,16 +68,13 @@
                               @:<span class="label label-danger">No Rides</span>
                              
                          }
-                           
-                                 
+                                                           
                        @:<button type="button" class="btn btn-default btn-lg">  
                     @Html.ActionLink(" ", "Join", "Group", new { id = item.id, title = @Model.title }, new { @class = "glyphicon glyphicon-star" })
                      @:</button></h3>
                     }
                     isMember = false;
-                    
-                    
-                    
+                                       
                     @Ajax.ActionLink(" ", // <-- Text to display
                      "GetGroupDetails", // <-- Action Method Name
                  new { id = item.id },

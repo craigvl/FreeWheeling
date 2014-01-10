@@ -7,18 +7,13 @@
 
 @Html.ActionLink("Back <---", "AddHocList", "Ride", null, new { @class = "btn btn-info" })
 
-
 <h2>@Model.Ride.Name</h2>
 <h3>Start Location: @Model.Ride.StartLocation</h3>
 <h3>Start Time: @Model.Ride.RideTime</h3>
 
-
-
 <hr />
 
 <h4><span class="label label-success">Riders</span></h4>
-
-
 
 @{
 
@@ -61,22 +56,28 @@
 <hr />
     @if (@Model.Comments != null)
     {
-        <h4><span class="label label-success">Comments</span></h4>
+        <h4><span class="label label-success">Comments</span> 
+        @Html.ActionLink("+", "AddAdHocComment", "Ride", new { adhocrideid = @Model.Ride.id }, new { @class = "btn btn-success" })
+        
+    
+    </h4>
 
         foreach (AdHocComment item in Model.Comments)
         {
 
-            @item.Date.ToShortDateString() @Html.Raw(" ")  @item.Date.ToShortTimeString() @Html.Raw(" ")
+            @*@item.Date.ToShortDateString() @Html.Raw(" ")  @item.Date.ToShortTimeString() @Html.Raw(" ")*@
             @item.userName <text>: </text>
             @item.CommentText
             @:<p></p>
 
         }
+        
+        @Html.ActionLink(string.Concat("See all Comments (", @Model.CommentCount, ")"), "SeeAllAdHocComments", "Ride", new { adhocrideid = @Model.Ride.id }, new { @class = "btn btn-success" })
+        
     }
 
 </div>
 
-@Html.ActionLink("Add Comment", "AddAdHocComment", "Ride", new { adhocrideid = @Model.Ride.id }, new { @class = "btn btn-success" })
 
 <hr />
 
@@ -112,4 +113,3 @@
 
     </script>
 }
-

@@ -1,0 +1,16 @@
+﻿@model FreeWheeling.UI.Models.AllRideComments
+@using FreeWheeling.Domain.Entities
+
+@{
+    ViewBag.Title = "SeeAllComments";
+}
+
+@Html.ActionLink("<-- Back to Ride", "Index", "Ride", new { RideId = @Model.RideId, Groupid = @Model.GroupId }, new { @class = "btn btn-default" })
+
+<h2>All Comments</h2>
+
+@foreach (Comment item in @Model.Comments)
+{
+  @item.userName @Html.Raw(":")  @item.CommentText
+    <p></p>
+}

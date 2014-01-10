@@ -358,6 +358,8 @@
     <Content Include="Views\Ride\ViewAdHocRide.cshtml" />
     <Content Include="Views\Ride\AddAdHocComment.cshtml" />
     <Content Include="Views\Home\LocationChange.cshtml" />
+    <Content Include="Views\Ride\SeeAllComments.cshtml" />
+    <Content Include="Views\Ride\SeeAllAdHocComments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
