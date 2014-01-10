@@ -91,10 +91,13 @@ namespace FreeWheeling.UI.Controllers
         {
             TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
 
             AdHocCreateModel _Ad_HocRide = new AdHocCreateModel();
             _Ad_HocRide.Locations = repository.GetLocations().ToList();
             _Ad_HocRide.RideDate = LocalNow;
+            _Ad_HocRide.LocationsId = _Location.id;
        
 
             return View(_Ad_HocRide);
@@ -162,6 +165,11 @@ namespace FreeWheeling.UI.Controllers
 
             GroupCreateModel _GroupCreateModel = new GroupCreateModel();
             _GroupCreateModel.Locations = repository.GetLocations().ToList();
+
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
+
+            _GroupCreateModel.LocationsId = _Location.id;
 
             return View(_GroupCreateModel);
 

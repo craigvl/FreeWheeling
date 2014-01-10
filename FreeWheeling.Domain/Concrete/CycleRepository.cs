@@ -336,12 +336,14 @@ namespace FreeWheeling.Domain.Concrete
         public int GetUpCommingAd_HocCount(Location _Location, TimeZoneInfo TimeZone)
         {
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZone);
+            LocalNow = LocalNow.AddHours(-2);
             return context.Ad_HocRide.Where(l => l.Location.id == _Location.id && l.RideDate >= LocalNow).Count();
         }
 
         public List<Ad_HocRide> GetAdHocRides(Location _Location, TimeZoneInfo TimeZone)
         {
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZone);
+            LocalNow = LocalNow.AddHours(-2);
             return context.Ad_HocRide.Where(l => l.Location.id == _Location.id && l.RideDate >= LocalNow).ToList();          
         }
 

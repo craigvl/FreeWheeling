@@ -34,8 +34,8 @@
                          if (item.Rides.Count > 0 )
                          {
                              @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-default" }) 
-                             @Html.ActionLink(string.Concat("View Rides (", RiderCount, " 100% Rider/s for ", NextRideDate.DayOfWeek, ")"), "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-success" })
-                             
+                             @Html.ActionLink(string.Concat("View ", NextRideDate.DayOfWeek, " Ride"), "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-success" })
+                             @*@Html.ActionLink(string.Concat("View Rides (", RiderCount, " 100% Rider/s for ", NextRideDate.DayOfWeek, ")"), "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-success" })*@                           
                         @:</h3> 
                              
                          }
@@ -58,7 +58,8 @@
                          {
                             
                              @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-default" }) 
-                             @Html.ActionLink(string.Concat("View Rides (",RiderCount, " 100% Rider/s for ", NextRideDate.DayOfWeek,")")   , "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-success" })
+                             @Html.ActionLink(string.Concat("View ", NextRideDate.DayOfWeek, " Ride"), "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-success" })
+                             @*@Html.ActionLink(string.Concat("View Rides (", RiderCount, " 100% Rider/s for ", NextRideDate.DayOfWeek, ")"), "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-success" })*@                           
                                    
                          }
                          else
@@ -68,15 +69,16 @@
                              
                          }
                            
-                  
-                    @Html.ActionLink("Add to favourites", "Join", "Group", new { id = item.id, title = @Model.title }, new { @class = "btn btn-warning" })
-                     @:</h3>
+                                 
+                       @:<button type="button" class="btn btn-default btn-lg">  
+                    @Html.ActionLink(" ", "Join", "Group", new { id = item.id, title = @Model.title }, new { @class = "glyphicon glyphicon-star" })
+                     @:</button></h3>
                     }
                     isMember = false;
                     
                     
                     
-                    @Ajax.ActionLink("View Details", // <-- Text to display
+                    @Ajax.ActionLink(" ", // <-- Text to display
                      "GetGroupDetails", // <-- Action Method Name
                  new { id = item.id },
                  new AjaxOptions
@@ -85,11 +87,10 @@
                      InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
                      HttpMethod = "POST",
                      OnSuccess = "HideInfoLink"
-                 })
-                    
-                     <div class="Ginfo" id="@("GroupInfo" + @item.id)"></div>
-                    
-                  
+                 }, new { @class = "glyphicon glyphicon-info-sign" })
+                   
+                <div class="Ginfo" id="@("GroupInfo" + @item.id)"></div>/*This is the div that gets replaced with group info*/
+
                 }
                 }
                 else
