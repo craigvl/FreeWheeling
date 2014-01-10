@@ -97,6 +97,7 @@ namespace FreeWheeling.UI.Controllers
             AdHocCreateModel _Ad_HocRide = new AdHocCreateModel();
             _Ad_HocRide.Locations = repository.GetLocations().ToList();
             _Ad_HocRide.RideDate = LocalNow;
+            _Ad_HocRide.DateString = LocalNow.ToShortDateString();
             _Ad_HocRide.LocationsId = _Location.id;
        
 

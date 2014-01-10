@@ -4,6 +4,7 @@
     ViewBag.Title = "Create Ad Hoc Ride";
 }
 
+<link href="~/Content/datepicker.css" rel="stylesheet" />
 
 @Html.ActionLink("Back Home <---", "Index", "Home", null, new { @class = "btn btn-info" })
 
@@ -45,7 +46,10 @@
                 <span> @Html.ValidationMessageFor(m => m.RideDate, null, new { @class = "help-inline" }) </span>
             </div>        
         </div>*@
-        
+
+
+    <div class="span5" id="MyDate2"><div></div></div>
+
         <div><span class="RequiredField">*&nbsp;</span>Date</div>
         
     
@@ -91,9 +95,15 @@
 <script src="~/Scripts/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
     $(function () {
-        $('#MyDate').datepicker({
-            format: "dd/mm/yyyy"
+        //$('#MyDate').datepicker({
+        //    format: "dd/mm/yyyy"
+        //});
+
+        $('#MyDate2 div').datepicker({
+        }).on('changeDate', function (e) {
+            $('#MyDate').val(e.format('dd/mm/yyyy'))
         });
+
     });
 </script>
 }
