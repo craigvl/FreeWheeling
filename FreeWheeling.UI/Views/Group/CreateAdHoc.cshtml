@@ -29,7 +29,7 @@
         ),
         "Value",
                  "Text", Model.LocationsId
-    ), "-- Ride Location --", new { @class = "form-control" }
+    ),  new { @class = "form-control" }
 )
         <p></p>
     </div>
@@ -51,15 +51,11 @@
     <div class="span5" id="MyDate2"><div></div></div>
 
         <div><span class="RequiredField">*&nbsp;</span>Date</div>
-        
-    
-    
+          
         <div>
             @Html.TextBoxFor(model => model.DateString, null, new { id = "MyDate", @class = ""})
         </div>
-    
-        
-            
+               
         <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
         <div>
             @Html.TextBoxFor(model => model.Hour)

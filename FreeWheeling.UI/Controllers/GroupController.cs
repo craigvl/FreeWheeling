@@ -99,6 +99,8 @@ namespace FreeWheeling.UI.Controllers
             _Ad_HocRide.RideDate = LocalNow;
             _Ad_HocRide.DateString = LocalNow.ToShortDateString();
             _Ad_HocRide.LocationsId = _Location.id;
+            _Ad_HocRide.Hour = 5;
+            _Ad_HocRide.Minute = 30;
        
 
             return View(_Ad_HocRide);
