@@ -61,6 +61,10 @@
     <Compile Include="DataContexts\CycleMigrations\201401070146189_Add_Ride_Hour_Minute.Designer.cs">
       <DependentUpon>201401070146189_Add_Ride_Hour_Minute.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201401112337110_Added_CreatedBy_And_TimeStampUpdate_To_LocalTime.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201401112337110_Added_CreatedBy_And_TimeStampUpdate_To_LocalTime.Designer.cs">
+      <DependentUpon>201401112337110_Added_CreatedBy_And_TimeStampUpdate_To_LocalTime.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\AdHocComment.cs" />
     <Compile Include="Entities\Comment.cs" />
@@ -88,6 +92,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\CycleMigrations\201401070146189_Add_Ride_Hour_Minute.resx">
       <DependentUpon>201401070146189_Add_Ride_Hour_Minute.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201401112337110_Added_CreatedBy_And_TimeStampUpdate_To_LocalTime.resx">
+      <DependentUpon>201401112337110_Added_CreatedBy_And_TimeStampUpdate_To_LocalTime.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

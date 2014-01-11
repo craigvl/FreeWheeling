@@ -20,5 +20,7 @@ namespace FreeWheeling.Domain.Entities
         public string AverageSpeed { get; set; }
         public int RideHour { get; set; }
         public int RideMinute { get; set; }
+        public string CreatedBy { get; set; }
+        public string CreatedTimeStamp { get; set; }
     }
 }
