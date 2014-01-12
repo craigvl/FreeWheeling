@@ -8,7 +8,7 @@ namespace FreeWheeling.Domain.DataContexts.CycleMigrations
         public override void Up()
         {
             AddColumn("dbo.Ad_HocRide", "CreatedBy", c => c.String());
-            AddColumn("dbo.Ad_HocRide", "CreatedTimeStamp", c => c.String());
+            AddColumn("dbo.Ad_HocRide", "CreatedTimeStamp", c => c.DateTime(nullable: false));
             AddColumn("dbo.Groups", "CreatedBy", c => c.String());
             AddColumn("dbo.Groups", "CreatedTimeStamp", c => c.DateTime(nullable: false));
         }

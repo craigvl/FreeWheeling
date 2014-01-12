@@ -114,6 +114,7 @@ namespace FreeWheeling.UI.Controllers
             Location _Location = repository.GetLocations().Where(l => l.id == _AdHocCreateModel.LocationsId).FirstOrDefault();
 
             TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
 
             //DateTime da = new DateTime(_AdHocCreateModel.RideDate.Year, _AdHocCreateModel.RideDate.Month, _AdHocCreateModel.RideDate.Day,_AdHocCreateModel.Hour, _AdHocCreateModel.Minute,0);
 
@@ -130,7 +131,9 @@ namespace FreeWheeling.UI.Controllers
                 StartLocation = _AdHocCreateModel.StartLocation,
                 RideTime = _RideDate.TimeOfDay.ToString(),
                 RideHour = _RideDate.Hour,
-                RideMinute = _RideDate.Minute
+                RideMinute = _RideDate.Minute,
+                CreatedBy = currentUser.Id,
+                CreatedTimeStamp = LocalNow
             };
 
             repository.AddAdHocRide(NewAdHoc);
@@ -186,6 +189,8 @@ namespace FreeWheeling.UI.Controllers
             List<CycleDays> _CycleDays = new List<CycleDays>();
             Location _Location = repository.GetLocations().Where(l => l.id == _GroupCreateModel.LocationsId).FirstOrDefault();
             TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
             foreach (DayOfWeekViewModel item in _GroupCreateModel.DaysOfWeek)
             {
@@ -207,7 +212,9 @@ namespace FreeWheeling.UI.Controllers
                 RideDays = _CycleDays, Location = _Location, Rides = new List<Ride>(), AverageSpeed = _GroupCreateModel.AverageSpeed, 
                 StartLocation = _GroupCreateModel.StartLocation,
                 RideHour = _GroupCreateModel.Hour,
-                RideMinute = _GroupCreateModel.Minute
+                RideMinute = _GroupCreateModel.Minute,
+                CreatedBy = currentUser.Id,
+                CreatedTimeStamp = LocalNow
             };
 
             repository.AddGroup(NewGroup);
@@ -216,7 +223,6 @@ namespace FreeWheeling.UI.Controllers
             NewGroup = repository.PopulateRideDates(NewGroup);
             repository.Save();
             
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Member _Member = repository.GetMemberByUserID(currentUser.Id);
             GroupModel _GroupModel = new GroupModel();
             _GroupModel._Groups = repository.GetGroupsByLocation(currentUser.LocationID).ToList();
