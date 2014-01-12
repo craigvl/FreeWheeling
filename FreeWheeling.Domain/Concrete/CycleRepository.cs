@@ -283,6 +283,16 @@ namespace FreeWheeling.Domain.Concrete
                    }
 
                 }
+                else
+                {
+                    DateTime nextdate = GetNextDateForDay(LocalNow, day);
+
+                    Ride NewRide = new Ride { Group = _Group, RideTime = _Group.RideTime, RideDate = nextdate.Date.Add(new TimeSpan(_Group.RideHour, _Group.RideMinute, 0)) };
+                    context.Rides.Add(NewRide);
+                    context.Entry(NewRide).State = System.Data.Entity.EntityState.Added;
+                    context.SaveChanges();
+
+                }
      
             }
 
