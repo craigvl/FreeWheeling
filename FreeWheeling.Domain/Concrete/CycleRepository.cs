@@ -458,5 +458,35 @@ namespace FreeWheeling.Domain.Concrete
         {
             return context.Comment.Where(r => r.Ride.id == Rideid).Count();
         }
+
+        public bool IsAdHocCreator(int AdHocRideid, string UserId)
+        {
+            Ad_HocRide adHoc = GetAdHocRideByID(AdHocRideid);
+
+            if (adHoc.CreatedBy == UserId)
+            {
+                return true;
+            }
+            else{
+
+                return false;
+            }
+
+        }
+
+        public bool IsGroupCreator(int _GroupId, string UserId)
+        {
+            Group CurrentGroup = GetGroupByID(_GroupId);
+
+            if (CurrentGroup.CreatedBy == UserId)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
     }
 }

@@ -20,6 +20,7 @@ namespace FreeWheeling.UI.Models
         public List<Route> Routes { get; set; }
         public List<Comment> Comments { get; set; }
         public int CommentCount { get; set; }
+        public Boolean IsOwner { get; set; }
     }
 
     public class RideCommentModel
@@ -42,6 +43,7 @@ namespace FreeWheeling.UI.Models
         public List<Route> Routes { get; set; }
         public List<AdHocComment> Comments { get; set; }
         public int CommentCount { get; set; }
+        public Boolean IsOwner { get; set; }
     }
 
     public class AdHocRideCommentModel

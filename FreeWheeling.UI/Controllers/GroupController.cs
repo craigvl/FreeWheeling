@@ -171,6 +171,8 @@ namespace FreeWheeling.UI.Controllers
 
             GroupCreateModel _GroupCreateModel = new GroupCreateModel();
             _GroupCreateModel.Locations = repository.GetLocations().ToList();
+            _GroupCreateModel.Hour = 5;
+            _GroupCreateModel.Minute = 30;
 
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();

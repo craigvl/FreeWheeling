@@ -10,7 +10,12 @@
 <h2>@Model.Ride.Name</h2>
 <h3>Start Location: @Model.Ride.StartLocation</h3>
 <h3>Start Time: @Model.Ride.RideTime</h3>
-
+@if (@Model.IsOwner)
+{
+    
+    <h1>Owner</h1>
+    
+}
 <hr />
 
 <h4><span class="label label-success">Riders</span></h4>

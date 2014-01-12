@@ -18,8 +18,5 @@
      @item.RideDate.ToLongDateString() @Html.Raw(", ") @item.RideDate.ToShortTimeString()
     <p></p>
     @Html.ActionLink(string.Concat("View Ride Details"), "ViewAdHocRide", "Ride", new { adhocrideid = item.id }, new { @class = "btn btn-success" })
-    <hr />
+    <hr />   
 }
-
-
-

@@ -39,6 +39,9 @@ namespace FreeWheeling.Domain.Abstract
 
 
         List<int> CurrentGroupsForUser(string UserId);
+
+        Boolean IsAdHocCreator(int AdHocRideid, string UserId);
+        Boolean IsGroupCreator(int _GroupId, string UserId);
         
         //Member
         void AddMember(string UserId, Group _Group);

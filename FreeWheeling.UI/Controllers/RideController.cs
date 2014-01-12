@@ -78,16 +78,17 @@ namespace FreeWheeling.UI.Controllers
             Member _Member = repository.GetMemberByUserID(currentUser.Id);
             AdHocRidesModel _AdHocRidesModel = new AdHocRidesModel();
             TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
-            _AdHocRidesModel._Ad_HocRide = repository.GetAdHocRides(repository.GetLocations().Where(o => o.id == currentUser.LocationID).FirstOrDefault(),TZone);
-
+            _AdHocRidesModel._Ad_HocRide = repository.GetAdHocRides(repository.GetLocations().Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone).OrderBy(c => c.RideDate).ToList();
             return View(_AdHocRidesModel);
         }
 
         public ActionResult ViewAdHocRide(int adhocrideid)
         {
             Ad_HocRide Ah = repository.GetAdHocRideByID(adhocrideid);
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
             AdHocViewModel adHocViewModel = new AdHocViewModel { Ride = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime };
             adHocViewModel.CommentCount = repository.GetCommentCountForAdHocRide(adhocrideid);
+            adHocViewModel.IsOwner = repository.IsAdHocCreator(adhocrideid, currentUser.Id);
 
 
             TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
