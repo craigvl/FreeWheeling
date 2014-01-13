@@ -29,6 +29,8 @@ namespace FreeWheeling.UI.Controllers
             //var TimeZone = TimeZoneInfo.Local.Id;
             
             RideModelIndex RideModel = new RideModelIndex();
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+
 
             Group _Group = repository.GetGroupByID(groupid);
 
@@ -51,6 +53,7 @@ namespace FreeWheeling.UI.Controllers
                 RideModel.Comments = repository.GetTop2CommentsForRide(RideModel.Ride.id);
                 RideModel.RideDate = RideModel.Ride.RideDate;
                 RideModel.CommentCount = repository.GetCommentCountForRide(RideModel.Ride.id);
+
             }
 
             if (RideModel.Ride != null)
@@ -59,12 +62,13 @@ namespace FreeWheeling.UI.Controllers
                 RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id,TZone);
                 RideModel.Comments = repository.GetTop2CommentsForRide(RideModel.Ride.id);
                 RideModel.CommentCount = repository.GetCommentCountForRide(RideModel.Ride.id);
+                RideModel.IsOwner = repository.IsGroupCreator(_Group.id, currentUser.Id);
+
             }
             else
             {         
                 GroupModel GroupModel = new GroupModel();
                 GroupModel._Groups = repository.GetGroups().ToList();  
-                var currentUser = idb.Users.Find(User.Identity.GetUserId());
                 GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
                 return RedirectToAction("index", "group", GroupModel);
             }
@@ -158,6 +162,28 @@ namespace FreeWheeling.UI.Controllers
 
         }
 
+        public ActionResult EditRide(int adhocrideid)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult EditRide()
+        {
+            return View();
+        }
+
+        public ActionResult EditAdHocRide(int adhocrideid)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult EditAdHocRide()
+        {
+            return View();
+        }
+
         public ActionResult AddAdHocComment(int adhocrideid)
         {
 
@@ -220,6 +246,7 @@ namespace FreeWheeling.UI.Controllers
             RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id,TZone);
 
             RideModel.Comments = repository.GetTop2CommentsForRide(RideModel.Ride.id);
+            RideModel.CommentCount = repository.GetCommentCountForRide(RideModel.Ride.id);
 
             return View("Index",RideModel);
 

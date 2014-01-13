@@ -13,7 +13,7 @@
 @if (@Model.IsOwner)
 {
     
-    <h1>Owner</h1>
+            @Html.ActionLink(" ", "EditAdHocRide", "Ride", new { adhocrideid = @Model.Ride.id }, new { @class = "glyphicon glyphicon-pencil" })
     
 }
 <hr />
