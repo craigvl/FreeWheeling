@@ -488,5 +488,28 @@ namespace FreeWheeling.Domain.Concrete
             }
 
         }
+
+
+        public void UpdateGroup(Group _Group)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateAdHocRide(Ad_HocRide _AdHocRide)
+        {
+            Ad_HocRide CurrentAdHocRide = context.Ad_HocRide.Where(i => i.id == _AdHocRide.id).FirstOrDefault();
+            CurrentAdHocRide.Name = _AdHocRide.Name;
+            CurrentAdHocRide.AverageSpeed = _AdHocRide.AverageSpeed;
+            CurrentAdHocRide.Location = _AdHocRide.Location;
+            CurrentAdHocRide.ModifiedTimeStamp = _AdHocRide.ModifiedTimeStamp;
+            CurrentAdHocRide.RideDate = _AdHocRide.RideDate;
+            CurrentAdHocRide.RideHour = _AdHocRide.RideHour;
+            CurrentAdHocRide.RideMinute = _AdHocRide.RideMinute;
+            CurrentAdHocRide.RideTime = _AdHocRide.RideTime;
+            CurrentAdHocRide.StartLocation = _AdHocRide.StartLocation;
+            CurrentAdHocRide.CreatedTimeStamp = CurrentAdHocRide.CreatedTimeStamp;
+            CurrentAdHocRide.CreatedBy = CurrentAdHocRide.CreatedBy;
+            context.Entry(CurrentAdHocRide).State = System.Data.Entity.EntityState.Modified;
+        }
     }
 }

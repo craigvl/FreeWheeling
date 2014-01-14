@@ -97,7 +97,7 @@ namespace FreeWheeling.UI.Controllers
             AdHocCreateModel _Ad_HocRide = new AdHocCreateModel();
             _Ad_HocRide.Locations = repository.GetLocations().ToList();
             _Ad_HocRide.RideDate = LocalNow;
-            _Ad_HocRide.DateString = LocalNow.ToShortDateString();
+            _Ad_HocRide.DateString = LocalNow.ToString("dd/MM/yyyy");
             _Ad_HocRide.LocationsId = _Location.id;
             _Ad_HocRide.Hour = 5;
             _Ad_HocRide.Minute = 30;
@@ -133,7 +133,8 @@ namespace FreeWheeling.UI.Controllers
                 RideHour = _RideDate.Hour,
                 RideMinute = _RideDate.Minute,
                 CreatedBy = currentUser.Id,
-                CreatedTimeStamp = LocalNow
+                CreatedTimeStamp = LocalNow,
+                ModifiedTimeStamp = LocalNow
             };
 
             repository.AddAdHocRide(NewAdHoc);

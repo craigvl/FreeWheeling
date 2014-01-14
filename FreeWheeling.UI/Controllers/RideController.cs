@@ -175,13 +175,65 @@ namespace FreeWheeling.UI.Controllers
 
         public ActionResult EditAdHocRide(int adhocrideid)
         {
-            return View();
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
+            Ad_HocRide CurrentRide = repository.GetAdHocRideByID(adhocrideid);
+
+            EditAdHocRideModel _EditAdHocRideModel = new EditAdHocRideModel { AverageSpeed = CurrentRide.AverageSpeed,
+                                                                              Locations = repository.GetLocations().ToList(),
+                                                                              Name = CurrentRide.Name,
+                                                                              RideDate = CurrentRide.RideDate,
+                                                                              RideHour = CurrentRide.RideHour,
+                                                                              RideMinute = CurrentRide.RideMinute,
+                                                                              RideTime = CurrentRide.RideTime,
+                                                                              StartLocation = CurrentRide.StartLocation,
+                                                                              LocationsId = CurrentRide.Location.id,
+                                                                              adhocrideid = adhocrideid,
+                                                                              DateString = CurrentRide.RideDate.ToString("dd/MM/yyyy")
+            };
+
+            return View(_EditAdHocRideModel);
+
         }
 
         [HttpPost]
-        public ActionResult EditAdHocRide()
+        public ActionResult EditAdHocRide(EditAdHocRideModel _EditAdHocRideModel)
         {
-            return View();
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            Location _Location = repository.GetLocations().Where(l => l.id == _EditAdHocRideModel.LocationsId).FirstOrDefault();
+
+            DateTime da = DateTime.ParseExact(_EditAdHocRideModel.DateString, "dd/mm/yyyy", null);
+            DateTime _RideDate = da.Date.Add(new TimeSpan(_EditAdHocRideModel.RideHour, _EditAdHocRideModel.RideMinute, 0));
+
+            Ad_HocRide adhoc = new Ad_HocRide
+            {
+                AverageSpeed = _EditAdHocRideModel.AverageSpeed,
+                ModifiedTimeStamp = LocalNow,
+                Name = _EditAdHocRideModel.Name,
+                RideDate = _RideDate,
+                RideHour = _RideDate.Hour,
+                RideMinute = _RideDate.Minute,
+                RideTime = _RideDate.TimeOfDay.ToString(),
+                StartLocation = _EditAdHocRideModel.StartLocation,
+                Location = _Location,
+                id = _EditAdHocRideModel.adhocrideid
+            };
+
+            repository.UpdateAdHocRide(adhoc);
+            repository.Save();
+
+            Ad_HocRide Ah = repository.GetAdHocRideByID(_EditAdHocRideModel.adhocrideid);
+            AdHocViewModel adHocViewModel = new AdHocViewModel { Ride = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime, };
+
+            adHocViewModel.Comments = repository.GetTop2CommentsForAdHocRide(_EditAdHocRideModel.adhocrideid);
+            adHocViewModel.CommentCount = repository.GetCommentCountForAdHocRide(_EditAdHocRideModel.adhocrideid);
+            adHocViewModel.Riders = repository.GetRidersForAdHocRide(_EditAdHocRideModel.adhocrideid, TZone);
+
+            return View("ViewAdHocRide", adHocViewModel);
+
+
         }
 
         public ActionResult AddAdHocComment(int adhocrideid)

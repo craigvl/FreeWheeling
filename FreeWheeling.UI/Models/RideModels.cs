@@ -65,4 +65,21 @@ namespace FreeWheeling.UI.Models
         public List<AdHocComment> Comments { get; set; }
         public int adhocrideid { get; set; }
     }
+
+    public class EditAdHocRideModel
+    {
+
+        public string Name { get; set; }
+        public DateTime RideDate { get; set; }
+        public string RideTime { get; set; }
+        public List<Location> Locations { get; set; }
+        public string DateString { get; set; }
+        public string StartLocation { get; set; }
+        public string AverageSpeed { get; set; }
+        public int RideHour { get; set; }
+        public int RideMinute { get; set; }
+        public int LocationsId { get; set; }
+        public int adhocrideid { get; set; }
+
+    }
 }

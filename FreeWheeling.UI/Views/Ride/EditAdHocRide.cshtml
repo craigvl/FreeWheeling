@@ -1,0 +1,83 @@
+﻿@model FreeWheeling.UI.Models.EditAdHocRideModel
+@{
+    ViewBag.Title = "EditAdHocRide";
+}
+
+<link href="~/Content/datepicker.css" rel="stylesheet" />
+
+@Html.ActionLink("<-- Back to Ride", "ViewAdHocRide", "Ride", new { adhocrideid = @Model.adhocrideid }, new { @class = "btn btn-default" })
+
+<h2>Edit AdHoc Ride</h2>
+@using (Html.BeginForm())
+{
+    @Html.EditorFor(model => model.Name)
+    
+     <p></p>
+        @Html.DropDownListFor(
+             x => x.LocationsId,
+    new SelectList(
+        Model.Locations.ToList().Select(
+                     x => new { Value = x.id, Text = x.Name }
+        ),
+        "Value",
+                 "Text", Model.LocationsId
+    ),  new { @class = "form-control" }
+
+    )
+        
+        <div><span class="RequiredField">*&nbsp;</span>Date</div>
+          
+        <div>
+            @Html.TextBoxFor(model => model.DateString,null, new { id = "MyDate", @class = ""})
+        </div>
+    
+        <div class="span5" id="MyDate2"><div></div></div>
+           
+        <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
+        <div>
+            @Html.TextBoxFor(model => model.RideHour)
+        </div>
+    
+        <div><span class="RequiredField">*&nbsp;</span>Minute</div>
+        <div>
+            @Html.TextBoxFor(model => model.RideMinute)
+        </div>
+           
+        <hr />
+    
+        <div><span class="RequiredField">*&nbsp;</span>Start Location</div>
+        
+        <div> 
+            @Html.TextBoxFor(model => model.StartLocation)
+        </div>
+    
+    <div>
+            <p></p>
+            <input id="btnSubmit" type="submit" value="Update" />
+        </div>
+    
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @*@Scripts.Render("~/bundles/jquerytime")*@
+    <script src="~/Scripts/bootstrap-datepicker.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //$('#MyDate').datepicker({
+            //    format: "dd/mm/yyyy"
+            //});
+
+            $('#MyDate2 div').datepicker({
+            }).on('changeDate', function (e) {
+                $('#MyDate').val(e.format('dd/mm/yyyy'))
+            });
+
+            //$('#MyDate2 div').datepicker('setDate', $('#MyDate').val());
+            //$('#MyDate2 div').datepicker('update');
+            //$('#MyDate2 div').datepicker('update', $('#MyDate').val($.format.date($('#MyDate').val(),'dd/mm/yyyy')));
+            //$('#MyDate2').datepicker('update');
+            
+        });
+    </script>
+}

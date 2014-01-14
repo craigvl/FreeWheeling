@@ -69,6 +69,10 @@
     <Compile Include="DataContexts\CycleMigrations\201401120022387_another.Designer.cs">
       <DependentUpon>201401120022387_another.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201401132132349_AddedModifiedTimeStamp.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201401132132349_AddedModifiedTimeStamp.Designer.cs">
+      <DependentUpon>201401132132349_AddedModifiedTimeStamp.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\AdHocComment.cs" />
     <Compile Include="Entities\Comment.cs" />
@@ -102,6 +106,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\CycleMigrations\201401120022387_another.resx">
       <DependentUpon>201401120022387_another.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201401132132349_AddedModifiedTimeStamp.resx">
+      <DependentUpon>201401132132349_AddedModifiedTimeStamp.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
