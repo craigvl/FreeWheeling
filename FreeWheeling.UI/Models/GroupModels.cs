@@ -17,6 +17,7 @@ namespace FreeWheeling.UI.Models
         public List<NextRideDetails> _NextRideDetails;
         public string UserLocation;
         public string title;
+        public List<int> _OwnerGroupList;
     }
 
     public class AdHocRidesModel

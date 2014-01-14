@@ -43,6 +43,7 @@ namespace FreeWheeling.UI.Controllers
             TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
 
+            _GroupModel._OwnerGroupList = new List<int>();
 
             foreach (Group item in _GroupModel._Groups)
             {
@@ -62,6 +63,13 @@ namespace FreeWheeling.UI.Controllers
                         repository.Save();
                     }
                     
+                }
+
+                if (repository.IsGroupCreator(item.id,currentUser.Id))
+                {
+
+                    _GroupModel._OwnerGroupList.Add(item.id);
+
                 }
                 
             }
@@ -166,6 +174,16 @@ namespace FreeWheeling.UI.Controllers
 
         }
 
+        public ActionResult EditGroup(int groupId)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult EditGroup()
+        {
+            return View();
+        }
 
         public ActionResult Create()
         {
@@ -194,6 +212,7 @@ namespace FreeWheeling.UI.Controllers
             TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            
 
             foreach (DayOfWeekViewModel item in _GroupCreateModel.DaysOfWeek)
             {
@@ -217,6 +236,7 @@ namespace FreeWheeling.UI.Controllers
                 RideHour = _GroupCreateModel.Hour,
                 RideMinute = _GroupCreateModel.Minute,
                 CreatedBy = currentUser.Id,
+                ModifiedTimeStamp = LocalNow,              
                 CreatedTimeStamp = LocalNow
             };
 
@@ -232,6 +252,7 @@ namespace FreeWheeling.UI.Controllers
             _GroupModel._NextRideDetails = new List<NextRideDetails>();
             _GroupModel.UserLocation = repository.GetLocationName(currentUser.LocationID);
             _GroupModel.title = "All Groups";
+            _GroupModel._OwnerGroupList = new List<int>();
 
             foreach (Group item in _GroupModel._Groups)
             {
@@ -242,6 +263,13 @@ namespace FreeWheeling.UI.Controllers
                 if (NextRide != null)
                 {
                     _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
+                }
+
+                if (repository.IsGroupCreator(item.id, currentUser.Id))
+                {
+
+                    _GroupModel._OwnerGroupList.Add(item.id);
+
                 }
 
             }

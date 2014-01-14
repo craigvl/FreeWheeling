@@ -162,17 +162,6 @@ namespace FreeWheeling.UI.Controllers
 
         }
 
-        public ActionResult EditRide(int adhocrideid)
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult EditRide()
-        {
-            return View();
-        }
-
         public ActionResult EditAdHocRide(int adhocrideid)
         {
             TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");

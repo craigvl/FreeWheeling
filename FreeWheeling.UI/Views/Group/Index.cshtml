@@ -25,6 +25,17 @@
                     int RiderCount = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(g => g.NumberofRiders).FirstOrDefault();
 
                     DateTime NextRideDate = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(g => g.Date).FirstOrDefault();
+                    
+                    
+                    bool isCreator = Model._OwnerGroupList.Contains(item.id);
+                    
+                    if(isCreator)
+                    {
+                        
+                        @Html.ActionLink(" ", "EditGroup", "Group", new { groupId = item.id }, new { @class = "glyphicon glyphicon-pencil" })
+                        
+                    }
+                    
 
                     if (isMember)
                     {
