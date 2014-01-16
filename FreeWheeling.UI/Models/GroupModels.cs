@@ -72,7 +72,7 @@ namespace FreeWheeling.UI.Models
         DaysOfWeek = new[]
         {
             new DayOfWeekViewModel { Name = "Monday" },
-            new DayOfWeekViewModel { Name = "Tuesday" },
+            new DayOfWeekViewModel { Name = "Tuesday" }, 
             new DayOfWeekViewModel { Name = "Wednesday" },
             new DayOfWeekViewModel { Name = "Thursday" },
             new DayOfWeekViewModel { Name = "Friday" },
@@ -113,7 +113,6 @@ namespace FreeWheeling.UI.Models
     {
         public int id { get; set; }
         public List<Group> CycleGroups { get;set; }
-
     }
 
     public class NextRideDetails
@@ -127,5 +126,33 @@ namespace FreeWheeling.UI.Models
     {
         public string StartLocation {get;set;}
         public string AverageSpeed {get;set;}
+    }
+
+    public class EditGroupModel
+    {
+        public EditGroupModel()
+        {
+            DaysOfWeek = new[]
+            {
+                new DayOfWeekViewModel { Name = "Monday" },
+                new DayOfWeekViewModel { Name = "Tuesday" },
+                new DayOfWeekViewModel { Name = "Wednesday" },
+                new DayOfWeekViewModel { Name = "Thursday" },
+                new DayOfWeekViewModel { Name = "Friday" },
+                new DayOfWeekViewModel { Name = "Saturday" },
+                new DayOfWeekViewModel { Name = "Sunday" },
+            }.ToList();
+        }
+
+        public int GroupId { get; set; }
+        public string Name { get; set; }
+        public string StartLocation { get; set; }
+        public string AverageSpeed { get; set; }
+        public int Hour { get; set; }
+        public int Minute { get; set; }
+        public int LocationsId { get; set; }
+        public List<Location> Locations { get; set; }
+        public IList<DayOfWeekViewModel> DaysOfWeek { get; set; }
+        
     }
 }

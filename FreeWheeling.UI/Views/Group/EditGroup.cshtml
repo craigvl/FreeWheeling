@@ -1,0 +1,76 @@
+﻿@model FreeWheeling.UI.Models.EditGroupModel
+@{
+    ViewBag.Title = "EditGroup";
+}
+
+@Html.ActionLink("Back Home <---", "Index", "Home", null, new { @class = "btn btn-info" })
+
+<h2>Edit Group</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div><span class="RequiredField">*&nbsp;</span>Group Name:</div>
+    <div>
+        @Html.TextBoxFor(model => model.Name)
+    </div>
+    <div>
+        <p></p>
+        @Html.DropDownListFor(
+             x => x.LocationsId,
+    new SelectList(
+        Model.Locations.ToList().Select(
+                     x => new { Value = x.id, Text = x.Name }
+        ),
+        "Value",
+                 "Text", Model.LocationsId
+    ), "-- Group Location --", new { @class = "form-control" }
+)
+        <p></p>
+    </div>
+
+    <div>   Days Of Week</div>
+    <div>
+        @for (int i = 0; i < Model.DaysOfWeek.Count; i++)
+        {
+            <div>
+                @Html.HiddenFor(x => x.DaysOfWeek[i].Name)
+                @Html.CheckBoxFor(x => x.DaysOfWeek[i].Checked)
+                @Html.LabelFor(x => x.DaysOfWeek[i].Checked, Model.DaysOfWeek[i].Name)
+            </div>
+        }
+    </div>
+    <hr />
+    <div>Time</div>
+    <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
+    <div>
+        @Html.TextBoxFor(model => model.Hour)
+    </div>
+
+    <div><span class="RequiredField">*&nbsp;</span>Minute</div>
+    <div>
+        @Html.TextBoxFor(model => model.Minute)
+        @*@Html.DropDownListFor(model => model.AM_PM, Model.AM_PMList)*@
+    </div>
+
+    <div><span class="RequiredField">*&nbsp;</span>Start Location</div>
+
+    <div>
+        @Html.TextBoxFor(model => model.StartLocation)
+    </div>
+
+    @*<div><span class="RequiredField">*&nbsp;</span>Average Speed</div>
+
+        <div>
+            @Html.TextBoxFor(model => model.AverageSpeed)
+        </div>*@
+
+    <div>
+        <p></p>
+        <input id="btnSubmit" type="submit" value="Update" />
+    </div>
+
+}
+

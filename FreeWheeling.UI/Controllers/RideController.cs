@@ -178,7 +178,7 @@ namespace FreeWheeling.UI.Controllers
                                                                               StartLocation = CurrentRide.StartLocation,
                                                                               LocationsId = CurrentRide.Location.id,
                                                                               adhocrideid = adhocrideid,
-                                                                              DateString = CurrentRide.RideDate.ToString("dd/MM/yyyy")
+                                                                              DateString = CurrentRide.RideDate.ToString("dd/MM/yyyy")                                                                             
             };
 
             return View(_EditAdHocRideModel);
@@ -207,7 +207,7 @@ namespace FreeWheeling.UI.Controllers
                 RideTime = _RideDate.TimeOfDay.ToString(),
                 StartLocation = _EditAdHocRideModel.StartLocation,
                 Location = _Location,
-                id = _EditAdHocRideModel.adhocrideid
+                id = _EditAdHocRideModel.adhocrideid,                
             };
 
             repository.UpdateAdHocRide(adhoc);
@@ -219,9 +219,9 @@ namespace FreeWheeling.UI.Controllers
             adHocViewModel.Comments = repository.GetTop2CommentsForAdHocRide(_EditAdHocRideModel.adhocrideid);
             adHocViewModel.CommentCount = repository.GetCommentCountForAdHocRide(_EditAdHocRideModel.adhocrideid);
             adHocViewModel.Riders = repository.GetRidersForAdHocRide(_EditAdHocRideModel.adhocrideid, TZone);
+            adHocViewModel.IsOwner = repository.IsAdHocCreator(_EditAdHocRideModel.adhocrideid, currentUser.Id);
 
             return View("ViewAdHocRide", adHocViewModel);
-
 
         }
 

@@ -176,7 +176,44 @@ namespace FreeWheeling.UI.Controllers
 
         public ActionResult EditGroup(int groupId)
         {
-            return View();
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
+
+            Group CurrentGroup = repository.GetGroupByID(groupId);
+
+            EditGroupModel _EditGroupModel = new EditGroupModel
+            {
+                AverageSpeed = CurrentGroup.AverageSpeed,
+                GroupId = groupId,
+                Hour = CurrentGroup.RideHour,
+                Minute = CurrentGroup.RideMinute,
+                LocationsId = CurrentGroup.Location.id,
+                Name = CurrentGroup.name,
+                StartLocation = CurrentGroup.StartLocation,
+                Locations = repository.GetLocations().ToList()
+            };
+
+            _EditGroupModel.LocationsId = repository.GetLocations().Where(l => l.id == CurrentGroup.Location.id).Select(t => t.id).FirstOrDefault();
+
+            foreach (DayOfWeekViewModel ditem in _EditGroupModel.DaysOfWeek)
+            {
+
+                foreach (CycleDays item in CurrentGroup.RideDays)
+                {
+
+                    if (ditem.Name == item.DayOfWeek)
+                    {
+
+                        ditem.Checked = true;
+
+
+                    }
+
+
+                }
+
+            }
+            return View(_EditGroupModel);
         }
 
         [HttpPost]
