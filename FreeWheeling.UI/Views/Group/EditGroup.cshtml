@@ -37,7 +37,7 @@
         {
             <div>
                 @Html.HiddenFor(x => x.DaysOfWeek[i].Name)
-                @Html.CheckBoxFor(x => x.DaysOfWeek[i].Checked)
+                @Html.CheckBoxFor(x => x.DaysOfWeek[i].Checked, new { @disabled = "disabled" })
                 @Html.LabelFor(x => x.DaysOfWeek[i].Checked, Model.DaysOfWeek[i].Name)
             </div>
         }

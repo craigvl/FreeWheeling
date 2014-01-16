@@ -489,10 +489,20 @@ namespace FreeWheeling.Domain.Concrete
 
         }
 
-
         public void UpdateGroup(Group _Group)
         {
-            throw new NotImplementedException();
+            Group CurrentGroup = context.Groups.Where(i => i.id == _Group.id).FirstOrDefault();
+            CurrentGroup.name = _Group.name;
+            CurrentGroup.AverageSpeed = _Group.AverageSpeed;
+            CurrentGroup.Location = _Group.Location;
+            CurrentGroup.ModifiedTimeStamp = _Group.ModifiedTimeStamp;
+            CurrentGroup.RideHour = _Group.RideHour;
+            CurrentGroup.RideMinute = _Group.RideMinute;
+            CurrentGroup.RideTime = _Group.RideTime;
+            CurrentGroup.StartLocation = _Group.StartLocation;
+            CurrentGroup.CreatedTimeStamp = CurrentGroup.CreatedTimeStamp;
+            CurrentGroup.CreatedBy = CurrentGroup.CreatedBy;
+            context.Entry(CurrentGroup).State = System.Data.Entity.EntityState.Modified;
         }
 
         public void UpdateAdHocRide(Ad_HocRide _AdHocRide)
@@ -510,6 +520,21 @@ namespace FreeWheeling.Domain.Concrete
             CurrentAdHocRide.CreatedTimeStamp = CurrentAdHocRide.CreatedTimeStamp;
             CurrentAdHocRide.CreatedBy = CurrentAdHocRide.CreatedBy;
             context.Entry(CurrentAdHocRide).State = System.Data.Entity.EntityState.Modified;
+        }
+
+
+        public void UpdateRideTimes(Group _Group)
+        {
+            //Need to do work here if the time is less than current time and same day then might need to create new ride date 
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            Group CurrentGroup = context.Groups.Where(i => i.id == _Group.id).FirstOrDefault();
+            foreach (Ride _Ride in CurrentGroup.Rides)
+            {
+                //_Ride.RideDate = TimeZoneInfo.ConvertTimeToUtc(_Ride.RideDate, TZone);
+                _Ride.RideDate = new DateTime(_Ride.RideDate.Year, _Ride.RideDate.Month, _Ride.RideDate.Day, _Group.RideHour, _Group.RideMinute, 0);
+                _Ride.RideTime = _Group.RideTime;
+            }
+            context.Entry(CurrentGroup).State = System.Data.Entity.EntityState.Modified;
         }
     }
 }

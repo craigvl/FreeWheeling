@@ -58,6 +58,7 @@ namespace FreeWheeling.Domain.Abstract
 
         void AddGroup(Group _Group);
         void UpdateGroup(Group _Group);
+        void UpdateRideTimes(Group _Group);
 
         void AddAdHocRide(Ad_HocRide _AdHocRide);
         void UpdateAdHocRide(Ad_HocRide _AdHocRide);
