@@ -164,6 +164,50 @@ namespace FreeWheeling.UI.Controllers
 
         }
 
+        public ActionResult DeleteAdHocRide(int adhocrideid)
+        {
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+
+            if (!repository.IsAdHocCreator(adhocrideid, currentUser.Id))
+            {
+
+                return RedirectToAction("AddHocList", "Ride");
+
+            }
+            else
+            {
+                Ad_HocRide CurrentRide = repository.GetAdHocRideByID(adhocrideid);
+                DeleteAdHocRideModel _DeleteAdHocRideModel = new DeleteAdHocRideModel { AdHocId = adhocrideid, Name = CurrentRide.Name };
+                return View(_DeleteAdHocRideModel);
+
+            }
+
+
+        }
+
+
+        [HttpPost, ActionName("DeleteAdHocRide")]
+        public ActionResult DeleteConfirmed(int adhocrideid)
+        {
+
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+
+            if (!repository.IsAdHocCreator(adhocrideid, currentUser.Id))
+            {
+
+                return RedirectToAction("AddHocList", "Ride");
+
+            }
+            else
+            {
+                repository.DeleteAdHocRide(adhocrideid);
+                repository.Save();
+                return RedirectToAction("AddHocList", "Ride");
+            }
+
+
+        }
+
         public ActionResult EditAdHocRide(int adhocrideid)
         {
 

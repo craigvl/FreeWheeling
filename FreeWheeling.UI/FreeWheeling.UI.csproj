@@ -366,6 +366,7 @@
     <Content Include="Views\Ride\SeeAllAdHocComments.cshtml" />
     <Content Include="Views\Ride\EditAdHocRide.cshtml" />
     <Content Include="Views\Group\EditGroup.cshtml" />
+    <Content Include="Views\Ride\DeleteAdHocRide.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

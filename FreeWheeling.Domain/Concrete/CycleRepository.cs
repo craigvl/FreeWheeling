@@ -541,5 +541,25 @@ namespace FreeWheeling.Domain.Concrete
             }
             context.Entry(CurrentGroup).State = System.Data.Entity.EntityState.Modified;
         }
+
+
+        public void DeleteGroup(int GroupId)
+        {
+            Group CurrentGroup = context.Groups.Where(g => g.id == GroupId).FirstOrDefault();
+
+            context.Groups.Remove(CurrentGroup);
+
+            context.Entry(CurrentGroup).State = System.Data.Entity.EntityState.Deleted;
+        }
+
+        public void DeleteAdHocRide(int AdHocId)
+        {
+            Ad_HocRide CurrentAdHocRide = context.Ad_HocRide.Where(g => g.id == AdHocId).FirstOrDefault();
+
+            context.Ad_HocRide.Remove(CurrentAdHocRide);
+
+            context.Entry(CurrentAdHocRide).State = System.Data.Entity.EntityState.Deleted;
+
+        }
     }
 }

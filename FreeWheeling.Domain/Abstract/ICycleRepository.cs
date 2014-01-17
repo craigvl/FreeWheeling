@@ -57,11 +57,14 @@ namespace FreeWheeling.Domain.Abstract
 
 
         void AddGroup(Group _Group);
+        
         void UpdateGroup(Group _Group);
         void UpdateRideTimes(Group _Group);
+        void DeleteGroup(int GroupId);
 
         void AddAdHocRide(Ad_HocRide _AdHocRide);
         void UpdateAdHocRide(Ad_HocRide _AdHocRide);
+        void DeleteAdHocRide(int AdHocId);
 
         void AddRideComment(string Comment, int RideId, string UserName);
         void AddAdHocRideComment(string Comment, int RideId, string UserName);

@@ -83,4 +83,10 @@ namespace FreeWheeling.UI.Models
         public string Description { get; set; }
 
     }
+
+    public class DeleteAdHocRideModel
+    {
+        public int AdHocId { get; set; }
+        public string Name { get; set; }
+    }
 }

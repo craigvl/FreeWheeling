@@ -157,4 +157,10 @@ namespace FreeWheeling.UI.Models
         public IList<DayOfWeekViewModel> DaysOfWeek { get; set; }
         public string Description { get; set; }        
     }
+
+    public class DeleteGroupModel
+    {
+        public int GroupId { get; set; }
+        public string Name { get; set; }
+    }
 }

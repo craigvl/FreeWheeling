@@ -7,6 +7,8 @@
 
 @Html.ActionLink("<-- Back to Ride", "ViewAdHocRide", "Ride", new { adhocrideid = @Model.adhocrideid }, new { @class = "btn btn-default" })
 
+@Html.ActionLink("Delete", "DeleteAdHocRide", "Ride", new { adhocrideid = @Model.adhocrideid }, new { @class = "btn btn-default" })
+
 <h2>Edit AdHoc Ride</h2>
 @using (Html.BeginForm())
 {
