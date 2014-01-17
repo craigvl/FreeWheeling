@@ -312,6 +312,50 @@ namespace FreeWheeling.UI.Controllers
 
         }
 
+        public ActionResult DeleteGroup(int GroupId)
+        {
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+
+            if (!repository.IsGroupCreator(GroupId, currentUser.Id))
+            {
+
+                return RedirectToAction("Index", "Group");
+
+            }
+            else
+            {
+                Group CurrentGroup = repository.GetGroupByID(GroupId);
+                DeleteGroupModel _DeleteGroupModel = new DeleteGroupModel { GroupId = GroupId, Name = CurrentGroup.name };
+                return View(_DeleteGroupModel);
+
+            }
+
+
+        }
+
+
+        [HttpPost, ActionName("DeleteGroup")]
+        public ActionResult DeleteConfirmed(int GroupId)
+        {
+
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+
+            if (!repository.IsGroupCreator(GroupId, currentUser.Id))
+            {
+
+                return RedirectToAction("Index", "Group");
+
+            }
+            else
+            {
+                repository.DeleteGroup(GroupId);
+                repository.Save();
+                return RedirectToAction("Index", "Group");
+            }
+
+
+        }
+
         public ActionResult Create()
         {
 

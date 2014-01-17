@@ -350,7 +350,6 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Group\Create.cshtml" />
-    <Content Include="Views\Group\Delete.cshtml" />
     <Content Include="Views\Group\Index.cshtml" />
     <Content Include="Views\Ride\Index.cshtml" />
     <Content Include="Views\Ride\NextRide.cshtml" />
@@ -367,6 +366,7 @@
     <Content Include="Views\Ride\EditAdHocRide.cshtml" />
     <Content Include="Views\Group\EditGroup.cshtml" />
     <Content Include="Views\Ride\DeleteAdHocRide.cshtml" />
+    <Content Include="Views\Group\DeleteGroup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

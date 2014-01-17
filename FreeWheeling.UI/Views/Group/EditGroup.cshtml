@@ -5,6 +5,9 @@
 
 @Html.ActionLink("Back Home <---", "Index", "Home", null, new { @class = "btn btn-info" })
 
+@Html.ActionLink("Delete", "DeleteGroup", "Group", new { GroupId = @Model.GroupId }, new { @class = "btn btn-default" })
+
+
 <h2>Edit Group</h2>
 
 @using (Html.BeginForm())
