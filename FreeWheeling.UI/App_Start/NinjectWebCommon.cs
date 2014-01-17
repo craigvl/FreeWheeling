@@ -12,6 +12,9 @@ namespace FreeWheeling.UI.App_Start
     using Ninject.Web.Common;
     using FreeWheeling.Domain.Abstract;
     using FreeWheeling.Domain.Concrete;
+    using Ninject.Web.Mvc.FilterBindingSyntax;
+    using FreeWheeling.UI.Filters;
+    using System.Web.Mvc;
 
     public static class NinjectWebCommon 
     {
@@ -57,6 +60,13 @@ namespace FreeWheeling.UI.App_Start
         {
 
             kernel.Bind<ICycleRepository>().To<CycleRepository>();
+
+        //Can you the below to control user access to action methods.
+        //         kernel.BindFilter<RoleAttribute>(FilterScope.Action, 0).When(
+        // (controllerContext, actionDescriptor) => actionDescriptor.ActionName == "EditAdHocRide");
+
+        //         kernel.BindFilter<RoleAttribute>(FilterScope.Action, 0).When(
+        //(controllerContext, actionDescriptor) => actionDescriptor.ActionName == "EditGroup");
 
         }        
     }

@@ -23,5 +23,6 @@ namespace FreeWheeling.Domain.Entities
         public string CreatedBy { get; set; }
         public DateTime CreatedTimeStamp { get; set; }
         public DateTime ModifiedTimeStamp { get; set; }
+        public string Description { get; set; }
     }
 }

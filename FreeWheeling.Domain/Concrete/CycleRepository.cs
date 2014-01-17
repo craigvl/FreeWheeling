@@ -478,6 +478,11 @@ namespace FreeWheeling.Domain.Concrete
         {
             Group CurrentGroup = GetGroupByID(_GroupId);
 
+            if (CurrentGroup == null)
+            {
+                return false;
+            }
+
             if (CurrentGroup.CreatedBy == UserId)
             {
                 return true;

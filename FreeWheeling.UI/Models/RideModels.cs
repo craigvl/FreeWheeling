@@ -80,6 +80,7 @@ namespace FreeWheeling.UI.Models
         public int RideMinute { get; set; }
         public int LocationsId { get; set; }
         public int adhocrideid { get; set; }
+        public string Description { get; set; }
 
     }
 }

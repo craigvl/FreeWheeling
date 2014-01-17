@@ -90,6 +90,7 @@ namespace FreeWheeling.UI.Controllers
 
             _MoreGroupDetailsModel.AverageSpeed = _Group.AverageSpeed;
             _MoreGroupDetailsModel.StartLocation = _Group.StartLocation;
+            _MoreGroupDetailsModel.Description = _Group.Description;
 
             //Name of our PartialView is Restaurant
             return PartialView("_GroupDetailPartial", _MoreGroupDetailsModel);
@@ -110,9 +111,7 @@ namespace FreeWheeling.UI.Controllers
             _Ad_HocRide.Hour = 5;
             _Ad_HocRide.Minute = 30;
        
-
             return View(_Ad_HocRide);
-
         }
 
         [HttpPost]
@@ -137,6 +136,7 @@ namespace FreeWheeling.UI.Controllers
                 RideDate = _RideDate,
                 Creator = currentUser.UserName,
                 StartLocation = _AdHocCreateModel.StartLocation,
+                Description = _AdHocCreateModel.Description,
                 RideTime = _RideDate.TimeOfDay.ToString(),
                 RideHour = _RideDate.Hour,
                 RideMinute = _RideDate.Minute,
@@ -171,49 +171,61 @@ namespace FreeWheeling.UI.Controllers
             _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
 
             return RedirectToAction("index", "home");   
-
         }
 
         public ActionResult EditGroup(int groupId)
         {
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
-            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
 
-            Group CurrentGroup = repository.GetGroupByID(groupId);
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
-            EditGroupModel _EditGroupModel = new EditGroupModel
-            {
-                AverageSpeed = CurrentGroup.AverageSpeed,
-                GroupId = groupId,
-                Hour = CurrentGroup.RideHour,
-                Minute = CurrentGroup.RideMinute,
-                LocationsId = CurrentGroup.Location.id,
-                Name = CurrentGroup.name,
-                StartLocation = CurrentGroup.StartLocation,
-                Locations = repository.GetLocations().ToList()
-            };
-
-            _EditGroupModel.LocationsId = repository.GetLocations().Where(l => l.id == CurrentGroup.Location.id).Select(t => t.id).FirstOrDefault();
-
-            foreach (DayOfWeekViewModel ditem in _EditGroupModel.DaysOfWeek)
+            if (!repository.IsGroupCreator(groupId, currentUser.Id))
             {
 
-                foreach (CycleDays item in CurrentGroup.RideDays)
+                return RedirectToAction("Index", "Group");
+
+            }
+            else
+            {
+
+                TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+                DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
+
+                Group CurrentGroup = repository.GetGroupByID(groupId);
+
+                EditGroupModel _EditGroupModel = new EditGroupModel
+                {
+                    AverageSpeed = CurrentGroup.AverageSpeed,
+                    GroupId = groupId,
+                    Hour = CurrentGroup.RideHour,
+                    Minute = CurrentGroup.RideMinute,
+                    LocationsId = CurrentGroup.Location.id,
+                    Name = CurrentGroup.name,
+                    StartLocation = CurrentGroup.StartLocation,
+                    Locations = repository.GetLocations().ToList()
+                };
+
+                _EditGroupModel.LocationsId = repository.GetLocations().Where(l => l.id == CurrentGroup.Location.id).Select(t => t.id).FirstOrDefault();
+
+                foreach (DayOfWeekViewModel ditem in _EditGroupModel.DaysOfWeek)
                 {
 
-                    if (ditem.Name == item.DayOfWeek)
+                    foreach (CycleDays item in CurrentGroup.RideDays)
                     {
 
-                        ditem.Checked = true;
+                        if (ditem.Name == item.DayOfWeek)
+                        {
+
+                            ditem.Checked = true;
+
+
+                        }
 
 
                     }
 
-
                 }
-
+                return View(_EditGroupModel);
             }
-            return View(_EditGroupModel);
         }
 
         [HttpPost]
@@ -348,6 +360,7 @@ namespace FreeWheeling.UI.Controllers
                 RideTime = _GroupCreateModel.Hour.ToString() +":"+ _GroupCreateModel.Minute.ToString() + " " + _GroupCreateModel.AM_PM,
                 RideDays = _CycleDays, Location = _Location, Rides = new List<Ride>(), AverageSpeed = _GroupCreateModel.AverageSpeed, 
                 StartLocation = _GroupCreateModel.StartLocation,
+                Description = _GroupCreateModel.Description,
                 RideHour = _GroupCreateModel.Hour,
                 RideMinute = _GroupCreateModel.Minute,
                 CreatedBy = currentUser.Id,

@@ -8,9 +8,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using FreeWheeling.UI.Filters;
 
 namespace FreeWheeling.UI.Controllers
 {
+    [Authorize]
     public class RideController : Controller
     {
         private IdentityDb idb = new IdentityDb(); 
@@ -164,25 +166,39 @@ namespace FreeWheeling.UI.Controllers
 
         public ActionResult EditAdHocRide(int adhocrideid)
         {
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
-            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
-            Ad_HocRide CurrentRide = repository.GetAdHocRideByID(adhocrideid);
 
-            EditAdHocRideModel _EditAdHocRideModel = new EditAdHocRideModel { AverageSpeed = CurrentRide.AverageSpeed,
-                                                                              Locations = repository.GetLocations().ToList(),
-                                                                              Name = CurrentRide.Name,
-                                                                              RideDate = CurrentRide.RideDate,
-                                                                              RideHour = CurrentRide.RideHour,
-                                                                              RideMinute = CurrentRide.RideMinute,
-                                                                              RideTime = CurrentRide.RideTime,
-                                                                              StartLocation = CurrentRide.StartLocation,
-                                                                              LocationsId = CurrentRide.Location.id,
-                                                                              adhocrideid = adhocrideid,
-                                                                              DateString = CurrentRide.RideDate.ToString("dd/MM/yyyy")                                                                             
-            };
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
-            return View(_EditAdHocRideModel);
+            if (!repository.IsAdHocCreator(adhocrideid,currentUser.Id))
+            {
 
+                 return RedirectToAction("AddHocList", "Ride");
+
+            }
+            else
+            {
+
+                TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+                DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
+                Ad_HocRide CurrentRide = repository.GetAdHocRideByID(adhocrideid);
+
+                EditAdHocRideModel _EditAdHocRideModel = new EditAdHocRideModel
+                {
+                    AverageSpeed = CurrentRide.AverageSpeed,
+                    Locations = repository.GetLocations().ToList(),
+                    Name = CurrentRide.Name,
+                    RideDate = CurrentRide.RideDate,
+                    RideHour = CurrentRide.RideHour,
+                    RideMinute = CurrentRide.RideMinute,
+                    RideTime = CurrentRide.RideTime,
+                    StartLocation = CurrentRide.StartLocation,
+                    LocationsId = CurrentRide.Location.id,
+                    adhocrideid = adhocrideid,
+                    DateString = CurrentRide.RideDate.ToString("dd/MM/yyyy")
+                };
+
+                return View(_EditAdHocRideModel);
+            }
         }
 
         [HttpPost]
