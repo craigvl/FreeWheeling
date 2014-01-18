@@ -95,7 +95,10 @@ namespace FreeWheeling.UI.Controllers
             AdHocViewModel adHocViewModel = new AdHocViewModel { Ride = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime };
             adHocViewModel.CommentCount = repository.GetCommentCountForAdHocRide(adhocrideid);
             adHocViewModel.IsOwner = repository.IsAdHocCreator(adhocrideid, currentUser.Id);
+            adHocViewModel.MapUrl =
+            string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", Ah.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
 
+                //https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D108681
 
             TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
             adHocViewModel.Riders = repository.GetRidersForAdHocRide(adhocrideid,TZone);
@@ -238,7 +241,8 @@ namespace FreeWheeling.UI.Controllers
                     StartLocation = CurrentRide.StartLocation,
                     LocationsId = CurrentRide.Location.id,
                     adhocrideid = adhocrideid,
-                    DateString = CurrentRide.RideDate.ToString("dd/MM/yyyy")
+                    DateString = CurrentRide.RideDate.ToString("dd/MM/yyyy"),
+                    MapUrl = CurrentRide.MapUrl
                 };
 
                 return View(_EditAdHocRideModel);
@@ -267,14 +271,18 @@ namespace FreeWheeling.UI.Controllers
                 RideTime = _RideDate.TimeOfDay.ToString(),
                 StartLocation = _EditAdHocRideModel.StartLocation,
                 Location = _Location,
-                id = _EditAdHocRideModel.adhocrideid,                
+                id = _EditAdHocRideModel.adhocrideid,
+                MapUrl = _EditAdHocRideModel.MapUrl
             };
 
             repository.UpdateAdHocRide(adhoc);
             repository.Save();
 
             Ad_HocRide Ah = repository.GetAdHocRideByID(_EditAdHocRideModel.adhocrideid);
-            AdHocViewModel adHocViewModel = new AdHocViewModel { Ride = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime, };
+            AdHocViewModel adHocViewModel = new AdHocViewModel { Ride = Ah,
+                                                                 RideDate = Ah.RideDate,
+                                                                 RideTime = Ah.RideTime,
+                                                                 MapUrl = string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", Ah.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>")};
 
             adHocViewModel.Comments = repository.GetTop2CommentsForAdHocRide(_EditAdHocRideModel.adhocrideid);
             adHocViewModel.CommentCount = repository.GetCommentCountForAdHocRide(_EditAdHocRideModel.adhocrideid);

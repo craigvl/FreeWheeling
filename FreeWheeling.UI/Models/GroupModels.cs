@@ -63,6 +63,8 @@ namespace FreeWheeling.UI.Models
         public string AverageSpeed { get; set; }
         public string Creator { get; set; }
         public string Description { get; set; }
+        public string MapUrl { get; set; }
+
     }
     
     public class GroupCreateModel
@@ -108,6 +110,8 @@ namespace FreeWheeling.UI.Models
     public string StartLocation { get; set; }
     public string AverageSpeed { get; set; }
     public string Description { get; set; }
+    public string MapUrl { get; set; }
+
     }
 
     public class MyGroupsModel
@@ -155,7 +159,9 @@ namespace FreeWheeling.UI.Models
         public int LocationsId { get; set; }
         public List<Location> Locations { get; set; }
         public IList<DayOfWeekViewModel> DaysOfWeek { get; set; }
-        public string Description { get; set; }        
+        public string Description { get; set; }
+        public string MapUrl { get; set; }
+        
     }
 
     public class DeleteGroupModel

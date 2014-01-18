@@ -142,7 +142,8 @@ namespace FreeWheeling.UI.Controllers
                 RideMinute = _RideDate.Minute,
                 CreatedBy = currentUser.Id,
                 CreatedTimeStamp = LocalNow,
-                ModifiedTimeStamp = LocalNow
+                ModifiedTimeStamp = LocalNow,
+                MapUrl = _AdHocCreateModel.MapUrl
             };
 
             repository.AddAdHocRide(NewAdHoc);
@@ -409,7 +410,8 @@ namespace FreeWheeling.UI.Controllers
                 RideMinute = _GroupCreateModel.Minute,
                 CreatedBy = currentUser.Id,
                 ModifiedTimeStamp = LocalNow,              
-                CreatedTimeStamp = LocalNow
+                CreatedTimeStamp = LocalNow,
+                MapUrl = _GroupCreateModel.MapUrl
             };
 
             repository.AddGroup(NewGroup);

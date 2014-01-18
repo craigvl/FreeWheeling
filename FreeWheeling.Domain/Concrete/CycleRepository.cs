@@ -507,6 +507,7 @@ namespace FreeWheeling.Domain.Concrete
             CurrentGroup.StartLocation = _Group.StartLocation;
             CurrentGroup.CreatedTimeStamp = CurrentGroup.CreatedTimeStamp;
             CurrentGroup.CreatedBy = CurrentGroup.CreatedBy;
+            CurrentGroup.MapUrl = _Group.MapUrl;
             context.Entry(CurrentGroup).State = System.Data.Entity.EntityState.Modified;
         }
 
@@ -524,6 +525,7 @@ namespace FreeWheeling.Domain.Concrete
             CurrentAdHocRide.StartLocation = _AdHocRide.StartLocation;
             CurrentAdHocRide.CreatedTimeStamp = CurrentAdHocRide.CreatedTimeStamp;
             CurrentAdHocRide.CreatedBy = CurrentAdHocRide.CreatedBy;
+            CurrentAdHocRide.MapUrl = _AdHocRide.MapUrl;
             context.Entry(CurrentAdHocRide).State = System.Data.Entity.EntityState.Modified;
         }
 

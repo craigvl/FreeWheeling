@@ -44,6 +44,7 @@ namespace FreeWheeling.UI.Models
         public List<AdHocComment> Comments { get; set; }
         public int CommentCount { get; set; }
         public Boolean IsOwner { get; set; }
+        public string MapUrl { get; set; }
     }
 
     public class AdHocRideCommentModel
@@ -81,6 +82,7 @@ namespace FreeWheeling.UI.Models
         public int LocationsId { get; set; }
         public int adhocrideid { get; set; }
         public string Description { get; set; }
+        public string MapUrl { get; set; }
 
     }
 

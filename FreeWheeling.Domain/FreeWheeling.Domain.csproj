@@ -77,6 +77,10 @@
     <Compile Include="DataContexts\CycleMigrations\201401162304132_Add_Description.Designer.cs">
       <DependentUpon>201401162304132_Add_Description.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201401181047151_Add_MapUrl.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201401181047151_Add_MapUrl.Designer.cs">
+      <DependentUpon>201401181047151_Add_MapUrl.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\AdHocComment.cs" />
     <Compile Include="Entities\Comment.cs" />
@@ -116,6 +120,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\CycleMigrations\201401162304132_Add_Description.resx">
       <DependentUpon>201401162304132_Add_Description.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201401181047151_Add_MapUrl.resx">
+      <DependentUpon>201401181047151_Add_MapUrl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
