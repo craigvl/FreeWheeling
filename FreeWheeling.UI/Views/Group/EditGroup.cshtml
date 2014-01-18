@@ -63,6 +63,12 @@
     <div>
         @Html.TextBoxFor(model => model.StartLocation)
     </div>
+    
+    <div><span class="RequiredField">*&nbsp;</span>Map (Enter <a href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</div>
+        
+        <div> 
+            @Html.TextBoxFor(model => model.MapUrl)
+        </div>
 
     @*<div><span class="RequiredField">*&nbsp;</span>Average Speed</div>
 

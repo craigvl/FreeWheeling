@@ -18,6 +18,12 @@
 
 </p>
 
+@if (@Model.MapUrl != null)
+{
+    @Html.Raw(@Model.MapUrl)
+}
+<p></p>
+
 @Html.ActionLink("Back <---", "Index", "Group", null, new { @class = "btn btn-info" })
 
 

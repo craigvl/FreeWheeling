@@ -10,6 +10,12 @@
     @Model.Group.name
 </h2>
 
+@if (@Model.MapUrl != null)
+{
+    @Html.Raw(@Model.MapUrl)
+}
+<p></p>
+
 @Html.ActionLink("Back <---", "Index", "Group", null, new { @class = "btn btn-info" })
 
 @Html.ActionLink("<-- Previous Ride", "Index", "Ride", new { RideId = @Model.PreviousRide.id, Groupid = @Model.Group.id }, new { @class = "btn btn-default" })

@@ -26,13 +26,13 @@ namespace FreeWheeling.UI.Controllers
 
         }
 
+        [Compress]
         public ActionResult Index(int groupid, int rideid = -1)
         {
             //var TimeZone = TimeZoneInfo.Local.Id;
             
             RideModelIndex RideModel = new RideModelIndex();
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
-
 
             Group _Group = repository.GetGroupByID(groupid);
 
@@ -55,7 +55,6 @@ namespace FreeWheeling.UI.Controllers
                 RideModel.Comments = repository.GetTop2CommentsForRide(RideModel.Ride.id);
                 RideModel.RideDate = RideModel.Ride.RideDate;
                 RideModel.CommentCount = repository.GetCommentCountForRide(RideModel.Ride.id);
-
             }
 
             if (RideModel.Ride != null)
@@ -65,7 +64,10 @@ namespace FreeWheeling.UI.Controllers
                 RideModel.Comments = repository.GetTop2CommentsForRide(RideModel.Ride.id);
                 RideModel.CommentCount = repository.GetCommentCountForRide(RideModel.Ride.id);
                 RideModel.IsOwner = repository.IsGroupCreator(_Group.id, currentUser.Id);
-
+                if (_Group.MapUrl != null)
+                {
+                    RideModel.MapUrl = string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", _Group.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
+                }
             }
             else
             {         
@@ -132,6 +134,7 @@ namespace FreeWheeling.UI.Controllers
 
         }
 
+        [Compress]
         public ActionResult NextRide(int RideId, int Groupid, int PreviousRideID)
         {
 
@@ -151,6 +154,10 @@ namespace FreeWheeling.UI.Controllers
                 TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
                 RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id,TZone);
                 RideModel.Comments = repository.GetTop2CommentsForRide(RideModel.Ride.id);
+                if (_Group.MapUrl != null)
+                {
+                    RideModel.MapUrl = RideModel.MapUrl = string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", _Group.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
+                }
 
             }
             else
@@ -358,6 +365,11 @@ namespace FreeWheeling.UI.Controllers
             RideModel.Group = repository.GetGroupByID(RideComment.GroupId);
             RideModel.NextRide = RideModel.Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
 
+            if (RideModel.Group.MapUrl != null)
+            {
+                RideModel.MapUrl = RideModel.MapUrl = string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", RideModel.Group.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
+            }
+
             TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
             RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id,TZone);
 
@@ -424,6 +436,11 @@ namespace FreeWheeling.UI.Controllers
             RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
             RideModel.Group = _Group;
             RideModel.Comments = repository.GetTop2CommentsForRide(RideModel.Ride.id);
+
+            if (RideModel.Group.MapUrl != null)
+            {
+                RideModel.MapUrl = RideModel.MapUrl = string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", RideModel.Group.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
+            }
 
             TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
 

@@ -21,6 +21,7 @@ namespace FreeWheeling.UI.Models
         public List<Comment> Comments { get; set; }
         public int CommentCount { get; set; }
         public Boolean IsOwner { get; set; }
+        public string MapUrl { get; set; }
     }
 
     public class RideCommentModel

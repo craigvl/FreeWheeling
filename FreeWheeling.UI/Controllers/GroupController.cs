@@ -202,7 +202,8 @@ namespace FreeWheeling.UI.Controllers
                     LocationsId = CurrentGroup.Location.id,
                     Name = CurrentGroup.name,
                     StartLocation = CurrentGroup.StartLocation,
-                    Locations = repository.GetLocations().ToList()
+                    Locations = repository.GetLocations().ToList(),
+                    MapUrl = CurrentGroup.MapUrl
                 };
 
                 _EditGroupModel.LocationsId = repository.GetLocations().Where(l => l.id == CurrentGroup.Location.id).Select(t => t.id).FirstOrDefault();
@@ -267,6 +268,7 @@ namespace FreeWheeling.UI.Controllers
                 CreatedBy = CurrentGroup.CreatedBy,
                 CreatedTimeStamp = CurrentGroup.CreatedTimeStamp,
                 ModifiedTimeStamp = LocalNow,
+                MapUrl = _EditGroupModel.MapUrl,  
                 id = _EditGroupModel.GroupId
             };
 
