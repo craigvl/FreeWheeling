@@ -183,6 +183,7 @@
       <DependentUpon>201312270037160_Initial_Create.cs</DependentUpon>
     </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
+    <Compile Include="Filters\CompressAttribute.cs" />
     <Compile Include="Filters\RoleAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

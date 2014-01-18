@@ -88,6 +88,7 @@ namespace FreeWheeling.UI.Controllers
             return View(_AdHocRidesModel);
         }
 
+        [Compress]
         public ActionResult ViewAdHocRide(int adhocrideid)
         {
             Ad_HocRide Ah = repository.GetAdHocRideByID(adhocrideid);
