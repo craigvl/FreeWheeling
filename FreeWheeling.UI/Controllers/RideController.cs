@@ -99,11 +99,13 @@ namespace FreeWheeling.UI.Controllers
             AdHocViewModel adHocViewModel = new AdHocViewModel { Ride = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime };
             adHocViewModel.CommentCount = repository.GetCommentCountForAdHocRide(adhocrideid);
             adHocViewModel.IsOwner = repository.IsAdHocCreator(adhocrideid, currentUser.Id);
-            adHocViewModel.MapUrl =
-            string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", Ah.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
+            if (adHocViewModel.MapUrl != null)
+            {
+                adHocViewModel.MapUrl =
+                string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", Ah.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
 
                 //https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D108681
-
+            }
             TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
             adHocViewModel.Riders = repository.GetRidersForAdHocRide(adhocrideid,TZone);
            

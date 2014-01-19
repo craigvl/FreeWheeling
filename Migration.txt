@@ -1,11 +1,11 @@
 
 update-database -ConfigurationTypeName FreeWheeling.Domain.DataContexts.CycleMigrations.Configuration -verbose
-update-database -ConfigurationTypeName FreeWheeling.Domain.DataContexts.CycleMigrations.Configuration -TargetMigration 201401112337110_Added_CreatedBy_And_TimeStampUpdate_To_LocalTime -verbose
+update-database -ConfigurationTypeName FreeWheeling.Domain.DataContexts.CycleMigrations.Configuration -TargetMigration 201401191114336_riderequired -verbose
 update-database -ConfigurationTypeName FreeWheeling.UI.DataContexts.IdentityMigrations.Configuration -verbose
 
 
 add-migration -ConfigurationTypeName FreeWheeling.Domain.DataContexts.CycleMigrations.Configuration "Add_Comments_Date" -verbose
 
-add-migration -ConfigurationTypeName FreeWheeling.Domain.DataContexts.CycleMigrations.Configuration "Add_MapUrl" -verbose
+add-migration -ConfigurationTypeName FreeWheeling.Domain.DataContexts.CycleMigrations.Configuration "riderequired" -verbose
 
 add-migration -ConfigurationTypeName FreeWheeling.UI.DataContexts.IdentityMigrations.Configuration "Added_CreatedBy_And_TimeStamp" -verbose

@@ -37,6 +37,13 @@ namespace FreeWheeling.Domain.Concrete
             return group;
         }
 
+        public Group GetGroupByIDNoIncludes(int id)
+        {
+            Group group = context.Groups.Where(i => i.id == id).FirstOrDefault();
+
+            return group;
+        }
+
         public IEnumerable<Group> GetGroupsWithRiders()
         {
             return context.Groups.Include("Members").Include("Rides").ToList();
@@ -221,7 +228,7 @@ namespace FreeWheeling.Domain.Concrete
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
 
             _DateTime = TimeZoneInfo.ConvertTimeFromUtc(_DateTime, TZone);
-
+            _Group.RideDays = GetCycleDaysForGroup(_Group.id);
             List<DayOfWeek> RideDays = new List<DayOfWeek>();
 
             foreach (CycleDays item in _Group.RideDays)
@@ -253,7 +260,7 @@ namespace FreeWheeling.Domain.Concrete
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
 
             List<DayOfWeek> RideDays = new List<DayOfWeek>();
-
+            _Group.RideDays = GetCycleDaysForGroup(_Group.id);
             foreach (CycleDays item in _Group.RideDays)
             {
                 if (item.DayOfWeek == "Sunday"){ RideDays.Add(DayOfWeek.Sunday); }
@@ -483,7 +490,7 @@ namespace FreeWheeling.Domain.Concrete
 
         public bool IsGroupCreator(int _GroupId, string UserId)
         {
-            Group CurrentGroup = GetGroupByID(_GroupId);
+            Group CurrentGroup = GetGroupByIDNoIncludes(_GroupId);
 
             if (CurrentGroup == null)
             {
@@ -569,6 +576,11 @@ namespace FreeWheeling.Domain.Concrete
 
             context.Entry(CurrentAdHocRide).State = System.Data.Entity.EntityState.Deleted;
 
+        }
+
+        public List<CycleDays> GetCycleDaysForGroup(int GroupId)
+        {
+           return context.CycleDays.Where(t => t.Group.id == GroupId).ToList();
         }
     }
 }

@@ -19,6 +19,7 @@ namespace FreeWheeling.Domain.Abstract
         IEnumerable<Location> GetLocations();
 
         Group GetGroupByID(int id);
+        Group GetGroupByIDNoIncludes(int id);
         Ride GetRideByID(int id);
         Ad_HocRide GetAdHocRideByID(int id);
         List<AdHocComment> GetTop2CommentsForAdHocRide(int AdHocRideid);
@@ -26,6 +27,7 @@ namespace FreeWheeling.Domain.Abstract
         int GetCommentCountForAdHocRide(int AdHocRideid);
         List<AdHocRider> GetRidersForAdHocRide(int AdHocRideid, TimeZoneInfo TimeZone);
 
+        List<CycleDays> GetCycleDaysForGroup(int GroupId);
         List<Rider> GetRidersForRide(int id, TimeZoneInfo TimeZone);
         Ride GetNextRideForGroup(Group _Group, TimeZoneInfo TimeZone);
         Ride GetPreviousRideForGroup(Group _Group);

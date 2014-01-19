@@ -81,6 +81,14 @@
     <Compile Include="DataContexts\CycleMigrations\201401181047151_Add_MapUrl.Designer.cs">
       <DependentUpon>201401181047151_Add_MapUrl.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201401191114336_riderequired.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201401191114336_riderequired.Designer.cs">
+      <DependentUpon>201401191114336_riderequired.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201401191119289_grouprequired.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201401191119289_grouprequired.Designer.cs">
+      <DependentUpon>201401191119289_grouprequired.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\AdHocComment.cs" />
     <Compile Include="Entities\Comment.cs" />
@@ -123,6 +131,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\CycleMigrations\201401181047151_Add_MapUrl.resx">
       <DependentUpon>201401181047151_Add_MapUrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201401191114336_riderequired.resx">
+      <DependentUpon>201401191114336_riderequired.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201401191119289_grouprequired.resx">
+      <DependentUpon>201401191119289_grouprequired.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
