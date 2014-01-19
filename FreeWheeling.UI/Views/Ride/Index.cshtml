@@ -24,8 +24,16 @@
 }
 <p></p>
 
-@Html.ActionLink("Back <---", "Index", "Group", null, new { @class = "btn btn-info" })
+@if (@Model.FromFavPage)
+{
 
+    @Html.ActionLink("Back <---", "MyGroups", "Group", null, new { @class = "btn btn-info" })
+
+}
+else
+{
+@Html.ActionLink("Back <---", "Index", "Group", null, new { @class = "btn btn-info" })
+}
 
 @if (@Model.NextRide != null)
 {

@@ -20,7 +20,14 @@ namespace FreeWheeling.Domain.Concrete
 
         public IEnumerable<Group> GetGroupsByLocation(int? LocationID)
         {
-            return context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").Where(g => g.Location.id == LocationID).ToList();
+            //return context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").Where(g => g.Location.id == LocationID).ToList();
+            return context.Groups.Include("Rides").Where(g => g.Location.id == LocationID).ToList();
+        }
+
+        public IEnumerable<Group> GetFavouriteGroupsByLocation(int? LocationID)
+        {
+            //return context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").Where(g => g.Location.id == LocationID).ToList();
+            return context.Groups.Include("Members").Include("Rides").Where(g => g.Location.id == LocationID).ToList();
         }
 
         public Group GetGroupByID(int id)

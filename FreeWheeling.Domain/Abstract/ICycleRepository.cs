@@ -13,6 +13,8 @@ namespace FreeWheeling.Domain.Abstract
         //Group
         IEnumerable<Group> GetGroups();
         IEnumerable<Group> GetGroupsByLocation(int? LocationID);
+
+        IEnumerable<Group> GetFavouriteGroupsByLocation(int? LocationID);
         IEnumerable<Group> GetGroupsWithRiders();
         IEnumerable<Location> GetLocations();
 

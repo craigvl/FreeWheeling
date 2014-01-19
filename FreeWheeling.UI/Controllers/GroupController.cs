@@ -23,58 +23,19 @@ namespace FreeWheeling.UI.Controllers
 
         public GroupController(ICycleRepository repoParam)
         {
-
             repository = repoParam;
-
         }
 
         // GET: /Group/
         public ActionResult Index()
         {
 
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            Member _Member = repository.GetMemberByUserID(currentUser.Id);
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());          
             GroupModel _GroupModel = new GroupModel();
-            _GroupModel._Groups = repository.GetGroupsByLocation(currentUser.LocationID).ToList();
-            _GroupModel._NextRideDetails = new List<NextRideDetails>();
-            _GroupModel.UserLocation = repository.GetLocationName(currentUser.LocationID);
-            _GroupModel.title = "All Groups";
 
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
-            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
+            GroupModelHelper _GroupHelper = new GroupModelHelper(repository);
 
-            _GroupModel._OwnerGroupList = new List<int>();
-
-            foreach (Group item in _GroupModel._Groups)
-            {
-
-                item.Rides = item.Rides.Where(t => t.RideDate >= LocalNow).ToList();
-                Ride NextRide = repository.GetNextRideForGroup(item,TZone);
-                
-                if (NextRide != null)
-                {
-                    _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100") .Count() });    
-                }
-                else
-                {
-                    if (item.RideDays != null)
-                    {
-                        repository.PopulateRideDates(item);
-                        repository.Save();
-                    }
-                    
-                }
-
-                if (repository.IsGroupCreator(item.id,currentUser.Id))
-                {
-
-                    _GroupModel._OwnerGroupList.Add(item.id);
-
-                }
-                
-            }
-
-            _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
+            _GroupModel =_GroupHelper.PopulateGroupModel(currentUser.Id, currentUser.LocationID);
 
             return View(_GroupModel);
         }
@@ -92,7 +53,6 @@ namespace FreeWheeling.UI.Controllers
             _MoreGroupDetailsModel.StartLocation = _Group.StartLocation;
             _MoreGroupDetailsModel.Description = _Group.Description;
 
-            //Name of our PartialView is Restaurant
             return PartialView("_GroupDetailPartial", _MoreGroupDetailsModel);
         }
 
@@ -181,9 +141,7 @@ namespace FreeWheeling.UI.Controllers
 
             if (!repository.IsGroupCreator(groupId, currentUser.Id))
             {
-
                 return RedirectToAction("Index", "Group");
-
             }
             else
             {
@@ -216,12 +174,8 @@ namespace FreeWheeling.UI.Controllers
 
                         if (ditem.Name == item.DayOfWeek)
                         {
-
                             ditem.Checked = true;
-
-
                         }
-
 
                     }
 
@@ -281,37 +235,7 @@ namespace FreeWheeling.UI.Controllers
             //NewGroup = repository.PopulateRideDates(NewGroup);
             //repository.Save();
 
-            Member _Member = repository.GetMemberByUserID(currentUser.Id);
-            GroupModel _GroupModel = new GroupModel();
-            _GroupModel._Groups = repository.GetGroupsByLocation(currentUser.LocationID).ToList();
-            _GroupModel._NextRideDetails = new List<NextRideDetails>();
-            _GroupModel.UserLocation = repository.GetLocationName(currentUser.LocationID);
-            _GroupModel.title = "All Groups";
-            _GroupModel._OwnerGroupList = new List<int>();
-
-            foreach (Group item in _GroupModel._Groups)
-            {
-
-                item.Rides = item.Rides.Where(t => t.RideDate >= DateTime.Now).ToList();
-                Ride NextRide = repository.GetNextRideForGroup(item, TZone);
-
-                if (NextRide != null)
-                {
-                    _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
-                }
-
-                if (repository.IsGroupCreator(item.id, currentUser.Id))
-                {
-
-                    _GroupModel._OwnerGroupList.Add(item.id);
-
-                }
-
-            }
-
-            _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
-
-            return View("Index", _GroupModel);
+            return RedirectToAction("Index", "Group");
 
         }
 
@@ -421,38 +345,8 @@ namespace FreeWheeling.UI.Controllers
 
             NewGroup = repository.PopulateRideDates(NewGroup);
             repository.Save();
-            
-            Member _Member = repository.GetMemberByUserID(currentUser.Id);
-            GroupModel _GroupModel = new GroupModel();
-            _GroupModel._Groups = repository.GetGroupsByLocation(currentUser.LocationID).ToList();
-            _GroupModel._NextRideDetails = new List<NextRideDetails>();
-            _GroupModel.UserLocation = repository.GetLocationName(currentUser.LocationID);
-            _GroupModel.title = "All Groups";
-            _GroupModel._OwnerGroupList = new List<int>();
 
-            foreach (Group item in _GroupModel._Groups)
-            {
-
-                item.Rides = item.Rides.Where(t => t.RideDate >= DateTime.Now).ToList();
-                Ride NextRide = repository.GetNextRideForGroup(item,TZone);
-
-                if (NextRide != null)
-                {
-                    _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
-                }
-
-                if (repository.IsGroupCreator(item.id, currentUser.Id))
-                {
-
-                    _GroupModel._OwnerGroupList.Add(item.id);
-
-                }
-
-            }
-
-            _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
-
-            return View("Index", _GroupModel);
+            return RedirectToAction("Index", "Group");
 
         }
 
@@ -464,146 +358,38 @@ namespace FreeWheeling.UI.Controllers
 
             TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
 
-            GroupModel _GroupModel = new GroupModel();
-            _GroupModel._Groups = repository.GetGroupsByLocation(currentUser.LocationID).ToList();
-            _GroupModel._NextRideDetails = new List<NextRideDetails>();
-            _GroupModel.UserLocation = repository.GetLocationName(currentUser.LocationID);
-            _GroupModel.title = title;
-
-            if (group == null)
-            {
-                return HttpNotFound();
-            }
-
             repository.RemoveMember(currentUser.Id, group);
             repository.Save();
 
-            _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
-
-            foreach (Group item in _GroupModel._Groups)
-            {
-
-                item.Rides = item.Rides.Where(t => t.RideDate >= DateTime.Now).ToList();
-                Ride NextRide = repository.GetNextRideForGroup(item,TZone);
-
-                if (NextRide != null)
-                {
-                    _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
-                }
-
-            }
-
-            if (title == "Favourite Groups")
-	        {
-
-                _GroupModel._Groups = repository.GetGroups().Where(u => u.Members.Any(m => m.userId == currentUser.Id)).ToList();
-                _GroupModel._Groups = repository.GetGroupsByLocation(currentUser.LocationID).Where(u => u.Members.Any(m => m.userId == currentUser.Id)).ToList();
-                _GroupModel.title = "Favourite Groups";
-
-                _GroupModel._NextRideDetails = new List<NextRideDetails>();
-                _GroupModel.UserLocation = _GroupModel.UserLocation = repository.GetLocationName(currentUser.LocationID);
-
-                foreach (Group item in _GroupModel._Groups)
-                {
-
-                    item.Rides = item.Rides.Where(t => t.RideDate >= DateTime.Now).ToList();
-                    Ride NextRide = repository.GetNextRideForGroup(item,TZone);
-
-                    if (NextRide != null)
-                    {
-                        _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
-                    }
-                    
-                }
-
-
-                _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
-
-		 
-	        }
-            
-            return View("Index", _GroupModel);
+            return RedirectToAction("MyGroups", "Group");
 
         }
 
-        //// GET: /Group/Details/5
+        //// This is to add group to fav list
         public ActionResult Join(int id, string title)
         {
 
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Member _Member = repository.GetMemberByUserID(currentUser.Id);
             Group group = repository.GetGroupByID(id);
-            GroupModel _GroupModel = new GroupModel();
-            _GroupModel._Groups = repository.GetGroupsByLocation(currentUser.LocationID).ToList();
-            _GroupModel._NextRideDetails = new List<NextRideDetails>();
-            _GroupModel.UserLocation = _GroupModel.UserLocation = repository.GetLocationName(currentUser.LocationID);
-            _GroupModel.title = title;
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
-
-            if (group == null)
-            {
-                return HttpNotFound();
-            }
 
             repository.AddMember(currentUser.Id, group);
             repository.Save();
 
-            _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
-
-            foreach (Group item in _GroupModel._Groups)
-            {
-
-                item.Rides = item.Rides.Where(t => t.RideDate >= DateTime.Now).ToList();
-                Ride NextRide = repository.GetNextRideForGroup(item,TZone);
-
-                if (NextRide != null)
-                {
-                    _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
-                }
-
-            }
-
-            return View("Index", _GroupModel);
+            return RedirectToAction("Index", "Group");
         }
 
         public ViewResult MyGroups()
         {
 
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            Member _Member = repository.GetMemberByUserID(currentUser.Id);
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+         
             GroupModel _GroupModel = new GroupModel();
 
-            _GroupModel._Groups = repository.GetGroupsByLocation(currentUser.LocationID).Where(u => u.Members.Any(m => m.userId == currentUser.Id)).ToList();
-            _GroupModel.title = "Favourite Groups";
+            GroupModelHelper _GroupHelper = new GroupModelHelper(repository);
 
-            _GroupModel._NextRideDetails = new List<NextRideDetails>();
-            _GroupModel.UserLocation = repository.GetLocationName(currentUser.LocationID);
-
-            foreach (Group item in _GroupModel._Groups)
-            {
-
-                item.Rides = item.Rides.Where(t => t.RideDate >= DateTime.Now).ToList();
-                Ride NextRide = repository.GetNextRideForGroup(item,TZone);
-
-                if (NextRide != null)
-                {
-                    _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
-                }
-                else
-                {
-
-                    if (item.RideDays != null)
-                    {
-                        repository.PopulateRideDates(item);
-                    }
-
-                }
-
-            }
-
-
-            _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
+            _GroupModel = _GroupHelper.PopulateGroupModel(currentUser.Id, currentUser.LocationID,true);
+            
 
             return View("Index",_GroupModel);
 

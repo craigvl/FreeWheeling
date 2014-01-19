@@ -5,3 +5,4 @@
 - should wrap edit post with checks to confirm that user is owner
 - need to check what happens when adhoc ride date and group date times are changed.
 - Need to look at view groups index page performance.
+- DONE: If you view a ride from the fav list then the back button takes you back to the all groups button need to fix this.

@@ -1,10 +1,13 @@
-﻿using FreeWheeling.Domain.Entities;
+﻿using FreeWheeling.Domain.Abstract;
+using FreeWheeling.Domain.Entities;
+using FreeWheeling.UI.DataContexts;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace FreeWheeling.UI.Models
 {
@@ -18,6 +21,81 @@ namespace FreeWheeling.UI.Models
         public string UserLocation;
         public string title;
         public List<int> _OwnerGroupList;
+        public bool OnFavPage;
+    }
+
+    public class GroupModelHelper
+    {
+
+        private IdentityDb idb = new IdentityDb(); 
+
+        private ICycleRepository repository;
+
+        public GroupModelHelper(ICycleRepository repoParam)
+        {
+
+            repository = repoParam;
+
+        }
+
+        public GroupModel PopulateGroupModel(string UserId, int? LocationId, Boolean FavouritePage = false)
+        {
+            GroupModel _GroupModel = new GroupModel();
+            if (!FavouritePage)
+            {
+                _GroupModel._Groups = repository.GetGroupsByLocation(LocationId).ToList();
+                _GroupModel.title = "All Groups";
+            }
+            else
+            {
+                _GroupModel._Groups = repository.GetFavouriteGroupsByLocation(LocationId).Where(u => u.Members.Any(m => m.userId == UserId)).ToList();
+                _GroupModel.OnFavPage = true;
+                _GroupModel.title = "Favourite Groups";
+            }
+            _GroupModel._NextRideDetails = new List<NextRideDetails>();
+            _GroupModel.UserLocation = repository.GetLocationName(LocationId);
+
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
+
+            _GroupModel._OwnerGroupList = new List<int>();
+
+            foreach (Group item in _GroupModel._Groups)
+            {
+
+                item.Rides = item.Rides.Where(t => t.RideDate >= LocalNow).ToList();
+                Ride NextRide = repository.GetNextRideForGroup(item, TZone);
+
+                if (NextRide != null)
+                {
+                    _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
+                }
+                else
+                {
+                    if (item.RideDays != null)
+                    {
+                        repository.PopulateRideDates(item);
+                        repository.Save();
+                    }
+
+                }
+
+                if (repository.IsGroupCreator(item.id, UserId))
+                {
+
+                    _GroupModel._OwnerGroupList.Add(item.id);
+
+                }
+
+            }
+
+            _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(UserId);
+
+            return _GroupModel;
+
+        }
+
+
     }
 
     public class AdHocRidesModel

@@ -27,7 +27,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [Compress]
-        public ActionResult Index(int groupid, int rideid = -1)
+        public ActionResult Index(int groupid, int rideid = -1, bool FromFavPage = false)
         {
             //var TimeZone = TimeZoneInfo.Local.Id;
             
@@ -59,6 +59,7 @@ namespace FreeWheeling.UI.Controllers
 
             if (RideModel.Ride != null)
             {
+                RideModel.FromFavPage = FromFavPage;
                 RideModel.Group = _Group;
                 RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id,TZone);
                 RideModel.Comments = repository.GetTop2CommentsForRide(RideModel.Ride.id);
