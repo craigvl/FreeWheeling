@@ -1,4 +1,6 @@
-﻿using FreeWheeling.Domain.Entities;
+﻿using FreeWheeling.Domain.Abstract;
+using FreeWheeling.Domain.Entities;
+using FreeWheeling.UI.DataContexts;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,6 +9,85 @@ using System.Web;
 
 namespace FreeWheeling.UI.Models
 {
+    public class RideModelHelper
+    {
+
+        private IdentityDb idb = new IdentityDb();
+
+        private ICycleRepository repository;
+
+        public RideModelHelper(ICycleRepository repoParam)
+        {
+
+            repository = repoParam;
+
+        }
+
+        public AdHocViewModel PopulateAdHocModel(int adhocrideid, string UserId)
+        {
+            Ad_HocRide Ah = repository.GetAdHocRideByID(adhocrideid);
+
+            AdHocViewModel adHocViewModel = new AdHocViewModel { Ride = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime };
+
+            adHocViewModel.CommentCount = repository.GetCommentCountForAdHocRide(adhocrideid);
+            adHocViewModel.IsOwner = repository.IsAdHocCreator(adhocrideid, UserId);
+            if (adHocViewModel.MapUrl != null)
+            {
+                adHocViewModel.MapUrl =
+                string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", Ah.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
+
+                //https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D108681
+            }
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            adHocViewModel.Riders = repository.GetRidersForAdHocRide(adhocrideid, TZone);
+
+            adHocViewModel.Comments = repository.GetTop2CommentsForAdHocRide(adhocrideid);
+
+            return adHocViewModel;
+
+        }
+
+        public RideModelIndex PopulateRideModel(int RideId,int GroupId, string UserId, bool NeedPreviousRide)
+        {
+            Ride _Ride = new Ride();
+            Group _Group = new Group();
+
+            _Ride = repository.GetRideByID(RideId);
+            _Group = repository.GetGroupByID(GroupId);
+
+            RideModelIndex RideModel = new RideModelIndex();
+
+            RideModel.Ride = _Ride;
+            RideModel.RideDate = RideModel.Ride.RideDate;
+            if (!NeedPreviousRide)
+            {
+                RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
+            }
+            else
+            {
+
+                RideModel.PreviousRide = repository.GetPreviousRideForGroup(_Group);
+
+            }
+            RideModel.Group = _Group;
+            RideModel.Comments = repository.GetTop2CommentsForRide(RideModel.Ride.id);
+            RideModel.CommentCount = repository.GetCommentCountForRide(RideModel.Ride.id);
+
+            if (RideModel.Group.MapUrl != null)
+            {
+                RideModel.MapUrl = RideModel.MapUrl = string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", RideModel.Group.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
+            }
+
+            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+
+            RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id, TZone);
+
+            return (RideModel);
+
+        }
+
+    }
+
     public class RideModelIndex
     {
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]

@@ -109,28 +109,6 @@ namespace FreeWheeling.UI.Controllers
             repository.AddAdHocRide(NewAdHoc);
             repository.Save();
 
-            Member _Member = repository.GetMemberByUserID(currentUser.Id);
-            GroupModel _GroupModel = new GroupModel();
-            _GroupModel._Groups = repository.GetGroupsByLocation(currentUser.LocationID).ToList();
-            _GroupModel._NextRideDetails = new List<NextRideDetails>();
-            _GroupModel.UserLocation = repository.GetLocationName(currentUser.LocationID);
-            _GroupModel.title = "All Groups";
-
-            foreach (Group item in _GroupModel._Groups)
-            {
-
-                item.Rides = item.Rides.Where(t => t.RideDate >= DateTime.Now).ToList();
-                Ride NextRide = repository.GetNextRideForGroup(item,TZone);
-
-                if (NextRide != null)
-                {
-                    _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
-                }
-
-            }
-
-            _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
-
             return RedirectToAction("index", "home");   
         }
 
@@ -361,7 +339,15 @@ namespace FreeWheeling.UI.Controllers
             repository.RemoveMember(currentUser.Id, group);
             repository.Save();
 
+            if(title == "Favourite Groups")
+            {
             return RedirectToAction("MyGroups", "Group");
+            }
+            else{
+
+                 return RedirectToAction("Index", "Group");
+
+            }
 
         }
 

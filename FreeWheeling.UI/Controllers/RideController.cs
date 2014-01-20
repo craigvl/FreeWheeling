@@ -94,24 +94,16 @@ namespace FreeWheeling.UI.Controllers
         [Compress]
         public ActionResult ViewAdHocRide(int adhocrideid)
         {
-            Ad_HocRide Ah = repository.GetAdHocRideByID(adhocrideid);
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            AdHocViewModel adHocViewModel = new AdHocViewModel { Ride = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime };
-            adHocViewModel.CommentCount = repository.GetCommentCountForAdHocRide(adhocrideid);
-            adHocViewModel.IsOwner = repository.IsAdHocCreator(adhocrideid, currentUser.Id);
-            if (adHocViewModel.MapUrl != null)
-            {
-                adHocViewModel.MapUrl =
-                string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", Ah.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
-
-                //https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D108681
-            }
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
-            adHocViewModel.Riders = repository.GetRidersForAdHocRide(adhocrideid,TZone);
            
-            adHocViewModel.Comments = repository.GetTop2CommentsForAdHocRide(adhocrideid);
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
-            return View(adHocViewModel);
+            AdHocViewModel _adHocViewModel = new AdHocViewModel();
+
+            RideModelHelper _AdHocHelper = new RideModelHelper(repository);
+
+            _adHocViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
+
+            return View(_adHocViewModel);
         }
 
         public ActionResult SeeAllComments(int RideId, int GroupId)
@@ -141,34 +133,19 @@ namespace FreeWheeling.UI.Controllers
         public ActionResult NextRide(int RideId, int Groupid, int PreviousRideID)
         {
 
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+
             RideModelIndex RideModel = new RideModelIndex();
 
-            Group _Group = repository.GetGroupByID(Groupid);
+            RideModelHelper _RideHelper = new RideModelHelper(repository);
 
-            RideModel.PreviousRide = repository.GetRideByID(PreviousRideID);
+            RideModel = _RideHelper.PopulateRideModel(RideId, Groupid, currentUser.Id, true);
 
-            RideModel.Ride = repository.GetRideByID(RideId);
-
-            if (RideModel.Ride != null)
-            {
-
-                RideModel.Group = _Group;
-
-                TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
-                RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id,TZone);
-                RideModel.Comments = repository.GetTop2CommentsForRide(RideModel.Ride.id);
-                if (_Group.MapUrl != null)
-                {
-                    RideModel.MapUrl = RideModel.MapUrl = string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", _Group.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
-                }
-
-            }
-            else
+            if(RideModel.Ride == null)
             {
 
                 GroupModel GroupModel = new GroupModel();
-                GroupModel._Groups = repository.GetGroups().ToList();
-                var currentUser = idb.Users.Find(User.Identity.GetUserId());
+                GroupModel._Groups = repository.GetGroups().ToList();              
                 GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
                 return RedirectToAction("index", "group", GroupModel);
 
@@ -289,18 +266,13 @@ namespace FreeWheeling.UI.Controllers
             repository.UpdateAdHocRide(adhoc);
             repository.Save();
 
-            Ad_HocRide Ah = repository.GetAdHocRideByID(_EditAdHocRideModel.adhocrideid);
-            AdHocViewModel adHocViewModel = new AdHocViewModel { Ride = Ah,
-                                                                 RideDate = Ah.RideDate,
-                                                                 RideTime = Ah.RideTime,
-                                                                 MapUrl = string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", Ah.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>")};
+            AdHocViewModel _adHocViewModel = new AdHocViewModel();
 
-            adHocViewModel.Comments = repository.GetTop2CommentsForAdHocRide(_EditAdHocRideModel.adhocrideid);
-            adHocViewModel.CommentCount = repository.GetCommentCountForAdHocRide(_EditAdHocRideModel.adhocrideid);
-            adHocViewModel.Riders = repository.GetRidersForAdHocRide(_EditAdHocRideModel.adhocrideid, TZone);
-            adHocViewModel.IsOwner = repository.IsAdHocCreator(_EditAdHocRideModel.adhocrideid, currentUser.Id);
+            RideModelHelper _AdHocHelper = new RideModelHelper(repository);
 
-            return View("ViewAdHocRide", adHocViewModel);
+            _adHocViewModel = _AdHocHelper.PopulateAdHocModel(_EditAdHocRideModel.adhocrideid, currentUser.Id);
+
+            return View("ViewAdHocRide", _adHocViewModel);
 
         }
 
@@ -323,22 +295,13 @@ namespace FreeWheeling.UI.Controllers
             repository.AddAdHocRideComment(RideComment.Comment, RideComment.adhocrideid, currentUser.UserName);
             repository.Save();
 
-            Ad_HocRide Ah = repository.GetAdHocRideByID(RideComment.adhocrideid);
-            AdHocViewModel adHocViewModel = new AdHocViewModel
-            {
-                Ride = Ah,
-                RideDate = Ah.RideDate,
-                RideTime = Ah.RideTime,
-                MapUrl = string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", Ah.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>")
-            };
+            AdHocViewModel _adHocViewModel = new AdHocViewModel();
 
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
-            adHocViewModel.Riders = repository.GetRidersForAdHocRide(RideComment.adhocrideid,TZone);
-        
-            adHocViewModel.Comments = repository.GetTop2CommentsForAdHocRide(RideComment.adhocrideid);
-            adHocViewModel.CommentCount = repository.GetCommentCountForAdHocRide(RideComment.adhocrideid);
+            RideModelHelper _AdHocHelper = new RideModelHelper(repository);
 
-            return View("ViewAdHocRide", adHocViewModel);
+            _adHocViewModel = _AdHocHelper.PopulateAdHocModel(RideComment.adhocrideid, currentUser.Id);
+
+            return View("ViewAdHocRide", _adHocViewModel);
 
         }
 
@@ -348,7 +311,6 @@ namespace FreeWheeling.UI.Controllers
             _RideCommentModel.RideId = RideId;
             _RideCommentModel.GroupId = groupid;
             
-
             _RideCommentModel.Ride = repository.GetRideByID(RideId);
 
             return View(_RideCommentModel);
@@ -363,23 +325,12 @@ namespace FreeWheeling.UI.Controllers
             repository.Save();
 
             RideModelIndex RideModel = new RideModelIndex();
-            RideModel.Ride = repository.GetRideByID(RideComment.RideId);
-            RideModel.RideDate = RideModel.Ride.RideDate;
-            RideModel.Group = repository.GetGroupByID(RideComment.GroupId);
-            RideModel.NextRide = RideModel.Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
 
-            if (RideModel.Group.MapUrl != null)
-            {
-                RideModel.MapUrl = RideModel.MapUrl = string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", RideModel.Group.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
-            }
+            RideModelHelper _RideHelper = new RideModelHelper(repository);
 
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
-            RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id,TZone);
+            RideModel = _RideHelper.PopulateRideModel(RideComment.RideId, RideComment.GroupId, currentUser.Id, false);
 
-            RideModel.Comments = repository.GetTop2CommentsForRide(RideModel.Ride.id);
-            RideModel.CommentCount = repository.GetCommentCountForRide(RideModel.Ride.id);
-
-            return View("Index",RideModel);
+            return View("Index", RideModel);
 
         }
 
@@ -404,14 +355,10 @@ namespace FreeWheeling.UI.Controllers
             repository.Save();
 
             RideModelIndex RideModel = new RideModelIndex();
-            RideModel.Ride = repository.GetRideByID(RideComment.RideId);
-            RideModel.Group = repository.GetGroupByID(RideComment.GroupId);
 
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
-            RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id,TZone);
+            RideModelHelper _RideHelper = new RideModelHelper(repository);
 
-            RideModel.Comments = repository.GetTop2CommentsForRide(RideModel.Ride.id);
-            RideModel.PreviousRide = repository.GetPreviousRideForGroup(RideModel.Group);
+            RideModel = _RideHelper.PopulateRideModel(RideComment.RideId, RideComment.GroupId, currentUser.Id, true);
 
             return View("NextRide", RideModel);
 
@@ -423,7 +370,6 @@ namespace FreeWheeling.UI.Controllers
             Ride _Ride = new Ride();
             Group _Group = new Group();
 
-
             _Ride = repository.GetRideByID(RideId);
             _Group = repository.GetGroupByID(Groupid);
 
@@ -433,54 +379,12 @@ namespace FreeWheeling.UI.Controllers
             repository.Save();
 
             RideModelIndex RideModel = new RideModelIndex();
-           
-            RideModel.Ride = _Ride;
-            RideModel.RideDate = RideModel.Ride.RideDate;
-            RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
-            RideModel.Group = _Group;
-            RideModel.Comments = repository.GetTop2CommentsForRide(RideModel.Ride.id);
 
-            if (RideModel.Group.MapUrl != null)
-            {
-                RideModel.MapUrl = RideModel.MapUrl = string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", RideModel.Group.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
-            }
+            RideModelHelper _RideHelper = new RideModelHelper(repository);
 
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
-
-            RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id, TZone);
+            RideModel = _RideHelper.PopulateRideModel(RideId, Groupid, currentUser.Id, false);
 
             return View("Index", RideModel);
-        }
-
-        public ActionResult AttendAdHocRider(int adhocrideid, string Commitment)
-        {
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            Ad_HocRide _Ride = new Ad_HocRide();
-            Group _Group = new Group();
-
-
-            _Ride = repository.GetAdHocRideByID(adhocrideid);
-
-            AdHocRider _Rider = new AdHocRider { userId = currentUser.Id, Name = currentUser.UserName, AdHocRide = _Ride, LeaveTime = DateTime.UtcNow, PercentKeen = Commitment };
-
-            repository.AddAdHocRider(_Rider, _Ride);
-            repository.Save();
-
-            Ad_HocRide Ah = repository.GetAdHocRideByID(adhocrideid);
-            AdHocViewModel adHocViewModel = new AdHocViewModel
-            {
-                Ride = Ah,
-                RideDate = Ah.RideDate,
-                RideTime = Ah.RideTime,
-                MapUrl = string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", Ah.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>")
-            };
-
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
-            adHocViewModel.Riders = repository.GetRidersForAdHocRide(adhocrideid, TZone);
-
-            adHocViewModel.Comments = repository.GetTop2CommentsForAdHocRide(adhocrideid);
-
-            return View("ViewAdHocRide", adHocViewModel);
         }
 
         public ActionResult AttendNext(int RideId, string Commitment, int Groupid, int PreviousRideID)
@@ -498,19 +402,36 @@ namespace FreeWheeling.UI.Controllers
             repository.Save();
 
             RideModelIndex RideModel = new RideModelIndex();
-            RideModel.Ride = _Ride;
-            RideModel.Group = _Group;
 
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            RideModelHelper _RideHelper = new RideModelHelper(repository);
 
-            RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id,TZone);
-
-            RideModel.Comments = repository.GetTop2CommentsForRide(RideModel.Ride.id);
-            RideModel.PreviousRide = repository.GetRideByID(PreviousRideID);
-            
+            RideModel = _RideHelper.PopulateRideModel(RideId, Groupid, currentUser.Id, true);
 
             return View("NextRide", RideModel);
         }
+
+        public ActionResult AttendAdHocRider(int adhocrideid, string Commitment)
+        {
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            Ad_HocRide _Ride = new Ad_HocRide();
+            
+            _Ride = repository.GetAdHocRideByID(adhocrideid);
+
+            AdHocRider _Rider = new AdHocRider { userId = currentUser.Id, Name = currentUser.UserName, AdHocRide = _Ride, LeaveTime = DateTime.UtcNow, PercentKeen = Commitment };
+
+            repository.AddAdHocRider(_Rider, _Ride);
+            repository.Save();
+
+            AdHocViewModel _adHocViewModel = new AdHocViewModel();
+
+            RideModelHelper _AdHocHelper = new RideModelHelper(repository);
+
+            _adHocViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
+
+            return View("ViewAdHocRide", _adHocViewModel);
+        }
+
+        
 
        
 	}
