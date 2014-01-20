@@ -65,6 +65,7 @@ namespace FreeWheeling.Domain.Abstract
         void UpdateGroup(Group _Group);
         void UpdateRideTimes(Group _Group);
         void DeleteGroup(int GroupId);
+        void DeleteOldRides(int GroupId, TimeZoneInfo TimeZone);
 
         void AddAdHocRide(Ad_HocRide _AdHocRide);
         void UpdateAdHocRide(Ad_HocRide _AdHocRide);

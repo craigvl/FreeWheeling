@@ -29,7 +29,7 @@ namespace FreeWheeling.UI.Controllers
         // GET: /Group/
         public ActionResult Index()
         {
-
+                
             var currentUser = idb.Users.Find(User.Identity.GetUserId());          
             GroupModel _GroupModel = new GroupModel();
 

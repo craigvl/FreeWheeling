@@ -62,6 +62,9 @@ namespace FreeWheeling.UI.Models
 
             foreach (Group item in _GroupModel._Groups)
             {
+                //Delete any old rides
+
+                repository.DeleteOldRides(item.id, TZone);
 
                 item.Rides = item.Rides.Where(t => t.RideDate >= LocalNow).ToList();
                 Ride NextRide = repository.GetNextRideForGroup(item, TZone);

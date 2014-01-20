@@ -162,7 +162,7 @@ namespace FreeWheeling.Domain.Concrete
 
             if (context.Rides.Where(t => t.Group.id == _Group.id && t.RideDate >= LocalNow).Count() == 1)
             {
-
+                            
                 PopulateRideDatesFromDate(_Group, _Ride.RideDate); 
 
             }
@@ -227,7 +227,7 @@ namespace FreeWheeling.Domain.Concrete
             TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
 
-            _DateTime = TimeZoneInfo.ConvertTimeFromUtc(_DateTime, TZone);
+            //_DateTime = TimeZoneInfo.ConvertTimeFromUtc(_DateTime, TZone); //Not needed as time passed in is in local time.
             _Group.RideDays = GetCycleDaysForGroup(_Group.id);
             List<DayOfWeek> RideDays = new List<DayOfWeek>();
 
@@ -581,6 +581,27 @@ namespace FreeWheeling.Domain.Concrete
         public List<CycleDays> GetCycleDaysForGroup(int GroupId)
         {
            return context.CycleDays.Where(t => t.Group.id == GroupId).ToList();
+        }
+
+
+        public void DeleteOldRides(int GroupId, TimeZoneInfo TimeZone)
+        {
+            Group CurrentGroup = context.Groups.Include("Rides").Where(g => g.id == GroupId).FirstOrDefault();
+
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZone);
+
+            foreach (Ride _Ride in CurrentGroup.Rides.ToList())
+            {
+                if(_Ride.RideDate < LocalNow )
+                {
+                    context.Entry(_Ride).State = System.Data.Entity.EntityState.Deleted;
+                    context.SaveChanges();
+                }
+
+                
+            }
+
+            
         }
     }
 }
