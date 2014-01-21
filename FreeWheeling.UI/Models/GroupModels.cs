@@ -44,13 +44,13 @@ namespace FreeWheeling.UI.Models
             if (!FavouritePage)
             {
                 _GroupModel._Groups = repository.GetGroupsByLocation(LocationId).ToList();
-                _GroupModel.title = "All Groups";
+                _GroupModel.title = "All bunches";
             }
             else
             {
                 _GroupModel._Groups = repository.GetFavouriteGroupsByLocation(LocationId).Where(u => u.Members.Any(m => m.userId == UserId)).ToList();
                 _GroupModel.OnFavPage = true;
-                _GroupModel.title = "Favourite Groups";
+                _GroupModel.title = "Favourite bunches";
             }
             _GroupModel._NextRideDetails = new List<NextRideDetails>();
             _GroupModel.UserLocation = repository.GetLocationName(LocationId);

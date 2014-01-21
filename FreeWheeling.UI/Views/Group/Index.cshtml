@@ -45,7 +45,7 @@
                          if (item.Rides.Count > 0 )
                          {
                              @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id, FromFavPage = @Model.OnFavPage}, new { @class = "btn btn-default" }) 
-                             @Html.ActionLink(string.Concat("View ", NextRideDate.DayOfWeek, " Ride"), "Index", "Ride", new { groupid = item.id, FromFavPage = @Model.OnFavPage }, new { @class = "btn btn-success" })
+                             @Html.ActionLink(string.Concat("View ", NextRideDate.DayOfWeek, " bunch"), "Index", "Ride", new { groupid = item.id, FromFavPage = @Model.OnFavPage }, new { @class = "btn btn-success" })
                              @*@Html.ActionLink(string.Concat("View Rides (", RiderCount, " 100% Rider/s for ", NextRideDate.DayOfWeek, ")"), "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-success" })*@                           
                         @:</h3> 
                              
@@ -69,7 +69,7 @@
                          {
                             
                              @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id, FromFavPage = @Model.OnFavPage }, new { @class = "btn btn-default" }) 
-                             @Html.ActionLink(string.Concat("View ", NextRideDate.DayOfWeek, " Ride"), "Index", "Ride", new { groupid = item.id, FromFavPage = @Model.OnFavPage }, new { @class = "btn btn-success" })
+                             @Html.ActionLink(string.Concat("View ", NextRideDate.DayOfWeek, " bunch"), "Index", "Ride", new { groupid = item.id, FromFavPage = @Model.OnFavPage }, new { @class = "btn btn-success" })
                              @*@Html.ActionLink(string.Concat("View Rides (", RiderCount, " 100% Rider/s for ", NextRideDate.DayOfWeek, ")"), "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-success" })*@                           
                                    
                          }
@@ -80,9 +80,9 @@
                              
                          }
                                                            
-                       @:<button type="button" class="btn btn-default btn-lg">  
+                      
                     @Html.ActionLink(" ", "Join", "Group", new { id = item.id, title = @Model.title }, new { @class = "glyphicon glyphicon-star" })
-                     @:</button></h3>
+                     @:</h3>
                     }
                     isMember = false;
                                        
@@ -105,12 +105,12 @@
                 {
                     if (@Model.OnFavPage)
                     {
-                      @Html.ActionLink("You dont have any favourite groups! Get some!", "Index", "Group", null, new { @class = "btn btn-default" })                   
+                      @Html.ActionLink("You dont have any favourite bunches! Get some!", "Index", "Group", null, new { @class = "btn btn-default" })                   
                     }
                     else
                     {
                         
-                      @Html.ActionLink("No Groups yet, please create some!", "Create", "Group", null, new { @class = "btn btn-default" }) 
+                      @Html.ActionLink("No bunches yet, please create some!", "Create", "Group", null, new { @class = "btn btn-default" }) 
                         
                     }
                     
