@@ -230,6 +230,7 @@ namespace FreeWheeling.UI.Controllers
                     LocationsId = CurrentRide.Location.id,
                     adhocrideid = adhocrideid,
                     DateString = CurrentRide.RideDate.ToString("dd/MM/yyyy"),
+                    Description = CurrentRide.Description,
                     MapUrl = CurrentRide.MapUrl
                 };
 
@@ -260,6 +261,7 @@ namespace FreeWheeling.UI.Controllers
                 StartLocation = _EditAdHocRideModel.StartLocation,
                 Location = _Location,
                 id = _EditAdHocRideModel.adhocrideid,
+                Description = _EditAdHocRideModel.Description,
                 MapUrl = _EditAdHocRideModel.MapUrl
             };
 

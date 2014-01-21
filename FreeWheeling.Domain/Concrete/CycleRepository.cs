@@ -540,6 +540,7 @@ namespace FreeWheeling.Domain.Concrete
             CurrentAdHocRide.CreatedTimeStamp = CurrentAdHocRide.CreatedTimeStamp;
             CurrentAdHocRide.CreatedBy = CurrentAdHocRide.CreatedBy;
             CurrentAdHocRide.MapUrl = _AdHocRide.MapUrl;
+            CurrentAdHocRide.Description = _AdHocRide.Description;
             context.Entry(CurrentAdHocRide).State = System.Data.Entity.EntityState.Modified;
         }
 
