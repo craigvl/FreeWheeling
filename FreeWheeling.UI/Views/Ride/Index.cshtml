@@ -71,19 +71,14 @@ else
                 
             </text>
             break;  // Always break each case
-        case "CantMake":
+        case "Out":
             <text>
                 <p><span class="label label-danger">@item.Name is a slacker!</span></p>
             </text>
             break;
-            case "Different":
+        case "In":
             <text>
-                <p><span class="label label-danger">@item.Name will be riding (Just not with you lot.)</span></p>
-            </text>
-            break;
-        default:
-            <text>
-                <p><span class="label label-success">@item.Name is @item.PercentKeen % sure to be there</span></p>
+                <p><span class="label label-success">@item.Name is in!</span></p>
             </text>
             break;                   
     }
@@ -125,19 +120,10 @@ else
 <h4><span class="label label-success">Actions</span></h4>
 
     <p></p>
-    @Html.ActionLink("Will be 100% there!", "Attend", "Ride", new { RideId = @Model.Ride.id, commitment = "100", Groupid = @Model.Group.id }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Group.id }, new { @class = "btn btn-primary" })
 
     <p></p>
-    @Html.ActionLink("I am a good chance (80%)", "Attend", "Ride", new { RideId = @Model.Ride.id, commitment = "80", Groupid = @Model.Group.id }, new { @class = "btn btn-primary" })
-
-    <p></p>
-    @Html.ActionLink("Will see how I feel 1 hour before (60%)", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "60", Groupid = @Model.Group.id }, new { @class = "btn btn-primary" })
-
-    <p></p>
-    @Html.ActionLink("Will be riding in a different group", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "Different", Groupid = @Model.Group.id }, new { @class = "btn btn-danger" })
-
-    <p></p>
-    @Html.ActionLink("Won't be there", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "CantMake", Groupid = @Model.Group.id }, new { @class = "btn btn-danger" })
+    @Html.ActionLink("I'm Out", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "Out", Groupid = @Model.Group.id }, new { @class = "btn btn-danger" })
 
     <p></p>
     @Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "OnWay", Groupid = @Model.Group.id }, new { @class = "btn btn-success" })
