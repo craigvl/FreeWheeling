@@ -341,9 +341,9 @@ namespace FreeWheeling.UI.Controllers
             repository.RemoveMember(currentUser.Id, group);
             repository.Save();
 
-            if(title == "Favourite Groups")
+            if(title == "Favourite bunches")
             {
-            return RedirectToAction("MyGroups", "Group");
+            return RedirectToAction("Mybunches", "Group");
             }
             else{
 
@@ -367,7 +367,7 @@ namespace FreeWheeling.UI.Controllers
             return RedirectToAction("Index", "Group");
         }
 
-        public ViewResult MyGroups()
+        public ViewResult Mybunches()
         {
 
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
@@ -378,7 +378,6 @@ namespace FreeWheeling.UI.Controllers
 
             _GroupModel = _GroupHelper.PopulateGroupModel(currentUser.Id, currentUser.LocationID,true);
             
-
             return View("Index",_GroupModel);
 
         }
