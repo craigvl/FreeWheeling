@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using FreeWheeling.UI.Models;
 using Microsoft.AspNet.Identity;
 using FreeWheeling.Domain.Entities;
+using FreeWheeling.UI.Infrastructure;
 
 
 namespace FreeWheeling.UI.Controllers
@@ -27,11 +28,14 @@ namespace FreeWheeling.UI.Controllers
 
         public ActionResult Index()
         {
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            CultureHelper _CultureHelper = new CultureHelper(repository);
+            Session["Culture"] = _CultureHelper.GetCulture(Convert.ToInt32(currentUser.LocationID));
+
             HomeIndexModel _HomeIndexModel = new HomeIndexModel();
             _HomeIndexModel.Locations = repository.GetLocations().ToList();
             TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
 
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Member _CurrentMember = repository.GetMemberByUserID(currentUser.Id);
             Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
             
@@ -40,13 +44,10 @@ namespace FreeWheeling.UI.Controllers
                 _HomeIndexModel.LocationsId = _Location.id;
                 _HomeIndexModel.CurrentUserLocation = _Location.Name;
                 _HomeIndexModel.UpCommingAd_HocCount = repository.GetUpCommingAd_HocCount(repository.GetLocations().Where(o => o.id == currentUser.LocationID).FirstOrDefault(),TZone);
-
             }
             else
             {
-
                 _HomeIndexModel.CurrentUserLocation = "Please set a Location";
-
             }
 
             return View(_HomeIndexModel);

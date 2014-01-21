@@ -11,6 +11,7 @@ using FreeWheeling.UI.DataContexts;
 using Microsoft.AspNet.Identity;
 using FreeWheeling.Domain.Abstract;
 using FreeWheeling.UI.Models;
+using FreeWheeling.UI.Infrastructure;
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -29,8 +30,10 @@ namespace FreeWheeling.UI.Controllers
         // GET: /Group/
         public ActionResult Index()
         {
-                
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());          
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            CultureHelper _CultureHelper = new CultureHelper(repository);
+            Session["Culture"] = _CultureHelper.GetCulture(Convert.ToInt32(currentUser.LocationID));
+             
             GroupModel _GroupModel = new GroupModel();
 
             GroupModelHelper _GroupHelper = new GroupModelHelper(repository);
@@ -289,7 +292,6 @@ namespace FreeWheeling.UI.Controllers
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             
-
             foreach (DayOfWeekViewModel item in _GroupCreateModel.DaysOfWeek)
             {
 
