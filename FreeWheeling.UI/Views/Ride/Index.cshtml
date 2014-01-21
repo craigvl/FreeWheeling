@@ -38,7 +38,7 @@ else
 @if (@Model.NextRide != null)
 {
 
-    @Html.ActionLink("Next Ride -->", "NextRide", "Ride", new { RideId = @Model.NextRide.id, Groupid = @Model.Group.id, PreviousRideID = @Model.Ride.id },
+    @Html.ActionLink("Next bunch -->", "NextRide", "Ride", new { RideId = @Model.NextRide.id, Groupid = @Model.Group.id, PreviousRideID = @Model.Ride.id },
                                                       new { @class = "btn btn-default" })
         
 }
