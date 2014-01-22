@@ -11,9 +11,7 @@
     </h2>
     @if (@Model.IsOwner)
     {
-        @*This is now done at the group level
-        @Html.ActionLink(" ", "EditRide", "Ride", new { adhocrideid = @Model.Ride.id }, new { @class = "glyphicon glyphicon-pencil" })*@
-
+       
     }
 
 </p>
@@ -28,20 +26,30 @@
 {
 
     @Html.ActionLink("Back <---", "Mybunches", "Group", null, new { @class = "btn btn-info" })
+    
+    if (@Model.NextRide != null)
+    {
+
+        @Html.ActionLink("Next bunch -->", "NextRide", "Ride", new { RideId = @Model.NextRide.id, Groupid = @Model.Group.id, PreviousRideID = @Model.Ride.id, FromFavPage = @Model.FromFavPage },
+                                                      new { @class = "btn btn-default" })
+        
+    }
 
 }
 else
 {
 @Html.ActionLink("Back <---", "Index", "Group", null, new { @class = "btn btn-info" })
-}
+    
+    if (@Model.NextRide != null)
+    {
 
-@if (@Model.NextRide != null)
-{
-
-    @Html.ActionLink("Next bunch -->", "NextRide", "Ride", new { RideId = @Model.NextRide.id, Groupid = @Model.Group.id, PreviousRideID = @Model.Ride.id },
+         @Html.ActionLink("Next bunch -->", "NextRide", "Ride", new { RideId = @Model.NextRide.id, Groupid = @Model.Group.id, PreviousRideID = @Model.Ride.id },
                                                       new { @class = "btn btn-default" })
         
+    }
 }
+
+
 <hr />
 
 @*<h2 class="text-left"><span class="label label-primary">@Model.Ride.RideDate.DayOfWeek Ride for @Model.Group.name</span></h2>*@

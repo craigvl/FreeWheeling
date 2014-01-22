@@ -391,7 +391,7 @@ namespace FreeWheeling.UI.Controllers
             return RedirectToAction("Index", "Group");
         }
 
-        public ViewResult MyGroups()
+        public ViewResult Mybunches()
         {
 
             var currentUser = idb.Users.Find(User.Identity.GetUserId());

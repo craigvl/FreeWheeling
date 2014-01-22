@@ -18,7 +18,7 @@
 
 @Html.ActionLink("Back <---", "Index", "Group", null, new { @class = "btn btn-info" })
 
-@Html.ActionLink("<-- Previous bunch", "Index", "Ride", new { RideId = @Model.PreviousRide.id, Groupid = @Model.Group.id }, new { @class = "btn btn-default" })
+@Html.ActionLink("<-- Previous bunch", "Index", "Ride", new { RideId = @Model.PreviousRide.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-default" })
 <hr />
 
 <p></p>

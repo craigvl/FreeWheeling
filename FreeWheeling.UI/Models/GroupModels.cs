@@ -122,6 +122,7 @@ namespace FreeWheeling.UI.Models
         [Required(ErrorMessage = "Minute is required")]
         [Range(0, 60, ErrorMessage = "Between 0 and 60")]
         public int Minute { get; set; }
+        [Required(ErrorMessage = "Please select a date")]
         public string DateString { get; set; }
         public string AM_PM { get; set; }
         public IEnumerable<SelectListItem> AM_PMList

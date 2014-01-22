@@ -130,7 +130,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [Compress]
-        public ActionResult NextRide(int RideId, int Groupid, int PreviousRideID)
+        public ActionResult NextRide(int RideId, int Groupid, int PreviousRideID, bool FromFavPage = false)
         {
 
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
@@ -139,7 +139,8 @@ namespace FreeWheeling.UI.Controllers
 
             RideModelHelper _RideHelper = new RideModelHelper(repository);
 
-            RideModel = _RideHelper.PopulateRideModel(RideId, Groupid, currentUser.Id, true);
+            RideModel = _RideHelper.PopulateRideModel(RideId, Groupid, currentUser.Id,true);
+            RideModel.FromFavPage = FromFavPage;
 
             if(RideModel.Ride == null)
             {

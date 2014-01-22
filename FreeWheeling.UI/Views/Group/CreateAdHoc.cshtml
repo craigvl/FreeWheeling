@@ -41,6 +41,7 @@
     <div class="span5" id="MyDate2"><div></div></div>
 
         <div><span class="RequiredField">*&nbsp;</span>Date</div>
+         @Html.ValidationMessageFor(model => model.DateString)
           
         <div>
             @Html.TextBoxFor(model => model.DateString,null, new { id = "MyDate", @class = ""})
@@ -49,11 +50,13 @@
         <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
         <div>
             @Html.TextBoxFor(model => model.Hour)
+            @Html.ValidationMessageFor(model => model.Hour)
         </div>
     
         <div><span class="RequiredField">*&nbsp;</span>Minute</div>
         <div>
             @Html.TextBoxFor(model => model.Minute)
+            @Html.ValidationMessageFor(model => model.Minute)
         </div>
            
         <hr />
@@ -62,27 +65,22 @@
         
         <div> 
             @Html.TextBoxFor(model => model.StartLocation)
+            @Html.ValidationMessageFor(model => model.StartLocation)
         </div>
     
-    <div><span class="RequiredField">*&nbsp;</span>Description</div>
+    <div>Description</div>
         
         <div> 
             @Html.TextAreaFor(model => model.Description)
         </div>
     
-    <div><span class="RequiredField">*&nbsp;</span>Map (Enter <a href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</div>
+    <div>Map (Enter <a href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</div>
         
         <div> 
             @Html.TextBoxFor(model => model.MapUrl)
         </div>
     
-    @*<div><span class="RequiredField">*&nbsp;</span>Average Speed</div>
-        
-        <div> 
-            @Html.TextBoxFor(model => model.AverageSpeed)
-        </div>*@
-    
-        <div>
+         <div>
             <p></p>
             <input id="btnSubmit" type="submit" value="Create Ad Hoc Ride" />
         </div>    
