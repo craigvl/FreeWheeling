@@ -305,6 +305,7 @@ namespace FreeWheeling.UI.Controllers
             TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            bool DayOfWeekSelected = false;
             
             foreach (DayOfWeekViewModel item in _GroupCreateModel.DaysOfWeek)
             {
@@ -314,10 +315,19 @@ namespace FreeWheeling.UI.Controllers
 
                     CycleDays NewDay = new CycleDays { DayOfWeek = item.Name };
                     _CycleDays.Add(NewDay);
-
+                    DayOfWeekSelected = true;
                 }
 
             }
+
+            if(!DayOfWeekSelected)
+            {
+                ModelState.AddModelError(string.Empty, "Please select one or more days");
+                _GroupCreateModel.Locations = repository.GetLocations().ToList();
+                _GroupCreateModel.LocationsId = _Location.id;
+                return View(_GroupCreateModel);
+            }
+
 
             Group NewGroup = new Group
             {
