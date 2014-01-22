@@ -9,7 +9,6 @@
 
 <h2>Create a new Group</h2>
 
-
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
@@ -18,6 +17,7 @@
     <div><span class="RequiredField">*&nbsp;</span>Group Name:</div>
         <div>
             @Html.TextBoxFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
         </div>
     <div>
         <p></p>
@@ -31,6 +31,7 @@
                  "Text", Model.LocationsId
     ), "-- Group Location --", new { @class = "form-control" }
 )
+        @Html.ValidationMessageFor(model => model.LocationsId)
         <p></p>
     </div>
     
@@ -50,37 +51,33 @@
         <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
         <div>
             @Html.TextBoxFor(model => model.Hour)
+            @Html.ValidationMessageFor(model => model.Hour)
         </div>
     
         <div><span class="RequiredField">*&nbsp;</span>Minute</div>
         <div>
-            @Html.TextBoxFor(model => model.Minute) 
-            @*@Html.DropDownListFor(model => model.AM_PM, Model.AM_PMList)*@
+            @Html.TextBoxFor(model => model.Minute)
+            @Html.ValidationMessageFor(model => model.Minute) 
         </div>
            
         <div><span class="RequiredField">*&nbsp;</span>Start Location</div>
         
         <div> 
             @Html.TextBoxFor(model => model.StartLocation)
+            @Html.ValidationMessageFor(model => model.StartLocation)
         </div>
     
-    <div><span class="RequiredField">*&nbsp;</span>Description</div>
+    <div>Description</div>
         
         <div> 
             @Html.TextAreaFor(model => model.Description)
         </div>
     
-   <div><span class="RequiredField">*&nbsp;</span>Map (Enter <a href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</div>
+   <div>Map (Enter <a href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</div>
         
         <div> 
             @Html.TextBoxFor(model => model.MapUrl)
         </div>
-    
-    @*<div><span class="RequiredField">*&nbsp;</span>Average Speed</div>
-        
-        <div> 
-            @Html.TextBoxFor(model => model.AverageSpeed)
-        </div>*@
     
         <div>
             <p></p>

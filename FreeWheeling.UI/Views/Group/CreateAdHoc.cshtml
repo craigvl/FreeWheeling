@@ -18,6 +18,7 @@
     <div><span class="RequiredField">*&nbsp;</span>Ride Name:</div>
         <div>
             @Html.TextBoxFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
         </div>
     <div>
         <p></p>
@@ -36,18 +37,7 @@
     
     <div>
     </div>      
-        @*<div><span class="RequiredField">*&nbsp;</span>Date and Time</div>
-        <div>
-            <div class='input-group date' id='datetimepicker1'>
-                @Html.EditorFor(model => model.RideDate, "{0:dd/MM/yyyy}", new {id = "RideDate", @class = "form-control", data_format = "DD/MM/YYYY" })
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-                <span> @Html.ValidationMessageFor(m => m.RideDate, null, new { @class = "help-inline" }) </span>
-            </div>        
-        </div>*@
-
-
+       
     <div class="span5" id="MyDate2"><div></div></div>
 
         <div><span class="RequiredField">*&nbsp;</span>Date</div>

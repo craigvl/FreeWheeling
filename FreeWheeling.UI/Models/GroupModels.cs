@@ -98,7 +98,6 @@ namespace FreeWheeling.UI.Models
 
         }
 
-
     }
 
     public class AdHocRidesModel
@@ -117,9 +116,11 @@ namespace FreeWheeling.UI.Models
         [DataType(DataType.Date, ErrorMessage = "Please enter a valid date in the format dd/mm/yyyy")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime RideDate { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Hour is required")]
+        [Range(0, 24, ErrorMessage = "Between 0 and 24")]
         public int Hour { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Minute is required")]
+        [Range(0, 60, ErrorMessage = "Between 0 and 60")]
         public int Minute { get; set; }
         public string DateString { get; set; }
         public string AM_PM { get; set; }
@@ -135,11 +136,12 @@ namespace FreeWheeling.UI.Models
             }
         }
 
-        [Required]
+        [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
         [Required]
         public int LocationsId { get; set; }
         public List<Location> Locations { get; set; }
+        [Required(ErrorMessage = "Start location is required")]
         public string StartLocation { get; set; }
         public string AverageSpeed { get; set; }
         public string Creator { get; set; }
@@ -179,15 +181,18 @@ namespace FreeWheeling.UI.Models
     }
     [Required]
     public IList<DayOfWeekViewModel> DaysOfWeek { get; set; }
-    [Required]
+    [Required(ErrorMessage="Name is required")]
     public string Name { get; set; }
-    [Required]
+    [Required(ErrorMessage = "Hour is required")]
+    [Range(0,24,ErrorMessage="Between 0 and 24")]
     public int Hour { get; set; }
-    [Required]
+    [Required(ErrorMessage = "Minute is required")]
+    [Range(0, 60, ErrorMessage = "Between 0 and 60")]
     public int Minute { get; set; }
-    [Required]
+    [Required(ErrorMessage = "Please select a location")]
     public int LocationsId { get; set; }
     public List<Location> Locations { get; set; }
+    [Required(ErrorMessage = "Start location is required")]
     public string StartLocation { get; set; }
     public string AverageSpeed { get; set; }
     public string Description { get; set; }

@@ -91,6 +91,20 @@ namespace FreeWheeling.UI.Controllers
             DateTime da = DateTime.ParseExact(_AdHocCreateModel.DateString, "dd/mm/yyyy",null);
             DateTime _RideDate = da.Date.Add(new TimeSpan(_AdHocCreateModel.Hour, _AdHocCreateModel.Minute, 0));
 
+            if (_RideDate < LocalNow)
+            {
+
+                ModelState.AddModelError(string.Empty, "Please select date and time that is less than current date and time");
+                _AdHocCreateModel.Locations = repository.GetLocations().ToList();
+
+
+                _AdHocCreateModel.LocationsId = _Location.id;
+                return View(_AdHocCreateModel);
+
+            }
+
+
+
             Ad_HocRide NewAdHoc = new Ad_HocRide
             {
                 Name = _AdHocCreateModel.Name,
@@ -367,7 +381,7 @@ namespace FreeWheeling.UI.Controllers
             return RedirectToAction("Index", "Group");
         }
 
-        public ViewResult Mybunches()
+        public ViewResult MyGroups()
         {
 
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
