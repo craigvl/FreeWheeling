@@ -163,7 +163,7 @@ namespace FreeWheeling.Domain.Concrete
             if (context.Rides.Where(t => t.Group.id == _Group.id && t.RideDate >= LocalNow).Count() == 1)
             {
                             
-                PopulateRideDatesFromDate(_Group, _Ride.RideDate); 
+                PopulateRideDatesFromDate(_Group, _Ride.RideDate, TimeZone); 
 
             }
 
@@ -222,10 +222,10 @@ namespace FreeWheeling.Domain.Concrete
             context.Entry(_AdHocRide).State = System.Data.Entity.EntityState.Added;
         }
 
-        public void PopulateRideDatesFromDate(Group _Group, DateTime _DateTime)
+        public void PopulateRideDatesFromDate(Group _Group, DateTime _DateTime, TimeZoneInfo _TimeZoneInfo)
         {
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
-            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
+
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, _TimeZoneInfo);
 
             //_DateTime = TimeZoneInfo.ConvertTimeFromUtc(_DateTime, TZone); //Not needed as time passed in is in local time.
             _Group.RideDays = GetCycleDaysForGroup(_Group.id);
@@ -253,11 +253,10 @@ namespace FreeWheeling.Domain.Concrete
         
         }
 
-        public Group PopulateRideDates(Group _Group)
+        public Group PopulateRideDates(Group _Group, TimeZoneInfo _TimeZoneInfo)
         {
 
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
-            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, _TimeZoneInfo);
 
             List<DayOfWeek> RideDays = new List<DayOfWeek>();
             _Group.RideDays = GetCycleDaysForGroup(_Group.id);
@@ -380,7 +379,7 @@ namespace FreeWheeling.Domain.Concrete
         {
             Ad_HocRide Ad = new Ad_HocRide();
 
-            Ad = context.Ad_HocRide.Where(i => i.id == id).FirstOrDefault();
+            Ad = context.Ad_HocRide.Include("Location").Where(i => i.id == id).FirstOrDefault();
 
             return Ad;
         }
@@ -545,10 +544,10 @@ namespace FreeWheeling.Domain.Concrete
         }
 
 
-        public void UpdateRideTimes(Group _Group)
+        public void UpdateRideTimes(Group _Group, TimeZoneInfo TimeZone)
         {
             //Need to do work here if the time is less than current time and same day then might need to create new ride date 
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+
             Group CurrentGroup = context.Groups.Where(i => i.id == _Group.id).FirstOrDefault();
             foreach (Ride _Ride in CurrentGroup.Rides)
             {

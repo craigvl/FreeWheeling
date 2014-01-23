@@ -16,9 +16,22 @@
 }
 <p></p>
 
-@Html.ActionLink("Back <---", "Index", "Group", null, new { @class = "btn btn-info" })
+@if (@Model.FromFavPage)
+{
 
-@Html.ActionLink("<-- Previous bunch", "Index", "Ride", new { RideId = @Model.PreviousRide.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Back <---", "Mybunches", "Group", null, new { @class = "btn btn-info" })
+
+    @Html.ActionLink("<-- Previous bunch", "Index", "Ride", new { RideId = @Model.PreviousRide.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-default" })
+    
+}
+else
+{
+    
+    @Html.ActionLink("Back <---", "Index", "Group", null, new { @class = "btn btn-info" })
+
+    @Html.ActionLink("<-- Previous bunch", "Index", "Ride", new { RideId = @Model.PreviousRide.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-default" }) 
+}
+
 <hr />
 
 <p></p>

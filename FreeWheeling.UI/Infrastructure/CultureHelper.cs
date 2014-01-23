@@ -37,10 +37,41 @@ namespace FreeWheeling.UI.Infrastructure
             }else
             {
 
-                return new CultureInfo("ar-DZ");
+                return new CultureInfo("en-AU");
             }
 
             
+        }
+
+        public TimeZoneInfo GetTimeZoneInfo(int? UserLocationId)
+        {
+
+            if (UserLocationId == null)
+            {
+
+                TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+                return TZone;
+
+            }
+            else
+            {
+                Location _Location = repository.GetLocations().Where(l => l.id == UserLocationId).FirstOrDefault();
+
+                if (_Location.Name == "Townsville" ||
+                    _Location.Name == "Cairns")
+                {
+                    TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+                    return TZone;
+
+                }
+                else
+                {
+
+                    TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+                    return TZone;
+                }
+            }
+
         }
 
     }

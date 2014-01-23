@@ -1,6 +1,7 @@
 ﻿using FreeWheeling.Domain.Abstract;
 using FreeWheeling.Domain.Entities;
 using FreeWheeling.UI.DataContexts;
+using FreeWheeling.UI.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -38,7 +39,8 @@ namespace FreeWheeling.UI.Models
 
                 //https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D108681
             }
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            CultureHelper _CultureHelper = new CultureHelper(repository);
+            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(Ah.Location.id);
             adHocViewModel.Riders = repository.GetRidersForAdHocRide(adhocrideid, TZone);
 
             adHocViewModel.Comments = repository.GetTop2CommentsForAdHocRide(adhocrideid);
@@ -78,7 +80,8 @@ namespace FreeWheeling.UI.Models
                 RideModel.MapUrl = RideModel.MapUrl = string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", RideModel.Group.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
             }
 
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            CultureHelper _CultureHelper = new CultureHelper(repository);
+            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Group.Location.id);
 
             RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id, TZone);
 

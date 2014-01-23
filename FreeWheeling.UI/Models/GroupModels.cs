@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using FreeWheeling.UI.Infrastructure;
 
 namespace FreeWheeling.UI.Models
 {
@@ -55,7 +56,9 @@ namespace FreeWheeling.UI.Models
             _GroupModel._NextRideDetails = new List<NextRideDetails>();
             _GroupModel.UserLocation = repository.GetLocationName(LocationId);
 
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            CultureHelper _CultureHelper = new CultureHelper(repository);
+
+            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(LocationId);
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
 
             _GroupModel._OwnerGroupList = new List<int>();
@@ -77,7 +80,7 @@ namespace FreeWheeling.UI.Models
                 {
                     if (item.RideDays != null)
                     {
-                        repository.PopulateRideDates(item);
+                        repository.PopulateRideDates(item,TZone);
                         repository.Save();
                     }
 
@@ -123,6 +126,7 @@ namespace FreeWheeling.UI.Models
         [Range(0, 60, ErrorMessage = "Between 0 and 60")]
         public int Minute { get; set; }
         [Required(ErrorMessage = "Please select a date")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public string DateString { get; set; }
         public string AM_PM { get; set; }
         public IEnumerable<SelectListItem> AM_PMList

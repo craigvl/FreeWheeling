@@ -34,7 +34,7 @@ namespace FreeWheeling.UI.Controllers
 
             HomeIndexModel _HomeIndexModel = new HomeIndexModel();
             _HomeIndexModel.Locations = repository.GetLocations().ToList();
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
 
             Member _CurrentMember = repository.GetMemberByUserID(currentUser.Id);
             Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
@@ -113,7 +113,8 @@ namespace FreeWheeling.UI.Controllers
             Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
             HomeIndexModel _HomeIndexModel = new HomeIndexModel();
             _HomeIndexModel.Locations = repository.GetLocations().ToList();
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            CultureHelper _CultureHelper = new CultureHelper(repository);
+            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
 
             _HomeIndexModel.LocationsId = _Location.id;
             _HomeIndexModel.CurrentUserLocation = _Location.Name;

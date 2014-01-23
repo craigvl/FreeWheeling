@@ -13,10 +13,6 @@
 
 @Html.ActionLink("Back <---", "AddHocList", "Ride", null, new { @class = "btn btn-info" })
 
-@*@Html.Raw("<iframe id='mapmyfitness_route' src='https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D @(@Model.MapUrl)&output=embed' height='300px' width='300px' frameborder='0'></iframe>")*@
-
-
-
 <h2>@Model.Ride.Name</h2>
 <h3>@Model.Ride.RideDate.ToLongDateString()</h3>
 <h3>Start Location: @Model.Ride.StartLocation</h3>

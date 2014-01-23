@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using FreeWheeling.UI.Filters;
+using FreeWheeling.UI.Infrastructure;
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -36,7 +37,8 @@ namespace FreeWheeling.UI.Controllers
 
             Group _Group = repository.GetGroupByID(groupid);
 
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            CultureHelper _CultureHelper = new CultureHelper(repository);
+            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
 
             if (rideid == -1)
@@ -86,7 +88,8 @@ namespace FreeWheeling.UI.Controllers
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Member _Member = repository.GetMemberByUserID(currentUser.Id);
             AdHocRidesModel _AdHocRidesModel = new AdHocRidesModel();
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            CultureHelper _CultureHelper = new CultureHelper(repository);
+            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
             _AdHocRidesModel._Ad_HocRide = repository.GetAdHocRides(repository.GetLocations().Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone).OrderBy(c => c.RideDate).ToList();
             return View(_AdHocRidesModel);
         }
@@ -214,7 +217,8 @@ namespace FreeWheeling.UI.Controllers
             else
             {
 
-                TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+                CultureHelper _CultureHelper = new CultureHelper(repository);
+                TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
                 DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
                 Ad_HocRide CurrentRide = repository.GetAdHocRideByID(adhocrideid);
 
@@ -242,9 +246,10 @@ namespace FreeWheeling.UI.Controllers
         [HttpPost]
         public ActionResult EditAdHocRide(EditAdHocRideModel _EditAdHocRideModel)
         {
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
-            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            CultureHelper _CultureHelper = new CultureHelper(repository);
+            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
             Location _Location = repository.GetLocations().Where(l => l.id == _EditAdHocRideModel.LocationsId).FirstOrDefault();
 
             DateTime da = DateTime.ParseExact(_EditAdHocRideModel.DateString, "dd/mm/yyyy", null);

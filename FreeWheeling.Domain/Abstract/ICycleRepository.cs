@@ -52,9 +52,9 @@ namespace FreeWheeling.Domain.Abstract
 
         void RemoveMember(string UserId, Group _Group);
 
-        Group PopulateRideDates(Group _Group);
+        Group PopulateRideDates(Group _Group, TimeZoneInfo _TimeZoneInfo);
 
-        void PopulateRideDatesFromDate(Group _Group, DateTime _DateTime);
+        void PopulateRideDatesFromDate(Group _Group, DateTime _DateTime, TimeZoneInfo _TimeZoneInfo);
 
         void AddRider(Rider _Rider, Group _Group);
         void AddAdHocRider(AdHocRider _Rider, Ad_HocRide _Ride);
@@ -63,7 +63,7 @@ namespace FreeWheeling.Domain.Abstract
         void AddGroup(Group _Group);
         
         void UpdateGroup(Group _Group);
-        void UpdateRideTimes(Group _Group);
+        void UpdateRideTimes(Group _Group, TimeZoneInfo TimeZone);
         void DeleteGroup(int GroupId);
         void DeleteOldRides(int GroupId, TimeZoneInfo TimeZone);
 

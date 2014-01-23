@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity;
 using FreeWheeling.Domain.Abstract;
 using FreeWheeling.UI.Models;
 using FreeWheeling.UI.Infrastructure;
+using System.Globalization;
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -61,9 +62,10 @@ namespace FreeWheeling.UI.Controllers
 
         public ActionResult CreateAdHoc()
         {
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
-            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            CultureHelper _CultureHelper = new CultureHelper(repository);
+            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);          
             Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
 
             AdHocCreateModel _Ad_HocRide = new AdHocCreateModel();
@@ -83,50 +85,61 @@ namespace FreeWheeling.UI.Controllers
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Location _Location = repository.GetLocations().Where(l => l.id == _AdHocCreateModel.LocationsId).FirstOrDefault();
 
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            CultureHelper _CultureHelper = new CultureHelper(repository);
+            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
 
+            DateTime dateResult;
             //DateTime da = new DateTime(_AdHocCreateModel.RideDate.Year, _AdHocCreateModel.RideDate.Month, _AdHocCreateModel.RideDate.Day,_AdHocCreateModel.Hour, _AdHocCreateModel.Minute,0);
 
-            DateTime da = DateTime.ParseExact(_AdHocCreateModel.DateString, "dd/mm/yyyy",null);
-            DateTime _RideDate = da.Date.Add(new TimeSpan(_AdHocCreateModel.Hour, _AdHocCreateModel.Minute, 0));
-
-            if (_RideDate < LocalNow)
+            if (!DateTime.TryParse(_AdHocCreateModel.DateString, _CultureHelper.GetCulture(_Location.id), DateTimeStyles.None, out dateResult))
             {
-
-                ModelState.AddModelError(string.Empty, "Please select date and time that is less than current date and time");
+                ModelState.AddModelError(string.Empty, "Date is not in a valid date format");
                 _AdHocCreateModel.Locations = repository.GetLocations().ToList();
-
-
                 _AdHocCreateModel.LocationsId = _Location.id;
                 return View(_AdHocCreateModel);
+            }
+            else
+            {
 
+                DateTime da = DateTime.ParseExact(_AdHocCreateModel.DateString, "dd/mm/yyyy", null);
+                DateTime _RideDate = da.Date.Add(new TimeSpan(_AdHocCreateModel.Hour, _AdHocCreateModel.Minute, 0));
+
+                if (_RideDate < LocalNow)
+                {
+
+                    ModelState.AddModelError(string.Empty, "Please select date and time that is greater than current date and time");
+                    _AdHocCreateModel.Locations = repository.GetLocations().ToList();
+                    _AdHocCreateModel.LocationsId = _Location.id;
+                    return View(_AdHocCreateModel);
+
+                }
+
+                Ad_HocRide NewAdHoc = new Ad_HocRide
+                {
+                    Name = _AdHocCreateModel.Name,
+                    AverageSpeed = _AdHocCreateModel.AverageSpeed,
+                    Location = _Location,
+                    RideDate = _RideDate,
+                    Creator = currentUser.UserName,
+                    StartLocation = _AdHocCreateModel.StartLocation,
+                    Description = _AdHocCreateModel.Description,
+                    RideTime = _RideDate.TimeOfDay.ToString(),
+                    RideHour = _RideDate.Hour,
+                    RideMinute = _RideDate.Minute,
+                    CreatedBy = currentUser.Id,
+                    CreatedTimeStamp = LocalNow,
+                    ModifiedTimeStamp = LocalNow,
+                    MapUrl = _AdHocCreateModel.MapUrl
+                };
+
+                repository.AddAdHocRide(NewAdHoc);
+                repository.Save();
+
+                return RedirectToAction("index", "home");  
             }
 
-
-
-            Ad_HocRide NewAdHoc = new Ad_HocRide
-            {
-                Name = _AdHocCreateModel.Name,
-                AverageSpeed = _AdHocCreateModel.AverageSpeed,
-                Location = _Location,
-                RideDate = _RideDate,
-                Creator = currentUser.UserName,
-                StartLocation = _AdHocCreateModel.StartLocation,
-                Description = _AdHocCreateModel.Description,
-                RideTime = _RideDate.TimeOfDay.ToString(),
-                RideHour = _RideDate.Hour,
-                RideMinute = _RideDate.Minute,
-                CreatedBy = currentUser.Id,
-                CreatedTimeStamp = LocalNow,
-                ModifiedTimeStamp = LocalNow,
-                MapUrl = _AdHocCreateModel.MapUrl
-            };
-
-            repository.AddAdHocRide(NewAdHoc);
-            repository.Save();
-
-            return RedirectToAction("index", "home");   
+             
         }
 
         public ActionResult EditGroup(int groupId)
@@ -141,7 +154,8 @@ namespace FreeWheeling.UI.Controllers
             else
             {
 
-                TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+                CultureHelper _CultureHelper = new CultureHelper(repository);
+                TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
                 DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
 
                 Group CurrentGroup = repository.GetGroupByID(groupId);
@@ -182,12 +196,12 @@ namespace FreeWheeling.UI.Controllers
         [HttpPost]
         public ActionResult EditGroup(EditGroupModel _EditGroupModel)
         {
-
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
             List<CycleDays> _CycleDays = new List<CycleDays>();
             Location _Location = repository.GetLocations().Where(l => l.id == _EditGroupModel.LocationsId).FirstOrDefault();
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
-            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            CultureHelper _CultureHelper = new CultureHelper(repository);
+            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);         
             Group CurrentGroup = repository.GetGroupByID(_EditGroupModel.GroupId);
 
             foreach (DayOfWeekViewModel item in _EditGroupModel.DaysOfWeek)
@@ -224,7 +238,7 @@ namespace FreeWheeling.UI.Controllers
             repository.UpdateGroup(UpdatedGroup);
             repository.Save();
 
-            repository.UpdateRideTimes(UpdatedGroup);
+            repository.UpdateRideTimes(UpdatedGroup,TZone);
             repository.Save();
             //Not needed if not able to change days would need to do some work here if allowed.
             //NewGroup = repository.PopulateRideDates(NewGroup);
@@ -302,7 +316,10 @@ namespace FreeWheeling.UI.Controllers
 
             List<CycleDays> _CycleDays = new List<CycleDays>();
             Location _Location = repository.GetLocations().Where(l => l.id == _GroupCreateModel.LocationsId).FirstOrDefault();
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+
+            CultureHelper _CultureHelper = new CultureHelper(repository);
+            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_GroupCreateModel.LocationsId);
+
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             bool DayOfWeekSelected = false;
@@ -347,7 +364,7 @@ namespace FreeWheeling.UI.Controllers
             repository.AddGroup(NewGroup);
             repository.Save();
 
-            NewGroup = repository.PopulateRideDates(NewGroup);
+            NewGroup = repository.PopulateRideDates(NewGroup,TZone);
             repository.Save();
 
             return RedirectToAction("Index", "Group");
@@ -360,7 +377,8 @@ namespace FreeWheeling.UI.Controllers
             Member _Member = repository.GetMemberByUserID(currentUser.Id);
             Group group = repository.GetGroupByID(id);
 
-            TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+            CultureHelper _CultureHelper = new CultureHelper(repository);
+            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
 
             repository.RemoveMember(currentUser.Id, group);
             repository.Save();
