@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using FreeWheeling.UI.Filters;
 using FreeWheeling.UI.Infrastructure;
+using System.Globalization;
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -252,35 +253,48 @@ namespace FreeWheeling.UI.Controllers
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
             Location _Location = repository.GetLocations().Where(l => l.id == _EditAdHocRideModel.LocationsId).FirstOrDefault();
 
-            DateTime da = DateTime.ParseExact(_EditAdHocRideModel.DateString, "dd/mm/yyyy", null);
-            DateTime _RideDate = da.Date.Add(new TimeSpan(_EditAdHocRideModel.RideHour, _EditAdHocRideModel.RideMinute, 0));
+            DateTime dateResult;
 
-            Ad_HocRide adhoc = new Ad_HocRide
+            if (!DateTime.TryParse(_EditAdHocRideModel.DateString, _CultureHelper.GetCulture(_Location.id), DateTimeStyles.None, out dateResult))
             {
-                AverageSpeed = _EditAdHocRideModel.AverageSpeed,
-                ModifiedTimeStamp = LocalNow,
-                Name = _EditAdHocRideModel.Name,
-                RideDate = _RideDate,
-                RideHour = _RideDate.Hour,
-                RideMinute = _RideDate.Minute,
-                RideTime = _RideDate.TimeOfDay.ToString(),
-                StartLocation = _EditAdHocRideModel.StartLocation,
-                Location = _Location,
-                id = _EditAdHocRideModel.adhocrideid,
-                Description = _EditAdHocRideModel.Description,
-                MapUrl = _EditAdHocRideModel.MapUrl
-            };
+                ModelState.AddModelError(string.Empty, "Date is not in a valid date format");
+                _EditAdHocRideModel.Locations = repository.GetLocations().ToList();
+                _EditAdHocRideModel.LocationsId = _Location.id;
+                return View(_EditAdHocRideModel);
+            }
+            else
+            {
 
-            repository.UpdateAdHocRide(adhoc);
-            repository.Save();
+                DateTime da = DateTime.ParseExact(_EditAdHocRideModel.DateString, "dd/mm/yyyy", null);
+                DateTime _RideDate = da.Date.Add(new TimeSpan(_EditAdHocRideModel.RideHour, _EditAdHocRideModel.RideMinute, 0));
 
-            AdHocViewModel _adHocViewModel = new AdHocViewModel();
+                Ad_HocRide adhoc = new Ad_HocRide
+                {
+                    AverageSpeed = _EditAdHocRideModel.AverageSpeed,
+                    ModifiedTimeStamp = LocalNow,
+                    Name = _EditAdHocRideModel.Name,
+                    RideDate = _RideDate,
+                    RideHour = _RideDate.Hour,
+                    RideMinute = _RideDate.Minute,
+                    RideTime = _RideDate.TimeOfDay.ToString(),
+                    StartLocation = _EditAdHocRideModel.StartLocation,
+                    Location = _Location,
+                    id = _EditAdHocRideModel.adhocrideid,
+                    Description = _EditAdHocRideModel.Description,
+                    MapUrl = _EditAdHocRideModel.MapUrl
+                };
 
-            RideModelHelper _AdHocHelper = new RideModelHelper(repository);
+                repository.UpdateAdHocRide(adhoc);
+                repository.Save();
 
-            _adHocViewModel = _AdHocHelper.PopulateAdHocModel(_EditAdHocRideModel.adhocrideid, currentUser.Id);
+                AdHocViewModel _adHocViewModel = new AdHocViewModel();
 
-            return View("ViewAdHocRide", _adHocViewModel);
+                RideModelHelper _AdHocHelper = new RideModelHelper(repository);
+
+                _adHocViewModel = _AdHocHelper.PopulateAdHocModel(_EditAdHocRideModel.adhocrideid, currentUser.Id);
+
+                return View("ViewAdHocRide", _adHocViewModel);
+            }
 
         }
 
@@ -438,9 +452,6 @@ namespace FreeWheeling.UI.Controllers
 
             return View("ViewAdHocRide", _adHocViewModel);
         }
-
-        
-
-       
+      
 	}
 }

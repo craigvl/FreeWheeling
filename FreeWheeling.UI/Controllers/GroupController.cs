@@ -90,7 +90,6 @@ namespace FreeWheeling.UI.Controllers
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
 
             DateTime dateResult;
-            //DateTime da = new DateTime(_AdHocCreateModel.RideDate.Year, _AdHocCreateModel.RideDate.Month, _AdHocCreateModel.RideDate.Day,_AdHocCreateModel.Hour, _AdHocCreateModel.Minute,0);
 
             if (!DateTime.TryParse(_AdHocCreateModel.DateString, _CultureHelper.GetCulture(_Location.id), DateTimeStyles.None, out dateResult))
             {
@@ -269,7 +268,6 @@ namespace FreeWheeling.UI.Controllers
 
         }
 
-
         [HttpPost, ActionName("DeleteGroup")]
         public ActionResult DeleteConfirmed(int GroupId)
         {
@@ -308,8 +306,7 @@ namespace FreeWheeling.UI.Controllers
             return View(_GroupCreateModel);
 
         }
-
-        
+       
         [HttpPost]
         public ActionResult Create(GroupCreateModel _GroupCreateModel)
         {

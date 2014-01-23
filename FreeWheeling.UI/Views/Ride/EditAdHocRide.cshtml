@@ -12,6 +12,8 @@
 <h2>Edit AdHoc Ride</h2>
 @using (Html.BeginForm())
 {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
     @Html.EditorFor(model => model.Name)
     
      <p></p>
