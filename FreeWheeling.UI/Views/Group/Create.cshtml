@@ -1,20 +1,19 @@
 ﻿@model FreeWheeling.UI.Models.GroupCreateModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create a bunch";
 }
 
 @Html.ActionLink("Back Home <---", "Index", "Home", null, new { @class = "btn btn-info" })
 
-
-<h2>Create a new Group</h2>
+<h2>Create a new bunch</h2>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
     
-    <div><span class="RequiredField">*&nbsp;</span>Group Name:</div>
+    <div><span class="RequiredField">*&nbsp;</span>bunch Name:</div>
         <div>
             @Html.TextBoxFor(model => model.Name)
             @Html.ValidationMessageFor(model => model.Name)
@@ -81,7 +80,7 @@
     
         <div>
             <p></p>
-            <input id="btnSubmit" type="submit" value="Create Group" />
+            <input id="btnSubmit" type="submit" value="Create bunch" />
         </div>
     
 }

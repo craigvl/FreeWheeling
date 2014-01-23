@@ -1,6 +1,6 @@
 ﻿@model FreeWheeling.UI.Models.AdHocRideCommentModel
 @{
-    ViewBag.Title = "AddComment";
+    ViewBag.Title = "Add Ad Hoc Comment";
 }
 
 <h4><span class="label label-success">Add a Comment</span></h4>
@@ -10,7 +10,7 @@
 @using (Html.BeginForm())
 {
     <div>
-        
+
         @Html.TextAreaFor(model => model.Comment, new { @class = "form-control" })
     </div>
     <p></p>

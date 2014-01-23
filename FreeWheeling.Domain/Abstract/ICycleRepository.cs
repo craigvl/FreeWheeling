@@ -10,69 +10,72 @@ namespace FreeWheeling.Domain.Abstract
     public interface ICycleRepository
     {
 
-        //Group
+        //Get .. Group
         IEnumerable<Group> GetGroups();
         IEnumerable<Group> GetGroupsByLocation(int? LocationID);
-
         IEnumerable<Group> GetFavouriteGroupsByLocation(int? LocationID);
         IEnumerable<Group> GetGroupsWithRiders();
-        IEnumerable<Location> GetLocations();
-
         Group GetGroupByID(int id);
         Group GetGroupByIDNoIncludes(int id);
+        List<CycleDays> GetCycleDaysForGroup(int GroupId);
+        Ride GetPreviousRideForGroup(Group _Group);
+        List<int> CurrentGroupsForUser(string UserId);
+
+        //Get .. Location
+        IEnumerable<Location> GetLocations();
+        string GetLocationName(int? id);
+
+        //Get .. Ride
         Ride GetRideByID(int id);
+        Ride GetNextRideForGroup(Group _Group, TimeZoneInfo TimeZone);
+        List<Ad_HocRide> GetAdHocRides(Location _Location, TimeZoneInfo TimeZone);
+
+        //Get .. AdHoc
         Ad_HocRide GetAdHocRideByID(int id);
         List<AdHocComment> GetTop2CommentsForAdHocRide(int AdHocRideid);
         List<AdHocComment> GetAllCommentsForAdHocRide(int AdHocRideid);
         int GetCommentCountForAdHocRide(int AdHocRideid);
+        int GetUpCommingAd_HocCount(Location _Location, TimeZoneInfo TimeZone);
+
+        //Get .. Riders
+        List<Rider> GetRidersForRide(int id, TimeZoneInfo TimeZone);
         List<AdHocRider> GetRidersForAdHocRide(int AdHocRideid, TimeZoneInfo TimeZone);
 
-        List<CycleDays> GetCycleDaysForGroup(int GroupId);
-        List<Rider> GetRidersForRide(int id, TimeZoneInfo TimeZone);
-        Ride GetNextRideForGroup(Group _Group, TimeZoneInfo TimeZone);
-        Ride GetPreviousRideForGroup(Group _Group);
+        //Get .. Comments
         List<Comment> GetTop2CommentsForRide(int Rideid);
         int GetCommentCountForRide(int Rideid);
         List<Comment> GetAllCommentsForRide(int Rideid);
 
-        List<Ad_HocRide> GetAdHocRides(Location _Location, TimeZoneInfo TimeZone);
-
+        //Get .. Members
         Member GetMemberByUserID(string id);
-        int GetUpCommingAd_HocCount(Location _Location, TimeZoneInfo TimeZone);
-        string GetLocationName(int? id);
+        
+        //Add
+        void AddMember(string UserId, Group _Group);
+        void AddRider(Rider _Rider, Group _Group);
+        void AddAdHocRider(AdHocRider _Rider, Ad_HocRide _Ride);
+        void AddGroup(Group _Group);
+        void AddAdHocRide(Ad_HocRide _AdHocRide);
+        void AddRideComment(string Comment, int RideId, string UserName);
+        void AddAdHocRideComment(string Comment, int RideId, string UserName);
 
+        //Delete
+        void RemoveMember(string UserId, Group _Group);
+        void DeleteGroup(int GroupId);
+        void DeleteOldRides(int GroupId, TimeZoneInfo TimeZone);
+        void DeleteAdHocRide(int AdHocId);
+        
+        //Update
+        void UpdateGroup(Group _Group);
+        void UpdateRideTimes(Group _Group, TimeZoneInfo TimeZone);
+        void UpdateAdHocRide(Ad_HocRide _AdHocRide);
 
-        List<int> CurrentGroupsForUser(string UserId);
-
+        //Checks
         Boolean IsAdHocCreator(int AdHocRideid, string UserId);
         Boolean IsGroupCreator(int _GroupId, string UserId);
         
-        //Member
-        void AddMember(string UserId, Group _Group);
-
-        void RemoveMember(string UserId, Group _Group);
-
+        //Populate
         Group PopulateRideDates(Group _Group, TimeZoneInfo _TimeZoneInfo);
-
         void PopulateRideDatesFromDate(Group _Group, DateTime _DateTime, TimeZoneInfo _TimeZoneInfo);
-
-        void AddRider(Rider _Rider, Group _Group);
-        void AddAdHocRider(AdHocRider _Rider, Ad_HocRide _Ride);
-
-
-        void AddGroup(Group _Group);
-        
-        void UpdateGroup(Group _Group);
-        void UpdateRideTimes(Group _Group, TimeZoneInfo TimeZone);
-        void DeleteGroup(int GroupId);
-        void DeleteOldRides(int GroupId, TimeZoneInfo TimeZone);
-
-        void AddAdHocRide(Ad_HocRide _AdHocRide);
-        void UpdateAdHocRide(Ad_HocRide _AdHocRide);
-        void DeleteAdHocRide(int AdHocId);
-
-        void AddRideComment(string Comment, int RideId, string UserName);
-        void AddAdHocRideComment(string Comment, int RideId, string UserName);
 
         void Save();
       

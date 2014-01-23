@@ -1,21 +1,21 @@
 ﻿@model FreeWheeling.UI.Models.AdHocCreateModel
 
 @{
-    ViewBag.Title = "Create Ad Hoc Ride";
+    ViewBag.Title = "Create Ad Hoc bunch";
 }
 
 <link href="~/Content/datepicker.css" rel="stylesheet" />
 
 @Html.ActionLink("Back Home <---", "Index", "Home", null, new { @class = "btn btn-info" })
 
-<h2>Create Ad Hoc Ride</h2>
+<h2>Create Ad Hoc bunch</h2>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
     
-    <div><span class="RequiredField">*&nbsp;</span>Ride Name:</div>
+    <div><span class="RequiredField">*&nbsp;</span>bunch Name:</div>
         <div>
             @Html.TextBoxFor(model => model.Name)
             @Html.ValidationMessageFor(model => model.Name)
@@ -38,7 +38,7 @@
     <div>
     </div>      
        
-    <div class="span5" id="MyDate2"><div></div></div>
+    <div class="span5" id="MyDateDiv"><div></div></div>
 
         <div><span class="RequiredField">*&nbsp;</span>Date</div>
          @Html.ValidationMessageFor(model => model.DateString)
@@ -82,7 +82,7 @@
     
          <div>
             <p></p>
-            <input id="btnSubmit" type="submit" value="Create Ad Hoc Ride" />
+            <input id="btnSubmit" type="submit" value="Create Ad Hoc bunch" />
         </div>    
 }
 
@@ -95,7 +95,7 @@
         //    format: "dd/mm/yyyy"
         //});
 
-        $('#MyDate2 div').datepicker({
+        $('#MyDateDiv div').datepicker({
         }).on('changeDate', function (e) {
             $('#MyDate').val(e.format('dd/mm/yyyy'))
         });

@@ -6,4 +6,4 @@
 - need to check what happens when adhoc ride date and group date times are changed.
 - Need to look at view groups index page performance.
 - DONE: If you view a ride from the fav list then the back button takes you back to the all groups button need to fix this.
-- Order list of groups by next upcomming ride.
+- Order list of groups by next upcomming ride. Performance??

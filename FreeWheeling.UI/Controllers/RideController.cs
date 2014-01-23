@@ -268,6 +268,16 @@ namespace FreeWheeling.UI.Controllers
                 DateTime da = DateTime.ParseExact(_EditAdHocRideModel.DateString, "dd/mm/yyyy", null);
                 DateTime _RideDate = da.Date.Add(new TimeSpan(_EditAdHocRideModel.RideHour, _EditAdHocRideModel.RideMinute, 0));
 
+                if (_RideDate < LocalNow)
+                {
+
+                    ModelState.AddModelError(string.Empty, "Please select date and time that is greater than current date and time");
+                    _EditAdHocRideModel.Locations = repository.GetLocations().ToList();
+                    _EditAdHocRideModel.LocationsId = _Location.id;
+                    return View(_EditAdHocRideModel);
+
+                }
+
                 Ad_HocRide adhoc = new Ad_HocRide
                 {
                     AverageSpeed = _EditAdHocRideModel.AverageSpeed,

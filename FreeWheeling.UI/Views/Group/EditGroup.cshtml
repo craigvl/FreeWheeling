@@ -1,6 +1,6 @@
 ﻿@model FreeWheeling.UI.Models.EditGroupModel
 @{
-    ViewBag.Title = "EditGroup";
+    ViewBag.Title = "Edit bunch";
 }
 
 @Html.ActionLink("Back Home <---", "Index", "Home", null, new { @class = "btn btn-info" })
@@ -8,14 +8,14 @@
 @Html.ActionLink("Delete", "DeleteGroup", "Group", new { GroupId = @Model.GroupId }, new { @class = "btn btn-default" })
 
 
-<h2>Edit Group</h2>
+<h2>Edit bunch</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    <div><span class="RequiredField">*&nbsp;</span>Group Name:</div>
+    <div><span class="RequiredField">*&nbsp;</span>bunch Name:</div>
     <div>
         @Html.TextBoxFor(model => model.Name)
     </div>

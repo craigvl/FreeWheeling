@@ -2,7 +2,7 @@
 @using FreeWheeling.Domain.Entities
 
 @{
-    ViewBag.Title = "ViewAdHocRide";
+    ViewBag.Title = "View Ad Hoc bunch";
 }
 
 @if (@Model.MapUrl != null)
@@ -16,13 +16,13 @@
 <h2>@Model.Ride.Name</h2>
 <h3>@Model.Ride.RideDate.ToLongDateString()</h3>
 <h3>Start Location: @Model.Ride.StartLocation</h3>
-<h3>Start Time: @Model.Ride.RideTime</h3>
+<h3>Start Time: @Model.RideDate.ToShortTimeString()</h3>
 <h3>Description: @Model.Ride.Description</h3>
 @if (@Model.IsOwner)
 {
-    
-            @Html.ActionLink(" ", "EditAdHocRide", "Ride", new { adhocrideid = @Model.Ride.id }, new { @class = "glyphicon glyphicon-pencil" })
-    
+
+    @Html.ActionLink(" ", "EditAdHocRide", "Ride", new { adhocrideid = @Model.Ride.id }, new { @class = "glyphicon glyphicon-pencil" })
+
 }
 <hr />
 
@@ -37,21 +37,21 @@
             switch (item.PercentKeen)
             {
                 case "OnWay":
-            <text>
-                <p><span class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
-                
-            </text>
-            break;  // Always break each case
-        case "Out":
-            <text>
-                <p><span class="label label-danger">@item.Name is a slacker!</span></p>
-            </text>
-            break;
-        case "In":
-            <text>
-                <p><span class="label label-success">@item.Name is in!</span></p>
-            </text>
-            break; 
+                    <text>
+                        <p><span class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
+
+                    </text>
+                    break;  // Always break each case
+                case "Out":
+                <text>
+                    <p><span class="label label-danger">@item.Name is a slacker!</span></p>
+                </text>
+                    break;
+                case "In":
+                <text>
+                    <p><span class="label label-success">@item.Name is in!</span></p>
+                </text>
+                    break;
             }
         }
         <p></p>
@@ -61,14 +61,15 @@
 <br />
 
 <div>
-<hr />
+    <hr />
     @if (@Model.Comments != null)
     {
-        <h4><span class="label label-success">Comments</span> 
-        @Html.ActionLink("+", "AddAdHocComment", "Ride", new { adhocrideid = @Model.Ride.id }, new { @class = "btn btn-success" })
-        
-    
-    </h4>
+        <h4>
+            <span class="label label-success">Comments</span>
+            @Html.ActionLink("+", "AddAdHocComment", "Ride", new { adhocrideid = @Model.Ride.id }, new { @class = "btn btn-success" })
+
+
+        </h4>
 
         foreach (AdHocComment item in Model.Comments)
         {
@@ -78,10 +79,11 @@
             @item.CommentText
             @:<p></p>
 
+
         }
-        
+
         @Html.ActionLink(string.Concat("See all Comments (", @Model.CommentCount, ")"), "SeeAllAdHocComments", "Ride", new { adhocrideid = @Model.Ride.id }, new { @class = "btn btn-success" })
-        
+
     }
 
 </div>
