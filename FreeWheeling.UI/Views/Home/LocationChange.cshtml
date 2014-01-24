@@ -20,6 +20,12 @@
     ), "-- Set a Location --", new {@class = "form-control" }
 )
     <p></p>
-    <input type="submit" value="Set Location" class="btn btn-primary" />
+    <input onclick="ShowProgress();" type="submit" value="Set Location" class="btn btn-primary" />
 
 }
+
+<div class="loading" align="center">
+    Loading. Please wait.<br />
+    <br />
+    <img src="~/Content/Images/loader.gif" alt="" />
+</div>

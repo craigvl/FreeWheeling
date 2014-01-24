@@ -19,7 +19,7 @@
             </p>
             }
 
-            @Html.ActionLink("Back <---", "Index", "Home", null, new { @class = "btn btn-info" })
+            @Html.ActionLink("Back <---", "Index", "Home", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
 
             <h3 class="text-left"><span class="label label-primary">@Model.title in @Model.UserLocation</span></h3>
                            
@@ -40,7 +40,7 @@
                     if(isCreator)
                     {
                         
-                        @Html.ActionLink(" ", "EditGroup", "Group", new { groupId = item.id }, new { @class = "glyphicon glyphicon-pencil" })
+                        @Html.ActionLink(" ", "EditGroup", "Group", new { groupId = item.id }, new { @class = "glyphicon glyphicon-pencil", onclick = "ShowProgress();" })
                         
                     }
                     
@@ -52,8 +52,8 @@
                    
                          if (item.Rides.Count > 0 )
                          {
-                             @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id, FromFavPage = @Model.OnFavPage}, new { @class = "btn btn-default" }) 
-                             @Html.ActionLink(string.Concat("View ", NextRideDate.DayOfWeek, " bunch"), "Index", "Ride", new { groupid = item.id, FromFavPage = @Model.OnFavPage }, new { @class = "btn btn-success" })
+                             @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id, FromFavPage = @Model.OnFavPage }, new { @class = "btn btn-default", onclick = "ShowProgress();" }) 
+                             @Html.ActionLink(string.Concat("View ", NextRideDate.DayOfWeek, " bunch"), "Index", "Ride", new { groupid = item.id, FromFavPage = @Model.OnFavPage }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
                              @*@Html.ActionLink(string.Concat("View Rides (", RiderCount, " 100% Rider/s for ", NextRideDate.DayOfWeek, ")"), "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-success" })*@                           
                         @:</h3> 
                              
@@ -65,7 +65,7 @@
                              
                          }
                                                
-                         @Html.ActionLink("Remove from favourites", "RemoveFromFavouriteList", "Group", new { id = item.id, title = @Model.title  }, new { @class = "btn btn-danger" })
+                         @Html.ActionLink("Remove from favourites", "RemoveFromFavouriteList", "Group", new { id = item.id, title = @Model.title }, new { @class = "btn btn-danger", onclick = "ShowProgress();" })
                           
                     }
                     else
@@ -76,8 +76,8 @@
                          if (item.Rides.Count > 0 )
                          {
                             
-                             @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id, FromFavPage = @Model.OnFavPage }, new { @class = "btn btn-default" }) 
-                             @Html.ActionLink(string.Concat("View ", NextRideDate.DayOfWeek, " bunch"), "Index", "Ride", new { groupid = item.id, FromFavPage = @Model.OnFavPage }, new { @class = "btn btn-success" })
+                             @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id, FromFavPage = @Model.OnFavPage }, new { @class = "btn btn-default", onclick = "ShowProgress();" }) 
+                             @Html.ActionLink(string.Concat("View ", NextRideDate.DayOfWeek, " bunch"), "Index", "Ride", new { groupid = item.id, FromFavPage = @Model.OnFavPage }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
                              @*@Html.ActionLink(string.Concat("View Rides (", RiderCount, " 100% Rider/s for ", NextRideDate.DayOfWeek, ")"), "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-success" })*@                           
                                    
                          }
@@ -89,7 +89,7 @@
                          }
                                                            
                       
-                    @Html.ActionLink(" ", "Join", "Group", new { id = item.id, title = @Model.title }, new { @class = "glyphicon glyphicon-star" })
+                    @Html.ActionLink(" ", "Join", "Group", new { id = item.id, title = @Model.title }, new { @class = "glyphicon glyphicon-star", onclick = "ShowProgress();" })
                      @:</h3>
                     }
                     isMember = false;
@@ -102,8 +102,8 @@
                      UpdateTargetId = "GroupInfo"+item.id.ToString(), // <-- DOM element ID to update
                      InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
                      HttpMethod = "POST",
-                     OnSuccess = "HideInfoLink"
-                 }, new { @class = "glyphicon glyphicon-info-sign" })
+                     OnSuccess = "HideInfoLink("+item.id.ToString()+")"
+                 }, new {id = "infoButton"+item.id.ToString(), @class = "glyphicon glyphicon-info-sign" })
                    
                 <div class="Ginfo" id="@("GroupInfo" + @item.id)"></div>/*This is the div that gets replaced with group info*/
 
@@ -113,23 +113,32 @@
                 {
                     if (@Model.OnFavPage)
                     {
-                      @Html.ActionLink("You dont have any favourite bunches! Get some!", "Index", "Group", null, new { @class = "btn btn-default" })                   
+                      @Html.ActionLink("You dont have any favourite bunches! Get some!", "Index", "Group", null, new { @class = "btn btn-default", onclick = "ShowProgress();" })                   
                     }
                     else
                     {
                         
-                      @Html.ActionLink("No bunches yet, please create some!", "Create", "Group", null, new { @class = "btn btn-default" }) 
+                      @Html.ActionLink("No bunches yet, please create some!", "Create", "Group", null, new { @class = "btn btn-default", onclick = "ShowProgress();" }) 
                         
                     }
                     
                 }
 </div>
 </div>
+
+<div class="loading" align="center">
+    Loading. Please wait.<br />
+    <br />
+    <img src="~/Content/Images/loader.gif" alt="" />
+</div>
+
 @section scripts{
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
 <script>
     
-    function HideInfoLink(){
+    function HideInfoLink(GroupId) {
+        $("#infoButton" + GroupId).hide();
+        
     }
   
 </script>

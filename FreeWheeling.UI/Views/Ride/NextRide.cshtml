@@ -19,17 +19,17 @@
 @if (@Model.FromFavPage)
 {
 
-    @Html.ActionLink("Back <---", "Mybunches", "Group", null, new { @class = "btn btn-info" })
+    @Html.ActionLink("Back <---", "Mybunches", "Group", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
 
-    @Html.ActionLink("<-- Previous bunch", "Index", "Ride", new { RideId = @Model.PreviousRide.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-default" })
+    @Html.ActionLink("<-- Previous bunch", "Index", "Ride", new { RideId = @Model.PreviousRide.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-default", onclick = "ShowProgress();" })
     
 }
 else
 {
     
-    @Html.ActionLink("Back <---", "Index", "Group", null, new { @class = "btn btn-info" })
+    @Html.ActionLink("Back <---", "Index", "Group", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
 
-    @Html.ActionLink("<-- Previous bunch", "Index", "Ride", new { RideId = @Model.PreviousRide.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-default" }) 
+    @Html.ActionLink("<-- Previous bunch", "Index", "Ride", new { RideId = @Model.PreviousRide.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-default", onclick = "ShowProgress();" }) 
 }
 
 <hr />
@@ -104,22 +104,28 @@ else
 </div>
 
 
-@Html.ActionLink("Add Comment", "AddCommentNext", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id, PreviousRideID = @Model.PreviousRide.id }, new { @class = "btn btn-success" })
+@Html.ActionLink("Add Comment", "AddCommentNext", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id, PreviousRideID = @Model.PreviousRide.id }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
 
 <hr />
 
 <h4><span class="label label-success">Actions</span></h4>
 
 <p></p>
-@Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Group.id }, new { @class = "btn btn-primary" })
+@Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Group.id }, new { @class = "btn btn-primary", onclick = "ShowProgress();" })
 
 <p></p>
-@Html.ActionLink("I'm Out", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "Out", Groupid = @Model.Group.id }, new { @class = "btn btn-danger" })
+@Html.ActionLink("I'm Out", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "Out", Groupid = @Model.Group.id }, new { @class = "btn btn-danger", onclick = "ShowProgress();" })
 
 <p></p>
-@Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "OnWay", Groupid = @Model.Group.id }, new { @class = "btn btn-success" })
+@Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "OnWay", Groupid = @Model.Group.id }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
 
 <p></p>
+
+<div class="loading" align="center">
+    Loading. Please wait.<br />
+    <br />
+    <img src="~/Content/Images/loader.gif" alt="" />
+</div>
 
 @section scripts{
     @Scripts.Render("~/Scripts/jquery.timeago.js")

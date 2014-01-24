@@ -7,7 +7,7 @@
     <title>@ViewBag.Title - bunchy</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    @Scripts.Render("~/bundles/custom")
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -32,10 +32,8 @@
     </div>
     <div class="container body-content">
         @RenderBody()
-
         <footer></footer>
     </div>
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

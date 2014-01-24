@@ -11,7 +11,7 @@
 }
 <p></p>
 
-@Html.ActionLink("Back <---", "AddHocList", "Ride", null, new { @class = "btn btn-info" })
+@Html.ActionLink("Back <---", "AddHocList", "Ride", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
 
 <h2>@Model.Ride.Name</h2>
 <h3>@Model.Ride.RideDate.ToLongDateString()</h3>
@@ -21,7 +21,7 @@
 @if (@Model.IsOwner)
 {
 
-    @Html.ActionLink(" ", "EditAdHocRide", "Ride", new { adhocrideid = @Model.Ride.id }, new { @class = "glyphicon glyphicon-pencil" })
+    @Html.ActionLink(" ", "EditAdHocRide", "Ride", new { adhocrideid = @Model.Ride.id }, new { @class = "glyphicon glyphicon-pencil", onclick = "ShowProgress();" })
 
 }
 <hr />
@@ -66,7 +66,7 @@
     {
         <h4>
             <span class="label label-success">Comments</span>
-            @Html.ActionLink("+", "AddAdHocComment", "Ride", new { adhocrideid = @Model.Ride.id }, new { @class = "btn btn-success" })
+            @Html.ActionLink("+", "AddAdHocComment", "Ride", new { adhocrideid = @Model.Ride.id }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
 
 
         </h4>
@@ -82,7 +82,7 @@
 
         }
 
-        @Html.ActionLink(string.Concat("See all Comments (", @Model.CommentCount, ")"), "SeeAllAdHocComments", "Ride", new { adhocrideid = @Model.Ride.id }, new { @class = "btn btn-success" })
+        @Html.ActionLink(string.Concat("See all Comments (", @Model.CommentCount, ")"), "SeeAllAdHocComments", "Ride", new { adhocrideid = @Model.Ride.id }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
 
     }
 
@@ -94,15 +94,21 @@
 <h4><span class="label label-success">Actions</span></h4>
 
 <p></p>
-@Html.ActionLink("I'm In!", "AttendAdHocRider", "Ride", new { adhocrideid = @Model.Ride.id, commitment = "In" }, new { @class = "btn btn-primary" })
+@Html.ActionLink("I'm In!", "AttendAdHocRider", "Ride", new { adhocrideid = @Model.Ride.id, commitment = "In" }, new { @class = "btn btn-primary", onclick = "ShowProgress();" })
 
 <p></p>
-@Html.ActionLink("I'm Out", "AttendAdHocRider", "Ride", new { adhocrideid = @Model.Ride.id, Commitment = "Out" }, new { @class = "btn btn-danger" })
+@Html.ActionLink("I'm Out", "AttendAdHocRider", "Ride", new { adhocrideid = @Model.Ride.id, Commitment = "Out" }, new { @class = "btn btn-danger", onclick = "ShowProgress();" })
 
 <p></p>
-@Html.ActionLink("On My Way!", "AttendAdHocRider", "Ride", new { adhocrideid = @Model.Ride.id, Commitment = "OnWay" }, new { @class = "btn btn-success" })
+@Html.ActionLink("On My Way!", "AttendAdHocRider", "Ride", new { adhocrideid = @Model.Ride.id, Commitment = "OnWay" }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
 
 <p></p>
+
+<div class="loading" align="center">
+    Loading. Please wait.<br />
+    <br />
+    <img src="~/Content/Images/loader.gif" alt="" />
+</div>
 
 @section scripts{
     @Scripts.Render("~/Scripts/jquery.timeago.js")

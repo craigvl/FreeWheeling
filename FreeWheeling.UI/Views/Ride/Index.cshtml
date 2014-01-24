@@ -2,6 +2,8 @@
 @using FreeWheeling.Domain.Entities
 @using Microsoft.AspNet.Identity;
 
+
+
 @{
     ViewBag.Title = "Index";
 }
@@ -26,30 +28,29 @@
 @if (@Model.FromFavPage)
 {
 
-    @Html.ActionLink("Back <---", "Mybunches", "Group", null, new { @class = "btn btn-info" })
+    @Html.ActionLink("Back <---", "Mybunches", "Group", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
     
     if (@Model.NextRide != null)
     {
 
         @Html.ActionLink("Next bunch -->", "NextRide", "Ride", new { RideId = @Model.NextRide.id, Groupid = @Model.Group.id, PreviousRideID = @Model.Ride.id, FromFavPage = @Model.FromFavPage },
-                                                      new {id = "LoadGif", @class = "btn btn-default" })
+                                                                new { id = "LoadGif", @class = "btn btn-default", onclick = "ShowProgress();" })
         
     }
 
 }
 else
 {
-@Html.ActionLink("Back <---", "Index", "Group", null, new { @class = "btn btn-info" })
+@Html.ActionLink("Back <---", "Index", "Group", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
     
     if (@Model.NextRide != null)
     {
 
          @Html.ActionLink("Next bunch -->", "NextRide", "Ride", new { RideId = @Model.NextRide.id, Groupid = @Model.Group.id, PreviousRideID = @Model.Ride.id },
-                                                          new { id = "LoadGif", @class = "btn btn-default" })
+                                                                  new { id = "LoadGif", @class = "btn btn-default", onclick = "ShowProgress();" })
         
     }
 }
-
 
 <hr />
 
@@ -99,10 +100,9 @@ else
 
     @if (@Model.Comments != null)
     {
-    <h4><span class="label label-success">Comments</span> @Html.ActionLink("+", "AddComment", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id }, new { @class = "btn btn-success" })</h4>
+    <h4><span class="label label-success">Comments</span> @Html.ActionLink("+", "AddComment", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id }, new { @class = "btn btn-success", onclick = "ShowProgress();" })</h4>
         
-    
-        foreach (Comment item in Model.Comments)
+    foreach (Comment item in Model.Comments)
     {
         
         @*@item.Date.ToShortDateString() @Html.Raw(" ")  @item.Date.ToShortTimeString() @Html.Raw(" ")*@
@@ -112,9 +112,8 @@ else
         
     }
       
-        @Html.ActionLink(string.Concat("See all Comments (",@Model.CommentCount,")"), "SeeAllComments", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id }, new { @class = "btn btn-success" })
-    
-                 
+        @Html.ActionLink(string.Concat("See all Comments (", @Model.CommentCount, ")"), "SeeAllComments", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
+                    
     }
 
 </div>
@@ -124,13 +123,13 @@ else
 <h4><span class="label label-success">Actions</span></h4>
 
     <p></p>
-    @Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Group.id }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Group.id }, new { @class = "btn btn-primary", onclick = "ShowProgress();" })
 
     <p></p>
-    @Html.ActionLink("I'm Out", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "Out", Groupid = @Model.Group.id }, new { @class = "btn btn-danger" })
+    @Html.ActionLink("I'm Out", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "Out", Groupid = @Model.Group.id }, new { @class = "btn btn-danger", onclick = "ShowProgress();" })
 
     <p></p>
-    @Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "OnWay", Groupid = @Model.Group.id }, new { @class = "btn btn-success" })
+    @Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "OnWay", Groupid = @Model.Group.id }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
     
     <p></p>
 
@@ -142,24 +141,12 @@ else
 
 @section scripts{
     @Scripts.Render("~/Scripts/jquery.timeago.js")
+
     <script>
 
         jQuery(document).ready(function () {
             jQuery("abbr.timeago").timeago();
         });
-
-        function ShowProgress() {
-                var modal = $('<div />');
-                modal.addClass("modal");
-                $('body').append(modal);
-                var loading = $(".loading");
-                loading.show();
-                var top = Math.max($(window).height() / 2 - loading[0].offsetHeight / 2, 0);
-                var left = Math.max($(window).width() / 2 - loading[0].offsetWidth / 2, 0);
-                loading.css({ top: top, left: left });         
-        }
-
-        $('#LoadGif').click(function () { ShowProgress(); });
 
     </script>
 }

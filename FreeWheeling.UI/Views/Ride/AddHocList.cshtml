@@ -5,7 +5,7 @@
     ViewBag.Title = "Add Hoc bunches";
 }
 
-@Html.ActionLink("Back <---", "Index", "Home", null, new { @class = "btn btn-info" })
+@Html.ActionLink("Back <---", "Index", "Home", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
 
 
 <h2>Add Hoc bunches</h2>
@@ -18,11 +18,17 @@
         <p></p>
         @item.RideDate.ToLongDateString() @Html.Raw(", ") @item.RideDate.ToShortTimeString()
         <p></p>
-        @Html.ActionLink(string.Concat("View bunch Details"), "ViewAdHocRide", "Ride", new { adhocrideid = item.id }, new { @class = "btn btn-success" })
+        @Html.ActionLink(string.Concat("View bunch Details"), "ViewAdHocRide", "Ride", new { adhocrideid = item.id }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
         <hr />   
     }
 }
  else
     {
-       @Html.ActionLink("No Ad Hoc bunches yet, please create some!", "CreateAdHoc", "Group", null, new { @class = "btn btn-default" })                
+       @Html.ActionLink("No Ad Hoc bunches yet, please create some!", "CreateAdHoc", "Group", null, new { @class = "btn btn-default", onclick = "ShowProgress();" })                
     }
+
+<div class="loading" align="center">
+    Loading. Please wait.<br />
+    <br />
+    <img src="~/Content/Images/loader.gif" alt="" />
+</div>
