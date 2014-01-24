@@ -65,3 +65,30 @@ border-radius: .25em;
 .btn {
 margin-right: 20px;
 }
+
+/*Style for loading image*/
+ .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: white;
+        z-index: 99;
+        opacity: 0.8;
+        filter: alpha(opacity=80);
+        -moz-opacity: 0.8;
+        min-height: 100%;
+        width: 100%;
+    }
+
+    .loading {
+        font-family: Arial;
+        font-size: 10pt;
+        border: 1px solid #67CFF5;
+        width: 200px;
+        height: 100px;
+        display: none;
+        position: fixed;
+        background-color: White;
+        z-index: 999;
+    }
+/*Style for loading image*/

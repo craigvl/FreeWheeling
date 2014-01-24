@@ -5,6 +5,7 @@
 @{
     ViewBag.Title = "Index";
 }
+
 <p>
     <h2>
         @Model.Group.name
@@ -31,7 +32,7 @@
     {
 
         @Html.ActionLink("Next bunch -->", "NextRide", "Ride", new { RideId = @Model.NextRide.id, Groupid = @Model.Group.id, PreviousRideID = @Model.Ride.id, FromFavPage = @Model.FromFavPage },
-                                                      new { @class = "btn btn-default" })
+                                                      new {id = "LoadGif", @class = "btn btn-default" })
         
     }
 
@@ -44,7 +45,7 @@ else
     {
 
          @Html.ActionLink("Next bunch -->", "NextRide", "Ride", new { RideId = @Model.NextRide.id, Groupid = @Model.Group.id, PreviousRideID = @Model.Ride.id },
-                                                      new { @class = "btn btn-default" })
+                                                          new { id = "LoadGif", @class = "btn btn-default" })
         
     }
 }
@@ -118,8 +119,6 @@ else
 
 </div>
 
-
-
 <hr />
 
 <h4><span class="label label-success">Actions</span></h4>
@@ -135,6 +134,12 @@ else
     
     <p></p>
 
+<div class="loading" align="center">
+    Loading. Please wait.<br />
+    <br />
+    <img src="~/Content/Images/loader.gif" alt="" />
+</div>
+
 @section scripts{
     @Scripts.Render("~/Scripts/jquery.timeago.js")
     <script>
@@ -142,6 +147,19 @@ else
         jQuery(document).ready(function () {
             jQuery("abbr.timeago").timeago();
         });
+
+        function ShowProgress() {
+                var modal = $('<div />');
+                modal.addClass("modal");
+                $('body').append(modal);
+                var loading = $(".loading");
+                loading.show();
+                var top = Math.max($(window).height() / 2 - loading[0].offsetHeight / 2, 0);
+                var left = Math.max($(window).width() / 2 - loading[0].offsetWidth / 2, 0);
+                loading.css({ top: top, left: left });         
+        }
+
+        $('#LoadGif').click(function () { ShowProgress(); });
 
     </script>
 }
