@@ -24,10 +24,22 @@ namespace FreeWheeling.Domain.Concrete
             return context.Groups.Include("Rides").Where(g => g.Location.id == LocationID).ToList();
         }
 
+        public IEnumerable<Group> GetGroupsByLocationWithSearch(int? LocationID, string SearchString)
+        {
+            return context.Groups.Include("Rides").Where(g => g.Location.id == LocationID
+                && g.name.ToUpper().Contains(SearchString)).ToList();
+        }
+
         public IEnumerable<Group> GetFavouriteGroupsByLocation(int? LocationID)
         {
             //return context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").Where(g => g.Location.id == LocationID).ToList();
             return context.Groups.Include("Members").Include("Rides").Where(g => g.Location.id == LocationID).ToList();
+        }
+
+        public IEnumerable<Group> GetFavouriteGroupsByLocationWithSearch(int? LocationID, string SearchString)
+        {
+            return context.Groups.Include("Members").Include("Rides").Where(g => g.Location.id == LocationID
+                && g.name.ToUpper().Contains(SearchString)).ToList();
         }
 
         public IEnumerable<Group> GetGroupsWithRiders()

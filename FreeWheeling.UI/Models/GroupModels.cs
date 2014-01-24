@@ -39,20 +39,43 @@ namespace FreeWheeling.UI.Models
 
         }
 
-        public GroupModel PopulateGroupModel(string UserId, int? LocationId, Boolean FavouritePage = false)
+        public GroupModel PopulateGroupModel(string UserId, int? LocationId, string searchString, Boolean FavouritePage = false)
         {
             GroupModel _GroupModel = new GroupModel();
-            if (!FavouritePage)
+
+            if (!String.IsNullOrEmpty(searchString))
             {
-                _GroupModel._Groups = repository.GetGroupsByLocation(LocationId).ToList();
-                _GroupModel.title = "All bunches";
+                if (!FavouritePage)
+                {
+                    _GroupModel._Groups = repository.GetGroupsByLocationWithSearch(LocationId,searchString).ToList();
+                    _GroupModel.title = "All bunches";
+                }
+                else
+                {
+                    _GroupModel._Groups = repository.GetFavouriteGroupsByLocationWithSearch(LocationId,searchString).Where(u => u.Members.Any(m => m.userId == UserId)).ToList();
+                    _GroupModel.OnFavPage = true;
+                    _GroupModel.title = "Favourite bunches";
+                }
+
+
             }
             else
             {
-                _GroupModel._Groups = repository.GetFavouriteGroupsByLocation(LocationId).Where(u => u.Members.Any(m => m.userId == UserId)).ToList();
-                _GroupModel.OnFavPage = true;
-                _GroupModel.title = "Favourite bunches";
+
+                if (!FavouritePage)
+                {
+                    _GroupModel._Groups = repository.GetGroupsByLocation(LocationId).ToList();
+                    _GroupModel.title = "All bunches";
+                }
+                else
+                {
+                    _GroupModel._Groups = repository.GetFavouriteGroupsByLocation(LocationId).Where(u => u.Members.Any(m => m.userId == UserId)).ToList();
+                    _GroupModel.OnFavPage = true;
+                    _GroupModel.title = "Favourite bunches";
+                }
+
             }
+
             _GroupModel._NextRideDetails = new List<NextRideDetails>();
             _GroupModel.UserLocation = repository.GetLocationName(LocationId);
 

@@ -11,6 +11,14 @@
     <div class="col-md-12">      
         <p class="text-left">
 
+            @using (Html.BeginForm())
+            {
+            <p>
+               @Html.TextBox("SearchString")
+                <input type="submit" value="Search" />
+            </p>
+            }
+
             @Html.ActionLink("Back <---", "Index", "Home", null, new { @class = "btn btn-info" })
 
             <h3 class="text-left"><span class="label label-primary">@Model.title in @Model.UserLocation</span></h3>
@@ -115,8 +123,6 @@
                     }
                     
                 }
-
-</p>
 </div>
 </div>
 @section scripts{
@@ -124,7 +130,6 @@
 <script>
     
     function HideInfoLink(){
-        //alert("hello");
     }
   
 </script>

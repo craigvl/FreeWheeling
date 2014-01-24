@@ -29,7 +29,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         // GET: /Group/
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             CultureHelper _CultureHelper = new CultureHelper(repository);
@@ -39,7 +39,7 @@ namespace FreeWheeling.UI.Controllers
 
             GroupModelHelper _GroupHelper = new GroupModelHelper(repository);
 
-            _GroupModel =_GroupHelper.PopulateGroupModel(currentUser.Id, currentUser.LocationID);
+            _GroupModel =_GroupHelper.PopulateGroupModel(currentUser.Id, currentUser.LocationID, searchString);
 
             return View(_GroupModel);
         }
@@ -406,7 +406,7 @@ namespace FreeWheeling.UI.Controllers
             return RedirectToAction("Index", "Group");
         }
 
-        public ViewResult Mybunches()
+        public ViewResult Mybunches(string searchString)
         {
 
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
@@ -415,7 +415,7 @@ namespace FreeWheeling.UI.Controllers
 
             GroupModelHelper _GroupHelper = new GroupModelHelper(repository);
 
-            _GroupModel = _GroupHelper.PopulateGroupModel(currentUser.Id, currentUser.LocationID,true);
+            _GroupModel = _GroupHelper.PopulateGroupModel(currentUser.Id, currentUser.LocationID, searchString, true);
             
             return View("Index",_GroupModel);
 
