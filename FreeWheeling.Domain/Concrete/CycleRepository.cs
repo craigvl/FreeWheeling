@@ -562,7 +562,15 @@ namespace FreeWheeling.Domain.Concrete
 
         public void DeleteGroup(int GroupId)
         {
-            Group CurrentGroup = context.Groups.Where(g => g.id == GroupId).FirstOrDefault();
+            Group CurrentGroup = context.Groups.Include("Members").Where(g => g.id == GroupId).FirstOrDefault();
+
+            foreach (Member _Member in CurrentGroup.Members.ToList())
+            {
+
+                context.Entry(_Member).State = System.Data.Entity.EntityState.Deleted;
+                context.SaveChanges();
+
+            }
 
             context.Groups.Remove(CurrentGroup);
 

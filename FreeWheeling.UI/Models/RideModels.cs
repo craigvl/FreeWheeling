@@ -161,9 +161,14 @@ namespace FreeWheeling.UI.Models
         public string RideTime { get; set; }
         public List<Location> Locations { get; set; }
         public string DateString { get; set; }
+        [Required(ErrorMessage = "Start location is required")]
         public string StartLocation { get; set; }
         public string AverageSpeed { get; set; }
+        [Required(ErrorMessage = "Hour is required")]
+        [Range(0, 24, ErrorMessage = "Between 0 and 24")]
         public int RideHour { get; set; }
+        [Required(ErrorMessage = "Minute is required")]
+        [Range(0, 60, ErrorMessage = "Between 0 and 60")]
         public int RideMinute { get; set; }
         public int LocationsId { get; set; }
         public int adhocrideid { get; set; }

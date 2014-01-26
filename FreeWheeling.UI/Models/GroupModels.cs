@@ -266,9 +266,14 @@ namespace FreeWheeling.UI.Models
 
         public int GroupId { get; set; }
         public string Name { get; set; }
+        [Required(ErrorMessage = "Start location is required")]
         public string StartLocation { get; set; }
         public string AverageSpeed { get; set; }
+        [Required(ErrorMessage = "Hour is required")]
+        [Range(0, 24, ErrorMessage = "Between 0 and 24")]
         public int Hour { get; set; }
+        [Required(ErrorMessage = "Minute is required")]
+        [Range(0, 60, ErrorMessage = "Between 0 and 60")]
         public int Minute { get; set; }
         public int LocationsId { get; set; }
         public List<Location> Locations { get; set; }

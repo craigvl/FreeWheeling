@@ -5,6 +5,11 @@
 
 <link href="~/Content/datepicker.css" rel="stylesheet" />
 
+@if (!ViewData.ModelState.IsValid)
+{
+
+}
+
 @Html.ActionLink("<-- Back to Ride", "ViewAdHocRide", "Ride", new { adhocrideid = @Model.adhocrideid }, new { @class = "btn btn-default", onclick = "ShowProgress();" })
 
 @Html.ActionLink("Delete", "DeleteAdHocRide", "Ride", new { adhocrideid = @Model.adhocrideid }, new { @class = "btn btn-default", onclick = "ShowProgress();" })
@@ -40,11 +45,13 @@
         <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
         <div>
             @Html.TextBoxFor(model => model.RideHour)
+            @Html.ValidationMessageFor(model => model.RideHour)
         </div>
     
         <div><span class="RequiredField">*&nbsp;</span>Minute</div>
         <div>
             @Html.TextBoxFor(model => model.RideMinute)
+            @Html.ValidationMessageFor(model => model.RideMinute)
         </div>
            
         <hr />
@@ -53,6 +60,7 @@
         
         <div> 
             @Html.TextBoxFor(model => model.StartLocation)
+            @Html.ValidationMessageFor(model => model.StartLocation)
         </div>
     
     <div><span class="RequiredField">*&nbsp;</span>Description</div>
@@ -84,6 +92,7 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/bootstrap-datepicker.js"></script>
     <script type="text/javascript">
+  
         $(function () {
 
             $('#MyDateDiv div').datepicker({
@@ -91,6 +100,15 @@
                 $('#MyDate').val(e.format('dd/mm/yyyy'))
             });
             
+        });
+
+        $("form").submit(function () {
+            if (!$(this).valid()) {
+                HideProgress();
+            }
+            else {
+               
+            }
         });
     </script>
 }

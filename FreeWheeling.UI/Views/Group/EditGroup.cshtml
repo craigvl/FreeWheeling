@@ -3,9 +3,9 @@
     ViewBag.Title = "Edit bunch";
 }
 
-@Html.ActionLink("Back Home <---", "Index", "Home", null, new { @class = "btn btn-info" })
+@Html.ActionLink("Back Home <---", "Index", "Group", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
 
-@Html.ActionLink("Delete", "DeleteGroup", "Group", new { GroupId = @Model.GroupId }, new { @class = "btn btn-default" })
+@Html.ActionLink("Delete", "DeleteGroup", "Group", new { GroupId = @Model.GroupId }, new { @class = "btn btn-default", onclick = "ShowProgress();" })
 
 
 <h2>Edit bunch</h2>
@@ -50,18 +50,20 @@
     <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
     <div>
         @Html.TextBoxFor(model => model.Hour)
+        @Html.ValidationMessageFor(model => model.Hour)
     </div>
 
     <div><span class="RequiredField">*&nbsp;</span>Minute</div>
     <div>
         @Html.TextBoxFor(model => model.Minute)
-        @*@Html.DropDownListFor(model => model.AM_PM, Model.AM_PMList)*@
+        @Html.ValidationMessageFor(model => model.Minute)
     </div>
 
     <div><span class="RequiredField">*&nbsp;</span>Start Location</div>
 
     <div>
         @Html.TextBoxFor(model => model.StartLocation)
+        @Html.ValidationMessageFor(model => model.StartLocation)
     </div>
     
     <div><span class="RequiredField">*&nbsp;</span>Map (Enter <a href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</div>
@@ -70,16 +72,31 @@
             @Html.TextBoxFor(model => model.MapUrl)
         </div>
 
-    @*<div><span class="RequiredField">*&nbsp;</span>Average Speed</div>
-
-        <div>
-            @Html.TextBoxFor(model => model.AverageSpeed)
-        </div>*@
-
     <div>
         <p></p>
-        <input id="btnSubmit" type="submit" value="Update" />
+        <input onclick="ShowProgress();" id="btnSubmit" type="submit" value="Update" />
     </div>
 
 }
 
+<div class="loading" align="center">
+    Loading. Please wait.<br />
+    <br />
+    <img src="~/Content/Images/loader.gif" alt="" />
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+ 
+    <script type="text/javascript">
+
+        $("form").submit(function () {
+            if (!$(this).valid()) {
+                HideProgress();
+            }
+            else {
+
+            }
+        });
+    </script>
+}
