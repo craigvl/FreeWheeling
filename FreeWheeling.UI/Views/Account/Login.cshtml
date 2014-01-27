@@ -38,7 +38,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Log in" class="btn btn-default" />
+                        <input onclick="ShowProgress();" type="submit" value="Log in" class="btn btn-default" />
                     </div>
                 </div>
                 <p>
@@ -49,10 +49,31 @@
     </div>
     <div class="col-md-4">
         <section id="socialLoginForm">
-            @Html.Partial("_ExternalLoginsListPartial", new { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
+            @Html.Partial("_ExternalLoginsListPartial", new FreeWheeling.UI.Models.ExternalLoginViewModel() { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
         </section>
     </div>
+
+    <div class="loading" align="center">
+        Loading. Please wait.<br />
+        <br />
+        <img src="~/Content/Images/loader.gif" alt="" />
+    </div>
+
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+
+    $("form").submit(function () {
+        if (!$(this).valid()) {
+            HideProgress();
+        }
+        else {
+
+        }
+    });
+
+
+</script>
 }

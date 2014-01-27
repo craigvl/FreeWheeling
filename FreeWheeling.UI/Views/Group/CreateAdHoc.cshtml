@@ -82,18 +82,21 @@
     
          <div>
             <p></p>
-            <input id="btnSubmit" type="submit" value="Create Ad Hoc bunch" />
+             <input onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create Ad Hoc bunch" />
         </div>    
 }
+
+<div class="loading" align="center">
+    Loading. Please wait.<br />
+    <br />
+    <img src="~/Content/Images/loader.gif" alt="" />
+</div>
 
 @section Scripts {
 @Scripts.Render("~/bundles/jqueryval")
 <script src="~/Scripts/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
     $(function () {
-        //$('#MyDate').datepicker({
-        //    format: "dd/mm/yyyy"
-        //});
 
         $('#MyDateDiv div').datepicker({
         }).on('changeDate', function (e) {
@@ -101,5 +104,15 @@
         });
 
     });
+
+    $("form").submit(function () {
+        if (!$(this).valid()) {
+            HideProgress();
+        }
+        else {
+
+        }
+    });
+
 </script>
 }
