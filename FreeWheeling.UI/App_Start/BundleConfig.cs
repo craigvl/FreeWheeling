@@ -8,8 +8,13 @@ namespace FreeWheeling.UI
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+            bundles.UseCdn = true;
+            //BundleTable.EnableOptimizations = true; //Un comment this to use CDN in debug.
+
+            var jquery = new ScriptBundle("~/bundles/jquery", "//ajax.aspnetcdn.com/ajax/jquery/jquery-1.10.2.min.js").Include(
+           "~/Scripts/jquery-{version}.js");
+            jquery.CdnFallbackExpression = "window.jQuery";
+            bundles.Add(jquery);
 
             bundles.Add(new ScriptBundle("~/bundles/jquerytime").Include(
                         "~/Scripts/jquery-date*"));
@@ -20,20 +25,29 @@ namespace FreeWheeling.UI
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
-            bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                        "~/Scripts/modernizr-*"));
+            var modernizr = new ScriptBundle("~/bundles/modernizr", "http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.7.1.js").Include(
+                        "~/Scripts/modernizr-*");
+            modernizr.CdnFallbackExpression = "window.jQuery";
+            bundles.Add(modernizr);
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+            var bootstrap = new ScriptBundle("~/bundles/bootstrap", "//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js").Include(
+                      "~/Scripts/bootstrap.js");
+            bootstrap.CdnFallbackExpression = "window.jQuery";
+            bundles.Add(bootstrap);
+
+            bundles.Add(new ScriptBundle("~/bundles/respond").Include(
+                       "~/Scripts/respond.js"));
 
             //Custom javaScript
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
                    "~/Scripts/custom.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+            //Custom css
+            bundles.Add(new StyleBundle("~/Content/custom").Include(
+                   "~/Content/site.css"));
+
+            bundles.Add(new StyleBundle("~/Content/css", "//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css").Include(
+                      "~/Content/bootstrap.css"));
         }
     }
 }

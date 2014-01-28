@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - bunchy</title>
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/custom")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/custom")
 </head>
@@ -36,6 +37,7 @@
     </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/respond")
     @RenderSection("scripts", required: false)
 </body>
 </html>
