@@ -49,7 +49,7 @@ namespace FreeWheeling.UI.Models
 
         }
 
-        public RideModelIndex PopulateRideModel(int RideId,int GroupId, string UserId, bool NeedPreviousRide)
+        public RideModelIndex PopulateRideModel(int RideId, int GroupId, string UserId, bool NeedPreviousRide, bool FromFavPage)
         {
             Ride _Ride = new Ride();
             Group _Group = new Group();
@@ -74,6 +74,9 @@ namespace FreeWheeling.UI.Models
             RideModel.Group = _Group;
             RideModel.Comments = repository.GetTop2CommentsForRide(RideModel.Ride.id);
             RideModel.CommentCount = repository.GetCommentCountForRide(RideModel.Ride.id);
+            RideModel.KeenCount = repository.GetKeenCountForRide(RideModel.Ride.id);
+            RideModel.IsOwner = repository.IsGroupCreator(_Group.id, UserId);
+            RideModel.FromFavPage = FromFavPage;
 
             if (RideModel.Group.MapUrl != null)
             {
@@ -104,6 +107,7 @@ namespace FreeWheeling.UI.Models
         public List<Route> Routes { get; set; }
         public List<Comment> Comments { get; set; }
         public int CommentCount { get; set; }
+        public int KeenCount { get; set; }
         public Boolean IsOwner { get; set; }
         public string MapUrl { get; set; }
         public bool FromFavPage { get; set; }

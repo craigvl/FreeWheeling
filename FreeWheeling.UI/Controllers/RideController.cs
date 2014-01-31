@@ -84,6 +84,50 @@ namespace FreeWheeling.UI.Controllers
             return View(RideModel);
         }
 
+        [Compress]
+        public ActionResult IndexV2(int groupid, int rideid = -1, bool FromFavPage = false)
+        {
+            //var TimeZone = TimeZoneInfo.Local.Id;
+
+            RideModelIndex RideModel = new RideModelIndex();
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+
+            Group _Group = repository.GetGroupByID(groupid);
+
+            CultureHelper _CultureHelper = new CultureHelper(repository);
+            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
+
+            if (rideid == -1)
+            {
+                RideModel.Ride = _Group.Rides.Where(u => u.RideDate.AddHours(2) >= LocalNow).OrderBy(i => i.RideDate).FirstOrDefault();
+                RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
+                RideModel.Comments = repository.GetTop2CommentsForRide(RideModel.Ride.id);
+                RideModel.RideDate = RideModel.Ride.RideDate;
+                RideModel.CommentCount = repository.GetCommentCountForRide(RideModel.Ride.id);
+            }
+            else
+            {
+                int _rideid = rideid;
+                RideModelHelper _RideHelper = new RideModelHelper(repository);
+                RideModel = _RideHelper.PopulateRideModel(_rideid, groupid, currentUser.Id, true, FromFavPage);
+            }
+
+            if (RideModel.Ride != null)
+            {
+               
+            }
+            else
+            {
+                GroupModel GroupModel = new GroupModel();
+                GroupModel._Groups = repository.GetGroups().ToList();
+                GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
+                return RedirectToAction("index", "group", GroupModel);
+            }
+
+            return View(RideModel);
+        }
+
         public ActionResult AddHocList()
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
@@ -143,8 +187,8 @@ namespace FreeWheeling.UI.Controllers
 
             RideModelHelper _RideHelper = new RideModelHelper(repository);
 
-            RideModel = _RideHelper.PopulateRideModel(RideId, Groupid, currentUser.Id,true);
-            RideModel.FromFavPage = FromFavPage;
+            RideModel = _RideHelper.PopulateRideModel(RideId, Groupid, currentUser.Id, true, FromFavPage);
+            
 
             if(RideModel.Ride == null)
             {
@@ -350,7 +394,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddComment(RideCommentModel RideComment)
+        public ActionResult AddComment(RideCommentModel RideComment, bool FromFavPage)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             repository.AddRideComment(RideComment.Comment, RideComment.RideId, currentUser.UserName);
@@ -360,7 +404,7 @@ namespace FreeWheeling.UI.Controllers
 
             RideModelHelper _RideHelper = new RideModelHelper(repository);
 
-            RideModel = _RideHelper.PopulateRideModel(RideComment.RideId, RideComment.GroupId, currentUser.Id, false);
+            RideModel = _RideHelper.PopulateRideModel(RideComment.RideId, RideComment.GroupId, currentUser.Id, false, FromFavPage);
 
             return View("Index", RideModel);
 
@@ -380,7 +424,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddCommentNext(RideCommentModel RideComment)
+        public ActionResult AddCommentNext(RideCommentModel RideComment, bool FromFavPage)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             repository.AddRideComment(RideComment.Comment, RideComment.RideId, currentUser.UserName);
@@ -390,13 +434,13 @@ namespace FreeWheeling.UI.Controllers
 
             RideModelHelper _RideHelper = new RideModelHelper(repository);
 
-            RideModel = _RideHelper.PopulateRideModel(RideComment.RideId, RideComment.GroupId, currentUser.Id, true);
+            RideModel = _RideHelper.PopulateRideModel(RideComment.RideId, RideComment.GroupId, currentUser.Id, true, FromFavPage);
 
             return View("NextRide", RideModel);
 
         }
 
-        public ActionResult Attend(int RideId, string Commitment, int Groupid)
+        public ActionResult Attend(int RideId, string Commitment, int Groupid, bool FromFavPage)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Ride _Ride = new Ride();
@@ -414,12 +458,12 @@ namespace FreeWheeling.UI.Controllers
 
             RideModelHelper _RideHelper = new RideModelHelper(repository);
 
-            RideModel = _RideHelper.PopulateRideModel(RideId, Groupid, currentUser.Id, false);
+            RideModel = _RideHelper.PopulateRideModel(RideId, Groupid, currentUser.Id, false, FromFavPage);
 
             return View("Index", RideModel);
         }
 
-        public ActionResult AttendNext(int RideId, string Commitment, int Groupid, int PreviousRideID)
+        public ActionResult AttendNext(int RideId, string Commitment, int Groupid, int PreviousRideID, bool FromFavPage)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Ride _Ride = new Ride();
@@ -437,7 +481,7 @@ namespace FreeWheeling.UI.Controllers
 
             RideModelHelper _RideHelper = new RideModelHelper(repository);
 
-            RideModel = _RideHelper.PopulateRideModel(RideId, Groupid, currentUser.Id, true);
+            RideModel = _RideHelper.PopulateRideModel(RideId, Groupid, currentUser.Id, true, FromFavPage);
 
             return View("NextRide", RideModel);
         }

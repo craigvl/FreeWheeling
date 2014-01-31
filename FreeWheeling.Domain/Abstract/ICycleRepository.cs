@@ -42,6 +42,7 @@ namespace FreeWheeling.Domain.Abstract
         //Get .. Riders
         List<Rider> GetRidersForRide(int id, TimeZoneInfo TimeZone);
         List<AdHocRider> GetRidersForAdHocRide(int AdHocRideid, TimeZoneInfo TimeZone);
+        int GetKeenCountForRide(int Rideid);
 
         //Get .. Comments
         List<Comment> GetTop2CommentsForRide(int Rideid);

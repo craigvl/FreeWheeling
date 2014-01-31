@@ -192,6 +192,11 @@ namespace FreeWheeling.Domain.Concrete
             return context.Comment.Where(r => r.Ride.id == Rideid).Count();
         }
 
+        public int GetKeenCountForRide(int Rideid)
+        {
+            return context.Riders.Where(r => r.Ride.id == Rideid && r.PercentKeen == "In").Count();
+        }
+
         public List<AdHocRider> GetRidersForAdHocRide(int AdHocRideid, TimeZoneInfo TimeZone)
         {
 

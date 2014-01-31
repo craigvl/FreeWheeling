@@ -387,6 +387,7 @@
     <Content Include="Views\Group\EditGroup.cshtml" />
     <Content Include="Views\Ride\DeleteAdHocRide.cshtml" />
     <Content Include="Views\Group\DeleteGroup.cshtml" />
+    <Content Include="Views\Ride\IndexV2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
