@@ -28,27 +28,13 @@
 
     @Html.ActionLink("Back <---", "Mybunches", "Group", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
     
-    if (@Model.NextRide != null)
-    {
-
-        @Html.ActionLink("Next bunch -->", "NextRide", "Ride", new { RideId = @Model.NextRide.id, Groupid = @Model.Group.id, PreviousRideID = @Model.Ride.id, FromFavPage = @Model.FromFavPage },
-                                                                new { id = "LoadGif", @class = "btn btn-default", onclick = "ShowProgress();" })
-        
-    }
-
+   
 }
 else
 {
 @Html.ActionLink("Back <---", "Index", "Group", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
     
-    
-    if (@Model.NextRide != null)
-    {
-
-         @Html.ActionLink("Next bunch -->", "NextRide", "Ride", new { RideId = @Model.NextRide.id, Groupid = @Model.Group.id, PreviousRideID = @Model.Ride.id, FromFavPage = @Model.FromFavPage },
-                                                                  new { id = "LoadGif", @class = "btn btn-default", onclick = "ShowProgress();" })
-        
-    }
+ 
 }
 
 <hr />
@@ -61,49 +47,58 @@ else
         </span>
         </h4>
     <hr />
-
-        <h4><span class="label label-success">Peeps</span></h4>
-
-@{
     
-    foreach (Rider item in @Model.Riders)
-    {     
-        {
-        switch (item.PercentKeen)
-        {
-        case "OnWay":
-            <text>
-                <p><span class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
+    
+        <h4><span class="label label-success">Keen (@Model.KeenCount.ToString())</span>
+            <span id="ShowKeenFirstPlus" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success">+</span>
+            <span id="ShowKeenFirstMinus" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success">-</span>
+    
+    </h4>
+    <div id="collapseKeenFirst" class="panel-collapse collapse in">
+        <div>
+            @{
+
+                foreach (Rider item in @Model.Riders)
+                {
+                    {
+                        switch (item.PercentKeen)
+                        {
+                            case "OnWay":
+                                <text>
+<p><span class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
                 
             </text>
             break;  // Always break each case
-        case "Out":
-            <text>
-                <p><span class="label label-danger">@item.Name is a slacker!</span></p>
-            </text>
-            break;
         case "In":
             <text>
                 <p><span class="label label-success">@item.Name is in!</span></p>
             </text>
             break;                   
     }
-}        
+}  
+            
        <p></p>       
     }
        
 }
+</div>
+</div>
 <hr />
 
 <div>
 
     @if (@Model.Comments != null)
     {
-    <h4><span class="label label-success">Comments</span> @Html.ActionLink("+", "AddComment", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-success", onclick = "ShowProgress();" })</h4>
-        
-    foreach (Comment item in Model.Comments)
-    {
-        
+    <h4><span class="label label-success">Comments (@Model.CommentCount)</span> 
+    
+        <span id="ShowCommentFirstPlus" data-toggle="collapse" href="#collapseCommentFirst" class="label label-success">+</span>
+        <span id="ShowCommentFirstMinus" data-toggle="collapse" href="#collapseCommentFirst" class="label label-success">-</span>
+    
+    @Html.ActionLink("Add", "AddComment", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id , FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-success", onclick = "ShowProgress();" })</h4>
+         @:<div id="collapseCommentFirst" class="panel-collapse collapse in">
+        foreach (Comment item in Model.Comments)
+        {
+
         @*@item.Date.ToShortDateString() @Html.Raw(" ")  @item.Date.ToShortTimeString() @Html.Raw(" ")*@
         @item.userName <text>: </text>
         @item.CommentText
@@ -114,7 +109,7 @@ else
         @Html.ActionLink(string.Concat("See all Comments (", @Model.CommentCount, ")"), "SeeAllComments", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
                     
     }
-
+</div>
 </div>
 
 <hr />
@@ -145,6 +140,44 @@ else
 
         jQuery(document).ready(function () {
             jQuery("abbr.timeago").timeago();
+
+            jQuery("#ShowKeenFirstMinus").show();
+            jQuery("#ShowKeenFirstPlus").hide();
+
+            jQuery("#ShowCommentFirstMinus").show();
+            jQuery("#ShowCommentFirstPlus").hide();
+
+
+            jQuery('#collapseKeenFirst').on('hidden.bs.collapse', function () {
+                jQuery("#ShowKeenFirstMinus").hide();
+                jQuery("#ShowKeenFirstPlus").show();
+               
+
+            })
+
+
+            jQuery('#collapseKeenFirst').on('shown.bs.collapse', function () {
+                jQuery("#ShowKeenFirstMinus").show();
+                jQuery("#ShowKeenFirstPlus").hide();
+
+            })
+
+            jQuery('#collapseCommentFirst').on('hidden.bs.collapse', function () {
+                jQuery("#ShowCommentFirstMinus").hide();
+                jQuery("#ShowCommentFirstPlus").show();
+
+
+            })
+
+
+            jQuery('#collapseCommentFirst').on('shown.bs.collapse', function () {
+                jQuery("#ShowCommentFirstMinus").show();
+                jQuery("#ShowCommentFirstPlus").hide();
+
+            })
+
+           
+
         });
 
     </script>

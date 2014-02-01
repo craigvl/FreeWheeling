@@ -29,7 +29,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [Compress]
-        public ActionResult Index(int groupid, int rideid = -1, bool FromFavPage = false)
+        public ActionResult IndexV2(int groupid, int rideid = -1, bool FromFavPage = false)
         {
             //var TimeZone = TimeZoneInfo.Local.Id;
             
@@ -85,7 +85,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [Compress]
-        public ActionResult IndexV2(int groupid, int rideid = -1, bool FromFavPage = false)
+        public ActionResult Index(int groupid, int rideid = -1, bool FromFavPage = false)
         {
             //var TimeZone = TimeZoneInfo.Local.Id;
 

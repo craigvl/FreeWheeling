@@ -30,7 +30,7 @@ namespace FreeWheeling.UI
             modernizr.CdnFallbackExpression = "window.jQuery";
             bundles.Add(modernizr);
 
-            var bootstrap = new ScriptBundle("~/bundles/bootstrap", "//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js").Include(
+            var bootstrap = new ScriptBundle("~/bundles/bootstrap", "//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js").Include(
                       "~/Scripts/bootstrap.js");
             bootstrap.CdnFallbackExpression = "window.jQuery";
             bundles.Add(bootstrap);
@@ -46,7 +46,7 @@ namespace FreeWheeling.UI
             bundles.Add(new StyleBundle("~/Content/custom").Include(
                    "~/Content/site.css"));
 
-            bundles.Add(new StyleBundle("~/Content/css", "//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css").Include(
+            bundles.Add(new StyleBundle("~/Content/css", "//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css").Include(
                       "~/Content/bootstrap.css"));
         }
     }
