@@ -51,12 +51,27 @@ namespace FreeWheeling.UI.Models
 
         public RideModelIndex PopulateRideModel(int RideId, int GroupId, string UserId, bool NeedPreviousRide, bool FromFavPage)
         {
+            
             Ride _Ride = new Ride();
             Group _Group = new Group();
 
-            _Ride = repository.GetRideByID(RideId);
             _Group = repository.GetGroupByID(GroupId);
 
+            CultureHelper _CultureHelper = new CultureHelper(repository);
+            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Group.Location.id);
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
+
+            if (RideId == -1) // this is the case when first enter view ride screen as rideid is unkown at that point.
+            {
+
+                _Ride = _Group.Rides.Where(u => u.RideDate.AddHours(2) >= LocalNow).OrderBy(i => i.RideDate).FirstOrDefault();
+
+            }
+            else
+            {
+                _Ride = repository.GetRideByID(RideId);            
+            }
+            
             RideModelIndex RideModel = new RideModelIndex();
 
             RideModel.Ride = _Ride;
@@ -82,9 +97,6 @@ namespace FreeWheeling.UI.Models
             {
                 RideModel.MapUrl = RideModel.MapUrl = string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", RideModel.Group.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
             }
-
-            CultureHelper _CultureHelper = new CultureHelper(repository);
-            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Group.Location.id);
 
             RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id, TZone);
 

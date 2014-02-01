@@ -93,25 +93,8 @@ namespace FreeWheeling.UI.Controllers
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
             Group _Group = repository.GetGroupByID(groupid);
-
-            CultureHelper _CultureHelper = new CultureHelper(repository);
-            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
-
-            if (rideid == -1)
-            {
-                RideModel.Ride = _Group.Rides.Where(u => u.RideDate.AddHours(2) >= LocalNow).OrderBy(i => i.RideDate).FirstOrDefault();
-                RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
-                RideModel.Comments = repository.GetTop2CommentsForRide(RideModel.Ride.id);
-                RideModel.RideDate = RideModel.Ride.RideDate;
-                RideModel.CommentCount = repository.GetCommentCountForRide(RideModel.Ride.id);
-            }
-            else
-            {
-                int _rideid = rideid;
-                RideModelHelper _RideHelper = new RideModelHelper(repository);
-                RideModel = _RideHelper.PopulateRideModel(_rideid, groupid, currentUser.Id, true, FromFavPage);
-            }
+            RideModelHelper _RideHelper = new RideModelHelper(repository);
+            RideModel = _RideHelper.PopulateRideModel(rideid, groupid, currentUser.Id, true, FromFavPage);
 
             if (RideModel.Ride != null)
             {
