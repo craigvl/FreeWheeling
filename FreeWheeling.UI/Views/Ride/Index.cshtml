@@ -6,6 +6,8 @@
     ViewBag.Title = "Index";
 }
 
+<script src="http://include.jaydata.org/jaydata.js"></script>
+
 <p>
     <h2>
         @Model.Group.name
@@ -138,6 +140,27 @@ else
 
     <script>
 
+        $data.Entity.extend("Section", {
+            Id: { type: "int", key: true, computed: true },
+            SectionName: { type: String, required: true, maxLength: 200 },
+            Expanded: { type: Boolean }
+        });
+
+        $data.EntityContext.extend("SectionDatabase", {
+            Sections: { type: $data.EntitySet, elementType: Section }
+        });
+
+        //$data.storageProviders.DbCreationType.DropAllExistingTables();
+
+        var sectionDB = new SectionDatabase("MySectionDatase");
+
+        //sectionDB.Sections.removeAll();
+
+        sectionDB.onReady(function () {
+            //sectionDB.Sections.removeAll();
+        });
+
+
         jQuery(document).ready(function () {
             jQuery("abbr.timeago").timeago();
 
@@ -151,7 +174,48 @@ else
             jQuery('#collapseKeenFirst').on('hidden.bs.collapse', function () {
                 jQuery("#ShowKeenFirstMinus").hide();
                 jQuery("#ShowKeenFirstPlus").show();
-               
+                
+                var KeenExpanded = new sectionDB.Sections.Section({ SectionName: 'KeenExpanded', Expanded: true });
+                sectionDB.Sections.add(KeenExpanded);
+                sectionDB.saveChanges();
+
+                var KeenE = sectionDB.Sections.filter("it.SectionName.startsWith('KeenExpanded')")
+                    .forEach(function (Section) {
+                        jQuery.each(Section, function (index, val) {
+                           // console.log(Section.Id);
+                            //console.log('H1');
+                        });
+                    });
+
+
+
+                var KeenEL = sectionDB.Sections.filter("it.SectionName.startsWith('KeenExpanded')").length;
+                console.log(KeenEL)
+                var KeenE1 = sectionDB.Sections.filter(function (Section) { return Section.SectionName == 'KeenExpanded' })
+                                                       .toArray(function (Section) {
+                                                         //  console.log(Section);
+                                                       });
+
+
+            //    $todo.context.beginTransaction(true, function (tran) {
+            //        $todo.context.TodoEntries.filter("it.Value == this.txt", { txt: value }).toArray({
+            //            success: function (items, innerTran) {
+            //                if (items.length == 0) {
+            //                    var entity = new $todo.Types.ToDoEntry({ Value: value, CreatedAt: now, ModifiedAt: now });
+            //                    $todo.context.TodoEntries.add(entity);
+            //                    $todo.context.saveChanges(tran)
+            //                        .then(function (cnt, saveTran) { updateView(); })
+            //                        .fail(function () { alert("Save error all!"); updateView(); });
+            //                } else {
+            //                    alert("Item is in the DB");
+            //                    updateView();
+            //                }
+            //            },
+            //            error: function () { console.log("General error"); }
+            //        },
+            //        tran);
+            //    });
+            //});
 
             })
 
