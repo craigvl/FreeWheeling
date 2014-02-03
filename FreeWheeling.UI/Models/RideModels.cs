@@ -123,6 +123,14 @@ namespace FreeWheeling.UI.Models
         public Boolean IsOwner { get; set; }
         public string MapUrl { get; set; }
         public bool FromFavPage { get; set; }
+
+        //Expand items
+        public Boolean FirstBunch { get; set; }
+        public Boolean FirstKeen { get; set; }
+        public Boolean FirstComment { get; set; }
+        public Boolean SecondBunch { get; set; }
+        public Boolean SecondKeen { get; set; }
+        public Boolean SecondComment { get; set; }
     }
 
     public class RideCommentModel

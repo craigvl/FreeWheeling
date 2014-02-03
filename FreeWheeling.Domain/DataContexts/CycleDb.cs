@@ -26,6 +26,7 @@ namespace FreeWheeling.Domain.DataContexts
         public DbSet<AdHocRider> AdHocRider { get; set; }
         public DbSet<AdHocComment> AdHocComment { get; set; }
         public DbSet<CycleDays> CycleDays { get; set; }
+        public DbSet<UserExpand> UserExpands { get; set; }
   
     }
 }
