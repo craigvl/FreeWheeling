@@ -1,4 +1,4 @@
-﻿var httVerbs = {
+﻿var httpVerbs = {
     POST: 'POST',
     PUT: 'PUT',
     GET: 'GET',
@@ -25,20 +25,20 @@ var extendDataService = (function () {
             },
 
             del: function (data) {
-                return this.commit(httpVerbs.DEL, '/api/homes/' + data.id);
+                return this.commit(httpVerbs.DEL, '/api/Expanded/' + data.id);
             },
 
             save: function (data) {
-                alert('Save');
+                //alert('Save');
                 var
                     type = httpVerbs.POST,
-                    url = '/api/homes';
+                    url = '/api/Expanded/' + data.id;
 
-                if (data.id > 0) {
-                    type = httpVerbs.PUT;
-                    url += '/' + data.id;
-                }
-
+                //if (data.id > 0) {
+                //    type = httpVerbs.PUT;
+                //    url += '/' + data.id;
+                //}
+                
                 return this.commit(type, url, data);
             }
         };

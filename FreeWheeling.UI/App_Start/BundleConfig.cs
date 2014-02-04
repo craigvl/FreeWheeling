@@ -41,6 +41,7 @@ namespace FreeWheeling.UI
             //Custom javaScript
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
                    "~/Scripts/custom.js",
+                   "~/Scripts/underscore.js",
                    "~/Scripts/app/extendDataService.js"));
 
             //Custom css
