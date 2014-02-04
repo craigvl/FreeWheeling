@@ -175,6 +175,8 @@ else
                 jQuery("#ShowKeenFirstMinus").hide();
                 jQuery("#ShowKeenFirstPlus").show();
                 
+                extendDataService.save("123");
+
                 var KeenExpanded = new sectionDB.Sections.Section({ SectionName: 'KeenExpanded', Expanded: true });
                 sectionDB.Sections.add(KeenExpanded);
                 sectionDB.saveChanges();

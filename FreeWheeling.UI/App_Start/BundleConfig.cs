@@ -40,7 +40,8 @@ namespace FreeWheeling.UI
 
             //Custom javaScript
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
-                   "~/Scripts/custom.js"));
+                   "~/Scripts/custom.js",
+                   "~/Scripts/app/extendDataService.js"));
 
             //Custom css
             bundles.Add(new StyleBundle("~/Content/custom").Include(
