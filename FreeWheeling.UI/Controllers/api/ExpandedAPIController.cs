@@ -12,6 +12,8 @@ using FreeWheeling.Domain.Entities;
 using FreeWheeling.Domain.Abstract;
 using FreeWheeling.UI.DataContexts;
 using System.Security.Principal;
+using FreeWheeling.UI.Models;
+using Microsoft.AspNet.Identity;
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -34,14 +36,21 @@ namespace FreeWheeling.UI.Controllers
 
         //Post http://localhost:6049/api/Expanded/1
         [HttpPost]
-        public IHttpActionResult PostExtend(int id)
+        public IHttpActionResult PostExtend(UserExpandModel _UserExpandModel)
         {
-           
+
+            ApplicationUser currentUser = idb.Users.Where(u => u.UserName == System.Web.HttpContext.Current.User.Identity.Name).FirstOrDefault();
+
+            _UserExpandModel.userid = currentUser.Id;
+
+            UserExpandHelper _UserExpandHelper = new UserExpandHelper(repository);
+
+            _UserExpandHelper.UpdateOrInsertUserExpand(_UserExpandModel);
 
             //db.UserExpands.Add(userexpand);
             //db.SaveChanges();
 
-
+           
             //return NotFound();
             return Ok();
         }

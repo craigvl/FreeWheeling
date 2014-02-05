@@ -6,6 +6,6 @@ update-database -ConfigurationTypeName FreeWheeling.UI.DataContexts.IdentityMigr
 
 add-migration -ConfigurationTypeName FreeWheeling.Domain.DataContexts.CycleMigrations.Configuration "Add_Comments_Date" -verbose
 
-add-migration -ConfigurationTypeName FreeWheeling.Domain.DataContexts.CycleMigrations.Configuration "riderequired" -verbose
+add-migration -ConfigurationTypeName FreeWheeling.Domain.DataContexts.CycleMigrations.Configuration "Userid_Change" -verbose
 
 add-migration -ConfigurationTypeName FreeWheeling.UI.DataContexts.IdentityMigrations.Configuration "Added_CreatedBy_And_TimeStamp" -verbose

@@ -11,11 +11,6 @@ var extendDataService = (function () {
         ds = {
             commit: function (type, url, data) {
 
-                // Remove 'id' member to perpare for INSERT
-                if (type === httpVerbs.POST) {
-                    delete data['id'];
-                }
-
                 return $.ajax({
                     type: type,
                     url: url,
@@ -29,16 +24,11 @@ var extendDataService = (function () {
             },
 
             save: function (data) {
-                //alert('Save');
+             
                 var
                     type = httpVerbs.POST,
-                    url = '/api/Expanded/' + data.id;
-
-                //if (data.id > 0) {
-                //    type = httpVerbs.PUT;
-                //    url += '/' + data.id;
-                //}
-                
+                    url = '/api/Expanded';
+              
                 return this.commit(type, url, data);
             }
         };

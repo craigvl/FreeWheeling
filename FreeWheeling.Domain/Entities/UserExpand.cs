@@ -9,7 +9,7 @@ namespace FreeWheeling.Domain.Entities
     public class UserExpand
     {
         public int id { get; set; }
-        public string userName { get; set; }
+        public string userId { get; set; }
         public Boolean FirstBunch { get; set; }
         public Boolean FirstKeen { get; set; }
         public Boolean FirstComment { get; set; }

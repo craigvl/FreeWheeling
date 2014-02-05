@@ -49,22 +49,39 @@ else
     <hr />
     
     
-        <h4><span class="label label-success">Keen (@Model.KeenCount.ToString())</span>
-            <span id="ShowKeenFirstPlus" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success">+</span>
-            <span id="ShowKeenFirstMinus" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success">-</span>
-    
-    </h4>
-    <div id="collapseKeenFirst" class="panel-collapse collapse in">
-        <div>
-            @{
+    <h4>
+        <span class="label label-success">Keen (@Model.KeenCount.ToString())</span>
 
-                foreach (Rider item in @Model.Riders)
+        @if (@Model.FirstKeen)
+        {
+            @:<span id="ShowKeenFirstMinus" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success">-</span>
+        }
+        else
+        {
+            @:<span id="ShowKeenFirstPlus" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success">+</span>
+        }       
+
+</h4>
+
+    @if(@Model.FirstKeen)
+    {
+    @:<div id="collapseKeenFirst" class="panel-collapse collapse in">
+    }
+    else
+    {
+    @:<div id="collapseKeenFirst" class="panel-collapse collapse">        
+    }
+
+<div>
+    @{
+
+        foreach (Rider item in @Model.Riders)
+        {
+            {
+                switch (item.PercentKeen)
                 {
-                    {
-                        switch (item.PercentKeen)
-                        {
-                            case "OnWay":
-                                <text>
+                    case "OnWay":
+                        <text>
 <p><span class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
                 
             </text>
@@ -89,25 +106,40 @@ else
 
     @if (@Model.Comments != null)
     {
-    <h4><span class="label label-success">Comments (@Model.CommentCount)</span> 
-    
-        <span id="ShowCommentFirstPlus" data-toggle="collapse" href="#collapseCommentFirst" class="label label-success">+</span>
-        <span id="ShowCommentFirstMinus" data-toggle="collapse" href="#collapseCommentFirst" class="label label-success">-</span>
-    
-    @Html.ActionLink("Add", "AddComment", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id , FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-success", onclick = "ShowProgress();" })</h4>
-         @:<div id="collapseCommentFirst" class="panel-collapse collapse in">
+    <h4>
+        <span class="label label-success">Comments (@Model.CommentCount)</span>
+
+        @if(@Model.FirstComment)
+        {
+        @:<span id="ShowCommentFirstMinus" data-toggle="collapse" href="#collapseCommentFirst" class="label label-success">-</span>
+        }
+            else
+            {
+            @:<span id="ShowCommentFirstPlus" data-toggle="collapse" href="#collapseCommentFirst" class="label label-success">+</span>
+            }
+            @Html.ActionLink("Add", "AddComment", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id , FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
+    </h4>
+
+    if(@Model.FirstComment)
+    {
+        @:<div id="collapseCommentFirst" class="panel-collapse collapse in">
+    }
+    else
+    {
+       @:<div id="collapseCommentFirst" class="panel-collapse collapse">
+    }
+
         foreach (Comment item in Model.Comments)
         {
 
-        @*@item.Date.ToShortDateString() @Html.Raw(" ")  @item.Date.ToShortTimeString() @Html.Raw(" ")*@
-        @item.userName <text>: </text>
-        @item.CommentText
-        @:<p></p>
-        
-    }
-      
+            @*@item.Date.ToShortDateString() @Html.Raw(" ")  @item.Date.ToShortTimeString() @Html.Raw(" ")*@
+            @item.userName <text>: </text>
+            @item.CommentText
+            @:<p></p>
+        }
+
         @Html.ActionLink(string.Concat("See all Comments (", @Model.CommentCount, ")"), "SeeAllComments", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
-                    
+
     }
 </div>
 </div>
@@ -116,16 +148,16 @@ else
 
 <h4><span class="label label-success">Actions</span></h4>
 
-    <p></p>
-    @Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-primary", onclick = "ShowProgress();" })
+<p></p>
+@Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-primary", onclick = "ShowProgress();" })
 
-    <p></p>
-    @Html.ActionLink("I'm Out", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "Out", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-danger", onclick = "ShowProgress();" })
+<p></p>
+@Html.ActionLink("I'm Out", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "Out", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-danger", onclick = "ShowProgress();" })
 
-    <p></p>
-    @Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
-    
-    <p></p>
+<p></p>
+@Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
+
+<p></p>
 
 <div class="loading" align="center">
     Loading. Please wait.<br />
@@ -138,43 +170,58 @@ else
 
     <script>
 
+        //IDs for collapse user remember
+        // 1 = FirstBunchCollapse
+        // 2 = FirstKeen
+        // 3 = FirstComment
+        // 4 = SecondBunchCollapse
+        // 5 = SecondKeen
+        // 6 = SecondComment
+
         jQuery(document).ready(function () {
             jQuery("abbr.timeago").timeago();
 
-            jQuery("#ShowKeenFirstMinus").show();
-            jQuery("#ShowKeenFirstPlus").hide();
-
-            jQuery("#ShowCommentFirstMinus").show();
-            jQuery("#ShowCommentFirstPlus").hide();
-
-
             jQuery('#collapseKeenFirst').on('hidden.bs.collapse', function () {
-                jQuery("#ShowKeenFirstMinus").hide();
-                jQuery("#ShowKeenFirstPlus").show();
-                
+
                 var data = {
-                    'id': 2
+                    'id': 2,
+                    'collapsed': false
                 };
 
                 extendDataService.save(data);
             })
 
             jQuery('#collapseKeenFirst').on('shown.bs.collapse', function () {
-                jQuery("#ShowKeenFirstMinus").show();
-                jQuery("#ShowKeenFirstPlus").hide();
+
+                var data = {
+                    'id': 2,
+                    'collapsed': true
+                };
+
+                extendDataService.save(data);
 
             })
 
             jQuery('#collapseCommentFirst').on('hidden.bs.collapse', function () {
-                jQuery("#ShowCommentFirstMinus").hide();
-                jQuery("#ShowCommentFirstPlus").show();
+
+                var data = {
+                    'id': 3,
+                    'collapsed': false
+                };
+
+                extendDataService.save(data);
 
 
             })
 
             jQuery('#collapseCommentFirst').on('shown.bs.collapse', function () {
-                jQuery("#ShowCommentFirstMinus").show();
-                jQuery("#ShowCommentFirstPlus").hide();
+
+                var data = {
+                    'id': 3,
+                    'collapsed': true
+                };
+
+                extendDataService.save(data);
 
             })
 

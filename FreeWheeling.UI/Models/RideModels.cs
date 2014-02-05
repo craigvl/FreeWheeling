@@ -60,6 +60,7 @@ namespace FreeWheeling.UI.Models
             CultureHelper _CultureHelper = new CultureHelper(repository);
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Group.Location.id);
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
+            UserExpand _UserExpands = repository.GetUserExpandByUserID(UserId);
 
             if (RideId == -1) // this is the case when first enter view ride screen as rideid is unkown at that point.
             {
@@ -92,6 +93,18 @@ namespace FreeWheeling.UI.Models
             RideModel.KeenCount = repository.GetKeenCountForRide(RideModel.Ride.id);
             RideModel.IsOwner = repository.IsGroupCreator(_Group.id, UserId);
             RideModel.FromFavPage = FromFavPage;
+
+            if (_UserExpands != null)
+            {
+
+                RideModel.FirstKeen = _UserExpands.FirstKeen;
+                RideModel.FirstBunch = _UserExpands.FirstBunch;
+                RideModel.FirstComment = _UserExpands.FirstComment;
+                RideModel.SecondBunch = _UserExpands.SecondBunch;
+                RideModel.SecondKeen = _UserExpands.SecondKeen;
+                RideModel.SecondComment = _UserExpands.SecondComment;
+
+            }
 
             if (RideModel.Group.MapUrl != null)
             {

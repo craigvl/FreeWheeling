@@ -197,6 +197,11 @@ namespace FreeWheeling.Domain.Concrete
             return context.Riders.Where(r => r.Ride.id == Rideid && r.PercentKeen == "In").Count();
         }
 
+        public UserExpand GetUserExpandByUserID(string UserId)
+        {
+            return context.UserExpands.Where(e => e.userId == UserId).FirstOrDefault();
+        }
+
         public List<AdHocRider> GetRidersForAdHocRide(int AdHocRideid, TimeZoneInfo TimeZone)
         {
 
@@ -304,6 +309,12 @@ namespace FreeWheeling.Domain.Concrete
         {
             context.Groups.Add(_Group);
             context.Entry(_Group).State = System.Data.Entity.EntityState.Added;
+        }
+
+        public void AddUserExpand(UserExpand _UserExpand)
+        {
+            context.UserExpands.Add(_UserExpand);
+            context.Entry(_UserExpand).State = System.Data.Entity.EntityState.Added;
         }
 
         public void AddAdHocRide(Ad_HocRide _AdHocRide)
@@ -551,6 +562,18 @@ namespace FreeWheeling.Domain.Concrete
             context.Entry(CurrentAdHocRide).State = System.Data.Entity.EntityState.Modified;
         }
 
+        public void UpdateUserExpand(UserExpand _UserExpand)
+        {
+            UserExpand CurrentUserExpand = context.UserExpands.Where(e => e.userId == _UserExpand.userId).FirstOrDefault();
+            CurrentUserExpand.FirstBunch = _UserExpand.FirstBunch;
+            CurrentUserExpand.FirstComment = _UserExpand.FirstComment;
+            CurrentUserExpand.FirstKeen = _UserExpand.FirstKeen;
+            CurrentUserExpand.SecondBunch = _UserExpand.SecondBunch;
+            CurrentUserExpand.SecondKeen = _UserExpand.SecondKeen;
+            CurrentUserExpand.SecondComment = _UserExpand.SecondComment;
+            context.Entry(CurrentUserExpand).State = System.Data.Entity.EntityState.Modified;
+        }
+
         public void UpdateRideTimes(Group _Group, TimeZoneInfo TimeZone)
         {
             //Need to do work here if the time is less than current time and same day then might need to create new ride date 
@@ -604,12 +627,8 @@ namespace FreeWheeling.Domain.Concrete
                 {
                     context.Entry(_Ride).State = System.Data.Entity.EntityState.Deleted;
                     context.SaveChanges();
-                }
-
-                
+                }                
             }
-
-            
         }
 
         public void RemoveMember(string UserId, Group _Group)

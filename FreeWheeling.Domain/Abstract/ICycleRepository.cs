@@ -51,6 +51,9 @@ namespace FreeWheeling.Domain.Abstract
 
         //Get .. Members
         Member GetMemberByUserID(string id);
+
+        //Get .. UserExpand
+        UserExpand GetUserExpandByUserID(string UserId);
         
         //Add
         void AddMember(string UserId, Group _Group);
@@ -60,6 +63,7 @@ namespace FreeWheeling.Domain.Abstract
         void AddAdHocRide(Ad_HocRide _AdHocRide);
         void AddRideComment(string Comment, int RideId, string UserName);
         void AddAdHocRideComment(string Comment, int RideId, string UserName);
+        void AddUserExpand(UserExpand _UserExpand);
 
         //Delete
         void RemoveMember(string UserId, Group _Group);
@@ -71,6 +75,7 @@ namespace FreeWheeling.Domain.Abstract
         void UpdateGroup(Group _Group);
         void UpdateRideTimes(Group _Group, TimeZoneInfo TimeZone);
         void UpdateAdHocRide(Ad_HocRide _AdHocRide);
+        void UpdateUserExpand(UserExpand _UserExpand);
 
         //Checks
         Boolean IsAdHocCreator(int AdHocRideid, string UserId);
