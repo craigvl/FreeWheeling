@@ -30,8 +30,7 @@ namespace FreeWheeling.UI.Controllers
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             CultureHelper _CultureHelper = new CultureHelper(repository);
-            Session["Culture"] = _CultureHelper.GetCulture(Convert.ToInt32(currentUser.LocationID));
-
+            
             HomeIndexModel _HomeIndexModel = new HomeIndexModel();
             _HomeIndexModel.Locations = repository.GetLocations().ToList();
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
@@ -41,6 +40,7 @@ namespace FreeWheeling.UI.Controllers
             
             if (currentUser.LocationID != null)
             {
+                Session["Culture"] = _CultureHelper.GetCulture(Convert.ToInt32(currentUser.LocationID));
                 _HomeIndexModel.LocationsId = _Location.id;
                 _HomeIndexModel.CurrentUserLocation = _Location.Name;
                 _HomeIndexModel.UpCommingAd_HocCount = repository.GetUpCommingAd_HocCount(repository.GetLocations().Where(o => o.id == currentUser.LocationID).FirstOrDefault(),TZone);

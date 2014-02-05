@@ -47,18 +47,16 @@ else
         </span>
         </h4>
     <hr />
-    
-    
+      
     <h4>
-        <span class="label label-success">Keen (@Model.KeenCount.ToString())</span>
-
+       
         @if (@Model.FirstKeen)
         {
-            @:<span id="ShowKeenFirstMinus" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success">-</span>
+            <span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-up">Keen (@Model.KeenCount.ToString())</span>
         }
         else
         {
-            @:<span id="ShowKeenFirstPlus" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success">+</span>
+            <span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-down">Keen (@Model.KeenCount.ToString())</span>
         }       
 
 </h4>
@@ -107,16 +105,16 @@ else
     @if (@Model.Comments != null)
     {
     <h4>
-        <span class="label label-success">Comments (@Model.CommentCount)</span>
+       
 
-        @if(@Model.FirstComment)
+        @if (@Model.FirstComment)
+{
+    <span id="CommentCount" class="label label-success glyphicon glyphicon-chevron-up" data-toggle="collapse" href="#collapseCommentFirst">Comments (@Model.CommentCount)</span>
+}
+        else
         {
-        @:<span id="ShowCommentFirstMinus" data-toggle="collapse" href="#collapseCommentFirst" class="label label-success">-</span>
+            <span id="CommentCount" class="label label-success glyphicon glyphicon-chevron-down" data-toggle="collapse" href="#collapseCommentFirst">Comments (@Model.CommentCount)</span>
         }
-            else
-            {
-            @:<span id="ShowCommentFirstPlus" data-toggle="collapse" href="#collapseCommentFirst" class="label label-success">+</span>
-            }
             @Html.ActionLink("Add", "AddComment", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id , FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
     </h4>
 
@@ -170,6 +168,10 @@ else
 
     <script>
 
+        function toggleChevron(e) {
+            $(e).toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
+        }
+
         //IDs for collapse user remember
         // 1 = FirstBunchCollapse
         // 2 = FirstKeen
@@ -182,6 +184,10 @@ else
             jQuery("abbr.timeago").timeago();
 
             jQuery('#collapseKeenFirst').on('hidden.bs.collapse', function () {
+                toggleChevron('#KeenCount');
+                jQuery("#ShowKeenFirstMinus").hide();
+                jQuery("#ShowKeenFirstPlus").show();
+
 
                 var data = {
                     'id': 2,
@@ -192,6 +198,9 @@ else
             })
 
             jQuery('#collapseKeenFirst').on('shown.bs.collapse', function () {
+                toggleChevron('#KeenCount');
+                jQuery("#ShowKeenFirstMinus").show();
+                jQuery("#ShowKeenFirstPlus").hide();
 
                 var data = {
                     'id': 2,
@@ -203,6 +212,9 @@ else
             })
 
             jQuery('#collapseCommentFirst').on('hidden.bs.collapse', function () {
+                toggleChevron('#CommentCount');
+                jQuery("#ShowCommentFirstMinus").hide();
+                jQuery("#ShowCommentFirstPlus").show();
 
                 var data = {
                     'id': 3,
@@ -215,6 +227,9 @@ else
             })
 
             jQuery('#collapseCommentFirst').on('shown.bs.collapse', function () {
+                toggleChevron('#CommentCount');
+                jQuery("#ShowCommentFirstMinus").show();
+                jQuery("#ShowCommentFirstPlus").hide();
 
                 var data = {
                     'id': 3,
