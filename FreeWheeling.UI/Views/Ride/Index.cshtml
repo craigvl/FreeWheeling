@@ -115,7 +115,7 @@ else
         {
             <span id="CommentCount" class="label label-success glyphicon glyphicon-chevron-down" data-toggle="collapse" href="#collapseCommentFirst">Comments (@Model.CommentCount)</span>
         }
-            @Html.ActionLink("Add", "AddComment", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id , FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
+            
     </h4>
 
     if(@Model.FirstComment)
@@ -150,13 +150,10 @@ else
             <div class="input-group">
                 @Html.TextBox("CommentString", null, new { @class = "form-control-C"})
                 <span class="input-group-addon-C">
-                    <button onclick="ShowProgress();" id="submit" type="submit"></button>
+                    <button class="btn btn-success" onclick="ShowProgress();" id="submit" type="submit">Add comment</button>
                 </span>
             </div>
         }
-
-
-
 
     </div>
 

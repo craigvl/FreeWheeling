@@ -29,68 +29,12 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [Compress]
-        public ActionResult IndexV2(int groupid, int rideid = -1, bool FromFavPage = false)
-        {
-            //var TimeZone = TimeZoneInfo.Local.Id;
-            
-            RideModelIndex RideModel = new RideModelIndex();
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-
-            Group _Group = repository.GetGroupByID(groupid);
-
-            CultureHelper _CultureHelper = new CultureHelper(repository);
-            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
-
-            if (rideid == -1)
-            {
-                RideModel.Ride = _Group.Rides.Where(u => u.RideDate.AddHours(2) >= LocalNow).OrderBy(i => i.RideDate).FirstOrDefault();
-                RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
-                RideModel.Comments = repository.GetTop2CommentsForRide(RideModel.Ride.id);
-                RideModel.RideDate = RideModel.Ride.RideDate;
-                RideModel.CommentCount = repository.GetCommentCountForRide(RideModel.Ride.id);
-            }
-            else
-            {
-                int _rideid = rideid;
-                RideModel.Ride = repository.GetRideByID(rideid);
-                RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
-                RideModel.Comments = repository.GetTop2CommentsForRide(RideModel.Ride.id);
-                RideModel.RideDate = RideModel.Ride.RideDate;
-                RideModel.CommentCount = repository.GetCommentCountForRide(RideModel.Ride.id);
-            }
-
-            if (RideModel.Ride != null)
-            {
-                RideModel.FromFavPage = FromFavPage;
-                RideModel.Group = _Group;
-                RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id,TZone);
-                RideModel.Comments = repository.GetTop2CommentsForRide(RideModel.Ride.id);
-                RideModel.CommentCount = repository.GetCommentCountForRide(RideModel.Ride.id);
-                RideModel.IsOwner = repository.IsGroupCreator(_Group.id, currentUser.Id);
-                if (_Group.MapUrl != null)
-                {
-                    RideModel.MapUrl = string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", _Group.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
-                }
-            }
-            else
-            {         
-                GroupModel GroupModel = new GroupModel();
-                GroupModel._Groups = repository.GetGroups().ToList();  
-                GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
-                return RedirectToAction("index", "group", GroupModel);
-            }
-
-            return View(RideModel);
-        }
-
-        [Compress]
         public ActionResult Index(int groupid, int rideid = -1, bool FromFavPage = false)
         {
             //var TimeZone = TimeZoneInfo.Local.Id;
-
-            RideModelIndex RideModel = new RideModelIndex();
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            RideModelIndex RideModel = new RideModelIndex();
+            
 
             Group _Group = repository.GetGroupByID(groupid);
             RideModelHelper _RideHelper = new RideModelHelper(repository);
