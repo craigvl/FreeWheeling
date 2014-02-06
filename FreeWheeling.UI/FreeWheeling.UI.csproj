@@ -400,9 +400,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Group\Create.cshtml" />
     <Content Include="Views\Group\Index.cshtml" />
-    <Content Include="Views\Ride\IndexV2.cshtml" />
     <Content Include="Views\Ride\NextRide.cshtml" />
-    <Content Include="Views\Ride\AddComment.cshtml" />
     <Content Include="Views\Ride\AddCommentNext.cshtml" />
     <Content Include="Views\Group\CreateAdHoc.cshtml" />
     <Content Include="Views\Shared\_GroupDetailPartial.cshtml" />

@@ -364,62 +364,41 @@ namespace FreeWheeling.UI.Controllers
 
         }
 
-        public ActionResult AddComment(int groupid, int RideId)
-        {
-            RideCommentModel _RideCommentModel = new RideCommentModel();
-            _RideCommentModel.RideId = RideId;
-            _RideCommentModel.GroupId = groupid;
-            
-            _RideCommentModel.Ride = repository.GetRideByID(RideId);
-
-            return View(_RideCommentModel);
-
-        }
-
         [HttpPost]
-        public ActionResult AddComment(RideCommentModel RideComment, bool FromFavPage)
+        public ActionResult AddComment(int groupid, int rideid, string CommentString, bool FromFavPage)
         {
+
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            repository.AddRideComment(RideComment.Comment, RideComment.RideId, currentUser.UserName);
-            repository.Save();
 
-            RideModelIndex RideModel = new RideModelIndex();
+            if(CommentString != string.Empty)
+            {
 
-            RideModelHelper _RideHelper = new RideModelHelper(repository);
+                
+                repository.AddRideComment(CommentString, rideid, currentUser.UserName);
+                repository.Save();
 
-            RideModel = _RideHelper.PopulateRideModel(RideComment.RideId, RideComment.GroupId, currentUser.Id, false, FromFavPage);
+                RideModelIndex RideModel = new RideModelIndex();
 
-            return View("Index", RideModel);
+                RideModelHelper _RideHelper = new RideModelHelper(repository);
 
-        }
+                RideModel = _RideHelper.PopulateRideModel(rideid, groupid, currentUser.Id, false, FromFavPage);
 
-        public ActionResult AddCommentNext(int groupid, int RideId, int PreviousRideID)
-        {
-            RideCommentModel _RideCommentModel = new RideCommentModel();
-            _RideCommentModel.RideId = RideId;
-            _RideCommentModel.GroupId = groupid;
-            _RideCommentModel.PreviousRide = repository.GetRideByID(PreviousRideID);
+                return View("Index", RideModel);
 
-            _RideCommentModel.Ride = repository.GetRideByID(RideId);
+            }
+            else
+            {
 
-            return View("AddCommentNext",_RideCommentModel);
+                RideModelIndex RideModel = new RideModelIndex();
 
-        }
+                RideModelHelper _RideHelper = new RideModelHelper(repository);
 
-        [HttpPost]
-        public ActionResult AddCommentNext(RideCommentModel RideComment, bool FromFavPage)
-        {
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            repository.AddRideComment(RideComment.Comment, RideComment.RideId, currentUser.UserName);
-            repository.Save();
+                RideModel = _RideHelper.PopulateRideModel(rideid, groupid, currentUser.Id, false, FromFavPage);
 
-            RideModelIndex RideModel = new RideModelIndex();
+                return View("Index", RideModel);
 
-            RideModelHelper _RideHelper = new RideModelHelper(repository);
 
-            RideModel = _RideHelper.PopulateRideModel(RideComment.RideId, RideComment.GroupId, currentUser.Id, true, FromFavPage);
-
-            return View("NextRide", RideModel);
+            }
 
         }
 

@@ -130,7 +130,6 @@ else
         foreach (Comment item in Model.Comments)
         {
 
-            @*@item.Date.ToShortDateString() @Html.Raw(" ")  @item.Date.ToShortTimeString() @Html.Raw(" ")*@
             @item.userName <text>: </text>
             @item.CommentText
             @:<p></p>
@@ -141,6 +140,25 @@ else
     }
 </div>
 </div>
+    <div>
+
+        @using (Html.BeginForm("AddComment", "Ride", new { groupid = @Model.Group.id,
+                                                             rideid = @Model.Ride.id,
+                                                             FromFavPage = @Model.FromFavPage
+        }, FormMethod.Post))
+        {
+            <div class="input-group">
+                @Html.TextBox("CommentString", null, new { @class = "form-control-C"})
+                <span class="input-group-addon-C">
+                    <button onclick="ShowProgress();" id="submit" type="submit"></button>
+                </span>
+            </div>
+        }
+
+
+
+
+    </div>
 
 <hr />
 
