@@ -26,7 +26,7 @@ namespace FreeWheeling.UI
             configuration.Routes.MapHttpRoute("API Default", "api/{controller}/{id}",
                 new { id = RouteParameter.Optional });
 
-            configuration.DependencyResolver = new ResolveController();
+            //configuration.DependencyResolver = new ResolveController();
         }
 
     }

@@ -41,37 +41,63 @@ else
 
 <p>
     <h4>
-    <span class="label label-primary">
-     
-       @Model.Ride.RideDate.ToLongDateString() @Html.Raw(",") @Model.Ride.RideDate.ToShortTimeString()
-        </span>
-        </h4>
+        @if (@Model.FirstBunch)
+{
+
+            <span class="label label-primary" data-toggle="collapse" href="#collapseFirst">
+                <span class="glyphicon glyphicon-chevron-down" id="FirstDetails" data-toggle="collapse" href="#collapseFirst">
+                </span>
+                @Model.Ride.RideDate.ToLongDateString() @Html.Raw(",") @Model.Ride.RideDate.ToShortTimeString()
+            </span>
+
+}
+else
+{
+
+            <span class="label label-primary" data-toggle="collapse" href="#collapseFirst">
+                <span class="glyphicon glyphicon-chevron-up" id="FirstDetails" data-toggle="collapse" href="#collapseFirst">
+                </span>
+                @Model.Ride.RideDate.ToLongDateString() @Html.Raw(",") @Model.Ride.RideDate.ToShortTimeString()
+            </span>
+
+}
+    </h4>
     <hr />
-      
-    <h4>
-       
-        @if (@Model.FirstKeen)
-        {
-            <span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-up">Keen (@Model.KeenCount.ToString())</span>
+
+    @if(@Model.FirstComment)
+    {
+    @:<div id="collapseFirst" class="panel-collapse collapse in">
         }
         else
         {
-            <span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-down">Keen (@Model.KeenCount.ToString())</span>
-        }       
+        @:<div id="collapseFirst" class="panel-collapse collapse">
+            }
 
-</h4>
 
-    @if(@Model.FirstKeen)
+            <h4>
+
+                @if (@Model.FirstKeen)
+        {
+                    <span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-up">Keen (@Model.KeenCount.ToString())</span>
+        }
+        else
+        {
+                    <span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-down">Keen (@Model.KeenCount.ToString())</span>
+        }
+
+            </h4>
+
+            @if(@Model.FirstKeen)
     {
-    @:<div id="collapseKeenFirst" class="panel-collapse collapse in">
+                @:<div id="collapseKeenFirst" class="panel-collapse collapse in">
     }
     else
     {
-    @:<div id="collapseKeenFirst" class="panel-collapse collapse">        
+                @:<div id="collapseKeenFirst" class="panel-collapse collapse">
     }
 
-<div>
-    @{
+            <div>
+                @{
 
         foreach (Rider item in @Model.Riders)
         {
@@ -172,6 +198,8 @@ else
 
 <p></p>
 
+</div> @*div for end of first collapse*@ 
+
 <div class="loading" align="center">
     Loading. Please wait.<br />
     <br />
@@ -200,22 +228,17 @@ else
 
             jQuery('#collapseKeenFirst').on('hidden.bs.collapse', function () {
                 toggleChevron('#KeenCount');
-                jQuery("#ShowKeenFirstMinus").hide();
-                jQuery("#ShowKeenFirstPlus").show();
-
-
+       
                 var data = {
                     'id': 2,
                     'collapsed': false
                 };
 
                 extendDataService.save(data);
-            })
+            });
 
             jQuery('#collapseKeenFirst').on('shown.bs.collapse', function () {
                 toggleChevron('#KeenCount');
-                jQuery("#ShowKeenFirstMinus").show();
-                jQuery("#ShowKeenFirstPlus").hide();
 
                 var data = {
                     'id': 2,
@@ -224,13 +247,11 @@ else
 
                 extendDataService.save(data);
 
-            })
+            });
 
             jQuery('#collapseCommentFirst').on('hidden.bs.collapse', function () {
                 toggleChevron('#CommentCount');
-                jQuery("#ShowCommentFirstMinus").hide();
-                jQuery("#ShowCommentFirstPlus").show();
-
+             
                 var data = {
                     'id': 3,
                     'collapsed': false
@@ -239,13 +260,11 @@ else
                 extendDataService.save(data);
 
 
-            })
+            });
 
             jQuery('#collapseCommentFirst').on('shown.bs.collapse', function () {
                 toggleChevron('#CommentCount');
-                jQuery("#ShowCommentFirstMinus").show();
-                jQuery("#ShowCommentFirstPlus").hide();
-
+               
                 var data = {
                     'id': 3,
                     'collapsed': true
@@ -253,7 +272,32 @@ else
 
                 extendDataService.save(data);
 
-            })
+            });
+
+            jQuery('#collapseFirst').on('hidden.bs.collapse', function () {
+                toggleChevron('#FirstDetails');
+
+                var data = {
+                    'id': 1,
+                    'collapsed': false
+                };
+
+                extendDataService.save(data);
+
+
+            });
+
+            jQuery('#collapseFirst').on('shown.bs.collapse', function () {
+                toggleChevron('#FirstDetails');
+
+                var data = {
+                    'id': 1,
+                    'collapsed': true
+                };
+
+                extendDataService.save(data);
+
+            });
 
         });
 

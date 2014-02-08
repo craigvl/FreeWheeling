@@ -40,6 +40,14 @@ namespace FreeWheeling.UI.Models
             if (CurrentUserExpand == null)
             {
 
+                if (_UserExpandModel.Id == 1)
+                {
+
+                    UserExpand _UserExpand = new UserExpand { userId = _UserExpandModel.userid,  FirstBunch = _UserExpandModel.collapsed };
+                    repository.AddUserExpand(_UserExpand);
+                    repository.Save();
+                }
+
                 if (_UserExpandModel.Id == 2 )
                 {
 
@@ -59,6 +67,23 @@ namespace FreeWheeling.UI.Models
             }
             else
             {
+
+                if (_UserExpandModel.Id == 1)
+                {
+                    UserExpand _UserExpand = new UserExpand
+                    {
+                        userId = _UserExpandModel.userid,
+                        FirstKeen = CurrentUserExpand.FirstKeen,
+                        FirstComment = CurrentUserExpand.FirstComment,
+                        FirstBunch = _UserExpandModel.collapsed,
+                        SecondBunch = CurrentUserExpand.SecondBunch,
+                        SecondKeen = CurrentUserExpand.SecondKeen,
+                        SecondComment = CurrentUserExpand.SecondComment
+                    };
+
+                    repository.UpdateUserExpand(_UserExpand);
+                    repository.Save();
+                }
 
                 if (_UserExpandModel.Id == 2)
                 {

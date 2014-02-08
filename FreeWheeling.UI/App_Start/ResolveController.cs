@@ -4,31 +4,89 @@ using System.Web.Http.Dependencies;
 using FreeWheeling.UI.Controllers;
 using FreeWheeling.Domain.Abstract;
 using FreeWheeling.Domain.Concrete;
+using Ninject.Syntax;
+using Ninject;
 
 namespace FreeWheeling.UI.App_Start
 {
-    public class ResolveController : IDependencyResolver
-    {
-        private static readonly ICycleRepository CycleStore = new CycleRepository();
 
-        public object GetService(Type serviceType)
-        {
-            return serviceType == typeof(ExpandedAPIController) ? new ExpandedAPIController(CycleStore) : null;
-        }
+    // Provides a Ninject implementation of IDependencyScope
+   // which resolves services using the Ninject container.
+   public class NinjectDependencyScope : IDependencyScope
+   {
+      IResolutionRoot resolver;
 
-        public IEnumerable<object> GetServices(Type serviceType)
-        {
-            return new List<object>();
-        }
+      public NinjectDependencyScope(IResolutionRoot resolver)
+      {
+         this.resolver = resolver;
+      }
 
-        public IDependencyScope BeginScope()
-        {
-            return this;
-        }
+      public object GetService(Type serviceType)
+      {
+         if (resolver == null)
+            throw new ObjectDisposedException("this", "This scope has been disposed");
 
-        public void Dispose()
-        {
+         return resolver.TryGet(serviceType);
+      }
 
-        }
-    }
+      public System.Collections.Generic.IEnumerable<object> GetServices(Type serviceType)
+      {
+         if (resolver == null)
+            throw new ObjectDisposedException("this", "This scope has been disposed");
+
+         return resolver.GetAll(serviceType);
+      }
+
+      public void Dispose()
+      {
+         IDisposable disposable = resolver as IDisposable;
+         if (disposable != null)
+            disposable.Dispose();
+
+         resolver = null;
+      }
+   }
+
+   // This class is the resolver, but it is also the global scope
+   // so we derive from NinjectScope.
+   public class NinjectDependencyResolver : NinjectDependencyScope, IDependencyResolver
+   {
+      IKernel kernel;
+
+      public NinjectDependencyResolver(IKernel kernel) : base(kernel)
+      {
+         this.kernel = kernel;
+      }
+
+      public IDependencyScope BeginScope()
+      {
+         return new NinjectDependencyScope(kernel.BeginBlock());
+      }
+   }
 }
+
+    //public class ResolveController : IDependencyResolver
+    //{
+    //    private static readonly ICycleRepository CycleStore = new CycleRepository();
+
+    //    public object GetService(Type serviceType)
+    //    {
+    //        return serviceType == typeof(ExpandedAPIController) ? new ExpandedAPIController(CycleStore) : null;
+    //    }
+
+    //    public IEnumerable<object> GetServices(Type serviceType)
+    //    {
+    //        return new List<object>();
+    //    }
+
+    //    public IDependencyScope BeginScope()
+    //    {
+    //        return this;
+    //    }
+
+    //    public void Dispose()
+    //    {
+
+    //    }
+    //}
+//}

@@ -15,6 +15,7 @@ namespace FreeWheeling.UI.App_Start
     using Ninject.Web.Mvc.FilterBindingSyntax;
     using FreeWheeling.UI.Filters;
     using System.Web.Mvc;
+    using System.Web.Http;
 
     public static class NinjectWebCommon 
     {
@@ -49,6 +50,10 @@ namespace FreeWheeling.UI.App_Start
             kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
             
             RegisterServices(kernel);
+
+            // Install our Ninject-based IDependencyResolver into the Web API config
+            GlobalConfiguration.Configuration.DependencyResolver = new NinjectDependencyResolver(kernel);
+
             return kernel;
         }
 
