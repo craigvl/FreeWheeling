@@ -80,11 +80,11 @@ else
 
                 @if (@Model.FirstKeen)
         {
-                    <span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-up">Keen (@Model.KeenCount.ToString())</span>
+                    <span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-up">Keen<span id="KeenCountSpan">(@Model.KeenCount.ToString())</span></span>
         }
         else
         {
-                    <span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-down">Keen (@Model.KeenCount.ToString())</span>
+                    <span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-down">Keen<span id="KeenCountSpan">(@Model.KeenCount.ToString())</span></span>
         }
 
             </h4>
@@ -137,14 +137,14 @@ else
 
         @if (@Model.FirstComment)
 {
-    <span id="CommentCount" class="label label-success glyphicon glyphicon-chevron-up" data-toggle="collapse" href="#collapseCommentFirst">Comments (@Model.CommentCount)</span>
+    <span id="CommentCount" class="label label-success glyphicon glyphicon-chevron-up" data-toggle="collapse" href="#collapseCommentFirst">Comments <span id="CommentCountSpanFirst">(@Model.CommentCount)</span></span>
 }
         else
         {
-            <span id="CommentCount" class="label label-success glyphicon glyphicon-chevron-down" data-toggle="collapse" href="#collapseCommentFirst">Comments (@Model.CommentCount)</span>
+            <span id="CommentCount" class="label label-success glyphicon glyphicon-chevron-down" data-toggle="collapse" href="#collapseCommentFirst">Comments <span id="CommentCountSpanFirst">(@Model.CommentCount)</span></span>
         }
         
-        @Html.ActionLink(string.Concat("View all (", @Model.CommentCount, ")"), "SeeAllComments", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-success", onclick = "ShowProgress();" }) 
+        @Html.ActionLink(string.Concat("View all (", @Model.CommentCount, ")"), "SeeAllComments", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-success", onclick = "ShowProgress();", id = "CommentCountSpanFirstSeeAll" }) 
            
     </h4>
 
@@ -411,6 +411,10 @@ else
                 //alert('An event was triggered with message: ' + data.message);
 
                 $("#collapseCommentFirst").prepend("<p>" + userName + " : " + data.message + "</p>");
+                $("#CommentCountSpanFirst").html("(" + data.commentcount + ")");
+                $("#CommentCountSpanFirstSeeAll").html("View All (" + data.commentcount + ")");
+
+                
             });
 
             //End Pusher
