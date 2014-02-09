@@ -64,6 +64,33 @@ namespace FreeWheeling.UI.Models
                     repository.Save();
                 }
 
+                //Second Ride
+
+                if (_UserExpandModel.Id == 4)
+                {
+
+                    UserExpand _UserExpand = new UserExpand { userId = _UserExpandModel.userid, SecondBunch = _UserExpandModel.collapsed };
+                    repository.AddUserExpand(_UserExpand);
+                    repository.Save();
+                }
+
+                if (_UserExpandModel.Id == 5)
+                {
+
+                    UserExpand _UserExpand = new UserExpand { userId = _UserExpandModel.userid, SecondKeen = _UserExpandModel.collapsed };
+                    repository.AddUserExpand(_UserExpand);
+                    repository.Save();
+                }
+
+                if (_UserExpandModel.Id == 6)
+                {
+
+                    UserExpand _UserExpand = new UserExpand { userId = _UserExpandModel.userid, SecondComment = _UserExpandModel.collapsed };
+                    repository.AddUserExpand(_UserExpand);
+                    repository.Save();
+                }
+
+
             }
             else
             {
@@ -114,6 +141,60 @@ namespace FreeWheeling.UI.Models
                         SecondBunch = CurrentUserExpand.SecondBunch,
                         SecondKeen = CurrentUserExpand.SecondKeen,
                         SecondComment = CurrentUserExpand.SecondComment
+                    };
+
+                    repository.UpdateUserExpand(_UserExpand);
+                    repository.Save();
+                }
+
+                //Second Ride
+
+                if (_UserExpandModel.Id == 4)
+                {
+                    UserExpand _UserExpand = new UserExpand
+                    {
+                        userId = _UserExpandModel.userid,
+                        FirstKeen = CurrentUserExpand.FirstKeen,
+                        FirstComment = CurrentUserExpand.FirstComment,
+                        FirstBunch = CurrentUserExpand.FirstBunch,
+                        SecondBunch = _UserExpandModel.collapsed,
+                        SecondKeen = CurrentUserExpand.SecondKeen,
+                        SecondComment = CurrentUserExpand.SecondComment
+                    };
+
+                    repository.UpdateUserExpand(_UserExpand);
+                    repository.Save();
+                }
+
+                if (_UserExpandModel.Id == 5)
+                {
+                    UserExpand _UserExpand = new UserExpand
+                    {
+                        userId = _UserExpandModel.userid,
+                        FirstKeen = CurrentUserExpand.FirstKeen,
+                        FirstComment = CurrentUserExpand.FirstComment,
+                        FirstBunch = CurrentUserExpand.FirstBunch,
+                        SecondBunch = CurrentUserExpand.SecondBunch,
+                        SecondKeen = _UserExpandModel.collapsed,
+                        SecondComment = CurrentUserExpand.SecondComment
+                    };
+
+                    repository.UpdateUserExpand(_UserExpand);
+                    repository.Save();
+                }
+
+                if (_UserExpandModel.Id == 6)
+                {
+
+                    UserExpand _UserExpand = new UserExpand
+                    {
+                        userId = _UserExpandModel.userid,
+                        FirstKeen = CurrentUserExpand.FirstKeen,
+                        FirstComment = CurrentUserExpand.FirstComment,
+                        FirstBunch = CurrentUserExpand.FirstBunch,
+                        SecondBunch = CurrentUserExpand.SecondBunch,
+                        SecondKeen = CurrentUserExpand.SecondKeen,
+                        SecondComment = _UserExpandModel.collapsed
                     };
 
                     repository.UpdateUserExpand(_UserExpand);

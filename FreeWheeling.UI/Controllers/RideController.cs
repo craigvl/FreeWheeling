@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity;
 using FreeWheeling.UI.Filters;
 using FreeWheeling.UI.Infrastructure;
 using System.Globalization;
+using PusherServer;
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -104,33 +105,6 @@ namespace FreeWheeling.UI.Controllers
 
         }
 
-        [Compress]
-        public ActionResult NextRide(int RideId, int Groupid, int PreviousRideID, bool FromFavPage = false)
-        {
-
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-
-            RideModelIndex RideModel = new RideModelIndex();
-
-            RideModelHelper _RideHelper = new RideModelHelper(repository);
-
-            RideModel = _RideHelper.PopulateRideModel(RideId, Groupid, currentUser.Id, true, FromFavPage);
-            
-
-            if(RideModel.Ride == null)
-            {
-
-                GroupModel GroupModel = new GroupModel();
-                GroupModel._Groups = repository.GetGroups().ToList();              
-                GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
-                return RedirectToAction("index", "group", GroupModel);
-
-            }
-
-            return View(RideModel);
-
-        }
-
         public ActionResult DeleteAdHocRide(int adhocrideid)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
@@ -151,7 +125,6 @@ namespace FreeWheeling.UI.Controllers
 
 
         }
-
 
         [HttpPost, ActionName("DeleteAdHocRide")]
         public ActionResult DeleteConfirmed(int adhocrideid)
@@ -309,15 +282,17 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddComment(int groupid, int rideid, string CommentString, bool FromFavPage)
+        public ActionResult AddComment(int groupid, int rideid, string CommentString, bool FromFavPage, int ParentRideID)
         {
+
+            var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
+            var result = pusher.Trigger("BunchyRide" + rideid, "New-Comments", new { message = CommentString });
 
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
             if(CommentString != string.Empty)
             {
-
-                
+              
                 repository.AddRideComment(CommentString, rideid, currentUser.UserName);
                 repository.Save();
 
@@ -325,7 +300,7 @@ namespace FreeWheeling.UI.Controllers
 
                 RideModelHelper _RideHelper = new RideModelHelper(repository);
 
-                RideModel = _RideHelper.PopulateRideModel(rideid, groupid, currentUser.Id, false, FromFavPage);
+                RideModel = _RideHelper.PopulateRideModel(ParentRideID, groupid, currentUser.Id, false, FromFavPage);
 
                 return View("Index", RideModel);
 
@@ -341,12 +316,11 @@ namespace FreeWheeling.UI.Controllers
 
                 return View("Index", RideModel);
 
-
             }
 
         }
 
-        public ActionResult Attend(int RideId, string Commitment, int Groupid, bool FromFavPage)
+        public ActionResult Attend(int RideId, string Commitment, int Groupid, bool FromFavPage, int ParentRideID)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Ride _Ride = new Ride();
@@ -364,34 +338,11 @@ namespace FreeWheeling.UI.Controllers
 
             RideModelHelper _RideHelper = new RideModelHelper(repository);
 
-            RideModel = _RideHelper.PopulateRideModel(RideId, Groupid, currentUser.Id, false, FromFavPage);
+            RideModel = _RideHelper.PopulateRideModel(ParentRideID, Groupid, currentUser.Id, false, FromFavPage);
 
             return View("Index", RideModel);
         }
-
-        public ActionResult AttendNext(int RideId, string Commitment, int Groupid, int PreviousRideID, bool FromFavPage)
-        {
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            Ride _Ride = new Ride();
-            Group _Group = new Group();
-
-            _Ride = repository.GetRideByID(RideId);
-            _Group = repository.GetGroupByID(Groupid);
-
-            Rider _Rider = new Rider { userId = currentUser.Id, Name = currentUser.UserName, Ride = _Ride, LeaveTime = DateTime.UtcNow, PercentKeen = Commitment };
-
-            repository.AddRider(_Rider, _Group);
-            repository.Save();
-
-            RideModelIndex RideModel = new RideModelIndex();
-
-            RideModelHelper _RideHelper = new RideModelHelper(repository);
-
-            RideModel = _RideHelper.PopulateRideModel(RideId, Groupid, currentUser.Id, true, FromFavPage);
-
-            return View("NextRide", RideModel);
-        }
-
+     
         public ActionResult AttendAdHocRider(int adhocrideid, string Commitment)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());

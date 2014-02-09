@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+  <metadata>
+    <id>PusherServer</id>
+    <version>2.0.0-beta-4</version>
+    <title>Pusher .NET Server Library</title>
+    <authors>Pusher,  Phil Leggetter</authors>
+    <owners>Pusher,  Phil Leggetter</owners>
+    <licenseUrl>https://github.com/pusher/pusher-dotnet-server/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/pusher/pusher-dotnet-server</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The .NET library for interacting with the Pusher REST API.
+Register at http://pusher.com and use the application credentials within your app as shown below.</description>
+    <releaseNotes />
+    <copyright>Copyright 2013</copyright>
+    <tags>pusher realtime</tags>
+    <dependencies>
+      <dependency id="RestSharp" version="104.1" />
+    </dependencies>
+  </metadata>
+</package>

@@ -76,23 +76,20 @@ namespace FreeWheeling.UI.Models
             RideModelIndex RideModel = new RideModelIndex();
 
             RideModel.Ride = _Ride;
-            RideModel.RideDate = RideModel.Ride.RideDate;
-            if (!NeedPreviousRide)
-            {
-                RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
-            }
-            else
-            {
-
-                RideModel.PreviousRide = repository.GetPreviousRideForGroup(_Group);
-
-            }
+            RideModel.RideDate = RideModel.Ride.RideDate; 
             RideModel.Group = _Group;
             RideModel.Comments = repository.GetTop2CommentsForRide(RideModel.Ride.id);
             RideModel.CommentCount = repository.GetCommentCountForRide(RideModel.Ride.id);
             RideModel.KeenCount = repository.GetKeenCountForRide(RideModel.Ride.id);
             RideModel.IsOwner = repository.IsGroupCreator(_Group.id, UserId);
             RideModel.FromFavPage = FromFavPage;
+
+            RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
+            RideModel.NextRideDate = RideModel.NextRide.RideDate;
+            RideModel.NextComments = repository.GetTop2CommentsForRide(RideModel.NextRide.id);
+            RideModel.NextCommentCount = repository.GetCommentCountForRide(RideModel.NextRide.id);
+            RideModel.NextKeenCount = repository.GetKeenCountForRide(RideModel.NextRide.id);
+            RideModel.NextRiders = repository.GetRidersForRide(RideModel.NextRide.id, TZone);
 
             if (_UserExpands != null)
             {
@@ -126,8 +123,6 @@ namespace FreeWheeling.UI.Models
         public string RideTime { get; set; }
         public Group Group { get; set; }
         public Ride Ride { get; set; }
-        public Ride NextRide { get; set; }
-        public Ride PreviousRide { get; set; }
         public List<Rider> Riders { get; set; } 
         public List<Route> Routes { get; set; }
         public List<Comment> Comments { get; set; }
@@ -144,6 +139,17 @@ namespace FreeWheeling.UI.Models
         public Boolean SecondBunch { get; set; }
         public Boolean SecondKeen { get; set; }
         public Boolean SecondComment { get; set; }
+
+        //Next ride
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime NextRideDate { get; set; }
+        public string NextRideTime { get; set; }
+        public Ride NextRide { get; set; }
+        public List<Rider> NextRiders { get; set; }
+        public List<Route> NextRoutes { get; set; }
+        public List<Comment> NextComments { get; set; }
+        public int NextCommentCount { get; set; }
+        public int NextKeenCount { get; set; }
     }
 
     public class RideCommentModel

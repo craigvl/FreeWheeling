@@ -6,7 +6,11 @@
     ViewBag.Title = "Index";
 }
 
-<p>
+@Html.Hidden("RideIdHidden",@Model.Ride.id)
+
+@Html.Hidden("RideUserNameHidden", User.Identity.GetUserName())
+<script src="http://js.pusher.com/2.1/pusher.min.js"></script>
+
     <h2>
         @Model.Group.name
     </h2>
@@ -14,8 +18,6 @@
     {
        
     }
-
-</p>
 
 @if (@Model.MapUrl != null)
 {
@@ -141,9 +143,13 @@ else
         {
             <span id="CommentCount" class="label label-success glyphicon glyphicon-chevron-down" data-toggle="collapse" href="#collapseCommentFirst">Comments (@Model.CommentCount)</span>
         }
-            
+        
+        @Html.ActionLink(string.Concat("View all (", @Model.CommentCount, ")"), "SeeAllComments", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-success", onclick = "ShowProgress();" }) 
+           
     </h4>
 
+       
+        
     if(@Model.FirstComment)
     {
         @:<div id="collapseCommentFirst" class="panel-collapse collapse in">
@@ -161,7 +167,6 @@ else
             @:<p></p>
         }
 
-        @Html.ActionLink(string.Concat("See all Comments (", @Model.CommentCount, ")"), "SeeAllComments", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
 
     }
 </div>
@@ -170,7 +175,8 @@ else
 
         @using (Html.BeginForm("AddComment", "Ride", new { groupid = @Model.Group.id,
                                                              rideid = @Model.Ride.id,
-                                                             FromFavPage = @Model.FromFavPage
+                                                             FromFavPage = @Model.FromFavPage,
+                                                             ParentRideID = @Model.Ride.id
         }, FormMethod.Post))
         {
             <div class="input-group">
@@ -185,20 +191,190 @@ else
 
 <hr />
 
-<h4><span class="label label-success">Actions</span></h4>
+<h4><span class="label label-success">You in?</span></h4>
 
-<p></p>
-@Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-primary", onclick = "ShowProgress();" })
 
-<p></p>
-@Html.ActionLink("I'm Out", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "Out", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-danger", onclick = "ShowProgress();" })
+@Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-primary", onclick = "ShowProgress();" })
 
-<p></p>
-@Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
+
+@Html.ActionLink("I'm Out", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "Out", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-danger", onclick = "ShowProgress();" })
+
+
+@Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
 
 <p></p>
 
 </div> @*div for end of first collapse*@ 
+
+
+@*-------------------------------------------------Start of Next Ride -------------------------------------------------------------*@
+
+<hr />
+
+<p>
+    <h4>
+        @if (@Model.SecondBunch)
+        {
+
+            <span class="label label-primary" data-toggle="collapse" href="#collapseSecond">
+                <span class="glyphicon glyphicon-chevron-down" id="SecondDetails" data-toggle="collapse" href="#collapseFirst">
+                </span>
+                @Model.NextRide.RideDate.ToLongDateString() @Html.Raw(",") @Model.NextRide.RideDate.ToShortTimeString()
+            </span>
+
+        }
+        else
+        {
+
+            <span class="label label-primary" data-toggle="collapse" href="#collapseSecond">
+                <span class="glyphicon glyphicon-chevron-up" id="SecondDetails" data-toggle="collapse" href="#collapseFirst">
+                </span>
+                @Model.NextRide.RideDate.ToLongDateString() @Html.Raw(",") @Model.NextRide.RideDate.ToShortTimeString()
+            </span>
+
+        }
+    </h4>
+    <hr />
+
+    @if (@Model.SecondBunch)
+    {
+        @:<div id="collapseSecond" class="panel-collapse collapse in">
+        }
+    else
+    {
+        @:<div id="collapseSecond" class="panel-collapse collapse">
+            }
+
+
+    <h4>
+
+        @if (@Model.SecondKeen)
+        {
+            <span id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond" class="label label-success glyphicon glyphicon-chevron-up">Keen (@Model.NextKeenCount.ToString())</span>
+        }
+        else
+        {
+            <span id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond" class="label label-success glyphicon glyphicon-chevron-down">Keen (@Model.NextKeenCount.ToString())</span>
+        }
+
+    </h4>
+
+    @if (@Model.SecondKeen)
+    {
+        @:<div id="collapseKeenSecond" class="panel-collapse collapse in">
+    }
+    else
+    {
+        @:<div id="collapseKeenSecond" class="panel-collapse collapse">
+    }
+
+    <div>
+        @{
+
+            foreach (Rider item in @Model.NextRiders)
+            {
+                {
+                    switch (item.PercentKeen)
+                    {
+                        case "OnWay":
+                            <text>
+        <p><span class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
+
+                            </text>
+                            break;  // Always break each case
+                        case "In":
+                        <text>
+                            <p><span class="label label-success">@item.Name is in!</span></p>
+                        </text>
+                            break;
+                    }
+                }
+
+                <p></p>
+            }
+
+        }
+        </div>
+        </div>
+        <hr />
+
+        <div>
+
+            @if (@Model.NextComments != null)
+            {
+                <h4>
+
+
+                    @if (@Model.SecondComment)
+                    {
+                        <span id="CommentCountSecond" class="label label-success glyphicon glyphicon-chevron-up" data-toggle="collapse" href="#collapseCommentSecond">Comments (@Model.NextCommentCount)</span>
+                    }
+                    else
+                    {
+                        <span id="CommentCountSecond" class="label label-success glyphicon glyphicon-chevron-down" data-toggle="collapse" href="#collapseCommentSecond">Comments (@Model.NextCommentCount)</span>
+                    }
+
+                </h4>
+
+                if (@Model.SecondComment)
+                {
+                    @:<div id="collapseCommentSecond" class="panel-collapse collapse in">
+    }
+                else
+                {
+                    @:<div id="collapseCommentSecond" class="panel-collapse collapse">
+    }
+
+                foreach (Comment item in Model.NextComments)
+                {
+
+                    @item.userName <text>: </text>
+                    @item.CommentText
+                    @:<p></p>
+        }
+
+        @Html.ActionLink(string.Concat("See all Comments (", @Model.NextCommentCount, ")"), "SeeAllComments", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
+
+            }
+        </div>
+    </div>
+    <div>
+
+        @using (Html.BeginForm("AddComment", "Ride", new
+        {
+            groupid = @Model.Group.id,
+            rideid = @Model.NextRide.id,
+            FromFavPage = @Model.FromFavPage,
+            ParentRideID = @Model.Ride.id
+        }, FormMethod.Post))
+        {
+            <div class="input-group">
+                @Html.TextBox("CommentString", null, new { @class = "form-control-C" })
+                <span class="input-group-addon-C">
+                    <button class="btn btn-success" onclick="ShowProgress();" id="submit" type="submit">Add comment</button>
+                </span>
+            </div>
+        }
+
+    </div>
+
+    <hr />
+
+    <h4><span class="label label-success">You in?</span></h4>
+
+    
+    @Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.NextRide.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-primary", onclick = "ShowProgress();" })
+
+   
+    @Html.ActionLink("I'm Out", "Attend", "Ride", new { RideId = @Model.NextRide.id, Commitment = "Out", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-danger", onclick = "ShowProgress();" })
+
+    
+    @Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.NextRide.id, Commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
+
+    <p></p>
+    <p></p>
+
+</div> @*div for end of second collapse*@
 
 <div class="loading" align="center">
     Loading. Please wait.<br />
@@ -224,6 +400,21 @@ else
         // 6 = SecondComment
 
         jQuery(document).ready(function () {
+
+            //Pusher
+            var rideId = jQuery('#RideIdHidden').val();
+            var pusher = new Pusher('dba777635636cbc16582');
+            var channel = pusher.subscribe('BunchyRide' + rideId);
+            var userName = jQuery('#RideUserNameHidden').val();
+
+            channel.bind('New-Comments', function (data) {
+                //alert('An event was triggered with message: ' + data.message);
+
+                $("#collapseCommentFirst").prepend("<p>" + userName + " : " + data.message + "</p>");
+            });
+
+            //End Pusher
+
             jQuery("abbr.timeago").timeago();
 
             jQuery('#collapseKeenFirst').on('hidden.bs.collapse', function (event) {
@@ -298,6 +489,87 @@ else
 
                 var data = {
                     'id': 1,
+                    'collapsed': true
+                };
+
+                extendDataService.save(data);
+
+            });
+
+            /////////////Second Collapse functions
+
+            jQuery('#collapseKeenSecond').on('hidden.bs.collapse', function (event) {
+                event.stopPropagation();
+                toggleChevron('#KeenCountSecond');
+
+                var data = {
+                    'id': 5,
+                    'collapsed': false
+                };
+
+                extendDataService.save(data);
+            });
+
+            jQuery('#collapseKeenSecond').on('shown.bs.collapse', function (event) {
+                event.stopPropagation();
+                toggleChevron('#KeenCountSecond');
+
+                var data = {
+                    'id': 5,
+                    'collapsed': true
+                };
+
+                extendDataService.save(data);
+
+            });
+
+            jQuery('#collapseCommentSecond').on('hidden.bs.collapse', function (event) {
+                event.stopPropagation();
+                toggleChevron('#CommentCountSecond');
+
+                var data = {
+                    'id': 6,
+                    'collapsed': false
+                };
+
+                extendDataService.save(data);
+
+
+            });
+
+            jQuery('#collapseCommentSecond').on('shown.bs.collapse', function (event) {
+                event.stopPropagation();
+                toggleChevron('#CommentCountSecond');
+
+                var data = {
+                    'id': 6,
+                    'collapsed': true
+                };
+
+                extendDataService.save(data);
+
+            });
+
+            jQuery('#collapseSecond').on('hidden.bs.collapse', function (event) {
+                event.stopPropagation();
+                toggleChevron('#SecondDetails');
+
+                var data = {
+                    'id': 4,
+                    'collapsed': false
+                };
+
+                extendDataService.save(data);
+
+
+            });
+
+            jQuery('#collapseSecond').on('shown.bs.collapse', function (event) {
+                event.stopPropagation();
+                toggleChevron('#SecondDetails');
+
+                var data = {
+                    'id': 4,
                     'collapsed': true
                 };
 
