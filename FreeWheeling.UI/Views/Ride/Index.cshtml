@@ -80,11 +80,11 @@ else
 
                 @if (@Model.FirstKeen)
         {
-                    <span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-up">Keen<span id="KeenCountSpan">(@Model.KeenCount.ToString())</span></span>
+                    <span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-up">Keen<span id="KeenCountSpanFirst">(@Model.KeenCount.ToString())</span></span>
         }
         else
         {
-                    <span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-down">Keen<span id="KeenCountSpan">(@Model.KeenCount.ToString())</span></span>
+                    <span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-down">Keen<span id="KeenCountSpanFirst">(@Model.KeenCount.ToString())</span></span>
         }
 
             </h4>
@@ -106,6 +106,12 @@ else
             {
                 switch (item.PercentKeen)
                 {
+                         case "Out":
+                        <text>
+<p><span style="text-decoration:line-through;" class="label label-danger">@item.Name is no longer in</span></p>
+                
+            </text>
+            break;  // Always break each case
                     case "OnWay":
                         <text>
 <p><span class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
@@ -193,15 +199,24 @@ else
 
 <h4><span class="label label-success">You in?</span></h4>
 
-
-@Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-primary", onclick = "ShowProgress();" })
-
-
+@if (!@Model.InFirst)
+{
+    if (!@Model.OnWayFirst)
+    {
+        @Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-primary", onclick = "ShowProgress();" })
+    }
+}
+@if (!@Model.OutFirst)
+{
 @Html.ActionLink("I'm Out", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "Out", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-danger", onclick = "ShowProgress();" })
-
-
-@Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
-
+}
+@if (!@Model.OnWayFirst)
+{
+    if(!@Model.OutFirst)
+    {
+        @Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
+    }
+}
 <p></p>
 
 </div> @*div for end of first collapse*@ 
@@ -276,6 +291,12 @@ else
                 {
                     switch (item.PercentKeen)
                     {
+                             case "Out":
+                        <text>
+<p><span style="text-decoration:line-through;" class="label label-danger">@item.Name is no longer in</span></p>
+                
+            </text>
+            break;  // Always break each case
                         case "OnWay":
                             <text>
         <p><span class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
@@ -360,19 +381,27 @@ else
 
     <hr />
 
-    <h4><span class="label label-success">You in?</span></h4>
+            <h4><span class="label label-success">You in?</span></h4>
 
-    
-    @Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.NextRide.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-primary", onclick = "ShowProgress();" })
-
-   
-    @Html.ActionLink("I'm Out", "Attend", "Ride", new { RideId = @Model.NextRide.id, Commitment = "Out", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-danger", onclick = "ShowProgress();" })
-
-    
-    @Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.NextRide.id, Commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
-
-    <p></p>
-    <p></p>
+            @if (!@Model.InSecond)
+            {
+                if (!@Model.OnWaySecond)
+                {
+                    @Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.NextRide.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-primary", onclick = "ShowProgress();" })
+                }
+            }
+            @if (!@Model.OutSecond)
+            {
+                @Html.ActionLink("I'm Out", "Attend", "Ride", new { RideId = @Model.NextRide.id, Commitment = "Out", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-danger", onclick = "ShowProgress();" })
+            }
+            @if (!@Model.OnWaySecond)
+            {
+                if (!@Model.OutSecond)
+                {
+                    @Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.NextRide.id, Commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
+                }
+            }
+            <p></p>
 
 </div> @*div for end of second collapse*@
 
@@ -408,13 +437,23 @@ else
             var userName = jQuery('#RideUserNameHidden').val();
 
             channel.bind('New-Comments', function (data) {
-                //alert('An event was triggered with message: ' + data.message);
-
+                //First Bunch Comments  
                 $("#collapseCommentFirst").prepend("<p>" + userName + " : " + data.message + "</p>");
                 $("#CommentCountSpanFirst").html("(" + data.commentcount + ")");
                 $("#CommentCountSpanFirstSeeAll").html("View All (" + data.commentcount + ")");
 
                 
+            });
+
+            channel.bind('You-In', function (data) {
+                //First Bunch Keen
+                //alert(data.message);
+                if (data.message == 'In') {
+
+                    $("#KeenCountSpanFirst").html("(" + data.keencount + ")");
+
+                }
+
             });
 
             //End Pusher

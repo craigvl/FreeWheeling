@@ -83,6 +83,9 @@ namespace FreeWheeling.UI.Models
             RideModel.KeenCount = repository.GetKeenCountForRide(RideModel.Ride.id);
             RideModel.IsOwner = repository.IsGroupCreator(_Group.id, UserId);
             RideModel.FromFavPage = FromFavPage;
+            RideModel.InFirst = repository.IsIn(RideModel.Ride.id,UserId);
+            RideModel.OutFirst = repository.IsOut(RideModel.Ride.id, UserId);
+            RideModel.OnWayFirst = repository.IsOnWay(RideModel.Ride.id, UserId);
 
             RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
             RideModel.NextRideDate = RideModel.NextRide.RideDate;
@@ -90,6 +93,10 @@ namespace FreeWheeling.UI.Models
             RideModel.NextCommentCount = repository.GetCommentCountForRide(RideModel.NextRide.id);
             RideModel.NextKeenCount = repository.GetKeenCountForRide(RideModel.NextRide.id);
             RideModel.NextRiders = repository.GetRidersForRide(RideModel.NextRide.id, TZone);
+            RideModel.InSecond = repository.IsIn(RideModel.NextRide.id, UserId);
+            RideModel.OutSecond = repository.IsOut(RideModel.NextRide.id, UserId);
+            RideModel.OnWaySecond = repository.IsOnWay(RideModel.NextRide.id, UserId);
+            
 
             if (_UserExpands != null)
             {
@@ -150,6 +157,14 @@ namespace FreeWheeling.UI.Models
         public List<Comment> NextComments { get; set; }
         public int NextCommentCount { get; set; }
         public int NextKeenCount { get; set; }
+
+        //Checks
+        public bool InFirst { get; set; }
+        public bool OutFirst { get; set; }
+        public bool OnWayFirst { get; set; }
+        public bool InSecond { get; set; }
+        public bool OutSecond { get; set; }
+        public bool OnWaySecond { get; set; }
     }
 
     public class RideCommentModel

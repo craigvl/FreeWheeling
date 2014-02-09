@@ -80,6 +80,9 @@ namespace FreeWheeling.Domain.Abstract
         //Checks
         Boolean IsAdHocCreator(int AdHocRideid, string UserId);
         Boolean IsGroupCreator(int _GroupId, string UserId);
+        Boolean IsIn(int RideId, string UserId);
+        Boolean IsOut(int RideId, string UserId);
+        Boolean IsOnWay(int RideId, string UserId);
         
         //Populate
         Group PopulateRideDates(Group _Group, TimeZoneInfo _TimeZoneInfo);

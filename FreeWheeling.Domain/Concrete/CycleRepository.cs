@@ -526,6 +526,33 @@ namespace FreeWheeling.Domain.Concrete
 
         }
 
+        public bool IsIn(int RideId, string UserId)
+        {
+            int KeenCountForRider = context.Riders.Where(r => r.Ride.id == RideId && r.PercentKeen == "In").Count();
+            if (KeenCountForRider > 0)
+                return true;
+            else
+                return false;
+        }
+
+        public bool IsOut(int RideId, string UserId)
+        {
+            int KeenCountForRider = context.Riders.Where(r => r.Ride.id == RideId && r.PercentKeen == "Out").Count();
+            if (KeenCountForRider > 0)
+                return true;
+            else
+                return false;
+        }
+
+        public bool IsOnWay(int RideId, string UserId)
+        {
+            int KeenCountForRider = context.Riders.Where(r => r.Ride.id == RideId && r.PercentKeen == "OnWay").Count();
+            if (KeenCountForRider > 0)
+                return true;
+            else
+                return false;
+        }
+
         public void UpdateGroup(Group _Group)
         {
             Group CurrentGroup = context.Groups.Where(i => i.id == _Group.id).FirstOrDefault();
