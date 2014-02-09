@@ -194,7 +194,7 @@ namespace FreeWheeling.Domain.Concrete
 
         public int GetKeenCountForRide(int Rideid)
         {
-            return context.Riders.Where(r => r.Ride.id == Rideid && r.PercentKeen == "In").Count();
+            return context.Riders.Where(r => r.Ride.id == Rideid && r.PercentKeen == "In" || r.PercentKeen == "OnWay").Count();
         }
 
         public UserExpand GetUserExpandByUserID(string UserId)
