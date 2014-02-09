@@ -324,7 +324,9 @@ namespace FreeWheeling.UI.Controllers
         {
 
             var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
-            var result = pusher.Trigger("BunchyRide" + RideId, "You-In", new { message = Commitment, keencount = (repository.GetKeenCountForRide(RideId) + 1) });
+            var result = pusher.Trigger("BunchyRide" + RideId, "You-In", new { message = Commitment,
+                                                                               keencount = (repository.GetKeenCountForRide(RideId) + 1),
+                                                                               username = User.Identity.GetUserName()});
 
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Ride _Ride = new Ride();
