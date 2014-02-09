@@ -64,7 +64,7 @@ else
     </h4>
     <hr />
 
-    @if(@Model.FirstComment)
+    @if(@Model.FirstBunch)
     {
     @:<div id="collapseFirst" class="panel-collapse collapse in">
         }
@@ -226,7 +226,8 @@ else
         jQuery(document).ready(function () {
             jQuery("abbr.timeago").timeago();
 
-            jQuery('#collapseKeenFirst').on('hidden.bs.collapse', function () {
+            jQuery('#collapseKeenFirst').on('hidden.bs.collapse', function (event) {
+                event.stopPropagation();
                 toggleChevron('#KeenCount');
        
                 var data = {
@@ -237,7 +238,8 @@ else
                 extendDataService.save(data);
             });
 
-            jQuery('#collapseKeenFirst').on('shown.bs.collapse', function () {
+            jQuery('#collapseKeenFirst').on('shown.bs.collapse', function (event) {
+                event.stopPropagation();
                 toggleChevron('#KeenCount');
 
                 var data = {
@@ -249,7 +251,8 @@ else
 
             });
 
-            jQuery('#collapseCommentFirst').on('hidden.bs.collapse', function () {
+            jQuery('#collapseCommentFirst').on('hidden.bs.collapse', function (event) {
+                event.stopPropagation();
                 toggleChevron('#CommentCount');
              
                 var data = {
@@ -262,7 +265,8 @@ else
 
             });
 
-            jQuery('#collapseCommentFirst').on('shown.bs.collapse', function () {
+            jQuery('#collapseCommentFirst').on('shown.bs.collapse', function (event) {
+                event.stopPropagation();
                 toggleChevron('#CommentCount');
                
                 var data = {
@@ -274,7 +278,8 @@ else
 
             });
 
-            jQuery('#collapseFirst').on('hidden.bs.collapse', function () {
+            jQuery('#collapseFirst').on('hidden.bs.collapse', function (event) {
+                event.stopPropagation();
                 toggleChevron('#FirstDetails');
 
                 var data = {
@@ -287,7 +292,8 @@ else
 
             });
 
-            jQuery('#collapseFirst').on('shown.bs.collapse', function () {
+            jQuery('#collapseFirst').on('shown.bs.collapse', function (event) {
+                event.stopPropagation();
                 toggleChevron('#FirstDetails');
 
                 var data = {
