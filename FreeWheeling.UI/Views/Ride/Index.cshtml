@@ -29,8 +29,7 @@
 {
 
     @Html.ActionLink("Back <---", "Mybunches", "Group", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
-    
-   
+      
 }
 else
 {
@@ -438,7 +437,7 @@ else
 
             channel.bind('New-Comments', function (data) {
                 //First Bunch Comments  
-                $("#collapseCommentFirst").prepend("<p>" + userName + " : " + data.message + "</p>");
+                $("#collapseCommentFirst").prepend("<p>" + data.username + " : " + data.message + "</p>");
                 $("#CommentCountSpanFirst").html("(" + data.commentcount + ")");
                 $("#CommentCountSpanFirstSeeAll").html("View All (" + data.commentcount + ")");
 
@@ -452,6 +451,15 @@ else
                     var keenuser = "#keen_" + data.username;
                     $("#KeenCountSpanFirst").html("(" + data.keencount + ")");
                     $(keenuser).html(data.username + "is in!");
+                    $(keenuser).attr('class', 'label label-success');
+
+                }
+
+                if (data.message == 'Out') {
+                    var keenuser = "#keen_" + data.username;
+                    $("#KeenCountSpanFirst").html("(" + data.keencount + ")");
+                    $(keenuser).html(data.username + "is Out!");
+                    $(keenuser).attr('class', 'label label-danger');
                 }
 
             });
