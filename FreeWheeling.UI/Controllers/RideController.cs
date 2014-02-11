@@ -287,7 +287,7 @@ namespace FreeWheeling.UI.Controllers
 
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
-            var result = pusher.Trigger("BunchyRide" + rideid, "New-Comments", new { message = CommentString, commentcount = (repository.GetCommentCountForRide(rideid) + 1), username = User.Identity.Name });
+            var result = pusher.Trigger("BunchyRide" + rideid, "New-Comments", new {rideid = rideid, message = CommentString, commentcount = (repository.GetCommentCountForRide(rideid) + 1), username = User.Identity.Name });
             
             if(CommentString != string.Empty)
             {
@@ -323,9 +323,45 @@ namespace FreeWheeling.UI.Controllers
         {
 
             var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
-            var result = pusher.Trigger("BunchyRide" + RideId, "You-In", new { message = Commitment,
-                                                                               keencount = (repository.GetKeenCountForRide(RideId) + 1),
-                                                                               username = User.Identity.GetUserName()});
+
+            if (Commitment == "In")
+            {
+
+                var result = pusher.Trigger("BunchyRide" + RideId, "You-In", new
+                {
+                    rideid = RideId,
+                    message = Commitment,
+                    keencount = (repository.GetKeenCountForRide(RideId) + 1),
+                    username = User.Identity.GetUserName()
+                });
+            }
+
+
+            if (Commitment == "Out")
+            {
+
+                var result = pusher.Trigger("BunchyRide" + RideId, "You-In", new
+                {
+                    rideid = RideId,
+                    message = Commitment,
+                    keencount = (repository.GetKeenCountForRide(RideId) - 1),
+                    username = User.Identity.GetUserName()
+                });
+
+            }
+
+            if (Commitment == "OnWay")
+            {
+
+                var result = pusher.Trigger("BunchyRide" + RideId, "You-In", new
+                {
+                    rideid = RideId,
+                    message = Commitment,
+                    keencount = (repository.GetKeenCountForRide(RideId)),
+                    username = User.Identity.GetUserName()
+                });
+
+            }
 
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Ride _Ride = new Ride();
@@ -334,7 +370,11 @@ namespace FreeWheeling.UI.Controllers
             _Ride = repository.GetRideByID(RideId);
             _Group = repository.GetGroupByID(Groupid);
 
-            Rider _Rider = new Rider { userId = currentUser.Id, Name = currentUser.UserName, Ride = _Ride, LeaveTime = DateTime.UtcNow, PercentKeen = Commitment };
+            Rider _Rider = new Rider { userId = currentUser.Id,
+                                       Name = currentUser.UserName,
+                                       Ride = _Ride,
+                                       LeaveTime = DateTime.UtcNow,
+                                       PercentKeen = Commitment };
                 
             repository.AddRider(_Rider, _Group);
             repository.Save();

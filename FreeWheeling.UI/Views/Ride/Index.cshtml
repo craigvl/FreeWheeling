@@ -79,11 +79,11 @@ else
 
                 @if (@Model.FirstKeen)
         {
-                    <span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-up">Keen<span id="KeenCountSpanFirst">(@Model.KeenCount.ToString())</span></span>
+                    <span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-up">Keen<span id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</span></span>
         }
         else
         {
-                    <span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-down">Keen<span id="KeenCountSpanFirst">(@Model.KeenCount.ToString())</span></span>
+                    <span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-down">Keen<span id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</span></span>
         }
 
             </h4>
@@ -142,19 +142,20 @@ else
 
         @if (@Model.FirstComment)
 {
-    <span id="CommentCount" class="label label-success glyphicon glyphicon-chevron-up" data-toggle="collapse" href="#collapseCommentFirst">Comments <span id="CommentCountSpanFirst">(@Model.CommentCount)</span></span>
-}
+    <span id="CommentCount" class="label label-success glyphicon glyphicon-chevron-up" data-toggle="collapse" href="#collapseCommentFirst">Comments <span id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</span></span>
+}                                                                                                                                                    
         else
         {
-            <span id="CommentCount" class="label label-success glyphicon glyphicon-chevron-down" data-toggle="collapse" href="#collapseCommentFirst">Comments <span id="CommentCountSpanFirst">(@Model.CommentCount)</span></span>
+            <span id="CommentCount" class="label label-success glyphicon glyphicon-chevron-down" data-toggle="collapse" href="#collapseCommentFirst">Comments <span id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</span></span>
         }
         
-        @Html.ActionLink(string.Concat("View all (", @Model.CommentCount, ")"), "SeeAllComments", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-success", onclick = "ShowProgress();", id = "CommentCountSpanFirstSeeAll" }) 
-           
-    </h4>
-
-       
-        
+        @Html.ActionLink(string.Concat("View all (", @Model.CommentCount, ")"), "SeeAllComments", "Ride",
+        new { RideId = @Model.Ride.id,
+        Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage },
+        new { @class = "btn btn-success", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll",@Model.Ride.id.ToString()) }) 
+        <span id="@("CommentCountSpan" + @Model.Ride.id)">
+</h4>
+      
     if(@Model.FirstComment)
     {
         @:<div id="collapseCommentFirst" class="panel-collapse collapse in">
@@ -171,8 +172,6 @@ else
             @item.CommentText
             @:<p></p>
         }
-
-
     }
 </div>
 </div>
@@ -264,11 +263,11 @@ else
 
         @if (@Model.SecondKeen)
         {
-            <span id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond" class="label label-success glyphicon glyphicon-chevron-up">Keen (@Model.NextKeenCount.ToString())</span>
+            <span id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond" class="label label-success glyphicon glyphicon-chevron-up">Keen <span id="@("KeenCountSpan" + @Model.NextRide.id)">(@Model.NextKeenCount.ToString())</span></span>
         }
         else
         {
-            <span id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond" class="label label-success glyphicon glyphicon-chevron-down">Keen (@Model.NextKeenCount.ToString())</span>
+            <span id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond" class="label label-success glyphicon glyphicon-chevron-down">Keen <span id="@("KeenCountSpan" + @Model.NextRide.id)">(@Model.NextKeenCount.ToString())</span></span>
         }
 
     </h4>
@@ -327,11 +326,11 @@ else
 
                     @if (@Model.SecondComment)
                     {
-                        <span id="CommentCountSecond" class="label label-success glyphicon glyphicon-chevron-up" data-toggle="collapse" href="#collapseCommentSecond">Comments (@Model.NextCommentCount)</span>
+                        <span id="CommentCountSecond" class="label label-success glyphicon glyphicon-chevron-up" data-toggle="collapse" href="#collapseCommentSecond">Comments id="@("CommentCountSpan" + @Model.NextRide.id)">(@Model.NextCommentCount)</span></span>
                     }
                     else
                     {
-                        <span id="CommentCountSecond" class="label label-success glyphicon glyphicon-chevron-down" data-toggle="collapse" href="#collapseCommentSecond">Comments (@Model.NextCommentCount)</span>
+                        <span id="CommentCountSecond" class="label label-success glyphicon glyphicon-chevron-down" data-toggle="collapse" href="#collapseCommentSecond">Comments id="@("CommentCountSpan" + @Model.NextRide.id)">(@Model.NextCommentCount)</span></span>
                     }
 
                 </h4>
@@ -353,7 +352,9 @@ else
                     @:<p></p>
         }
 
-        @Html.ActionLink(string.Concat("See all Comments (", @Model.NextCommentCount, ")"), "SeeAllComments", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
+        @Html.ActionLink(string.Concat("See all Comments (", @Model.NextCommentCount, ")"), "SeeAllComments", "Ride", 
+        new { RideId = @Model.Ride.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage },
+                     new { @class = "btn btn-success", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @Model.Ride.id.ToString()) })
 
             }
         </div>
@@ -386,18 +387,21 @@ else
             {
                 if (!@Model.OnWaySecond)
                 {
-                    @Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.NextRide.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-primary", onclick = "ShowProgress();" })
+                    @Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.NextRide.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, 
+                    new { @class = "btn btn-primary", onclick = "ShowProgress();" })
                 }
             }
             @if (!@Model.OutSecond)
             {
-                @Html.ActionLink("I'm Out", "Attend", "Ride", new { RideId = @Model.NextRide.id, Commitment = "Out", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-danger", onclick = "ShowProgress();" })
+                @Html.ActionLink("I'm Out", "Attend", "Ride", new { RideId = @Model.NextRide.id, Commitment = "Out", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, 
+                new { @class = "btn btn-danger", onclick = "ShowProgress();" })
             }
             @if (!@Model.OnWaySecond)
             {
                 if (!@Model.OutSecond)
                 {
-                    @Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.NextRide.id, Commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
+                    @Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.NextRide.id, Commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, 
+                    new { @class = "btn btn-success", onclick = "ShowProgress();" })
                 }
             }
             <p></p>
@@ -437,9 +441,9 @@ else
 
             channel.bind('New-Comments', function (data) {
                 //First Bunch Comments  
-                $("#collapseCommentFirst").prepend("<p>" + data.username + " : " + data.message + "</p>");
-                $("#CommentCountSpanFirst").html("(" + data.commentcount + ")");
-                $("#CommentCountSpanFirstSeeAll").html("View All (" + data.commentcount + ")");
+                $("#collapseComment" + data.rideid).prepend("<p>" + data.username + " : " + data.message + "</p>");
+                $("#CommentCountSpan" + data.rideid).html("(" + data.commentcount + ")");
+                $("#CommentCountSpanSeeAll" + data.rideid).html("View All (" + data.commentcount + ")");
 
                 
             });
@@ -449,7 +453,7 @@ else
                 //alert(data.message);
                 if (data.message == 'In') {
                     var keenuser = "#keen_" + data.username;
-                    $("#KeenCountSpanFirst").html("(" + data.keencount + ")");
+                    $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
                     $(keenuser).html(data.username + "is in!");
                     $(keenuser).attr('class', 'label label-success');
 
@@ -457,9 +461,16 @@ else
 
                 if (data.message == 'Out') {
                     var keenuser = "#keen_" + data.username;
-                    $("#KeenCountSpanFirst").html("(" + data.keencount + ")");
+                    $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
                     $(keenuser).html(data.username + "is Out!");
                     $(keenuser).attr('class', 'label label-danger');
+                }
+
+                if (data.message == 'OnWay') {
+                    var keenuser = "#keen_" + data.username;
+                    $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
+                    $(keenuser).html(data.username + "is On the Way!");
+                    $(keenuser).attr('class', 'label label-success');
                 }
 
             });
