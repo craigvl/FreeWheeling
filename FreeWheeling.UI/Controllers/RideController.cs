@@ -327,7 +327,7 @@ namespace FreeWheeling.UI.Controllers
             if (Commitment == "In")
             {
 
-                var result = pusher.Trigger("BunchyRide" + RideId, "You-In", new
+                var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
                 {
                     rideid = RideId,
                     message = Commitment,
@@ -340,7 +340,7 @@ namespace FreeWheeling.UI.Controllers
             if (Commitment == "Out")
             {
 
-                var result = pusher.Trigger("BunchyRide" + RideId, "You-In", new
+                var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
                 {
                     rideid = RideId,
                     message = Commitment,
@@ -353,7 +353,7 @@ namespace FreeWheeling.UI.Controllers
             if (Commitment == "OnWay")
             {
 
-                var result = pusher.Trigger("BunchyRide" + RideId, "You-In", new
+                var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
                 {
                     rideid = RideId,
                     message = Commitment,

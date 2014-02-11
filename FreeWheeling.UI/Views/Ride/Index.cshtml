@@ -107,19 +107,19 @@ else
                     {
                         case "Out":
                             <text>
-        <p><span id="@("keen_"+@item.Name)" style="text-decoration:line-through;" class="label label-danger">@item.Name is no longer in</span></p>
+        <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" style="text-decoration:line-through;" class="label label-danger">@item.Name is no longer in</span></p>
 
                             </text>
                             break;  // Always break each case
                         case "OnWay":
                         <text>
-                            <p><span id="@item.Name keen" class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
+                            <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
 
                         </text>
                             break;  // Always break each case
                         case "In":
                         <text>
-                            <p><span id="@item.Name keen" class="label label-success">@item.Name is in!</span></p>
+                            <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" class="label label-success">@item.Name is in!</span></p>
                         </text>
                             break;
                     }
@@ -297,19 +297,19 @@ else
                     {
                         case "Out":
                             <text>
-       <p><span style="text-decoration:line-through;" class="label label-danger">@item.Name is no longer in</span></p>
+       <p><span id="@("keen_" + @item.Name + @Model.NextRide.id)" style="text-decoration:line-through;" class="label label-danger">@item.Name is no longer in</span></p>
 
                             </text>
                             break;  // Always break each case
                         case "OnWay":
                         <text>
-                            <p><span class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
+                            <p><span id="@("keen_" + @item.Name + @Model.NextRide.id)" class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
 
                         </text>
                             break;  // Always break each case
                         case "In":
                         <text>
-                            <p><span class="label label-success">@item.Name is in!</span></p>
+                            <p><span id="@("keen_" + @item.Name + @Model.NextRide.id)" class="label label-success">@item.Name is in!</span></p>
                         </text>
                             break;
                     }
@@ -454,22 +454,22 @@ else
                 //First Bunch Keen
                 //alert(data.message);
                 if (data.message == 'In') {
-                    var keenuser = "#keen_" + data.username;
+                    var keenuser = "#keen_" + data.username + data.rideid;
                     $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
                     $(keenuser).html(data.username + "is in!");
                     $(keenuser).attr('class', 'label label-success');
-
+                    $(keenuser).css('text-decoration', 'none');
                 }
-
+                
                 if (data.message == 'Out') {
-                    var keenuser = "#keen_" + data.username;
+                    var keenuser = "#keen_" + data.username + data.rideid;
                     $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
                     $(keenuser).html(data.username + "is Out!");
                     $(keenuser).attr('class', 'label label-danger');
                 }
 
                 if (data.message == 'OnWay') {
-                    var keenuser = "#keen_" + data.username;
+                    var keenuser = "#keen_" + data.username + data.rideid;
                     $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
                     $(keenuser).html(data.username + "is On the Way!");
                     $(keenuser).attr('class', 'label label-success');

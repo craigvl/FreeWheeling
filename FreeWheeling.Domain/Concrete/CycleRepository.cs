@@ -528,7 +528,7 @@ namespace FreeWheeling.Domain.Concrete
 
         public bool IsIn(int RideId, string UserId)
         {
-            int KeenCountForRider = context.Riders.Where(r => r.Ride.id == RideId && r.PercentKeen == "In").Count();
+            int KeenCountForRider = context.Riders.Where(r => r.Ride.id == RideId && r.PercentKeen == "In" && r.userId == UserId).Count();
             if (KeenCountForRider > 0)
                 return true;
             else
@@ -537,7 +537,7 @@ namespace FreeWheeling.Domain.Concrete
 
         public bool IsOut(int RideId, string UserId)
         {
-            int KeenCountForRider = context.Riders.Where(r => r.Ride.id == RideId && r.PercentKeen == "Out").Count();
+            int KeenCountForRider = context.Riders.Where(r => r.Ride.id == RideId && r.PercentKeen == "Out" && r.userId == UserId).Count();
             if (KeenCountForRider > 0)
                 return true;
             else
@@ -546,7 +546,7 @@ namespace FreeWheeling.Domain.Concrete
 
         public bool IsOnWay(int RideId, string UserId)
         {
-            int KeenCountForRider = context.Riders.Where(r => r.Ride.id == RideId && r.PercentKeen == "OnWay").Count();
+            int KeenCountForRider = context.Riders.Where(r => r.Ride.id == RideId && r.PercentKeen == "OnWay" && r.userId == UserId).Count();
             if (KeenCountForRider > 0)
                 return true;
             else
