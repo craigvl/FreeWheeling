@@ -6,18 +6,18 @@
     ViewBag.Title = "Index";
 }
 
-@Html.Hidden("RideIdHidden",@Model.Ride.id)
+@Html.Hidden("RideIdHidden", @Model.Ride.id)
 
 @Html.Hidden("RideUserNameHidden", User.Identity.GetUserName())
 <script src="http://js.pusher.com/2.1/pusher.min.js"></script>
 
-    <h2>
-        @Model.Group.name
-    </h2>
-    @if (@Model.IsOwner)
-    {
-       
-    }
+<h2>
+    @Model.Group.name
+</h2>
+@if (@Model.IsOwner)
+{
+
+}
 
 @if (@Model.MapUrl != null)
 {
@@ -29,13 +29,13 @@
 {
 
     @Html.ActionLink("Back <---", "Mybunches", "Group", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
-      
+
 }
 else
 {
-@Html.ActionLink("Back <---", "Index", "Group", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
-    
- 
+    @Html.ActionLink("Back <---", "Index", "Group", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
+
+
 }
 
 <hr />
@@ -43,17 +43,17 @@ else
 <p>
     <h4>
         @if (@Model.FirstBunch)
-{
+        {
 
             <span class="label label-primary" data-toggle="collapse" href="#collapseFirst">
                 <span class="glyphicon glyphicon-chevron-down" id="FirstDetails" data-toggle="collapse" href="#collapseFirst">
                 </span>
                 @Model.Ride.RideDate.ToLongDateString() @Html.Raw(",") @Model.Ride.RideDate.ToShortTimeString()
             </span>
-
-}
-else
-{
+ 
+        }
+        else
+        {
 
             <span class="label label-primary" data-toggle="collapse" href="#collapseFirst">
                 <span class="glyphicon glyphicon-chevron-up" id="FirstDetails" data-toggle="collapse" href="#collapseFirst">
@@ -61,130 +61,136 @@ else
                 @Model.Ride.RideDate.ToLongDateString() @Html.Raw(",") @Model.Ride.RideDate.ToShortTimeString()
             </span>
 
-}
+        }
     </h4>
     <hr />
 
-    @if(@Model.FirstBunch)
+    @if (@Model.FirstBunch)
     {
-    @:<div id="collapseFirst" class="panel-collapse collapse in">
+        @:<div id="collapseFirst" class="panel-collapse collapse in">
         }
-        else
-        {
+    else
+    {
         @:<div id="collapseFirst" class="panel-collapse collapse">
             }
 
 
-            <h4>
-
-                @if (@Model.FirstKeen)
-        {
-                    <span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-up">Keen<span id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</span></span>
-        }
-        else
-        {
-                    <span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-down">Keen<span id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</span></span>
-        }
-
-            </h4>
-
-            @if(@Model.FirstKeen)
-    {
-                @:<div id="collapseKeenFirst" class="panel-collapse collapse in">
-    }
-    else
-    {
-                @:<div id="collapseKeenFirst" class="panel-collapse collapse">
-    }
-
-            <div>
-                @{
-
-        foreach (Rider item in @Model.Riders)
-        {
-            {
-                switch (item.PercentKeen)
-                {
-                         case "Out":
-                        <text>
-<p><span id="@("keen_"+@item.Name)" style="text-decoration:line-through;" class="label label-danger">@item.Name is no longer in</span></p>
-                
-            </text>
-            break;  // Always break each case
-                    case "OnWay":
-                        <text>
-<p><span id="@item.Name keen" class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
-                
-            </text>
-            break;  // Always break each case
-        case "In":
-            <text>
-                <p><span id="@item.Name keen" class="label label-success">@item.Name is in!</span></p>
-            </text>
-            break;                   
-    }
-}  
-            
-       <p></p>       
-    }
-       
-}
-</div>
-</div>
-<hr />
-
-<div>
-
-    @if (@Model.Comments != null)
-    {
     <h4>
-       
 
-        @if (@Model.FirstComment)
-{
-    <span id="CommentCount" class="label label-success glyphicon glyphicon-chevron-up" data-toggle="collapse" href="#collapseCommentFirst">Comments <span id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</span></span>
-}                                                                                                                                                    
+        @if (@Model.FirstKeen)
+        {
+            @:<span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-up">Keen<span id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</span></span>
+        }
         else
         {
-            <span id="CommentCount" class="label label-success glyphicon glyphicon-chevron-down" data-toggle="collapse" href="#collapseCommentFirst">Comments <span id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</span></span>
+            @:<span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-down">Keen<span id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</span></span>
         }
-        
-        @Html.ActionLink(string.Concat("View all (", @Model.CommentCount, ")"), "SeeAllComments", "Ride",
-        new { RideId = @Model.Ride.id,
-        Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage },
-        new { @class = "btn btn-success", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll",@Model.Ride.id.ToString()) }) 
-        <span id="@("CommentCountSpan" + @Model.Ride.id)">
-</h4>
-      
-    if(@Model.FirstComment)
+
+    </h4>
+
+    @if (@Model.FirstKeen)
     {
-        @:<div id="collapseCommentFirst" class="panel-collapse collapse in">
+        @:<div id="collapseKeenFirst" class="panel-collapse collapse in">
     }
     else
     {
-       @:<div id="collapseCommentFirst" class="panel-collapse collapse">
+        @:<div id="collapseKeenFirst" class="panel-collapse collapse">
     }
 
-        foreach (Comment item in Model.Comments)
-        {
+    <div>
+        @{
 
-            @item.userName <text>: </text>
-            @item.CommentText
-            @:<p></p>
+            foreach (Rider item in @Model.Riders)
+            {
+                {
+                    switch (item.PercentKeen)
+                    {
+                        case "Out":
+                            <text>
+        <p><span id="@("keen_"+@item.Name)" style="text-decoration:line-through;" class="label label-danger">@item.Name is no longer in</span></p>
+
+                            </text>
+                            break;  // Always break each case
+                        case "OnWay":
+                        <text>
+                            <p><span id="@item.Name keen" class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
+
+                        </text>
+                            break;  // Always break each case
+                        case "In":
+                        <text>
+                            <p><span id="@item.Name keen" class="label label-success">@item.Name is in!</span></p>
+                        </text>
+                            break;
+                    }
+                }
+
+                <p></p>
+            }
+
         }
+        </div>
+        </div>
+        <hr />
+
+        <div>
+
+            @if (@Model.Comments != null)
+            {
+                <h4>
+
+
+                    @if (@Model.FirstComment)
+                    {
+                        @:<span id="CommentCount" class="label label-success glyphicon glyphicon-chevron-up" data-toggle="collapse" href="#collapseCommentFirst">Comments <span id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</span></span>
+                    }
+                    else
+                    {
+                        @:<span id="CommentCount" class="label label-success glyphicon glyphicon-chevron-down" data-toggle="collapse" href="#collapseCommentFirst">Comments <span id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</span></span>
+                    }
+
+                    @Html.ActionLink(string.Concat("View all (", @Model.CommentCount, ")"), "SeeAllComments", "Ride",
+        new
+        {
+            RideId = @Model.Ride.id,
+            Groupid = @Model.Group.id,
+            FromFavPage = @Model.FromFavPage
+        },
+        new { @class = "btn btn-success", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @Model.Ride.id.ToString()) })
+                    <span id="@("CommentCountSpan" + @Model.Ride.id)">
+                </h4>
+
+                if (@Model.FirstComment)
+                {
+                    @:<div id="collapseCommentFirst" class="panel-collapse collapse in">
     }
-</div>
-</div>
+                else
+                {
+                    @:<div id="collapseCommentFirst" class="panel-collapse collapse">
+    }
+
+                foreach (Comment item in Model.Comments)
+                {
+
+                    @item.userName <text>: </text>
+                    @item.CommentText
+                    @:<p></p>
+        }
+            }
+        </div>
+    </div>
     <div>
 
-        @using (Html.BeginForm("AddComment", "Ride", new { groupid = @Model.Group.id,
-                                                             rideid = @Model.Ride.id,
-                                                             FromFavPage = @Model.FromFavPage,
-                                                             ParentRideID = @Model.Ride.id
+        @using (Html.BeginForm("AddComment", "Ride", new
+        {
+            groupid = @Model.Group.id,
+            rideid = @Model.Ride.id,
+            FromFavPage = @Model.FromFavPage,
+            ParentRideID = @Model.Ride.id
         }, FormMethod.Post))
         {
             <div class="input-group">
-                @Html.TextBox("CommentString", null, new { @class = "form-control-C"})
+                @Html.TextBox("CommentString", null, new { @class = "form-control-C" })
                 <span class="input-group-addon-C">
                     <button class="btn btn-success" onclick="ShowProgress();" id="submit" type="submit">Add comment</button>
                 </span>
@@ -193,31 +199,31 @@ else
 
     </div>
 
-<hr />
+    <hr />
 
-<h4><span class="label label-success">You in?</span></h4>
+    <h4><span class="label label-success">You in?</span></h4>
 
-@if (!@Model.InFirst)
-{
-    if (!@Model.OnWayFirst)
+    @if (!@Model.InFirst)
     {
-        @Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-primary", onclick = "ShowProgress();" })
+        if (!@Model.OnWayFirst)
+        {
+            @Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-primary", onclick = "ShowProgress();" })
+        }
     }
-}
-@if (!@Model.OutFirst)
-{
-@Html.ActionLink("I'm Out", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "Out", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-danger", onclick = "ShowProgress();" })
-}
-@if (!@Model.OnWayFirst)
-{
-    if(!@Model.OutFirst)
+    @if (!@Model.OutFirst)
     {
-        @Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
+        @Html.ActionLink("I'm Out", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "Out", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-danger", onclick = "ShowProgress();" })
     }
-}
-<p></p>
+    @if (!@Model.OnWayFirst)
+    {
+        if (!@Model.OutFirst)
+        {
+            @Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
+        }
+    }
+    <p></p>
 
-</div> @*div for end of first collapse*@ 
+</div> @*div for end of first collapse*@
 
 
 @*-------------------------------------------------Start of Next Ride -------------------------------------------------------------*@
@@ -228,23 +234,23 @@ else
     <h4>
         @if (@Model.SecondBunch)
         {
-
+       
             <span class="label label-primary" data-toggle="collapse" href="#collapseSecond">
                 <span class="glyphicon glyphicon-chevron-down" id="SecondDetails" data-toggle="collapse" href="#collapseFirst">
                 </span>
                 @Model.NextRide.RideDate.ToLongDateString() @Html.Raw(",") @Model.NextRide.RideDate.ToShortTimeString()
             </span>
-
+     
         }
         else
         {
-
+      
             <span class="label label-primary" data-toggle="collapse" href="#collapseSecond">
                 <span class="glyphicon glyphicon-chevron-up" id="SecondDetails" data-toggle="collapse" href="#collapseFirst">
                 </span>
                 @Model.NextRide.RideDate.ToLongDateString() @Html.Raw(",") @Model.NextRide.RideDate.ToShortTimeString()
             </span>
-
+  
         }
     </h4>
     <hr />
@@ -263,11 +269,11 @@ else
 
         @if (@Model.SecondKeen)
         {
-            <span id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond" class="label label-success glyphicon glyphicon-chevron-up">Keen <span id="@("KeenCountSpan" + @Model.NextRide.id)">(@Model.NextKeenCount.ToString())</span></span>
+            @:<span id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond" class="label label-success glyphicon glyphicon-chevron-up">Keen <span id="@("KeenCountSpan" + @Model.NextRide.id)">(@Model.NextKeenCount.ToString())</span></span>
         }
         else
         {
-            <span id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond" class="label label-success glyphicon glyphicon-chevron-down">Keen <span id="@("KeenCountSpan" + @Model.NextRide.id)">(@Model.NextKeenCount.ToString())</span></span>
+            @:<span id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond" class="label label-success glyphicon glyphicon-chevron-down">Keen <span id="@("KeenCountSpan" + @Model.NextRide.id)">(@Model.NextKeenCount.ToString())</span></span>
         }
 
     </h4>
@@ -289,17 +295,17 @@ else
                 {
                     switch (item.PercentKeen)
                     {
-                             case "Out":
-                        <text>
-<p><span style="text-decoration:line-through;" class="label label-danger">@item.Name is no longer in</span></p>
-                
-            </text>
-            break;  // Always break each case
-                        case "OnWay":
+                        case "Out":
                             <text>
-        <p><span class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
+       <p><span style="text-decoration:line-through;" class="label label-danger">@item.Name is no longer in</span></p>
 
                             </text>
+                            break;  // Always break each case
+                        case "OnWay":
+                        <text>
+                            <p><span class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
+
+                        </text>
                             break;  // Always break each case
                         case "In":
                         <text>
@@ -326,11 +332,11 @@ else
 
                     @if (@Model.SecondComment)
                     {
-                        <span id="CommentCountSecond" class="label label-success glyphicon glyphicon-chevron-up" data-toggle="collapse" href="#collapseCommentSecond">Comments id="@("CommentCountSpan" + @Model.NextRide.id)">(@Model.NextCommentCount)</span></span>
+                        @:<span id="CommentCountSecond" class="label label-success glyphicon glyphicon-chevron-up" data-toggle="collapse" href="#collapseCommentSecond">Comments <span id="@("CommentCountSpan" + @Model.NextRide.id)">(@Model.NextCommentCount)</span></span>
                     }
                     else
                     {
-                        <span id="CommentCountSecond" class="label label-success glyphicon glyphicon-chevron-down" data-toggle="collapse" href="#collapseCommentSecond">Comments id="@("CommentCountSpan" + @Model.NextRide.id)">(@Model.NextCommentCount)</span></span>
+                        @:<span id="CommentCountSecond" class="label label-success glyphicon glyphicon-chevron-down" data-toggle="collapse" href="#collapseCommentSecond">Comments <span id="@("CommentCountSpan" + @Model.NextRide.id)">(@Model.NextCommentCount)</span></span>
                     }
 
                 </h4>
@@ -352,7 +358,7 @@ else
                     @:<p></p>
         }
 
-        @Html.ActionLink(string.Concat("See all Comments (", @Model.NextCommentCount, ")"), "SeeAllComments", "Ride", 
+        @Html.ActionLink(string.Concat("See all Comments (", @Model.NextCommentCount, ")"), "SeeAllComments", "Ride",
         new { RideId = @Model.Ride.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage },
                      new { @class = "btn btn-success", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @Model.Ride.id.ToString()) })
 
@@ -381,30 +387,27 @@ else
 
     <hr />
 
-            <h4><span class="label label-success">You in?</span></h4>
+    <h4><span class="label label-success">You in?</span></h4>
 
-            @if (!@Model.InSecond)
-            {
-                if (!@Model.OnWaySecond)
-                {
-                    @Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.NextRide.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, 
-                    new { @class = "btn btn-primary", onclick = "ShowProgress();" })
-                }
-            }
-            @if (!@Model.OutSecond)
-            {
-                @Html.ActionLink("I'm Out", "Attend", "Ride", new { RideId = @Model.NextRide.id, Commitment = "Out", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, 
-                new { @class = "btn btn-danger", onclick = "ShowProgress();" })
-            }
-            @if (!@Model.OnWaySecond)
-            {
-                if (!@Model.OutSecond)
-                {
-                    @Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.NextRide.id, Commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, 
-                    new { @class = "btn btn-success", onclick = "ShowProgress();" })
-                }
-            }
-            <p></p>
+    @if (!@Model.InSecond)
+    {
+        if (!@Model.OnWaySecond)
+        {
+            @Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.NextRide.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id },new { @class = "btn btn-primary", onclick = "ShowProgress();" })
+        }
+    }
+    @if (!@Model.OutSecond)
+    {
+        @Html.ActionLink("I'm Out", "Attend", "Ride", new { RideId = @Model.NextRide.id, Commitment = "Out", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id },new { @class = "btn btn-danger", onclick = "ShowProgress();" })
+    }
+    @if (!@Model.OnWaySecond)
+    {
+        if (!@Model.OutSecond)
+        {
+            @Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.NextRide.id, Commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id },new { @class = "btn btn-success", onclick = "ShowProgress();" })
+        }
+    }
+    <p></p>
 
 </div> @*div for end of second collapse*@
 
@@ -440,12 +443,11 @@ else
             var userName = jQuery('#RideUserNameHidden').val();
 
             channel.bind('New-Comments', function (data) {
-                //First Bunch Comments  
+                //First Bunch Comments
                 $("#collapseComment" + data.rideid).prepend("<p>" + data.username + " : " + data.message + "</p>");
                 $("#CommentCountSpan" + data.rideid).html("(" + data.commentcount + ")");
                 $("#CommentCountSpanSeeAll" + data.rideid).html("View All (" + data.commentcount + ")");
 
-                
             });
 
             channel.bind('You-In', function (data) {
@@ -482,7 +484,7 @@ else
             jQuery('#collapseKeenFirst').on('hidden.bs.collapse', function (event) {
                 event.stopPropagation();
                 toggleChevron('#KeenCount');
-       
+
                 var data = {
                     'id': 2,
                     'collapsed': false
@@ -507,7 +509,7 @@ else
             jQuery('#collapseCommentFirst').on('hidden.bs.collapse', function (event) {
                 event.stopPropagation();
                 toggleChevron('#CommentCount');
-             
+
                 var data = {
                     'id': 3,
                     'collapsed': false
@@ -521,7 +523,7 @@ else
             jQuery('#collapseCommentFirst').on('shown.bs.collapse', function (event) {
                 event.stopPropagation();
                 toggleChevron('#CommentCount');
-               
+
                 var data = {
                     'id': 3,
                     'collapsed': true
