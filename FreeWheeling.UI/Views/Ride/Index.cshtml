@@ -481,12 +481,13 @@ else
                 if (data.message == 'OnWay') {
                     var keenuser = "#keen_" + data.username + data.rideid;
                     $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-                    $(keenuser).html(data.username + "is On the Way!");
+                    //$(keenuser).html(data.username + "is On the Way!");
+                    $(keenuser).html(data.username + '<abbr class="timeago" title='+ new Date() + '"> left '+ jQuery.timeago(new Date())  +'</abbr>');
                     $(keenuser).attr('class', 'label label-success');
                 }
 
             });
-
+            
             //End Pusher
 
             jQuery("abbr.timeago").timeago();
