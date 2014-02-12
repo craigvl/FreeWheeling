@@ -97,17 +97,17 @@ else
         @:<div id="collapseKeenFirst" class="panel-collapse collapse">
     }
 
-    <div>
-        @{
+              <div id="@("keendiv_" + @Model.Ride.id)">
+                  @{
 
-            foreach (Rider item in @Model.Riders)
-            {
-                {
-                    switch (item.PercentKeen)
-                    {
-                        case "Out":
-                            <text>
-        <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" style="text-decoration:line-through;" class="label label-danger">@item.Name is no longer in</span></p>
+                      foreach (Rider item in @Model.Riders)
+                      {
+                          {
+                              switch (item.PercentKeen)
+                              {
+                                  case "Out":
+                                      <text>
+<p><span id="@("keen_" + @item.Name + @Model.Ride.id)" style="text-decoration:line-through;" class="label label-danger">@item.Name is no longer in</span></p>
 
                             </text>
                             break;  // Always break each case
@@ -287,17 +287,17 @@ else
         @:<div id="collapseKeenSecond" class="panel-collapse collapse">
     }
 
-    <div>
-        @{
+              <div id="@("keendiv_" + @Model.NextRide.id)">
+                  @{
 
-            foreach (Rider item in @Model.NextRiders)
-            {
-                {
-                    switch (item.PercentKeen)
-                    {
-                        case "Out":
-                            <text>
-       <p><span id="@("keen_" + @item.Name + @Model.NextRide.id)" style="text-decoration:line-through;" class="label label-danger">@item.Name is no longer in</span></p>
+                      foreach (Rider item in @Model.NextRiders)
+                      {
+                          {
+                              switch (item.PercentKeen)
+                              {
+                                  case "Out":
+                                      <text>
+<p><span id="@("keen_" + @item.Name + @Model.NextRide.id)" style="text-decoration:line-through;" class="label label-danger">@item.Name is no longer in</span></p>
 
                             </text>
                             break;  // Always break each case
@@ -454,11 +454,19 @@ else
                 //First Bunch Keen
                 //alert(data.message);
                 if (data.message == 'In') {
-                    var keenuser = "#keen_" + data.username + data.rideid;
                     $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-                    $(keenuser).html(data.username + "is in!");
-                    $(keenuser).attr('class', 'label label-success');
-                    $(keenuser).css('text-decoration', 'none');
+                    var keenuser = "#keen_" + data.username + data.rideid;
+                    if (keenuser.length) {
+                        $(keenuser).html(data.username + "is in!");
+                        $(keenuser).attr('class', 'label label-success');
+                        $(keenuser).css('text-decoration', 'none');
+                    }
+                    else {
+                      
+                        $("#keendiv_" + data.rideid).html("(" + data.username + " is in!)");
+
+                    }
+                    
                 }
                 
                 if (data.message == 'Out') {
