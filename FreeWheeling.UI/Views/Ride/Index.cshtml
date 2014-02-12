@@ -479,7 +479,7 @@ else
                 if (data.message == 'OnWay') {
                     var keenuser = "#keen_" + data.username + data.rideid;
                     $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-                    $(keenuser).html(data.username + '<abbr class="timeago" title="'+ new Date() + '"> left '+ jQuery.timeago(new Date())  +'</abbr>');
+                    $(keenuser).html(data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment().format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
                     $(keenuser).attr('class', 'label label-success');
                     jQuery("abbr.timeago").timeago();
                 }
