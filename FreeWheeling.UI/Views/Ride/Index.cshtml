@@ -163,21 +163,22 @@ else
                 if (@Model.FirstComment)
                 {
                     @:<div id="collapseCommentFirst" class="panel-collapse collapse in">
-    }
+    }       
                 else
                 {
                     @:<div id="collapseCommentFirst" class="panel-collapse collapse">
     }
+    @:<div id="@("collapseCommentPanel" + @Model.Ride.id)">
+        foreach (Comment item in Model.Comments)
+        {
 
-                foreach (Comment item in Model.Comments)
-                {
-
-                    @item.userName <text>: </text>
-                    @item.CommentText
-                    @:<p></p>
+        @item.userName <text>: </text>
+        @item.CommentText
+        @:<p></p>
         }
-            }
-        </div>
+        }
+    </div>
+    </div>
     </div>
     <div>
 
@@ -349,15 +350,15 @@ else
                 {
                     @:<div id="collapseCommentSecond" class="panel-collapse collapse">
     }
-
-                foreach (Comment item in Model.NextComments)
+             <div id="@("collapseCommentPanel" + @Model.NextRide.id)">
+                @foreach (Comment item in Model.NextComments)
                 {
 
                     @item.userName <text>: </text>
                     @item.CommentText
                     @:<p></p>
         }
-
+        </div>
         @Html.ActionLink(string.Concat("See all Comments (", @Model.NextCommentCount, ")"), "SeeAllComments", "Ride",
         new { RideId = @Model.Ride.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage },
                      new { @class = "btn btn-success", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @Model.Ride.id.ToString()) })
@@ -444,7 +445,7 @@ else
 
             channel.bind('New-Comments', function (data) {
                 //First Bunch Comments
-                $("#collapseComment" + data.rideid).prepend("<p>" + data.username + " : " + data.message + "</p>");
+                $("#collapseCommentPanel" + data.rideid).prepend("<p>" + data.username + " : " + data.message + "</p>");
                 $("#CommentCountSpan" + data.rideid).html("(" + data.commentcount + ")");
                 $("#CommentCountSpanSeeAll" + data.rideid).html("View All (" + data.commentcount + ")");
 
