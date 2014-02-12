@@ -322,47 +322,6 @@ namespace FreeWheeling.UI.Controllers
         public ActionResult Attend(int RideId, string Commitment, int Groupid, bool FromFavPage, int ParentRideID)
         {
 
-            var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
-
-            if (Commitment == "In")
-            {
-
-                var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
-                {
-                    rideid = RideId,
-                    message = Commitment,
-                    keencount = (repository.GetKeenCountForRide(RideId) + 1),
-                    username = User.Identity.GetUserName()
-                });
-            }
-
-
-            if (Commitment == "Out")
-            {
-
-                var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
-                {
-                    rideid = RideId,
-                    message = Commitment,
-                    keencount = (repository.GetKeenCountForRide(RideId) - 1),
-                    username = User.Identity.GetUserName()
-                });
-
-            }
-
-            if (Commitment == "OnWay")
-            {
-
-                var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
-                {
-                    rideid = RideId,
-                    message = Commitment,
-                    keencount = (repository.GetKeenCountForRide(RideId)),
-                    username = User.Identity.GetUserName()
-                });
-
-            }
-
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Ride _Ride = new Ride();
             Group _Group = new Group();
@@ -384,6 +343,47 @@ namespace FreeWheeling.UI.Controllers
             RideModelHelper _RideHelper = new RideModelHelper(repository);
 
             RideModel = _RideHelper.PopulateRideModel(ParentRideID, Groupid, currentUser.Id, false, FromFavPage);
+
+            var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
+
+            if (Commitment == "In")
+            {
+
+                var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
+                {
+                    rideid = RideId,
+                    message = Commitment,
+                    keencount = (repository.GetKeenCountForRide(RideId)),
+                    username = User.Identity.GetUserName()
+                });
+            }
+
+
+            if (Commitment == "Out")
+            {
+
+                var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
+                {
+                    rideid = RideId,
+                    message = Commitment,
+                    keencount = (repository.GetKeenCountForRide(RideId)),
+                    username = User.Identity.GetUserName()
+                });
+
+            }
+
+            if (Commitment == "OnWay")
+            {
+
+                var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
+                {
+                    rideid = RideId,
+                    message = Commitment,
+                    keencount = (repository.GetKeenCountForRide(RideId)),
+                    username = User.Identity.GetUserName()
+                });
+
+            }
 
             return View("Index", RideModel);
         }

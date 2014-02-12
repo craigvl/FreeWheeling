@@ -107,7 +107,7 @@ else
                               {
                                   case "Out":
                                       <text>
-<p><span id="@("keen_" + @item.Name + @Model.Ride.id)" style="text-decoration:line-through;" class="label label-danger">@item.Name is no longer in</span></p>
+<p><span id="@("keen_" + @item.Name + @Model.Ride.id)" style="text-decoration:line-through;" class="label label-danger">@item.Name is Out</span></p>
 
                             </text>
                             break;  // Always break each case
@@ -297,7 +297,7 @@ else
                               {
                                   case "Out":
                                       <text>
-<p><span id="@("keen_" + @item.Name + @Model.NextRide.id)" style="text-decoration:line-through;" class="label label-danger">@item.Name is no longer in</span></p>
+<p><span id="@("keen_" + @item.Name + @Model.NextRide.id)" style="text-decoration:line-through;" class="label label-danger">@item.Name is Out</span></p>
 
                             </text>
                             break;  // Always break each case
@@ -456,14 +456,14 @@ else
                 if (data.message == 'In') {
                     $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
                     var keenuser = "#keen_" + data.username + data.rideid;
-                    if (keenuser.length) {
+                    if ($("#keen_" + data.username + data.rideid).length) {
                         $(keenuser).html(data.username + "is in!");
                         $(keenuser).attr('class', 'label label-success');
                         $(keenuser).css('text-decoration', 'none');
                     }
                     else {
                       
-                        $("#keendiv_" + data.rideid).html("(" + data.username + " is in!)");
+                        $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success">'+ data.username + ' is in!</span>');
 
                     }
                     
@@ -474,8 +474,9 @@ else
                     $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
                     $(keenuser).html(data.username + "is Out!");
                     $(keenuser).attr('class', 'label label-danger');
+                    $(keenuser).css("text-decoration","line-through");
                 }
-
+                
                 if (data.message == 'OnWay') {
                     var keenuser = "#keen_" + data.username + data.rideid;
                     $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
