@@ -444,11 +444,9 @@ else
             var userName = jQuery('#RideUserNameHidden').val();
 
             channel.bind('New-Comments', function (data) {
-                //First Bunch Comments
                 $("#collapseCommentPanel" + data.rideid).prepend("<p>" + data.username + " : " + data.message + "</p>");
                 $("#CommentCountSpan" + data.rideid).html("(" + data.commentcount + ")");
                 $("#CommentCountSpanSeeAll" + data.rideid).html("View All (" + data.commentcount + ")");
-
             });
 
             channel.bind('You-In', function (data) {
@@ -481,9 +479,9 @@ else
                 if (data.message == 'OnWay') {
                     var keenuser = "#keen_" + data.username + data.rideid;
                     $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-                    //$(keenuser).html(data.username + "is On the Way!");
-                    $(keenuser).html(data.username + '<abbr class="timeago" title='+ new Date() + '"> left '+ jQuery.timeago(new Date())  +'</abbr>');
+                    $(keenuser).html(data.username + '<abbr class="timeago" title="'+ new Date() + '"> left '+ jQuery.timeago(new Date())  +'</abbr>');
                     $(keenuser).attr('class', 'label label-success');
+                    jQuery("abbr.timeago").timeago();
                 }
 
             });
