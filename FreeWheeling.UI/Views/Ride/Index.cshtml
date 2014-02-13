@@ -138,8 +138,6 @@ else
             @if (@Model.Comments != null)
             {
                 <h4>
-
-
                     @if (@Model.FirstComment)
                     {
                         @:<span id="CommentCount" class="label label-success glyphicon glyphicon-chevron-up" data-toggle="collapse" href="#collapseCommentFirst">Comments <span id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</span></span>
@@ -193,7 +191,7 @@ else
             <div class="input-group">
                 @Html.TextBox("CommentString", null, new { @class = "form-control-C" })
                 <span class="input-group-addon-C">
-                    <button class="btn btn-success" onclick="ShowProgress();" id="submit" type="submit">Add comment</button>
+                    <button class="btn btn-success" onclick="ShowProgress();" id="@("submit_" + @Model.Ride.id)" type="submit">Add comment</button>
                 </span>
             </div>
         }
@@ -379,7 +377,7 @@ else
             <div class="input-group">
                 @Html.TextBox("CommentString", null, new { @class = "form-control-C" })
                 <span class="input-group-addon-C">
-                    <button class="btn btn-success" onclick="ShowProgress();" id="submit" type="submit">Add comment</button>
+                    <button class="btn btn-success" onclick="ShowProgress();" id="@("submit_" + @Model.NextRide.id)" type="submit">Add comment</button>
                 </span>
             </div>
         }
@@ -447,6 +445,7 @@ else
                 $("#collapseCommentPanel" + data.rideid).prepend("<p>" + data.username + " : " + data.message + "</p>");
                 $("#CommentCountSpan" + data.rideid).html("(" + data.commentcount + ")");
                 $("#CommentCountSpanSeeAll" + data.rideid).html("View All (" + data.commentcount + ")");
+                $("#submit_" + data.rideid).val("");
             });
 
             channel.bind('You-In', function (data) {
@@ -456,7 +455,7 @@ else
                     $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
                     var keenuser = "#keen_" + data.username + data.rideid;
                     if ($("#keen_" + data.username + data.rideid).length) {
-                        $(keenuser).html(data.username + "is in!");
+                        $(keenuser).html(data.username + " is in!");
                         $(keenuser).attr('class', 'label label-success');
                         $(keenuser).css('text-decoration', 'none');
                     }
@@ -471,7 +470,7 @@ else
                 if (data.message == 'Out') {
                     var keenuser = "#keen_" + data.username + data.rideid;
                     $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-                    $(keenuser).html(data.username + "is Out!");
+                    $(keenuser).html(data.username + " is Out!");
                     $(keenuser).attr('class', 'label label-danger');
                     $(keenuser).css("text-decoration","line-through");
                 }
