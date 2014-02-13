@@ -101,7 +101,7 @@ namespace FreeWheeling.UI.Controllers
             else
             {
 
-                DateTime da = DateTime.ParseExact(_AdHocCreateModel.DateString, "dd/mm/yyyy", null);
+                DateTime da = DateTime.ParseExact(_AdHocCreateModel.DateString, "dd/MM/yyyy", null);
                 DateTime _RideDate = da.Date.Add(new TimeSpan(_AdHocCreateModel.Hour, _AdHocCreateModel.Minute, 0));
 
                 if (_RideDate < LocalNow)

@@ -449,7 +449,6 @@ else
             });
 
             channel.bind('You-In', function (data) {
-                //First Bunch Keen
                 //alert(data.message);
                 if (data.message == 'In') {
                     $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");

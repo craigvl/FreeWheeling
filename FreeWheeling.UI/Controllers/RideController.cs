@@ -209,7 +209,7 @@ namespace FreeWheeling.UI.Controllers
             else
             {
 
-                DateTime da = DateTime.ParseExact(_EditAdHocRideModel.DateString, "dd/mm/yyyy", null);
+                DateTime da = DateTime.ParseExact(_EditAdHocRideModel.DateString, "dd/MM/yyyy", null);
                 DateTime _RideDate = da.Date.Add(new TimeSpan(_EditAdHocRideModel.RideHour, _EditAdHocRideModel.RideMinute, 0));
 
                 if (_RideDate < LocalNow)
