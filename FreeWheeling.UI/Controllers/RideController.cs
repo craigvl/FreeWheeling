@@ -12,6 +12,7 @@ using FreeWheeling.UI.Filters;
 using FreeWheeling.UI.Infrastructure;
 using System.Globalization;
 using PusherServer;
+using System.Threading.Tasks;
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -283,15 +284,11 @@ namespace FreeWheeling.UI.Controllers
 
         [HttpPost]
         public ActionResult AddComment(int groupid, int rideid, string CommentString, bool FromFavPage, int ParentRideID)
-        {
-
+        {          
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
-            var result = pusher.Trigger("BunchyRide" + ParentRideID, "New-Comments", new { rideid = rideid, message = CommentString, commentcount = (repository.GetCommentCountForRide(rideid) + 1), username = User.Identity.Name });
-            
+
             if(CommentString != string.Empty)
-            {
-              
+            {            
                 repository.AddRideComment(CommentString, rideid, currentUser.UserName);
                 repository.Save();
 
@@ -300,6 +297,19 @@ namespace FreeWheeling.UI.Controllers
                 RideModelHelper _RideHelper = new RideModelHelper(repository);
 
                 RideModel = _RideHelper.PopulateRideModel(ParentRideID, groupid, currentUser.Id, false, FromFavPage);
+
+                Task T = new Task(() =>
+                {
+                    int CommentCount = repository.GetCommentCountForRide(rideid);
+                    var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
+                    var result = pusher.Trigger("BunchyRide" + ParentRideID, "New-Comments", new { rideid = rideid,
+                        message = CommentString,
+                        commentcount = CommentCount,
+                        username = User.Identity.Name
+                    });
+                });
+
+                T.Start();
 
                 return View("Index", RideModel);
 
@@ -344,46 +354,51 @@ namespace FreeWheeling.UI.Controllers
 
             RideModel = _RideHelper.PopulateRideModel(ParentRideID, Groupid, currentUser.Id, false, FromFavPage);
 
-            var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
+            Task T = new Task(() =>
+               {
+                   var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
 
-            if (Commitment == "In")
-            {
+                   if (Commitment == "In")
+                   {
 
-                var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
-                {
-                    rideid = RideId,
-                    message = Commitment,
-                    keencount = (repository.GetKeenCountForRide(RideId)),
-                    username = User.Identity.GetUserName()
-                });
-            }
+                       var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
+                       {
+                           rideid = RideId,
+                           message = Commitment,
+                           keencount = (repository.GetKeenCountForRide(RideId)),
+                           username = User.Identity.GetUserName()
+                       });
+                   }
 
 
-            if (Commitment == "Out")
-            {
+                   if (Commitment == "Out")
+                   {
 
-                var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
-                {
-                    rideid = RideId,
-                    message = Commitment,
-                    keencount = (repository.GetKeenCountForRide(RideId)),
-                    username = User.Identity.GetUserName()
-                });
+                       var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
+                       {
+                           rideid = RideId,
+                           message = Commitment,
+                           keencount = (repository.GetKeenCountForRide(RideId)),
+                           username = User.Identity.GetUserName()
+                       });
 
-            }
+                   }
 
-            if (Commitment == "OnWay")
-            {
+                   if (Commitment == "OnWay")
+                   {
 
-                var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
-                {
-                    rideid = RideId,
-                    message = Commitment,
-                    keencount = (repository.GetKeenCountForRide(RideId)),
-                    username = User.Identity.GetUserName()
-                });
+                       var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
+                       {
+                           rideid = RideId,
+                           message = Commitment,
+                           keencount = (repository.GetKeenCountForRide(RideId)),
+                           username = User.Identity.GetUserName()
+                       });
 
-            }
+                   }
+               });
+
+            T.Start();
 
             return View("Index", RideModel);
         }
