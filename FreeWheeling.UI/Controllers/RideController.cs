@@ -20,14 +20,11 @@ namespace FreeWheeling.UI.Controllers
     public class RideController : Controller
     {
         private IdentityDb idb = new IdentityDb(); 
-
         private ICycleRepository repository;
 
         public RideController(ICycleRepository repoParam)
         {
-
             repository = repoParam;
-
         }
 
         [Compress]
@@ -37,14 +34,12 @@ namespace FreeWheeling.UI.Controllers
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             RideModelIndex RideModel = new RideModelIndex();
             
-
             Group _Group = repository.GetGroupByID(groupid);
             RideModelHelper _RideHelper = new RideModelHelper(repository);
             RideModel = _RideHelper.PopulateRideModel(rideid, groupid, currentUser.Id, true, FromFavPage);
 
             if (RideModel.Ride != null)
-            {
-               
+            {              
             }
             else
             {
@@ -70,16 +65,11 @@ namespace FreeWheeling.UI.Controllers
 
         [Compress]
         public ActionResult ViewAdHocRide(int adhocrideid)
-        {
-           
+        {         
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
-
             AdHocViewModel _adHocViewModel = new AdHocViewModel();
-
             RideModelHelper _AdHocHelper = new RideModelHelper(repository);
-
             _adHocViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
-
             return View(_adHocViewModel);
         }
 
@@ -88,22 +78,16 @@ namespace FreeWheeling.UI.Controllers
             AllRideComments _AllRideComments = new AllRideComments();
             _AllRideComments.RideId = RideId;
             _AllRideComments.GroupId = GroupId;
-
             _AllRideComments.Comments = repository.GetAllCommentsForRide(RideId);
-
             return View(_AllRideComments);
-
         }
 
         public ActionResult SeeAllAdHocComments(int adhocrideid)
         {
             AllAdHocRideComments _AllAdHocRideComments = new AllAdHocRideComments();
             _AllAdHocRideComments.adhocrideid = adhocrideid;
-
             _AllAdHocRideComments.Comments = repository.GetAllCommentsForAdHocRide(adhocrideid);
-
             return View(_AllAdHocRideComments);
-
         }
 
         public ActionResult DeleteAdHocRide(int adhocrideid)
@@ -112,32 +96,24 @@ namespace FreeWheeling.UI.Controllers
 
             if (!repository.IsAdHocCreator(adhocrideid, currentUser.Id))
             {
-
                 return RedirectToAction("AddHocList", "Ride");
-
             }
             else
             {
                 Ad_HocRide CurrentRide = repository.GetAdHocRideByID(adhocrideid);
                 DeleteAdHocRideModel _DeleteAdHocRideModel = new DeleteAdHocRideModel { AdHocId = adhocrideid, Name = CurrentRide.Name };
                 return View(_DeleteAdHocRideModel);
-
             }
-
-
         }
 
         [HttpPost, ActionName("DeleteAdHocRide")]
         public ActionResult DeleteConfirmed(int adhocrideid)
         {
-
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
             if (!repository.IsAdHocCreator(adhocrideid, currentUser.Id))
             {
-
                 return RedirectToAction("AddHocList", "Ride");
-
             }
             else
             {
@@ -145,24 +121,18 @@ namespace FreeWheeling.UI.Controllers
                 repository.Save();
                 return RedirectToAction("AddHocList", "Ride");
             }
-
-
         }
 
         public ActionResult EditAdHocRide(int adhocrideid)
         {
-
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
             if (!repository.IsAdHocCreator(adhocrideid,currentUser.Id))
             {
-
                  return RedirectToAction("AddHocList", "Ride");
-
             }
             else
             {
-
                 CultureHelper _CultureHelper = new CultureHelper(repository);
                 TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
                 DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
@@ -197,7 +167,6 @@ namespace FreeWheeling.UI.Controllers
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
             Location _Location = repository.GetLocations().Where(l => l.id == _EditAdHocRideModel.LocationsId).FirstOrDefault();
-
             DateTime dateResult;
 
             if (!DateTime.TryParse(_EditAdHocRideModel.DateString, _CultureHelper.GetCulture(_Location.id), DateTimeStyles.None, out dateResult))
@@ -209,7 +178,6 @@ namespace FreeWheeling.UI.Controllers
             }
             else
             {
-
                 DateTime da = DateTime.ParseExact(_EditAdHocRideModel.DateString, "dd/MM/yyyy", null);
                 DateTime _RideDate = da.Date.Add(new TimeSpan(_EditAdHocRideModel.RideHour, _EditAdHocRideModel.RideMinute, 0));
 
@@ -243,11 +211,8 @@ namespace FreeWheeling.UI.Controllers
                 repository.Save();
 
                 AdHocViewModel _adHocViewModel = new AdHocViewModel();
-
                 RideModelHelper _AdHocHelper = new RideModelHelper(repository);
-
                 _adHocViewModel = _AdHocHelper.PopulateAdHocModel(_EditAdHocRideModel.adhocrideid, currentUser.Id);
-
                 return View("ViewAdHocRide", _adHocViewModel);
             }
 
@@ -255,14 +220,10 @@ namespace FreeWheeling.UI.Controllers
 
         public ActionResult AddAdHocComment(int adhocrideid)
         {
-
             AdHocRideCommentModel _RideCommentModel = new AdHocRideCommentModel();
             _RideCommentModel.adhocrideid = adhocrideid;
-
             _RideCommentModel.Ride = repository.GetAdHocRideByID(adhocrideid);
-
             return View(_RideCommentModel);
-
         }
 
         [HttpPost]
@@ -273,13 +234,9 @@ namespace FreeWheeling.UI.Controllers
             repository.Save();
 
             AdHocViewModel _adHocViewModel = new AdHocViewModel();
-
             RideModelHelper _AdHocHelper = new RideModelHelper(repository);
-
             _adHocViewModel = _AdHocHelper.PopulateAdHocModel(RideComment.adhocrideid, currentUser.Id);
-
             return View("ViewAdHocRide", _adHocViewModel);
-
         }
 
         [HttpPost]
@@ -293,9 +250,7 @@ namespace FreeWheeling.UI.Controllers
                 repository.Save();
 
                 RideModelIndex RideModel = new RideModelIndex();
-
                 RideModelHelper _RideHelper = new RideModelHelper(repository);
-
                 RideModel = _RideHelper.PopulateRideModel(ParentRideID, groupid, currentUser.Id, false, FromFavPage);
 
                 Task T = new Task(() =>
@@ -316,22 +271,16 @@ namespace FreeWheeling.UI.Controllers
             }
             else
             {
-
                 RideModelIndex RideModel = new RideModelIndex();
-
                 RideModelHelper _RideHelper = new RideModelHelper(repository);
-
                 RideModel = _RideHelper.PopulateRideModel(rideid, groupid, currentUser.Id, false, FromFavPage);
-
                 return View("Index", RideModel);
-
             }
 
         }
 
         public ActionResult Attend(int RideId, string Commitment, int Groupid, bool FromFavPage, int ParentRideID)
         {
-
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Ride _Ride = new Ride();
             Group _Group = new Group();
@@ -349,9 +298,7 @@ namespace FreeWheeling.UI.Controllers
             repository.Save();
 
             RideModelIndex RideModel = new RideModelIndex();
-
             RideModelHelper _RideHelper = new RideModelHelper(repository);
-
             RideModel = _RideHelper.PopulateRideModel(ParentRideID, Groupid, currentUser.Id, false, FromFavPage);
 
             Task T = new Task(() =>
@@ -360,7 +307,6 @@ namespace FreeWheeling.UI.Controllers
 
                    if (Commitment == "In")
                    {
-
                        var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
                        {
                            rideid = RideId,
@@ -370,10 +316,8 @@ namespace FreeWheeling.UI.Controllers
                        });
                    }
 
-
                    if (Commitment == "Out")
                    {
-
                        var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
                        {
                            rideid = RideId,
@@ -386,7 +330,6 @@ namespace FreeWheeling.UI.Controllers
 
                    if (Commitment == "OnWay")
                    {
-
                        var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
                        {
                            rideid = RideId,
@@ -399,26 +342,21 @@ namespace FreeWheeling.UI.Controllers
                });
 
             T.Start();
-
             return View("Index", RideModel);
         }
      
         public ActionResult AttendAdHocRider(int adhocrideid, string Commitment)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            Ad_HocRide _Ride = new Ad_HocRide();
-            
+            Ad_HocRide _Ride = new Ad_HocRide();           
             _Ride = repository.GetAdHocRideByID(adhocrideid);
-
             AdHocRider _Rider = new AdHocRider { userId = currentUser.Id, Name = currentUser.UserName, AdHocRide = _Ride, LeaveTime = DateTime.UtcNow, PercentKeen = Commitment };
 
             repository.AddAdHocRider(_Rider, _Ride);
             repository.Save();
 
             AdHocViewModel _adHocViewModel = new AdHocViewModel();
-
             RideModelHelper _AdHocHelper = new RideModelHelper(repository);
-
             _adHocViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
 
             return View("ViewAdHocRide", _adHocViewModel);

@@ -12,52 +12,41 @@ namespace FreeWheeling.UI.Models
 {
     public class RideModelHelper
     {
-
         private IdentityDb idb = new IdentityDb();
-
         private ICycleRepository repository;
 
         public RideModelHelper(ICycleRepository repoParam)
         {
-
             repository = repoParam;
-
         }
 
         public AdHocViewModel PopulateAdHocModel(int adhocrideid, string UserId)
         {
             Ad_HocRide Ah = repository.GetAdHocRideByID(adhocrideid);
-
             AdHocViewModel adHocViewModel = new AdHocViewModel { Ride = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime };
-
             adHocViewModel.CommentCount = repository.GetCommentCountForAdHocRide(adhocrideid);
             adHocViewModel.IsOwner = repository.IsAdHocCreator(adhocrideid, UserId);
+
             if (adHocViewModel.MapUrl != null)
             {
                 adHocViewModel.MapUrl =
                 string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", Ah.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
-
                 //https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D108681
             }
             CultureHelper _CultureHelper = new CultureHelper(repository);
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(Ah.Location.id);
             adHocViewModel.Riders = repository.GetRidersForAdHocRide(adhocrideid, TZone);
             adHocViewModel.KeenCount = repository.GetKeenCountForAdHocRide(Ah.id);
-
             adHocViewModel.Comments = repository.GetTop2CommentsForAdHocRide(adhocrideid);
 
             return adHocViewModel;
-
         }
 
         public RideModelIndex PopulateRideModel(int RideId, int GroupId, string UserId, bool NeedPreviousRide, bool FromFavPage)
         {
-            
             Ride _Ride = new Ride();
             Group _Group = new Group();
-
             _Group = repository.GetGroupByID(GroupId);
-
             CultureHelper _CultureHelper = new CultureHelper(repository);
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Group.Location.id);
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
@@ -65,9 +54,7 @@ namespace FreeWheeling.UI.Models
 
             if (RideId == -1) // this is the case when first enter view ride screen as rideid is unkown at that point.
             {
-
                 _Ride = _Group.Rides.Where(u => u.RideDate.AddHours(2) >= LocalNow).OrderBy(i => i.RideDate).FirstOrDefault();
-
             }
             else
             {
@@ -98,17 +85,14 @@ namespace FreeWheeling.UI.Models
             RideModel.OutSecond = repository.IsOut(RideModel.NextRide.id, UserId);
             RideModel.OnWaySecond = repository.IsOnWay(RideModel.NextRide.id, UserId);
             
-
             if (_UserExpands != null)
             {
-
                 RideModel.FirstKeen = _UserExpands.FirstKeen;
                 RideModel.FirstBunch = _UserExpands.FirstBunch;
                 RideModel.FirstComment = _UserExpands.FirstComment;
                 RideModel.SecondBunch = _UserExpands.SecondBunch;
                 RideModel.SecondKeen = _UserExpands.SecondKeen;
                 RideModel.SecondComment = _UserExpands.SecondComment;
-
             }
 
             if (RideModel.Group.MapUrl != null)
@@ -117,11 +101,8 @@ namespace FreeWheeling.UI.Models
             }
 
             RideModel.Riders = repository.GetRidersForRide(RideModel.Ride.id, TZone);
-
             return (RideModel);
-
         }
-
     }
 
     public class RideModelIndex
