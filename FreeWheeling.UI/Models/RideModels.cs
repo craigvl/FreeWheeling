@@ -42,6 +42,7 @@ namespace FreeWheeling.UI.Models
             CultureHelper _CultureHelper = new CultureHelper(repository);
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(Ah.Location.id);
             adHocViewModel.Riders = repository.GetRidersForAdHocRide(adhocrideid, TZone);
+            adHocViewModel.KeenCount = repository.GetKeenCountForAdHocRide(Ah.id);
 
             adHocViewModel.Comments = repository.GetTop2CommentsForAdHocRide(adhocrideid);
 

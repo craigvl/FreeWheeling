@@ -194,7 +194,12 @@ namespace FreeWheeling.Domain.Concrete
 
         public int GetKeenCountForRide(int Rideid)
         {
-            return context.Riders.Where(r => r.Ride.id == Rideid && r.PercentKeen == "In" || r.PercentKeen == "OnWay").Count();
+            return context.Riders.Where(r => (r.Ride.id == Rideid && r.PercentKeen == "In") || (r.Ride.id == Rideid && r.PercentKeen == "OnWay")).Count();
+        }
+
+        public int GetKeenCountForAdHocRide(int AdHocRideid)
+        {
+            return context.AdHocRider.Where(r => (r.AdHocRide.id == AdHocRideid && r.PercentKeen == "In") || (r.AdHocRide.id == AdHocRideid && r.PercentKeen == "OnWay")).Count();
         }
 
         public UserExpand GetUserExpandByUserID(string UserId)
@@ -669,6 +674,6 @@ namespace FreeWheeling.Domain.Concrete
         {
             context.SaveChanges();
         }
-
+       
     }
 }
