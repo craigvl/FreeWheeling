@@ -325,7 +325,6 @@ namespace FreeWheeling.UI.Controllers
                            keencount = (repository.GetKeenCountForRide(RideId)),
                            username = User.Identity.GetUserName()
                        });
-
                    }
 
                    if (Commitment == "OnWay")
@@ -335,9 +334,9 @@ namespace FreeWheeling.UI.Controllers
                            rideid = RideId,
                            message = Commitment,
                            keencount = (repository.GetKeenCountForRide(RideId)),
-                           username = User.Identity.GetUserName()
+                           username = User.Identity.GetUserName(),
+                           leavetime = DateTime.UtcNow
                        });
-
                    }
                });
 

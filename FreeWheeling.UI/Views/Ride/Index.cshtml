@@ -328,7 +328,6 @@ else
             {
                 <h4>
 
-
                     @if (@Model.SecondComment)
                     {
                         @:<span id="CommentCountSecond" class="label label-success glyphicon glyphicon-chevron-up" data-toggle="collapse" href="#collapseCommentSecond">Comments <span id="@("CommentCountSpan" + @Model.NextRide.id)">(@Model.NextCommentCount)</span></span>
@@ -477,7 +476,7 @@ else
                 if (data.message == 'OnWay') {
                     var keenuser = "#keen_" + data.username + data.rideid;
                     $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-                    $(keenuser).html(data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment().format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
+                    $(keenuser).html(data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
                     $(keenuser).attr('class', 'label label-success');
                     jQuery("abbr.timeago").timeago();
                 }
