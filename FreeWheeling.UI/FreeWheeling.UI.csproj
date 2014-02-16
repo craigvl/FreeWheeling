@@ -410,7 +410,6 @@
     <Content Include="Views\Shared\_GroupDetailPartial.cshtml" />
     <Content Include="Views\Ride\AddHocList.cshtml" />
     <Content Include="Views\Ride\ViewAdHocRide.cshtml" />
-    <Content Include="Views\Ride\AddAdHocComment.cshtml" />
     <Content Include="Views\Home\LocationChange.cshtml" />
     <Content Include="Views\Ride\SeeAllComments.cshtml" />
     <Content Include="Views\Ride\SeeAllAdHocComments.cshtml" />

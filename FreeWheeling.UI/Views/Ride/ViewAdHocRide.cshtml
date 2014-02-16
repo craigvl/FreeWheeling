@@ -5,6 +5,9 @@
     ViewBag.Title = "View Ad Hoc bunch";
 }
 
+@Html.Hidden("RideIdHidden", @Model.Ride.id)
+<script src="http://js.pusher.com/2.1/pusher.min.js"></script>
+
 @if (@Model.MapUrl != null)
 {
     @Html.Raw(@Model.MapUrl)
@@ -65,8 +68,8 @@
     @if (@Model.Comments != null)
     {
         <h4>
-            <span class="label label-success">Comments</span>
-            @Html.ActionLink("+", "AddAdHocComment", "Ride", new { adhocrideid = @Model.Ride.id }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
+            <span class="label label-success">Comments <span id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</span></span>
+           
 
 
         </h4>
@@ -88,6 +91,22 @@
 
 </div>
 
+<div>
+
+    @using (Html.BeginForm("AddAdHocComment", "Ride", new
+        {
+            adhocrideid = @Model.Ride.id
+        }, FormMethod.Post))
+    {
+        <div class="input-group">
+            @Html.TextBox("CommentString", null, new { @class = "form-control-C" })
+            <span class="input-group-addon-C">
+                <button class="btn btn-success" onclick="ShowProgress();" id="@("submit_" + @Model.Ride.id)" type="submit">Add comment</button>
+            </span>
+        </div>
+    }
+
+</div>
 
 <hr />
 
@@ -115,6 +134,17 @@
     <script>
 
         jQuery(document).ready(function () {
+
+            var pusher = new Pusher('dba777635636cbc16582');
+            var channel = pusher.subscribe('BunchyRide' + rideId);
+
+            channel.bind('New-CommentsAdHoc', function (data) {
+                $("#collapseCommentPanel" + data.rideid).prepend("<p>" + data.username + " : " + data.message + "</p>");
+                $("#CommentCountSpan" + data.rideid).html("(" + data.commentcount + ")");
+                $("#CommentCountSpanSeeAll" + data.rideid).html("View All (" + data.commentcount + ")");
+                $("#submit_" + data.rideid).val("");
+            }); 
+
             jQuery("abbr.timeago").timeago();
         });
 

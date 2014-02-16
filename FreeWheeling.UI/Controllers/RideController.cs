@@ -227,16 +227,44 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddAdHocComment(AdHocRideCommentModel RideComment)
+        public ActionResult AddAdHocComment(int adhocrideid, string CommentString)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            repository.AddAdHocRideComment(RideComment.Comment, RideComment.adhocrideid, currentUser.UserName);
-            repository.Save();
 
-            AdHocViewModel _adHocViewModel = new AdHocViewModel();
-            RideModelHelper _AdHocHelper = new RideModelHelper(repository);
-            _adHocViewModel = _AdHocHelper.PopulateAdHocModel(RideComment.adhocrideid, currentUser.Id);
-            return View("ViewAdHocRide", _adHocViewModel);
+            if (CommentString != string.Empty)
+            {
+
+                repository.AddAdHocRideComment(CommentString, adhocrideid, currentUser.UserName);
+                repository.Save();
+
+                AdHocViewModel _adHocViewModel = new AdHocViewModel();
+                RideModelHelper _AdHocHelper = new RideModelHelper(repository);
+                _adHocViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
+
+                Task T = new Task(() =>
+                {
+                    int CommentCount = repository.GetCommentCountForAdHocRide(adhocrideid);
+                    var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
+                    var result = pusher.Trigger("BunchyRide" + adhocrideid, "New-CommentsAdHoc", new
+                    {
+                        rideid = adhocrideid,
+                        message = CommentString,
+                        commentcount = CommentCount,
+                        username = User.Identity.Name
+                    });
+                });
+
+                T.Start();
+
+                return View("ViewAdHocRide", _adHocViewModel);
+            }
+            else
+            {
+                AdHocViewModel _adHocViewModel = new AdHocViewModel();
+                RideModelHelper _AdHocHelper = new RideModelHelper(repository);
+                _adHocViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
+                return View("ViewAdHocRide", _adHocViewModel);
+            }
         }
 
         [HttpPost]
