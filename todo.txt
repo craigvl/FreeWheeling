@@ -8,3 +8,5 @@
 - DONE: If you view a ride from the fav list then the back button takes you back to the all groups button need to fix this.
 - Order list of groups by next upcomming ride. Performance??
 - Need to refactor hideprogress function so that it is only in one place.
+- Need to update adhoc view so that hides / shows in, out, onway depending on current selection.
+- Might need to update the date that is passed to the onway json so that it is localized

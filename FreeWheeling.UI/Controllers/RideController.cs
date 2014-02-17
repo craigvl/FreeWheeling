@@ -386,6 +386,47 @@ namespace FreeWheeling.UI.Controllers
             RideModelHelper _AdHocHelper = new RideModelHelper(repository);
             _adHocViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
 
+            Task T = new Task(() =>
+            {
+                var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
+
+                if (Commitment == "In")
+                {
+                    var result = pusher.Trigger("BunchyRide" + adhocrideid, "You-InAdHoc", new
+                    {
+                        rideid = adhocrideid,
+                        message = Commitment,
+                        keencount = (repository.GetKeenCountForAdHocRide(adhocrideid)),
+                        username = User.Identity.GetUserName()
+                    });
+                }
+
+                if (Commitment == "Out")
+                {
+                    var result = pusher.Trigger("BunchyRide" + adhocrideid, "You-InAdHoc", new
+                    {
+                        rideid = adhocrideid,
+                        message = Commitment,
+                        keencount = (repository.GetKeenCountForAdHocRide(adhocrideid)),
+                        username = User.Identity.GetUserName()
+                    });
+                }
+
+                if (Commitment == "OnWay")
+                {
+                    var result = pusher.Trigger("BunchyRide" + adhocrideid, "You-InAdHoc", new
+                    {
+                        rideid = adhocrideid,
+                        message = Commitment,
+                        keencount = (repository.GetKeenCountForAdHocRide(adhocrideid)),
+                        username = User.Identity.GetUserName(),
+                        leavetime = DateTime.UtcNow
+                    });
+                }
+            });
+
+            T.Start();
+
             return View("ViewAdHocRide", _adHocViewModel);
         }
       

@@ -478,6 +478,7 @@ else
                     $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
                     $(keenuser).html(data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
                     $(keenuser).attr('class', 'label label-success');
+                    $(keenuser).css("text-decoration", "none");
                     jQuery("abbr.timeago").timeago();
                 }
 

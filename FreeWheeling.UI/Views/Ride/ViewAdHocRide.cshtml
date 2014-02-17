@@ -30,50 +30,52 @@
 <hr />
 
 <h4><span class="label label-success">Keen<span id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</span></span></h4>
+<div id="@("keendiv_" + @Model.Ride.id)">
+    @{
 
-@{
-
-    foreach (AdHocRider item in @Model.Riders)
-    {
-
+        foreach (AdHocRider item in @Model.Riders)
         {
-            switch (item.PercentKeen)
+
             {
-                case "OnWay":
-                    <text>
-                        <p><span class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
+                              switch (item.PercentKeen)
+                              {
+                                  case "Out":
+                                      <text>
+<p><span id="@("keen_" + @item.Name + @Model.Ride.id)" style="text-decoration:line-through;" class="label label-danger">@item.Name is Out</span></p>
 
-                    </text>
-                    break;  // Always break each case
-                case "Out":
-                <text>
-                    <p><span class="label label-danger">@item.Name is a slacker!</span></p>
-                </text>
-                    break;
-                case "In":
-                <text>
-                    <p><span class="label label-success">@item.Name is in!</span></p>
-                </text>
-                    break;
-            }
+                            </text>
+                            break;  // Always break each case
+                        case "OnWay":
+                        <text>
+                            <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
+
+                        </text>
+                            break;  // Always break each case
+                        case "In":
+                        <text>
+                            <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" class="label label-success">@item.Name is in!</span></p>
+                        </text>
+                            break;
+                    }
+                }
+            <p></p>
         }
-        <p></p>
+
     }
+    </div>
+    <br />
 
-}
-<br />
-
-<div>
-    <hr />
-    @if (@Model.Comments != null)
-    {
-        <h4>
-            <span class="label label-success">Comments <span id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</span></span>
-           
+    <div>
+        <hr />
+        @if (@Model.Comments != null)
+        {
+            <h4>
+                <span class="label label-success">Comments <span id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</span></span>
 
 
-        </h4>
-         @:<div id="@("collapseCommentPanel" + @Model.Ride.id)">
+
+            </h4>
+            @:<div id="@("collapseCommentPanel" + @Model.Ride.id)">
         foreach (AdHocComment item in Model.Comments)
         {
 
@@ -83,11 +85,13 @@
             @:<p></p>
 
 
+
+
         }
-    
+
         @Html.ActionLink(string.Concat("See all Comments (", @Model.CommentCount, ")"), "SeeAllAdHocComments", "Ride", new { adhocrideid = @Model.Ride.id }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
 
-    }
+        }
     </div>
 </div>
 
@@ -144,7 +148,44 @@
                 $("#CommentCountSpan" + data.rideid).html("(" + data.commentcount + ")");
                 $("#CommentCountSpanSeeAll" + data.rideid).html("View All (" + data.commentcount + ")");
                 $("#submit_" + data.rideid).val("");
-            }); 
+            });
+
+            channel.bind('You-InAdHoc', function (data) {
+                //alert(data.message);
+                if (data.message == 'In') {
+                    $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
+                    var keenuser = "#keen_" + data.username + data.rideid;
+                    if ($("#keen_" + data.username + data.rideid).length) {
+                        $(keenuser).html(data.username + " is in!");
+                        $(keenuser).attr('class', 'label label-success');
+                        $(keenuser).css('text-decoration', 'none');
+                    }
+                    else {
+
+                        $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success">' + data.username + ' is in!</span>');
+
+                    }
+
+                }
+
+                if (data.message == 'Out') {
+                    var keenuser = "#keen_" + data.username + data.rideid;
+                    $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
+                    $(keenuser).html(data.username + " is Out!");
+                    $(keenuser).attr('class', 'label label-danger');
+                    $(keenuser).css("text-decoration", "line-through");
+                }
+
+                if (data.message == 'OnWay') {
+                    var keenuser = "#keen_" + data.username + data.rideid;
+                    $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
+                    $(keenuser).html(data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
+                    $(keenuser).attr('class', 'label label-success');
+                    $(keenuser).css("text-decoration", "none");
+                    jQuery("abbr.timeago").timeago();
+                }
+
+            });
 
             jQuery("abbr.timeago").timeago();
         });
