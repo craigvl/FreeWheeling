@@ -37,27 +37,27 @@
         {
 
             {
-                              switch (item.PercentKeen)
-                              {
-                                  case "Out":
-                                      <text>
-<p><span id="@("keen_" + @item.Name + @Model.Ride.id)" style="text-decoration:line-through;" class="label label-danger">@item.Name is Out</span></p>
-
-                            </text>
-                            break;  // Always break each case
-                        case "OnWay":
+                switch (item.PercentKeen)
+                {
+                    case "Out":
                         <text>
-                            <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
+                            <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" style="text-decoration:line-through;" class="label label-danger">@item.Name is Out</span></p>
 
                         </text>
-                            break;  // Always break each case
-                        case "In":
-                        <text>
-                            <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" class="label label-success">@item.Name is in!</span></p>
-                        </text>
-                            break;
-                    }
+                        break;  // Always break each case
+                    case "OnWay":
+                    <text>
+                        <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
+
+                    </text>
+                        break;  // Always break each case
+                    case "In":
+                    <text>
+                        <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" class="label label-success">@item.Name is in!</span></p>
+                    </text>
+                        break;
                 }
+            }
             <p></p>
         }
 
@@ -71,22 +71,13 @@
         {
             <h4>
                 <span class="label label-success">Comments <span id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</span></span>
-
-
-
             </h4>
             @:<div id="@("collapseCommentPanel" + @Model.Ride.id)">
         foreach (AdHocComment item in Model.Comments)
         {
-
-            @*@item.Date.ToShortDateString() @Html.Raw(" ")  @item.Date.ToShortTimeString() @Html.Raw(" ")*@
             @item.userName <text>: </text>
             @item.CommentText
             @:<p></p>
-
-
-
-
         }
 
         @Html.ActionLink(string.Concat("See all Comments (", @Model.CommentCount, ")"), "SeeAllAdHocComments", "Ride", new { adhocrideid = @Model.Ride.id }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
