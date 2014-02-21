@@ -10,3 +10,5 @@
 - Need to refactor hideprogress function so that it is only in one place.
 - Need to update adhoc view so that hides / shows in, out, onway depending on current selection.
 - Might need to update the date that is passed to the onway json so that it is localized
+- Need to update email so that there is client side email validation
+- Need to update email so that validation email is working see link http://kevin-junghans.blogspot.com.au/2013/02/adding-email-confirmation-to.html
