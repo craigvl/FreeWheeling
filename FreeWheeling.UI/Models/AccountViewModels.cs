@@ -61,7 +61,7 @@ namespace FreeWheeling.UI.Models
         public string ConfirmPassword { get; set; }
 
         [Required]
-        [Display(Name = "EMail")]
+        [Display(Name = "Email")]
         public string Email { get; set; }
     }
 }
