@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.Facebook;
 using Owin;
 
 namespace FreeWheeling.UI
@@ -28,9 +29,13 @@ namespace FreeWheeling.UI
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            app.UseFacebookAuthentication(
-               appId: "1403149849923216",
-               appSecret: "304db854c24fa4c573eaa15dbb65c26e");
+            var facebookAuthenticationOptions = new FacebookAuthenticationOptions()
+            {
+                AppId = "1403149849923216",
+                AppSecret = "304db854c24fa4c573eaa15dbb65c26e"
+            };
+            facebookAuthenticationOptions.Scope.Add("email");
+            app.UseFacebookAuthentication(facebookAuthenticationOptions);
 
             app.UseGoogleAuthentication();
         }

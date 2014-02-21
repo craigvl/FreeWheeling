@@ -266,7 +266,12 @@ namespace FreeWheeling.UI.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser() { UserName = model.UserName };
+
+                var externalIdentity = HttpContext.GetOwinContext().Authentication.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
+                var emailClaim = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+                var email = emailClaim.Value;
+
+                var user = new ApplicationUser() { UserName = model.UserName, Email = email };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

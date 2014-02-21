@@ -213,6 +213,10 @@
     <Compile Include="DataContexts\IdentityMigrations\201312270037160_Initial_Create.Designer.cs">
       <DependentUpon>201312270037160_Initial_Create.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201402210521537_Added_Email.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201402210521537_Added_Email.Designer.cs">
+      <DependentUpon>201402210521537_Added_Email.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Filters\CompressAttribute.cs" />
     <Compile Include="Filters\RoleAttribute.cs" />
@@ -436,6 +440,9 @@
   <ItemGroup>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201312270037160_Initial_Create.resx">
       <DependentUpon>201312270037160_Initial_Create.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201402210521537_Added_Email.resx">
+      <DependentUpon>201402210521537_Added_Email.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
