@@ -74,11 +74,17 @@
             @Html.TextAreaFor(model => model.Description)
         </div>
     
-    <div>Map (Enter <a href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</div>
+    <div>Map (Enter <a target="_blank" href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</div>
         
         <div> 
             @Html.TextBoxFor(model => model.MapUrl)
         </div>
+         
+        <div>
+
+
+        </div>
+    
     
          <div>
             <p></p>
@@ -96,6 +102,7 @@
 @Scripts.Render("~/bundles/jqueryval")
 <script src="~/Scripts/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
+
     $(function () {
 
         $('#MyDateDiv div').datepicker({
