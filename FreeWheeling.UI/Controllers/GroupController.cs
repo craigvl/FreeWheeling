@@ -137,8 +137,13 @@ namespace FreeWheeling.UI.Controllers
 
                 return RedirectToAction("index", "home");  
             }
+            
+        }
 
-             
+        public ActionResult AddUser(AdHocCreateModel model)
+        {
+            model.AddUser();
+            return Json(model);
         }
 
         public ActionResult EditGroup(int groupId)

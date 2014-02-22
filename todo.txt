@@ -12,3 +12,10 @@
 - Might need to update the date that is passed to the onway json so that it is localized
 - Need to update email so that there is client side email validation
 - Need to update email so that validation email is working see link http://kevin-junghans.blogspot.com.au/2013/02/adding-email-confirmation-to.html
+- Add help for the invite friend
+- ad hoc create, pre select today's date
+- Auto keep updated, be able to change in settings
+- change to one off bunches
+- cancel ad hoc and email attendees 
+- email group attendees when group deleted.
+-
