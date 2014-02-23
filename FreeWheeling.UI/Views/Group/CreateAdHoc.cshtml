@@ -27,8 +27,8 @@
     
     <div><span class="RequiredField">*&nbsp;</span>bunch Name:</div>
         <div>
-            @Html.TextBoxFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
+            @ko.Html.TextBox(m => m.Name, new { @class = "required" })
+           
         </div>
     <div>
         <p></p>
@@ -115,6 +115,7 @@
     
          <div>
             <p></p>
+             @ko.Html.Button("Save to JSON", "SaveJson", "Group")
              <input onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create Ad Hoc bunch" />
         </div>    
 }
@@ -124,6 +125,19 @@
     <br />
     <img src="~/Content/Images/loader.gif" alt="" />
 </div>
+
+<style scoped="scoped">
+    input.error {
+        border: 1px solid red;
+        background-color: #FDC;
+    }
+
+    label.error {
+        display: block;
+        color: Red;
+        font-size: 0.8em;
+    }
+</style>
 
 @ko.Apply(Model)
 

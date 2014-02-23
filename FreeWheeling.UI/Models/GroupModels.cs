@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using FreeWheeling.UI.Infrastructure;
+using System.Web.Script.Serialization;
 
 namespace FreeWheeling.UI.Models
 {
@@ -152,17 +153,7 @@ namespace FreeWheeling.UI.Models
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public string DateString { get; set; }
         public string AM_PM { get; set; }
-        //public IEnumerable<SelectListItem> AM_PMList
-        //{
-        //    get
-        //    {
-        //        return new[]
-        //    {
-        //        new SelectListItem { Value = "AM", Text = "AM" },
-        //        new SelectListItem { Value = "PM", Text = "PM" }
-        //    };
-        //    }
-        //}
+        public string LastSavedJson { get; set; }
 
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
@@ -180,6 +171,11 @@ namespace FreeWheeling.UI.Models
         public void AddUser()
         {
             InviteUsers.Add(new AdHocCreateUserModel ());
+        }
+
+        public void SaveJson()
+        {
+            LastSavedJson = new JavaScriptSerializer().Serialize(this);
         }
 
     }
