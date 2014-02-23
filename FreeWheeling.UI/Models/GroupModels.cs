@@ -152,9 +152,7 @@ namespace FreeWheeling.UI.Models
         [Required(ErrorMessage = "Please select a date")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public string DateString { get; set; }
-        public string AM_PM { get; set; }
-        public string LastSavedJson { get; set; }
-
+        
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
         [Required]
@@ -167,17 +165,6 @@ namespace FreeWheeling.UI.Models
         public string Description { get; set; }
         public string MapUrl { get; set; }
         public List<AdHocCreateUserModel> InviteUsers { get; set; }
-
-        public void AddUser()
-        {
-            InviteUsers.Add(new AdHocCreateUserModel ());
-        }
-
-        public void SaveJson()
-        {
-            LastSavedJson = new JavaScriptSerializer().Serialize(this);
-        }
-
     }
 
     public class AdHocCreateUserModel

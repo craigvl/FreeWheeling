@@ -31,10 +31,11 @@
     ),  new { @class = "form-control" }
 )
         <p></p>
-    </div>
-    
-    <div>
-    </div>      
+        <div><span class="RequiredField">*&nbsp;</span>bunch Name:</div>
+        <div>
+            @Html.TextBoxFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)          
+        </div>   
        
     <div class="span5" id="MyDateDiv"><div></div></div>
 
@@ -82,7 +83,6 @@
             <p></p>
             
         </div>
-    
     
          <div>
             <p></p>

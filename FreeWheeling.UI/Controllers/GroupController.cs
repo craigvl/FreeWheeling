@@ -140,18 +140,6 @@ namespace FreeWheeling.UI.Controllers
             
         }
 
-        public ActionResult AddUser(AdHocCreateModel model)
-        {
-            model.AddUser();
-            return Json(model);
-        }
-
-        public ActionResult SaveJson(AdHocCreateModel model)
-        {
-            model.SaveJson();
-            return Json(model);
-        }
-
         public ActionResult EditGroup(int groupId)
         {
 
