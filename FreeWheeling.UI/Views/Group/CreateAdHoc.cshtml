@@ -8,13 +8,6 @@
 
 <link href="~/Content/datepicker.css" rel="stylesheet" />
 <script src="~/Scripts/knockout-2.1.0.js"></script>
-<script src="~/Scripts/knockout.mapping-latest.js"></script>
-<script src="~/Scripts/perpetuum.knockout.js"></script>
-@using PerpetuumSoft.Knockout
-
-@{
-    var ko = Html.CreateKnockoutContext();
-}
 
 @Html.ActionLink("Back Home <---", "Index", "Home", null, new { @class = "btn btn-info" })
 
@@ -25,12 +18,7 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
     
-    <div><span class="RequiredField">*&nbsp;</span>bunch Name:</div>
-        <div>
-            @ko.Html.TextBox(m => m.Name, new { @class = "required" })
-           
-        </div>
-    <div>
+   
         <p></p>
         @Html.DropDownListFor(
              x => x.LocationsId,
@@ -92,30 +80,12 @@
          
         <div>
             <p></p>
-            <table>
-                <tbody>
-                    @using (var InviteUsers = ko.Foreach(m => m.InviteUsers))
-                    {
-                        <tr><td>Find a friend</td></tr>
-                        <tr>
-
-                            <td>
-                                @InviteUsers.Html.TextBox(m => m.UserName)
-                        </td>
-                    <td>
-                       
-                </td>
-            </tr>
-                    }
-                </tbody>
-            </table>
-            @ko.Html.HyperlinkButton("Invite a friend", "AddUser", "Group", new { id = "fff" })
+            
         </div>
     
     
          <div>
             <p></p>
-             @ko.Html.Button("Save to JSON", "SaveJson", "Group")
              <input onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create Ad Hoc bunch" />
         </div>    
 }
@@ -125,21 +95,6 @@
     <br />
     <img src="~/Content/Images/loader.gif" alt="" />
 </div>
-
-<style scoped="scoped">
-    input.error {
-        border: 1px solid red;
-        background-color: #FDC;
-    }
-
-    label.error {
-        display: block;
-        color: Red;
-        font-size: 0.8em;
-    }
-</style>
-
-@ko.Apply(Model)
 
 @section Scripts {
 @Scripts.Render("~/bundles/jqueryval")
