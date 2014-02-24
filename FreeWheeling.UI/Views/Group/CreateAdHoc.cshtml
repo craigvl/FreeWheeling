@@ -18,50 +18,26 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
     
-   
-        @*<p></p>
-        @Html.DropDownListFor(
-             x => x.LocationsId,
-    new SelectList(
-        Model.Locations.ToList().Select(
-                       x => new { Value = x.id, Text = x.Name, data_bind = "value:LocationsId, uniqueName:true" }
-        ),
-        "Value",
-                 "Text", Model.LocationsId
-    ),  new { @class = "form-control" }
-    
-   
-)*@
-
     <select data-bind="options: LocationChoices, optionsText: 'Name', optionsValue: 'id', selectedOptions: selectedLocation"></select>
 
         <p></p>
         <div><span class="RequiredField">*&nbsp;</span>bunch Name:</div>
-        <div>
-            @Html.TextBoxFor(model => model.Name, new { data_bind = "value:Name, uniqueName:true", @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Name)          
-        </div>   
-       
-    <div class="span5" id="MyDateDiv"><div></div></div>
+    <div data-bind="validationElement: Name">
+        @Html.TextBoxFor(model => model.Name, new {data_bind = "value:Name, uniqueName:true", @class = "form-control" })
+    </div>
 
-    @*<input id="MyDate" data-bind="datepicker: DateString, datepickerOptions: { dateFormat: 'dd-mm-yy' }" />*@
-
-    <input type="text" class="span2" data-bind="datepicker: DateString, datepickerOptions: { dataType: 'format', format: 'DD/MM/YYYY' }">
-
+    <p></p>
 
         <div><span class="RequiredField">*&nbsp;</span>Date</div>
+    <input readonly type="text" class="span2" data-bind="datepicker: DateString, datepickerOptions: { dataType: 'format', format: 'DD/MM/YYYY' }">
          @Html.ValidationMessageFor(model => model.DateString)
-          
-        @*<div>
-            @Html.TextBoxFor(model => model.DateString, null, new { id = "MyDate", data_bind = "value:DateString, uniqueName:true", @class = "form-control" })
-        </div>*@
-               
+          <p></p>
         <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
         <div>
             @Html.TextBoxFor(model => model.Hour, new { data_bind = "value:Hour, uniqueName:true", @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Hour)
         </div>
-    
+    <p></p>
         <div><span class="RequiredField">*&nbsp;</span>Minute</div>
         <div>
             @Html.TextBoxFor(model => model.Minute, new { data_bind = "value:Minute, uniqueName:true", @class = "form-control" })
@@ -89,15 +65,29 @@
             @Html.TextBoxFor(model => model.MapUrl, new { data_bind = "value:MapUrl, uniqueName:true", @class = "form-control" })
         </div>
 
-    <div id="InviteUserDiv">
-        Invite Users
-        @Html.TextBox("InviteUsers", null, new { @class = "form-control" })
-
-    </div>
+    <p></p>
     
-    <div id="AddUserDiv">
-                <button id="AddUser" class="btn btn-default">Invite another friend</button>
-    </div>
+   <div id="templated">
+
+<table >
+    <tbody data-bind="template: { name: 'userRowTemplate', foreach: users }"></tbody>
+</table>
+ 
+    <script type="text/html" id="userRowTemplate">
+        <tr>
+            <td>User name: <input data-bind="value: Name"/></td>          
+           @* <td><a href="#" data-bind="click: function() { viewModelForTemplated.removeGift($data) }">Delete</a></td>*@
+        </tr>
+    </script>
+    
+       <p></p>
+    
+    <!-- when Add Gift is clicked, the method addGift() in the view model (viewModelForTemplated) object will be called -->
+       <button data-bind="click: addUser">Invite a User/s</button> 
+
+    <!-- when Save is clicked, the method save() in the view model (viewModelForTemplated) object will be called. Simple eh? -->
+   @* <button data-bind="click: save">Save</button>*@
+</div>
 
          <div>
             <p></p>
@@ -114,13 +104,28 @@
 @section Scripts {
 @Scripts.Render("~/bundles/jqueryval")
 @Scripts.Render("~/bundles/knockout")
+@Scripts.Render("~/bundles/knockoutvalidation")
 <script src="~/Scripts/moment-datepicker.js"></script>
 <script src="~/Scripts/moment-datepicker-ko.js"></script>
 <script type="text/javascript">
 
+    ko.validation.init({
+        errorElementClass: 'has-error',
+        errorMessageClass: 'help-block',
+        decorateElement: true
+    });
+
+
+    function User(item) {
+
+        var self = this;
+        self.UserName = ko.observable(item.UserName);
+
+    }
+
     var adhocModel = function () {
         var self = this;
-        self.Name = ko.observable();
+        self.Name = ko.observable().extend({required:true});
         self.Hour = ko.observable();
         self.DateString = ko.observable();
         self.Minute = ko.observable();
@@ -129,6 +134,14 @@
         self.MapUrl = ko.observable();
         self.LocationChoices = ko.observable(@Html.Raw(Json.Encode(Model.Locations)));
         self.selectedLocation = ko.observable(@Html.Raw(Json.Encode(Model.LocationsId)));
+        self.users = ko.observableArray();
+
+        self.addUser = function () {
+
+            var user = new User({ Name: ""});
+            this.users.push(user);
+
+        };
 
         var AdHocData = {
             Name: self.Name,
@@ -140,10 +153,20 @@
             MapUrl: self.MapUrl,
             LocationsId: self.selectedLocation
         };
-
-
-       
+     
         self.save = function () {
+
+            var errors = ko.validation.group(AdHocData, { deep: true });
+
+            errors.showAllMessages();
+
+            if (errors().length > 0) {
+                // something went wrong - you should see the error messages
+                alert("There are some errors. Please fix them and try save again.");
+                HideProgress();
+                return;
+            }
+
             //Ajax call to Insert the Employee
             $.ajax({
                 type: "POST",
@@ -174,8 +197,8 @@
         };
 
     }
-   
-    ko.applyBindings(adhocModel);
+
+    ko.applyBindingsWithValidation(adhocModel);
    
     $("form").submit(function () {
         if (!$(this).valid()) {
@@ -184,6 +207,10 @@
         else {
 
         }
+    });
+
+    $(document).ready(function () {
+        //console.log(adhocModel.isValid());
     });
 
 </script>

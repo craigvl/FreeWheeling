@@ -40,6 +40,11 @@ namespace FreeWheeling.UI
             bootstrap.CdnFallbackExpression = "window.jQuery";
             bundles.Add(knockout);
 
+            var knockoutvalidation = new ScriptBundle("~/bundles/knockoutvalidation", "//cdnjs.cloudflare.com/ajax/libs/knockout-validation/1.0.2/knockout.validation.min.js").Include(
+                      "~/Scripts/knockout.validation.js");
+            bootstrap.CdnFallbackExpression = "window.jQuery";
+            bundles.Add(knockoutvalidation);
+
             bundles.Add(new ScriptBundle("~/bundles/respond").Include(
                        "~/Scripts/respond.js"));
 
