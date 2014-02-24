@@ -7,7 +7,6 @@
 }
 
 <link href="~/Content/datepicker.css" rel="stylesheet" />
-<script src="~/Scripts/knockout-2.1.0.js"></script>
 
 @Html.ActionLink("Back Home <---", "Index", "Home", null, new { @class = "btn btn-info" })
 
@@ -19,42 +18,51 @@
     @Html.ValidationSummary(true)
     
    
-        <p></p>
+        @*<p></p>
         @Html.DropDownListFor(
              x => x.LocationsId,
     new SelectList(
         Model.Locations.ToList().Select(
-                     x => new { Value = x.id, Text = x.Name }
+                       x => new { Value = x.id, Text = x.Name, data_bind = "value:LocationsId, uniqueName:true" }
         ),
         "Value",
                  "Text", Model.LocationsId
     ),  new { @class = "form-control" }
-)
+    
+   
+)*@
+
+    <select data-bind="options: LocationChoices, optionsText: 'Name', optionsValue: 'id', selectedOptions: selectedLocation"></select>
+
         <p></p>
         <div><span class="RequiredField">*&nbsp;</span>bunch Name:</div>
         <div>
-            @Html.TextBoxFor(model => model.Name)
+            @Html.TextBoxFor(model => model.Name, new { data_bind = "value:Name, uniqueName:true", @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Name)          
         </div>   
        
     <div class="span5" id="MyDateDiv"><div></div></div>
 
+    @*<input id="MyDate" data-bind="datepicker: DateString, datepickerOptions: { dateFormat: 'dd-mm-yy' }" />*@
+
+    <input data-bind="datepicker: myDate, datepickerOptions: { }" />
+
         <div><span class="RequiredField">*&nbsp;</span>Date</div>
          @Html.ValidationMessageFor(model => model.DateString)
           
-        <div>
-            @Html.TextBoxFor(model => model.DateString,null, new { id = "MyDate", @class = ""})
-        </div>
+        @*<div>
+            @Html.TextBoxFor(model => model.DateString, null, new { id = "MyDate", data_bind = "value:DateString, uniqueName:true", @class = "form-control" })
+        </div>*@
                
         <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
         <div>
-            @Html.TextBoxFor(model => model.Hour)
+            @Html.TextBoxFor(model => model.Hour, new { data_bind = "value:Hour, uniqueName:true", @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Hour)
         </div>
     
         <div><span class="RequiredField">*&nbsp;</span>Minute</div>
         <div>
-            @Html.TextBoxFor(model => model.Minute)
+            @Html.TextBoxFor(model => model.Minute, new { data_bind = "value:Minute, uniqueName:true", @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Minute)
         </div>
            
@@ -63,30 +71,35 @@
         <div><span class="RequiredField">*&nbsp;</span>Start Location</div>
         
         <div> 
-            @Html.TextBoxFor(model => model.StartLocation)
+            @Html.TextBoxFor(model => model.StartLocation, new { data_bind = "value:StartLocation, uniqueName:true", @class = "form-control" })
             @Html.ValidationMessageFor(model => model.StartLocation)
         </div>
     
     <div>Description</div>
         
         <div> 
-            @Html.TextAreaFor(model => model.Description)
+            @Html.TextAreaFor(model => model.Description, new { data_bind = "value:Description, uniqueName:true", @class = "form-control" })
         </div>
     
     <div>Map (Enter <a target="_blank" href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</div>
         
         <div> 
-            @Html.TextBoxFor(model => model.MapUrl)
+            @Html.TextBoxFor(model => model.MapUrl, new { data_bind = "value:MapUrl, uniqueName:true", @class = "form-control" })
         </div>
-         
-        <div>
-            <p></p>
-            
-        </div>
+
+    <div id="InviteUserDiv">
+        Invite Users
+        @Html.TextBox("InviteUsers", null, new { @class = "form-control" })
+
+    </div>
     
+    <div id="AddUserDiv">
+                <button id="AddUser" class="btn btn-default">Invite another friend</button>
+    </div>
+
          <div>
             <p></p>
-             <input onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create Ad Hoc bunch" />
+             <input onclick="ShowProgress();" data-bind="click: save" id="btnSubmit" type="submit" value="Create Ad Hoc bunch" />
         </div>    
 }
 
@@ -98,18 +111,103 @@
 
 @section Scripts {
 @Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/knockout")
+
 <script src="~/Scripts/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
 
-    $(function () {
 
-        $('#MyDateDiv div').datepicker({
-        }).on('changeDate', function (e) {
-            $('#MyDate').val(e.format('dd/mm/yyyy'))
-        });
+    ko.bindingHandlers.datepicker = {
+        init: function (element, valueAccessor, allBindingsAccessor) {
+            //initialize datepicker with some optional options
+            var options = allBindingsAccessor().datepickerOptions || {};
+            $(element).datepicker(options);
 
-    });
+            //handle the field changing
+            ko.utils.registerEventHandler(element, "change", function () {
+                var observable = valueAccessor();
+                var date = Date.parse($(element).val());
+                observable(date.toString("dd/MM/yyyy"));
+                //observable($(element).datepicker("getDate"));
+            });
 
+            //handle disposal (if KO removes by the template binding)
+            ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
+                $(element).datepicker("destroy");
+            });
+
+        },
+        update: function (element, valueAccessor) {
+            var value = ko.utils.unwrapObservable(valueAccessor()),
+                current = $(element).datepicker("getDate");
+            var d = Date.parse(value);
+            if (value - current !== 0) {
+                $(element).datepicker("setDate", d.toString("dd/MM/yyyy"));
+            }
+        }
+    };
+
+
+
+
+    var adhocModel = function () {
+        var self = this;
+        self.Name = ko.observable();
+        self.Hour = ko.observable();
+        self.myDate = ko.observable(new Date("09/01/2011").toString("dd/MM/yyyy"));
+        self.Minute = ko.observable();
+        self.StartLocation = ko.observable();
+        self.Description = ko.observable();
+        self.MapUrl = ko.observable();
+        self.LocationChoices = ko.observable(@Html.Raw(Json.Encode(Model.Locations)));
+        self.selectedLocation = ko.observable(@Html.Raw(Json.Encode(Model.LocationsId)));
+
+        var AdHocData = {
+            Name: self.Name,
+            DateString: self.DateString,
+            Hour: self.Hour,
+            Minute: self.Minute,
+            StartLocation: self.StartLocation,
+            Description: self.Description,
+            MapUrl: self.MapUrl,
+            LocationsId: self.selectedLocation
+        };
+
+
+       
+        self.save = function () {
+            //Ajax call to Insert the Employee
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("CreateAdHoc", "Group")',
+                data: ko.toJSON(AdHocData), //Convert the Observable Data into JSON
+                contentType: "application/json",
+                success: function (data, textStatus, jqXHR) {
+                    var err = eval("(" + jqXHR.responseText + ")");
+                    if (data.success == false) {
+
+                        alert(err.Message);
+                        HideProgress();
+
+                    }
+
+                    if (data.success == true) {
+
+                     }
+                },
+                error: function () {
+                    alert("Failed");
+                }
+            });
+            //Ends Here
+        };
+
+    }
+
+
+    
+    ko.applyBindings(adhocModel);
+    
     $("form").submit(function () {
         if (!$(this).valid()) {
             HideProgress();

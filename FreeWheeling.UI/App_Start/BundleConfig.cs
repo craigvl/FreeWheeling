@@ -35,6 +35,11 @@ namespace FreeWheeling.UI
             bootstrap.CdnFallbackExpression = "window.jQuery";
             bundles.Add(bootstrap);
 
+            var knockout = new ScriptBundle("~/bundles/knockout", "http://cdnjs.cloudflare.com/ajax/libs/knockout/3.0.0/knockout-min.js").Include(
+                      "~/Scripts/knockout-3.0.0.js");
+            bootstrap.CdnFallbackExpression = "window.jQuery";
+            bundles.Add(knockout);
+
             bundles.Add(new ScriptBundle("~/bundles/respond").Include(
                        "~/Scripts/respond.js"));
 

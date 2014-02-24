@@ -80,7 +80,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateAdHoc(AdHocCreateModel _AdHocCreateModel)
+        public JsonResult CreateAdHoc(AdHocCreateModel _AdHocCreateModel)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Location _Location = repository.GetLocations().Where(l => l.id == _AdHocCreateModel.LocationsId).FirstOrDefault();
@@ -96,7 +96,8 @@ namespace FreeWheeling.UI.Controllers
                 ModelState.AddModelError(string.Empty, "Date is not in a valid date format");
                 _AdHocCreateModel.Locations = repository.GetLocations().ToList();
                 _AdHocCreateModel.LocationsId = _Location.id;
-                return View(_AdHocCreateModel);
+                return Json(new { success = false, Message = "Date is not a valid Date" }, JsonRequestBehavior.AllowGet);
+                //return View(_AdHocCreateModel);
             }
             else
             {
@@ -110,7 +111,7 @@ namespace FreeWheeling.UI.Controllers
                     ModelState.AddModelError(string.Empty, "Please select date and time that is greater than current date and time");
                     _AdHocCreateModel.Locations = repository.GetLocations().ToList();
                     _AdHocCreateModel.LocationsId = _Location.id;
-                    return View(_AdHocCreateModel);
+                    return Json(new { success = false, Message = "Please select date and time that is greater than current date and time" }, JsonRequestBehavior.AllowGet);
 
                 }
 
@@ -135,7 +136,7 @@ namespace FreeWheeling.UI.Controllers
                 repository.AddAdHocRide(NewAdHoc);
                 repository.Save();
 
-                return RedirectToAction("index", "home");  
+                return Json(new { success = true, Message = "New Organisation has been added." }, JsonRequestBehavior.AllowGet);  
             }
             
         }
