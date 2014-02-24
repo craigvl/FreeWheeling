@@ -246,6 +246,7 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Images\bike.jpg" />
     <Content Include="Content\Images\loader.gif" />
+    <Content Include="Content\moment-datepicker\datepicker.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -373,6 +374,10 @@
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-CN.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-TW.js" />
     <Content Include="Scripts\modernizr-2.7.1.js" />
+    <Content Include="Scripts\moment-datepicker-ko.js" />
+    <Content Include="Scripts\moment-datepicker.d.ts" />
+    <Content Include="Scripts\moment-datepicker.js" />
+    <Content Include="Scripts\moment-datepicker.min.js" />
     <Content Include="Scripts\moment-with-langs.js" />
     <Content Include="Scripts\moment-with-langs.min.js" />
     <Content Include="Scripts\moment.js" />

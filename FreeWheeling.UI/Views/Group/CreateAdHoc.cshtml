@@ -8,6 +8,7 @@
 
 <link href="~/Content/datepicker.css" rel="stylesheet" />
 
+
 @Html.ActionLink("Back Home <---", "Index", "Home", null, new { @class = "btn btn-info" })
 
 <h2>Create Ad Hoc bunch</h2>
@@ -45,7 +46,8 @@
 
     @*<input id="MyDate" data-bind="datepicker: DateString, datepickerOptions: { dateFormat: 'dd-mm-yy' }" />*@
 
-    <input data-bind="datepicker: myDate, datepickerOptions: { }" />
+    <input type="text" class="span2" data-bind="datepicker: DateString, datepickerOptions: { dataType: 'format', format: 'DD/MM/YYYY' }">
+
 
         <div><span class="RequiredField">*&nbsp;</span>Date</div>
          @Html.ValidationMessageFor(model => model.DateString)
@@ -112,49 +114,15 @@
 @section Scripts {
 @Scripts.Render("~/bundles/jqueryval")
 @Scripts.Render("~/bundles/knockout")
-
-<script src="~/Scripts/bootstrap-datepicker.js"></script>
+<script src="~/Scripts/moment-datepicker.js"></script>
+<script src="~/Scripts/moment-datepicker-ko.js"></script>
 <script type="text/javascript">
-
-
-    ko.bindingHandlers.datepicker = {
-        init: function (element, valueAccessor, allBindingsAccessor) {
-            //initialize datepicker with some optional options
-            var options = allBindingsAccessor().datepickerOptions || {};
-            $(element).datepicker(options);
-
-            //handle the field changing
-            ko.utils.registerEventHandler(element, "change", function () {
-                var observable = valueAccessor();
-                var date = Date.parse($(element).val());
-                observable(date.toString("dd/MM/yyyy"));
-                //observable($(element).datepicker("getDate"));
-            });
-
-            //handle disposal (if KO removes by the template binding)
-            ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
-                $(element).datepicker("destroy");
-            });
-
-        },
-        update: function (element, valueAccessor) {
-            var value = ko.utils.unwrapObservable(valueAccessor()),
-                current = $(element).datepicker("getDate");
-            var d = Date.parse(value);
-            if (value - current !== 0) {
-                $(element).datepicker("setDate", d.toString("dd/MM/yyyy"));
-            }
-        }
-    };
-
-
-
 
     var adhocModel = function () {
         var self = this;
         self.Name = ko.observable();
         self.Hour = ko.observable();
-        self.myDate = ko.observable(new Date("09/01/2011").toString("dd/MM/yyyy"));
+        self.DateString = ko.observable();
         self.Minute = ko.observable();
         self.StartLocation = ko.observable();
         self.Description = ko.observable();
@@ -193,6 +161,9 @@
 
                     if (data.success == true) {
 
+                        HideProgress();
+                        window.location.href = '@Url.Action("AddHocList", "Ride")'
+
                      }
                 },
                 error: function () {
@@ -203,11 +174,9 @@
         };
 
     }
-
-
-    
+   
     ko.applyBindings(adhocModel);
-    
+   
     $("form").submit(function () {
         if (!$(this).valid()) {
             HideProgress();
@@ -218,4 +187,5 @@
     });
 
 </script>
+
 }
