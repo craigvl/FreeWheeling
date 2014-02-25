@@ -70,12 +70,12 @@
    <div id="templated">
 
 <table >
-    <tbody data-bind="template: { name: 'userRowTemplate', foreach: users }"></tbody>
+    <tbody data-bind="template: { name: 'userRowTemplate', foreach: usersLines }"></tbody>
 </table>
  
     <script type="text/html" id="userRowTemplate">
         <tr>
-            <td>User name: <input data-bind="value: Name"/></td>          
+            <td>User name: <input data-bind="value: UserName" /></td>          
            @* <td><a href="#" data-bind="click: function() { viewModelForTemplated.removeGift($data) }">Delete</a></td>*@
         </tr>
     </script>
@@ -116,10 +116,10 @@
     });
 
 
-    function User(item) {
+    function UserModel() {
 
         var self = this;
-        self.UserName = ko.observable(item.UserName);
+        self.UserName = ko.observable();
 
     }
 
@@ -134,40 +134,48 @@
         self.MapUrl = ko.observable();
         self.LocationChoices = ko.observable(@Html.Raw(Json.Encode(Model.Locations)));
         self.selectedLocation = ko.observable(@Html.Raw(Json.Encode(Model.LocationsId)));
-        self.users = ko.observableArray();
+        self.usersLines = ko.observableArray([new UserModel]);
 
         self.addUser = function () {
 
-            var user = new User({ Name: ""});
-            this.users.push(user);
+            self.usersLines.push(new UserModel({UserName:""}));
 
         };
 
-        var AdHocData = {
-            Name: self.Name,
-            DateString: self.DateString,
-            Hour: self.Hour,
-            Minute: self.Minute,
-            StartLocation: self.StartLocation,
-            Description: self.Description,
-            MapUrl: self.MapUrl,
-            LocationsId: self.selectedLocation
-        };
-     
         self.save = function () {
+
+            var UsersToSave = $.map(self.usersLines(), function (line) {
+                return {
+                    Name: line.UserName
+                }
+            });
+
+            var AdHocData = {
+                Name: self.Name,
+                DateString: self.DateString,
+                Hour: self.Hour,
+                Minute: self.Minute,
+                StartLocation: self.StartLocation,
+                Description: self.Description,
+                MapUrl: self.MapUrl,
+                LocationsId: self.selectedLocation,
+                InviteUsers: UsersToSave
+            };
 
             var errors = ko.validation.group(AdHocData, { deep: true });
 
             errors.showAllMessages();
 
-            if (errors().length > 0) {
+            if (errors().length > 0) {  
                 // something went wrong - you should see the error messages
                 alert("There are some errors. Please fix them and try save again.");
                 HideProgress();
                 return;
             }
 
-            //Ajax call to Insert the Employee
+            //self.AdHocData(self.AdHocData.concat(UsersToSave));
+
+            //Ajax call to Insert the Ad Hoc Bunch
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("CreateAdHoc", "Group")',

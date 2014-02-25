@@ -169,7 +169,7 @@ namespace FreeWheeling.UI.Models
 
     public class AdHocCreateUserModel
     {
-        public string UserName { get; set; }   
+        public string Name { get; set; }   
     }
     
     public class GroupCreateModel
