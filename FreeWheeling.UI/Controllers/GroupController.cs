@@ -141,6 +141,25 @@ namespace FreeWheeling.UI.Controllers
             
         }
 
+        [HttpGet]
+        public JsonResult GetNames(string term)
+        {
+            // A list of names to mimic results from a database
+            List<string> nameList = new List<string>
+            {
+                "Jonathan", "Lisa", "Jordan", "Tyler", "Susan", "Brandon", "Clayton", "Elizabeth", "Jennifer"
+            };
+
+            var results = nameList.Where(n =>
+                n.StartsWith(term, StringComparison.OrdinalIgnoreCase));
+
+            return new JsonResult()
+            {
+                Data = results.ToArray(),
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
         public ActionResult EditGroup(int groupId)
         {
 
