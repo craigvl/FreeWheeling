@@ -33,26 +33,26 @@
          @Html.ValidationMessageFor(model => model.DateString)
           <p></p>
         <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
-        <div>
-            @Html.TextBoxFor(model => model.Hour, new { data_bind = "value:Hour, uniqueName:true", @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Hour)
-        </div>
+    <div data-bind="validationElement: Hour">
+        @Html.TextBoxFor(model => model.Hour, new { data_bind = "value:Hour, uniqueName:true", @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Hour)
+    </div>
     <p></p>
         <div><span class="RequiredField">*&nbsp;</span>Minute</div>
-        <div>
-            @Html.TextBoxFor(model => model.Minute, new { data_bind = "value:Minute, uniqueName:true", @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Minute)
-        </div>
-           
+    <div data-bind="validationElement: Minute">
+        @Html.TextBoxFor(model => model.Minute, new { data_bind = "value:Minute, uniqueName:true", @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Minute)
+    </div>
+
         <hr />
     
         <div><span class="RequiredField">*&nbsp;</span>Start Location</div>
-        
-        <div> 
-            @Html.TextBoxFor(model => model.StartLocation, new { data_bind = "value:StartLocation, uniqueName:true", @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.StartLocation)
-        </div>
-    
+
+    <div data-bind="validationElement: StartLocation">
+        @Html.TextBoxFor(model => model.StartLocation, new { data_bind = "value:StartLocation, uniqueName:true", @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.StartLocation)
+    </div>
+
     <div>Description</div>
         
         <div> 
@@ -126,10 +126,10 @@
     var adhocModel = function () {
         var self = this;
         self.Name = ko.observable().extend({required:true});
-        self.Hour = ko.observable();
-        self.DateString = ko.observable();
-        self.Minute = ko.observable();
-        self.StartLocation = ko.observable();
+        self.Hour = ko.observable().extend({ required: true, digit: true, min: 0, max: 24 });
+        self.DateString = ko.observable().extend({ required: true });
+        self.Minute = ko.observable().extend({ required: true, digit: true, min: 0, max: 60 });
+        self.StartLocation = ko.observable().extend({ required: true });
         self.Description = ko.observable();
         self.MapUrl = ko.observable();
         self.LocationChoices = ko.observable(@Html.Raw(Json.Encode(Model.Locations)));
@@ -172,8 +172,6 @@
                 HideProgress();
                 return;
             }
-
-            //self.AdHocData(self.AdHocData.concat(UsersToSave));
 
             //Ajax call to Insert the Ad Hoc Bunch
             $.ajax({
