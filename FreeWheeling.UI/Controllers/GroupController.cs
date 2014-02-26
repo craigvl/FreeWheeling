@@ -82,62 +82,62 @@ namespace FreeWheeling.UI.Controllers
         [HttpPost]
         public JsonResult CreateAdHoc(AdHocCreateModel _AdHocCreateModel)
         {
-            //var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            //Location _Location = repository.GetLocations().Where(l => l.id == _AdHocCreateModel.LocationsId).FirstOrDefault();
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            Location _Location = repository.GetLocations().Where(l => l.id == _AdHocCreateModel.LocationsId).FirstOrDefault();
 
-            //CultureHelper _CultureHelper = new CultureHelper(repository);
-            //TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-            //DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
+            CultureHelper _CultureHelper = new CultureHelper(repository);
+            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
 
-            //DateTime dateResult;
+            DateTime dateResult;
 
-            //if (!DateTime.TryParse(_AdHocCreateModel.DateString, _CultureHelper.GetCulture(_Location.id), DateTimeStyles.None, out dateResult))
-            //{
-            //    ModelState.AddModelError(string.Empty, "Date is not in a valid date format");
-            //    _AdHocCreateModel.Locations = repository.GetLocations().ToList();
-            //    _AdHocCreateModel.LocationsId = _Location.id;
-            //    return Json(new { success = false, Message = "Date is not a valid Date" }, JsonRequestBehavior.AllowGet);
-            //    //return View(_AdHocCreateModel);
-            //}
-            //else
-            //{
+            if (!DateTime.TryParse(_AdHocCreateModel.DateString, _CultureHelper.GetCulture(_Location.id), DateTimeStyles.None, out dateResult))
+            {
+                ModelState.AddModelError(string.Empty, "Date is not in a valid date format");
+                _AdHocCreateModel.Locations = repository.GetLocations().ToList();
+                _AdHocCreateModel.LocationsId = _Location.id;
+                return Json(new { success = false, Message = "Date is not a valid Date" }, JsonRequestBehavior.AllowGet);
+                //return View(_AdHocCreateModel);
+            }
+            else
+            {
 
-            //    DateTime da = DateTime.ParseExact(_AdHocCreateModel.DateString, "dd/MM/yyyy", null);
-            //    DateTime _RideDate = da.Date.Add(new TimeSpan(_AdHocCreateModel.Hour, _AdHocCreateModel.Minute, 0));
+                DateTime da = DateTime.ParseExact(_AdHocCreateModel.DateString, "dd/MM/yyyy", null);
+                DateTime _RideDate = da.Date.Add(new TimeSpan(_AdHocCreateModel.Hour, _AdHocCreateModel.Minute, 0));
 
-            //    if (_RideDate < LocalNow)
-            //    {
+                if (_RideDate < LocalNow)
+                {
 
-            //        ModelState.AddModelError(string.Empty, "Please select date and time that is greater than current date and time");
-            //        _AdHocCreateModel.Locations = repository.GetLocations().ToList();
-            //        _AdHocCreateModel.LocationsId = _Location.id;
-            //        return Json(new { success = false, Message = "Please select date and time that is greater than current date and time" }, JsonRequestBehavior.AllowGet);
+                    ModelState.AddModelError(string.Empty, "Please select date and time that is greater than current date and time");
+                    _AdHocCreateModel.Locations = repository.GetLocations().ToList();
+                    _AdHocCreateModel.LocationsId = _Location.id;
+                    return Json(new { success = false, Message = "Please select date and time that is greater than current date and time" }, JsonRequestBehavior.AllowGet);
 
-            //    }
+                }
 
-            //    Ad_HocRide NewAdHoc = new Ad_HocRide
-            //    {
-            //        Name = _AdHocCreateModel.Name,
-            //        AverageSpeed = _AdHocCreateModel.AverageSpeed,
-            //        Location = _Location,
-            //        RideDate = _RideDate,
-            //        Creator = currentUser.UserName,
-            //        StartLocation = _AdHocCreateModel.StartLocation,
-            //        Description = _AdHocCreateModel.Description,
-            //        RideTime = _RideDate.TimeOfDay.ToString(),
-            //        RideHour = _RideDate.Hour,
-            //        RideMinute = _RideDate.Minute,
-            //        CreatedBy = currentUser.Id,
-            //        CreatedTimeStamp = LocalNow,
-            //        ModifiedTimeStamp = LocalNow,
-            //        MapUrl = _AdHocCreateModel.MapUrl
-            //    };
+                Ad_HocRide NewAdHoc = new Ad_HocRide
+                {
+                    Name = _AdHocCreateModel.Name,
+                    AverageSpeed = _AdHocCreateModel.AverageSpeed,
+                    Location = _Location,
+                    RideDate = _RideDate,
+                    Creator = currentUser.UserName,
+                    StartLocation = _AdHocCreateModel.StartLocation,
+                    Description = _AdHocCreateModel.Description,
+                    RideTime = _RideDate.TimeOfDay.ToString(),
+                    RideHour = _RideDate.Hour,
+                    RideMinute = _RideDate.Minute,
+                    CreatedBy = currentUser.Id,
+                    CreatedTimeStamp = LocalNow,
+                    ModifiedTimeStamp = LocalNow,
+                    MapUrl = _AdHocCreateModel.MapUrl
+                };
 
-            //    repository.AddAdHocRide(NewAdHoc);
-            //    repository.Save();
+                repository.AddAdHocRide(NewAdHoc);
+                repository.Save();
 
                 return Json(new { success = true, Message = "New Organisation has been added." }, JsonRequestBehavior.AllowGet);  
-            //}
+            }
             
         }
 
