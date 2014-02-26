@@ -145,7 +145,6 @@ namespace FreeWheeling.UI.Controllers
         [HttpGet]
         public JsonResult GetNames(string term)
         {
-
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
             // A list of names to mimic results from a database
