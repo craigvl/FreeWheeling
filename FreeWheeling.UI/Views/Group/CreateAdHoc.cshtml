@@ -124,6 +124,8 @@
     });
 
 
+    var AdHocData;
+
     function UserModel() {
 
         var self = this;
@@ -158,7 +160,7 @@
                 }
             });
 
-            var AdHocData = {
+            AdHocData = {
                 Name: self.Name,
                 DateString: self.DateString,
                 Hour: self.Hour,
@@ -170,7 +172,7 @@
                 InviteUsers: UsersToSave
             };
 
-            AdHocData.InviteUsers = UsersToSave;
+            //AdHocData.InviteUsers = UsersToSave;
 
             var errors = ko.validation.group(adhocModel, { deep: true });
 
@@ -189,7 +191,7 @@
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("CreateAdHoc", "Group")',
-                data: ko.toJSON(adhocModel.name), //Convert the Observable Data into JSON
+                data: ko.toJSON(AdHocData), //Convert the Observable Data into JSON
                 contentType: "application/json",
                 success: function (data, textStatus, jqXHR) {
                     var err = eval("(" + jqXHR.responseText + ")");
