@@ -141,14 +141,15 @@ namespace FreeWheeling.UI.Controllers
             
         }
 
+        //Get user names for auto lookup
         [HttpGet]
         public JsonResult GetNames(string term)
         {
+
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+
             // A list of names to mimic results from a database
-            List<string> nameList = new List<string>
-            {
-                "Jonathan", "Lisa", "Jordan", "Tyler", "Susan", "Brandon", "Clayton", "Elizabeth", "Jennifer"
-            };
+            List<string> nameList = idb.Users.Where(y => y.LocationID == 1).Select(i => i.UserName).ToList();
 
             var results = nameList.Where(n =>
                 n.StartsWith(term, StringComparison.OrdinalIgnoreCase));

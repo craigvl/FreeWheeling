@@ -7,7 +7,7 @@
 }
 
 <link href="~/Content/datepicker.css" rel="stylesheet" />
-
+@Styles.Render("~/Content/jqueryui")
 
 @Html.ActionLink("Back Home <---", "Index", "Home", null, new { @class = "btn btn-info" })
 
@@ -66,13 +66,7 @@
         </div>
 
     <p></p>
-    
-   <div>
-
-       <input class="typeahead tt-input" type="text" placeholder="numbers (1-10)" autocomplete="off" spellcheck="false" dir="auto" style="position: relative; vertical-align: top; background-color: transparent;">
-       <p></p>
-   </div>
-    
+        
    <div id="templated">
 
 <table >
@@ -81,7 +75,7 @@
  
     <script type="text/html" id="userRowTemplate">
         <tr>
-            <td>User name: <input data-bind="value: UserName" /></td>          
+            <td>User name: <input id="InviteUser" data-bind="value: UserName" /></td>          
            @* <td><a href="#" data-bind="click: function() { viewModelForTemplated.removeGift($data) }">Delete</a></td>*@
         </tr>
     </script>
@@ -111,39 +105,19 @@
 @Scripts.Render("~/bundles/jqueryval")
 @Scripts.Render("~/bundles/knockout")
 @Scripts.Render("~/bundles/knockoutvalidation")
+@Scripts.Render("~/bundles/jqueryui")
 <script src="~/Scripts/moment-datepicker.js"></script>
 <script src="~/Scripts/moment-datepicker-ko.js"></script>
 
 <script type="text/javascript">
 
-    var numbers = new Bloodhound({
-        datumTokenizer: function (d) { return Bloodhound.tokenizers.whitespace(d.num); },
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        local: [
-          { num: 'one' },
-          { num: 'two' },
-          { num: 'three' },
-          { num: 'four' },
-          { num: 'five' },
-          { num: 'six' },
-          { num: 'seven' },
-          { num: 'eight' },
-          { num: 'nine' },
-          { num: 'ten' }
-        ]
-    });
+    $('body').on('focus',"#InviteUser", function(){
+        $(this).autocomplete({
+            source: '@Url.Action("GetNames")'
+        });
+    })
 
-    // initialize the bloodhound suggestion engine
-    numbers.initialize();
-
-    // instantiate the typeahead UI
-    $('.typeahead').typeahead(null, {
-        displayKey: 'num',
-        source: numbers.ttAdapter()
-    });
-
-
-    ko.validation.init({
+      ko.validation.init({
         errorElementClass: 'has-error',
         errorMessageClass: 'help-block',
         decorateElement: true
@@ -250,8 +224,10 @@
     });
 
     $(document).ready(function () {
-        //console.log(adhocModel.isValid());
-    });
+        $('#InviteUser').autocomplete({
+            source: '@Url.Action("GetNames")'
+        });
+    })
 
 </script>
 

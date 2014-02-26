@@ -45,6 +45,9 @@ namespace FreeWheeling.UI
             bootstrap.CdnFallbackExpression = "window.jQuery";
             bundles.Add(knockoutvalidation);
 
+            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
+                        "~/Scripts/jquery-ui-{version}.custom.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/respond").Include(
                        "~/Scripts/respond.js"));
 
@@ -61,6 +64,9 @@ namespace FreeWheeling.UI
 
             bundles.Add(new StyleBundle("~/Content/css", "//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css").Include(
                       "~/Content/bootstrap.css"));
+
+            bundles.Add(new StyleBundle("~/Content/jqueryui", "//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/jquery-ui-1.10.4.custom.min.css").Include(
+                      "~/Content/jquery-ui-1.10.4.custom.css"));
         }
     }
 }

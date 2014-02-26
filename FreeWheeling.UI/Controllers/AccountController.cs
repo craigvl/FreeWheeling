@@ -325,6 +325,10 @@ namespace FreeWheeling.UI.Controllers
             base.Dispose(disposing);
         }
 
+        #region CustomFunctions
+
+        #endregion
+
         #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
