@@ -164,12 +164,12 @@ namespace FreeWheeling.UI.Models
         public string Creator { get; set; }
         public string Description { get; set; }
         public string MapUrl { get; set; }
-        public List<AdHocCreateUserModel> InviteUsers { get; set; }
+        public List<InviteUser> InviteUsers { get; set; }
     }
 
-    public class AdHocCreateUserModel
+    public class InviteUser
     {
-        public string Name { get; set; }   
+        public string _UserToSave { get; set; }
     }
     
     public class GroupCreateModel
