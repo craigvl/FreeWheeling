@@ -13,6 +13,7 @@ using FreeWheeling.Domain.Abstract;
 using FreeWheeling.UI.Models;
 using FreeWheeling.UI.Infrastructure;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -46,7 +47,6 @@ namespace FreeWheeling.UI.Controllers
 
         public PartialViewResult GetGroupDetails(int id)
         {
-
             Group _Group = new Group();
 
             _Group = repository.GetGroupByID(id);
@@ -101,18 +101,15 @@ namespace FreeWheeling.UI.Controllers
             }
             else
             {
-
                 DateTime da = DateTime.ParseExact(_AdHocCreateModel.DateString, "dd/MM/yyyy", null);
                 DateTime _RideDate = da.Date.Add(new TimeSpan(_AdHocCreateModel.Hour, _AdHocCreateModel.Minute, 0));
 
                 if (_RideDate < LocalNow)
                 {
-
                     ModelState.AddModelError(string.Empty, "Please select date and time that is greater than current date and time");
                     _AdHocCreateModel.Locations = repository.GetLocations().ToList();
                     _AdHocCreateModel.LocationsId = _Location.id;
                     return Json(new { success = false, Message = "Please select date and time that is greater than current date and time" }, JsonRequestBehavior.AllowGet);
-
                 }
 
                 Ad_HocRide NewAdHoc = new Ad_HocRide
@@ -135,6 +132,24 @@ namespace FreeWheeling.UI.Controllers
 
                 repository.AddAdHocRide(NewAdHoc);
                 repository.Save();
+
+                Task T = new Task(() =>
+                {
+
+                List<string> UserNames = new List<string>();
+
+                foreach (InviteUser item in _AdHocCreateModel.InviteUsers)
+                {
+                    UserNames.Add(item._UserToSave);                 
+                }
+
+                UserHelper _UserHelp = new UserHelper();
+
+                _UserHelp.SendUsersAdHocEmail(_UserHelp.GetEmailsForUserNames(UserNames));
+
+                });
+
+                T.Start();
 
                 return Json(new { success = true, Message = "New Organisation has been added." }, JsonRequestBehavior.AllowGet);  
             }
@@ -162,7 +177,6 @@ namespace FreeWheeling.UI.Controllers
 
         public ActionResult EditGroup(int groupId)
         {
-
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
             if (!repository.IsGroupCreator(groupId, currentUser.Id))
@@ -195,17 +209,13 @@ namespace FreeWheeling.UI.Controllers
 
                 foreach (DayOfWeekViewModel ditem in _EditGroupModel.DaysOfWeek)
                 {
-
                     foreach (CycleDays item in CurrentGroup.RideDays)
                     {
-
                         if (ditem.Name == item.DayOfWeek)
                         {
                             ditem.Checked = true;
                         }
-
                     }
-
                 }
                 return View(_EditGroupModel);
             }
@@ -224,15 +234,11 @@ namespace FreeWheeling.UI.Controllers
 
             foreach (DayOfWeekViewModel item in _EditGroupModel.DaysOfWeek)
             {
-
                 if (item.Checked)
                 {
-
                     CycleDays NewDay = new CycleDays { DayOfWeek = item.Name };
                     _CycleDays.Add(NewDay);
-
                 }
-
             }
 
             Group UpdatedGroup = new Group
@@ -272,32 +278,24 @@ namespace FreeWheeling.UI.Controllers
 
             if (!repository.IsGroupCreator(GroupId, currentUser.Id))
             {
-
                 return RedirectToAction("Index", "Group");
-
             }
             else
             {
                 Group CurrentGroup = repository.GetGroupByID(GroupId);
                 DeleteGroupModel _DeleteGroupModel = new DeleteGroupModel { GroupId = GroupId, Name = CurrentGroup.name };
                 return View(_DeleteGroupModel);
-
             }
-
-
         }
 
         [HttpPost, ActionName("DeleteGroup")]
         public ActionResult DeleteConfirmed(int GroupId)
         {
-
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
             if (!repository.IsGroupCreator(GroupId, currentUser.Id))
             {
-
                 return RedirectToAction("Index", "Group");
-
             }
             else
             {
@@ -305,13 +303,10 @@ namespace FreeWheeling.UI.Controllers
                 repository.Save();
                 return RedirectToAction("Index", "Group");
             }
-
-
         }
 
         public ActionResult Create()
         {
-
             GroupCreateModel _GroupCreateModel = new GroupCreateModel();
             _GroupCreateModel.Locations = repository.GetLocations().ToList();
             _GroupCreateModel.Hour = 5;
@@ -323,13 +318,11 @@ namespace FreeWheeling.UI.Controllers
             _GroupCreateModel.LocationsId = _Location.id;
 
             return View(_GroupCreateModel);
-
         }
        
         [HttpPost]
         public ActionResult Create(GroupCreateModel _GroupCreateModel)
         {
-
             List<CycleDays> _CycleDays = new List<CycleDays>();
             Location _Location = repository.GetLocations().Where(l => l.id == _GroupCreateModel.LocationsId).FirstOrDefault();
 
@@ -342,15 +335,12 @@ namespace FreeWheeling.UI.Controllers
             
             foreach (DayOfWeekViewModel item in _GroupCreateModel.DaysOfWeek)
             {
-
                 if (item.Checked)
                 {
-
                     CycleDays NewDay = new CycleDays { DayOfWeek = item.Name };
                     _CycleDays.Add(NewDay);
                     DayOfWeekSelected = true;
                 }
-
             }
 
             if(!DayOfWeekSelected)
@@ -360,7 +350,6 @@ namespace FreeWheeling.UI.Controllers
                 _GroupCreateModel.LocationsId = _Location.id;
                 return View(_GroupCreateModel);
             }
-
 
             Group NewGroup = new Group
             {
@@ -384,7 +373,6 @@ namespace FreeWheeling.UI.Controllers
             repository.Save();
 
             return RedirectToAction("Index", "Group");
-
         }
 
         public ActionResult RemoveFromFavouriteList(int id, string title)
@@ -401,20 +389,16 @@ namespace FreeWheeling.UI.Controllers
 
             if(title == "Favourite bunches")
             {
-            return RedirectToAction("Mybunches", "Group");
+                return RedirectToAction("Mybunches", "Group");
             }
             else{
-
-                 return RedirectToAction("Index", "Group");
-
+                return RedirectToAction("Index", "Group");
             }
-
         }
 
         //// This is to add group to fav list
         public ActionResult Join(int id, string title)
         {
-
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Member _Member = repository.GetMemberByUserID(currentUser.Id);
             Group group = repository.GetGroupByID(id);
@@ -427,18 +411,11 @@ namespace FreeWheeling.UI.Controllers
 
         public ViewResult Mybunches(string searchString)
         {
-
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-         
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());      
             GroupModel _GroupModel = new GroupModel();
-
             GroupModelHelper _GroupHelper = new GroupModelHelper(repository);
-
             _GroupModel = _GroupHelper.PopulateGroupModel(currentUser.Id, currentUser.LocationID, searchString, true);
-            
             return View("Index",_GroupModel);
-
         }
-
     }
 }

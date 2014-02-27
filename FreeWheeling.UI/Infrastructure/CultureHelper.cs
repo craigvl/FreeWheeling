@@ -12,6 +12,7 @@ using System.Threading;
 
 namespace FreeWheeling.UI.Infrastructure
 {
+    [Authorize]
     public class CultureHelper
     {
 
@@ -27,31 +28,24 @@ namespace FreeWheeling.UI.Infrastructure
 
             Location _Location = repository.GetLocations().Where(l => l.id == UserLocationId).FirstOrDefault();
 
-
             if (_Location.Name == "Townsville" ||
                 _Location.Name == "Cairns")
             {
-
                 return  new CultureInfo("en-AU");
 
             }else
             {
-
                 return new CultureInfo("en-AU");
             }
-
             
         }
 
         public TimeZoneInfo GetTimeZoneInfo(int? UserLocationId)
         {
-
             if (UserLocationId == null)
             {
-
                 TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
                 return TZone;
-
             }
             else
             {
@@ -62,11 +56,9 @@ namespace FreeWheeling.UI.Infrastructure
                 {
                     TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
                     return TZone;
-
                 }
                 else
                 {
-
                     TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
                     return TZone;
                 }
