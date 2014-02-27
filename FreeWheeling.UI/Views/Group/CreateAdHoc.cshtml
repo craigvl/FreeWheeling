@@ -75,7 +75,7 @@
  
     <script type="text/html" id="userRowTemplate">
         <tr>
-            <td>User name: <input id="InviteUser" data-bind="value: UserName" /></td>          
+            <td>User name: <input id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" /></td>          
            @* <td><a href="#" data-bind="click: function() { viewModelForTemplated.removeGift($data) }">Delete</a></td>*@
         </tr>
     </script>
@@ -154,11 +154,13 @@
 
         self.save = function () {
 
-            var UsersToSave = $.map(self.usersLines(), function (line) {
-                return {
-                    _UserToSave: line.UserName
-                }
-            });
+            //var UsersToSave = $.map(self.usersLines(), function (line) {
+            //    return {                
+            //    _UserToSave: line.UserName
+            //    }
+            //});
+
+            //alert(JSON.stringify(ko.toJSON(UsersToSave)));
 
             AdHocData = {
                 Name: self.Name,
@@ -169,10 +171,12 @@
                 Description: self.Description,
                 MapUrl: self.MapUrl,
                 LocationsId: self.selectedLocation,
-                InviteUsers: UsersToSave
+                InviteUsers: self.usersLines()
             };
 
             //AdHocData.InviteUsers = UsersToSave;
+
+            //alert(JSON.stringify(ko.toJSON(AdHocData)));
 
             var errors = ko.validation.group(AdHocData, { deep: true });
 

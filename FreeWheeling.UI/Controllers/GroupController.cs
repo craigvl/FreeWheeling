@@ -140,7 +140,7 @@ namespace FreeWheeling.UI.Controllers
 
                 foreach (InviteUser item in _AdHocCreateModel.InviteUsers)
                 {
-                    UserNames.Add(item._UserToSave);                 
+                    UserNames.Add(item.UserName);                 
                 }
 
                 UserHelper _UserHelp = new UserHelper();

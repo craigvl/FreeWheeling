@@ -169,7 +169,7 @@ namespace FreeWheeling.UI.Models
 
     public class InviteUser
     {
-        public string _UserToSave { get; set; }
+        public string UserName { get; set; }
     }
     
     public class GroupCreateModel

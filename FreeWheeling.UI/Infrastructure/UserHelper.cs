@@ -1,4 +1,5 @@
 ﻿using FreeWheeling.UI.DataContexts;
+using Postal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +43,10 @@ namespace FreeWheeling.UI.Infrastructure
 
             foreach (string email in Emails)
             {
-                
+                dynamic emailToUser = new Email("SendAdHocEmails");
+                emailToUser.To = "webninja@example.com";
+                emailToUser.UserName = "craig";
+                emailToUser.Send();             
             }
 
 
