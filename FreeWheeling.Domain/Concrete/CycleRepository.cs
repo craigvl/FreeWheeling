@@ -50,14 +50,12 @@ namespace FreeWheeling.Domain.Concrete
         public Group GetGroupByID(int id)
         {
             Group group = context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").Where(i => i.id == id).FirstOrDefault();
-
             return group;
         }
 
         public Group GetGroupByIDNoIncludes(int id)
         {
             Group group = context.Groups.Where(i => i.id == id).FirstOrDefault();
-
             return group;
         }
 
@@ -80,13 +78,10 @@ namespace FreeWheeling.Domain.Concrete
 
             foreach (Group item in Groups)
             {
-
                 GroupMemeberOf.Add(item.id);
-
             }
 
             return (GroupMemeberOf);
-
         }
 
         public IEnumerable<Location> GetLocations()
@@ -96,9 +91,7 @@ namespace FreeWheeling.Domain.Concrete
 
         public string GetLocationName(int? id)
         {
-
             return context.Locations.Where(l => l.id == id).Select(o => o.Name).FirstOrDefault();
-
         }
 
         public Ride GetRideByID(int id)
@@ -113,9 +106,7 @@ namespace FreeWheeling.Domain.Concrete
 
             if (context.Rides.Where(t => t.Group.id == _Group.id && t.RideDate >= LocalNow).Count() == 1)
             {
-
                 PopulateRideDatesFromDate(_Group, _Ride.RideDate, TimeZone);
-
             }
 
             return _Ride;
@@ -166,7 +157,6 @@ namespace FreeWheeling.Domain.Concrete
 
         public List<Rider> GetRidersForRide(int id, TimeZoneInfo TimeZone)
         {
-
             List<Rider> Riders = context.Riders.Where(r => r.Ride.id == id).ToList();
 
             foreach (Rider R in Riders)
@@ -209,7 +199,6 @@ namespace FreeWheeling.Domain.Concrete
 
         public List<AdHocRider> GetRidersForAdHocRide(int AdHocRideid, TimeZoneInfo TimeZone)
         {
-
             List<AdHocRider> AList = context.AdHocRider.Where(r => r.AdHocRide.id == AdHocRideid).ToList();
 
             foreach (AdHocRider AdHoc in AList)
@@ -217,9 +206,7 @@ namespace FreeWheeling.Domain.Concrete
                 AdHoc.LeaveTime = TimeZoneInfo.ConvertTimeFromUtc(AdHoc.LeaveTime, TimeZone);
             }
 
-
             return AList;
-
         }
 
         /// <summary>
@@ -253,8 +240,7 @@ namespace FreeWheeling.Domain.Concrete
                 Member NewMember = new Member { userId = UserId, Group = _Group };
                 context.Members.Add(NewMember);
                 context.Entry(NewMember).State = System.Data.Entity.EntityState.Added;
-            }
-       
+            }      
         }
 
         public void AddRider(Rider _Rider, Group _Group)
@@ -275,28 +261,23 @@ namespace FreeWheeling.Domain.Concrete
                 }
                 else
                 {
-
                     Rider NewRider = new Rider { userId = _Rider.userId, PercentKeen = _Rider.PercentKeen, Ride = _Rider.Ride, Name = _Rider.Name, LeaveTime = _Rider.LeaveTime };
                     context.Riders.Add(NewRider);
                     context.Entry(NewRider).State = System.Data.Entity.EntityState.Added;
-
                 }
 
             }
             else
             {
-
                 Rider NewRider = new Rider { userId = _Rider.userId, PercentKeen = _Rider.PercentKeen, Ride = _Rider.Ride, Name = _Rider.Name, LeaveTime = _Rider.LeaveTime };
                 context.Riders.Add(NewRider);
                 context.Entry(NewRider).State = System.Data.Entity.EntityState.Added;
-
             }
 
         }
 
         public void AddRideComment(string Comment, int RideId, string UserName)
         {
-
             Comment _comment = new Comment
             {
                 CommentText = Comment,
@@ -307,7 +288,6 @@ namespace FreeWheeling.Domain.Concrete
 
             context.Comment.Add(_comment);
             context.Entry(_comment).State = System.Data.Entity.EntityState.Added;
-
         }
 
         public void AddGroup(Group _Group)
@@ -336,7 +316,6 @@ namespace FreeWheeling.Domain.Concrete
 
             if (CurrentRiders != null)
             {
-
                 if (CurrentRiders.id != 0)
                 {
                     CurrentRiders.PercentKeen = _Rider.PercentKeen;
@@ -346,23 +325,17 @@ namespace FreeWheeling.Domain.Concrete
                 }
                 else
                 {
-
                     AdHocRider NewRider = new AdHocRider { userId = _Rider.userId, PercentKeen = _Rider.PercentKeen, AdHocRide = _Ride, Name = _Rider.Name, LeaveTime = _Rider.LeaveTime };
                     context.AdHocRider.Add(NewRider);
                     context.Entry(NewRider).State = System.Data.Entity.EntityState.Added;
-
                 }
-
             }
             else
             {
-
                 AdHocRider NewRider = new AdHocRider { userId = _Rider.userId, PercentKeen = _Rider.PercentKeen, AdHocRide = _Ride, Name = _Rider.Name, LeaveTime = _Rider.LeaveTime };
                 context.AdHocRider.Add(NewRider);
                 context.Entry(NewRider).State = System.Data.Entity.EntityState.Added;
-
             }
-
         }
 
         public void AddAdHocRideComment(string Comment, int RideId, string UserName)
@@ -381,9 +354,7 @@ namespace FreeWheeling.Domain.Concrete
 
         public void PopulateRideDatesFromDate(Group _Group, DateTime _DateTime, TimeZoneInfo _TimeZoneInfo)
         {
-
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, _TimeZoneInfo);
-
             //_DateTime = TimeZoneInfo.ConvertTimeFromUtc(_DateTime, TZone); //Not needed as time passed in is in local time.
             _Group.RideDays = GetCycleDaysForGroup(_Group.id);
             List<DayOfWeek> RideDays = new List<DayOfWeek>();
@@ -406,8 +377,7 @@ namespace FreeWheeling.Domain.Concrete
                 context.Rides.Add(NewRide);
                 context.Entry(NewRide).State = System.Data.Entity.EntityState.Added;
                 context.SaveChanges();
-            }
-        
+            }       
         }
 
         public Group PopulateRideDates(Group _Group, TimeZoneInfo _TimeZoneInfo)
@@ -430,10 +400,8 @@ namespace FreeWheeling.Domain.Concrete
 
             foreach (DayOfWeek day in RideDays)
             {              
-
                 if (LocalNow.DayOfWeek == day)
                 {
-
                    if (LocalNow.TimeOfDay <= (new TimeSpan(_Group.RideHour, _Group.RideMinute, 0)))
                    {
                        Ride NewRide = new Ride { Group = _Group, RideTime = _Group.RideTime, RideDate = LocalNow.Date.Add(new TimeSpan(_Group.RideHour, _Group.RideMinute, 0)) };
@@ -448,24 +416,19 @@ namespace FreeWheeling.Domain.Concrete
                         Ride NewRide = new Ride { Group = _Group, RideTime = _Group.RideTime, RideDate = nextdate.Date.Add(new TimeSpan(_Group.RideHour, _Group.RideMinute, 0)) };
                         context.Rides.Add(NewRide);
                         context.Entry(NewRide).State = System.Data.Entity.EntityState.Added;
-                        context.SaveChanges();
-                        
+                        context.SaveChanges();                      
                    }
 
                 }
                 else
                 {
                     DateTime nextdate = GetNextDateForDay(LocalNow, day);
-
                     Ride NewRide = new Ride { Group = _Group, RideTime = _Group.RideTime, RideDate = nextdate.Date.Add(new TimeSpan(_Group.RideHour, _Group.RideMinute, 0)) };
                     context.Rides.Add(NewRide);
                     context.Entry(NewRide).State = System.Data.Entity.EntityState.Added;
                     context.SaveChanges();
-
-                }
-     
+                }    
             }
-
             return _Group;
         }
 
@@ -489,7 +452,6 @@ namespace FreeWheeling.Domain.Concrete
             // f( c, d ) = g( c, d ) mod 7, g( c, d ) > 7
             //           = g( c, d ), g( c, d ) < = 7
             //   where 0 <= c < 7 and 0 <= d < 7
-
             int c = (int)current;
             int d = (int)desired;
             int n = (7 - c + d);
@@ -508,7 +470,6 @@ namespace FreeWheeling.Domain.Concrete
 
                 return false;
             }
-
         }
 
         public bool IsGroupCreator(int _GroupId, string UserId)
@@ -528,7 +489,6 @@ namespace FreeWheeling.Domain.Concrete
             {
                 return false;
             }
-
         }
 
         public bool IsIn(int RideId, string UserId)
@@ -609,7 +569,6 @@ namespace FreeWheeling.Domain.Concrete
         public void UpdateRideTimes(Group _Group, TimeZoneInfo TimeZone)
         {
             //Need to do work here if the time is less than current time and same day then might need to create new ride date 
-
             Group CurrentGroup = context.Groups.Where(i => i.id == _Group.id).FirstOrDefault();
             foreach (Ride _Ride in CurrentGroup.Rides)
             {
@@ -623,34 +582,26 @@ namespace FreeWheeling.Domain.Concrete
         public void DeleteGroup(int GroupId)
         {
             Group CurrentGroup = context.Groups.Include("Members").Where(g => g.id == GroupId).FirstOrDefault();
-
             foreach (Member _Member in CurrentGroup.Members.ToList())
             {
-
                 context.Entry(_Member).State = System.Data.Entity.EntityState.Deleted;
                 context.SaveChanges();
-
             }
 
             context.Groups.Remove(CurrentGroup);
-
             context.Entry(CurrentGroup).State = System.Data.Entity.EntityState.Deleted;
         }
 
         public void DeleteAdHocRide(int AdHocId)
         {
             Ad_HocRide CurrentAdHocRide = context.Ad_HocRide.Where(g => g.id == AdHocId).FirstOrDefault();
-
             context.Ad_HocRide.Remove(CurrentAdHocRide);
-
             context.Entry(CurrentAdHocRide).State = System.Data.Entity.EntityState.Deleted;
-
         }
 
         public void DeleteOldRides(int GroupId, TimeZoneInfo TimeZone)
         {
             Group CurrentGroup = context.Groups.Include("Rides").Where(g => g.id == GroupId).FirstOrDefault();
-
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZone);
 
             foreach (Ride _Ride in CurrentGroup.Rides.ToList())
@@ -674,6 +625,5 @@ namespace FreeWheeling.Domain.Concrete
         {
             context.SaveChanges();
         }
-
     }
 }
