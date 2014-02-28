@@ -167,6 +167,18 @@ namespace FreeWheeling.Domain.Concrete
             return Riders;
         }
 
+        public List<Rider> GetRidersForRideDontIncludeCurrentUser(int id, TimeZoneInfo TimeZone, string CurrentUserId)
+        {
+            List<Rider> Riders = context.Riders.Where(r => r.Ride.id == id).ToList();
+
+            foreach (Rider R in Riders)
+            {
+                R.LeaveTime = TimeZoneInfo.ConvertTimeFromUtc(R.LeaveTime, TimeZone);
+            }
+
+            return Riders.Where(g => g.userId != CurrentUserId).ToList();
+        }
+
         public Member GetMemberByUserID(string id)
         {
             return context.Members.Where(m => m.userId == id).FirstOrDefault();
@@ -207,6 +219,18 @@ namespace FreeWheeling.Domain.Concrete
             }
 
             return AList;
+        }
+
+        public List<AdHocRider> GetRidersForAdHocRideDontIncludeCurrentUser(int AdHocRideid, TimeZoneInfo TimeZone, string CurrentUserId)
+        {
+            List<AdHocRider> AList = context.AdHocRider.Where(r => r.AdHocRide.id == AdHocRideid).ToList();
+
+            foreach (AdHocRider AdHoc in AList)
+            {
+                AdHoc.LeaveTime = TimeZoneInfo.ConvertTimeFromUtc(AdHoc.LeaveTime, TimeZone);
+            }
+
+            return AList.Where(g => g.userId != CurrentUserId).ToList();
         }
 
         /// <summary>

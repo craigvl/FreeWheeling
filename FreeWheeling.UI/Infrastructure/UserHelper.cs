@@ -88,6 +88,36 @@ namespace FreeWheeling.UI.Infrastructure
             }
         }
 
+        public void SendUsersGroupAttendStatusEmail(List<string> Emails, string GroupName, string status, string UserName, int GroupID, string RideDate)
+        {
+            foreach (string email in Emails)
+            {
+                dynamic emailToUser = new Email("SendGroupRideEmailsAttend");
+                emailToUser.To = email;
+                emailToUser.UserName = UserName;
+                emailToUser.Status = status;
+                emailToUser.GroupName = GroupName;
+                emailToUser.RideDate = RideDate;
+                emailToUser.link = "http://localhost:6049/Ride?groupid=" + GroupID;
+                emailToUser.Send();
+            }
+        }
+
+        public void SendUsersAdHocAttendStatusEmail(List<string> Emails, string AdhocName, string UserName, string status, int AdhocID, string RideDate)
+        {
+            foreach (string email in Emails)
+            {
+                dynamic emailToUser = new Email("SendAdHocEmailsAttend");
+                emailToUser.To = email;
+                emailToUser.UserName = UserName;
+                emailToUser.Status = status;
+                emailToUser.AdHocName = AdhocName;
+                emailToUser.RideDate = RideDate;
+                emailToUser.link = "http://localhost:6049/Ride/ViewAdHocRide?adhocrideid=" + AdhocID;
+                emailToUser.Send();
+            }
+        }
+
         public string GetUserNameViaEmail(string email)
         {
             return idb.Users.Where(e => e.Email == email).Select(f => f.UserName).FirstOrDefault() ?? "New User";
