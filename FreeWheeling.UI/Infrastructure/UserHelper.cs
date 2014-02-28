@@ -59,6 +59,35 @@ namespace FreeWheeling.UI.Infrastructure
             }
         }
 
+        public void SendUsersNewCommentAdHocEmail(List<string> Emails, string AdhocName, string UserName, string comment, int AdhocID)
+        {
+            foreach (string email in Emails)
+            {
+                dynamic emailToUser = new Email("SendAdHocNewCommentEmails");
+                emailToUser.To = email;
+                emailToUser.UserName = UserName;
+                emailToUser.Comment = comment;
+                emailToUser.AdHocName = AdhocName;
+                emailToUser.link = "http://localhost:6049/Ride/ViewAdHocRide?adhocrideid=" + AdhocID;
+                emailToUser.Send();
+            }
+        }
+
+        public void SendUsersNewCommentRideEmail(List<string> Emails, string GroupName, string UserName, string comment, int GroupID, string RideDate)
+        {
+            foreach (string email in Emails)
+            {
+                dynamic emailToUser = new Email("SendGroupRideNewCommentEmails");
+                emailToUser.To = email;
+                emailToUser.UserName = UserName;
+                emailToUser.Comment = comment;
+                emailToUser.GroupName = GroupName;
+                emailToUser.link = "http://localhost:6049/Ride?groupid=" + GroupID;
+                emailToUser.RideDate = RideDate;
+                emailToUser.Send();
+            }
+        }
+
         public string GetUserNameViaEmail(string email)
         {
             return idb.Users.Where(e => e.Email == email).Select(f => f.UserName).FirstOrDefault() ?? "New User";

@@ -466,6 +466,8 @@
     <Content Include="Views\Emails\_ViewStart.cshtml" />
     <Content Include="Views\Emails\SendAdHocEmails.cshtml" />
     <Content Include="Views\Emails\SendAdHocEmailsDelete.cshtml" />
+    <Content Include="Views\Emails\SendGroupRideNewCommentEmails.cshtml" />
+    <Content Include="Views\Emails\SendAdHocNewCommentEmails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

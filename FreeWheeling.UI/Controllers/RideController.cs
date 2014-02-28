@@ -257,7 +257,7 @@ namespace FreeWheeling.UI.Controllers
         public ActionResult AddAdHocComment(int adhocrideid, string CommentString)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
-
+          
             if (CommentString != string.Empty)
             {
 
@@ -282,6 +282,32 @@ namespace FreeWheeling.UI.Controllers
                 });
 
                 T.Start();
+
+               Task E = new Task(() =>
+               {
+                   CultureHelper _CultureHelper = new CultureHelper(repository);
+                   TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
+
+                   Ad_HocRide _Ad_HocRide = repository.GetAdHocRideByID(adhocrideid);
+
+                   string AdHocRideName = _Ad_HocRide.Name;
+
+                   UserHelper _UserHelp = new UserHelper();
+                   List<AdHocRider> _AdHocRiders = repository.GetRidersForAdHocRide(adhocrideid, TZone);
+
+                   List<string> Emails = new List<string>();
+
+                   foreach (AdHocRider item in _AdHocRiders)
+                   {
+                       string email = _UserHelp.GetUserEmailViaUserId(item.userId);
+                       Emails.Add(email);
+                   }
+
+                   _UserHelp.SendUsersNewCommentAdHocEmail(Emails, AdHocRideName, currentUser.UserName, CommentString, adhocrideid);
+
+               });
+
+               E.Start();
 
                 return View("ViewAdHocRide", _adHocViewModel);
             }
@@ -320,6 +346,33 @@ namespace FreeWheeling.UI.Controllers
                 });
 
                 T.Start();
+
+                Task E = new Task(() =>
+                {
+                    CultureHelper _CultureHelper = new CultureHelper(repository);
+                    TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
+
+                    Ride _Ride = repository.GetRideByID(rideid);
+
+                    string RideDate = _Ride.RideDate.ToShortDateString();
+                    string GroupName = _Ride.Group.name;
+
+                    UserHelper _UserHelp = new UserHelper();
+                    List<Rider> _Riders = repository.GetRidersForRide(_Ride.id, TZone);
+
+                    List<string> Emails = new List<string>();
+
+                    foreach (Rider item in _Riders)
+                    {
+                        string email = _UserHelp.GetUserEmailViaUserId(item.userId);
+                        Emails.Add(email);
+                    }
+
+                    _UserHelp.SendUsersNewCommentRideEmail(Emails, GroupName, currentUser.UserName, CommentString, _Ride.Group.id, RideDate);
+
+                });
+
+                E.Start();
 
                 return View("Index", RideModel);
 
