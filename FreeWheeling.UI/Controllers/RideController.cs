@@ -110,6 +110,12 @@ namespace FreeWheeling.UI.Controllers
         public ActionResult DeleteConfirmed(int adhocrideid)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            CultureHelper _CultureHelper = new CultureHelper(repository);
+            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
+
+            Ad_HocRide _Ad_HocRide = repository.GetAdHocRideByID(adhocrideid);
+
+            string AdHocRideName = _Ad_HocRide.Name;
 
             if (!repository.IsAdHocCreator(adhocrideid, currentUser.Id))
             {
@@ -117,8 +123,29 @@ namespace FreeWheeling.UI.Controllers
             }
             else
             {
+                List<AdHocRider> _AdHocRiders = repository.GetRidersForAdHocRide(adhocrideid, TZone);
                 repository.DeleteAdHocRide(adhocrideid);
                 repository.Save();
+
+                Task T = new Task(() =>
+                {
+                    
+                    UserHelper _UserHelp = new UserHelper();
+
+                    List<string> Emails = new List<string>();
+
+                    foreach (AdHocRider item in _AdHocRiders)
+                    {
+                        string email = _UserHelp.GetUserEmailViaUserId(item.userId);
+                        Emails.Add(email);
+                    }
+
+                    _UserHelp.SendUsersDeleteAdHocEmail(Emails, AdHocRideName, currentUser.UserName);
+
+                });
+
+                T.Start();
+
                 return RedirectToAction("AddHocList", "Ride");
             }
         }

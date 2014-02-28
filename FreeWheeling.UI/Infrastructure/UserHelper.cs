@@ -33,7 +33,7 @@ namespace FreeWheeling.UI.Infrastructure
             return UserEmails;
         }
 
-        public void SendUsersAdHocEmail(List<string> Emails, int AdhocID, string createdby)
+        public void SendUsersCreateAdHocEmail(List<string> Emails, int AdhocID, string createdby)
         {
             foreach (string email in Emails)
             {
@@ -46,6 +46,19 @@ namespace FreeWheeling.UI.Infrastructure
             }
         }
 
+        public void SendUsersDeleteAdHocEmail(List<string> Emails, string AdhocName, string createdbyName)
+        {
+            foreach (string email in Emails)
+            {
+                dynamic emailToUser = new Email("SendAdHocEmailsDelete");
+                emailToUser.To = email;
+                emailToUser.UserName = GetUserNameViaEmail(email);
+                emailToUser.creator = createdbyName;
+                emailToUser.AdHocName = AdhocName;
+                emailToUser.Send();
+            }
+        }
+
         public string GetUserNameViaEmail(string email)
         {
             return idb.Users.Where(e => e.Email == email).Select(f => f.UserName).FirstOrDefault() ?? "New User";
@@ -54,6 +67,11 @@ namespace FreeWheeling.UI.Infrastructure
         public string GetUserNameViaUserId(string Userid)
         {
             return idb.Users.Where(e => e.Id == Userid).Select(f => f.UserName).FirstOrDefault();
+        }
+
+        public string GetUserEmailViaUserId(string Userid)
+        {
+            return idb.Users.Where(e => e.Id == Userid).Select(f => f.Email).FirstOrDefault();
         }
     }
 }
