@@ -1,12 +1,17 @@
 ﻿@model FreeWheeling.UI.Models.AdHocViewModel
 @using FreeWheeling.Domain.Entities
+@using Microsoft.AspNet.Identity;
 
 @{
     ViewBag.Title = "View Ad Hoc bunch";
 }
 
 @Html.Hidden("RideIdHidden", @Model.Ride.id)
+@Html.Hidden("RideUserNameHidden", User.Identity.GetUserName())
+@Html.Hidden("CommentCount", @Model.CommentCount)
+@Html.Hidden("KeenCount", @Model.KeenCount)
 <script src="http://js.pusher.com/2.1/pusher.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/mobileservices/MobileServices.Web-1.1.3.min.js"></script>
 
 @if (@Model.MapUrl != null)
 {
@@ -94,9 +99,9 @@
         }, FormMethod.Post))
     {
         <div class="input-group">
-            @Html.TextBox("CommentString", null, new { @class = "form-control-C" })
+            @Html.TextBox("CommentString", null, new { @class = "form-control-C", id = "CommentAdHoc" })
             <span class="input-group-addon-C">
-                <button class="btn btn-success" onclick="ShowProgress();" id="@("submit_" + @Model.Ride.id)" type="submit">Add comment</button>
+                <button class="btn btn-success" onclick="ShowProgress();" id="@("submit_AdHocComment")" type="submit">Add comment</button>
             </span>
         </div>
     }
@@ -108,13 +113,13 @@
 <h4><span class="label label-success">Actions</span></h4>
 
 <p></p>
-@Html.ActionLink("I'm In!", "AttendAdHocRider", "Ride", new { adhocrideid = @Model.Ride.id, commitment = "In" }, new { @class = "btn btn-primary", onclick = "ShowProgress();" })
+@Html.ActionLink("I'm In!", "AttendAdHocRider", "Ride", new { adhocrideid = @Model.Ride.id, commitment = "In" }, new { @class = "btn btn-primary", onclick = "ShowProgress();", @id = "In" })
 
 <p></p>
-@Html.ActionLink("I'm Out", "AttendAdHocRider", "Ride", new { adhocrideid = @Model.Ride.id, Commitment = "Out" }, new { @class = "btn btn-danger", onclick = "ShowProgress();" })
+@Html.ActionLink("I'm Out", "AttendAdHocRider", "Ride", new { adhocrideid = @Model.Ride.id, Commitment = "Out" }, new { @class = "btn btn-danger", onclick = "ShowProgress();", @id = "Out" })
 
 <p></p>
-@Html.ActionLink("On My Way!", "AttendAdHocRider", "Ride", new { adhocrideid = @Model.Ride.id, Commitment = "OnWay" }, new { @class = "btn btn-success", onclick = "ShowProgress();" })
+@Html.ActionLink("On My Way!", "AttendAdHocRider", "Ride", new { adhocrideid = @Model.Ride.id, Commitment = "OnWay" }, new { @class = "btn btn-success", onclick = "ShowProgress();", @id = "OnWay" })
 
 <p></p>
 
@@ -133,13 +138,72 @@
             var rideId = jQuery('#RideIdHidden').val();
             var pusher = new Pusher('dba777635636cbc16582');
             var channel = pusher.subscribe('BunchyRide' + rideId);
+            var userName = jQuery('#RideUserNameHidden').val();
+            var commentCount = jQuery('#CommentCount').val();
+            var keenCount = jQuery('#KeenCount').val();
 
             channel.bind('New-CommentsAdHoc', function (data) {
                 $("#collapseCommentPanel" + data.rideid).prepend("<p>" + data.username + " : " + data.message + "</p>");
                 $("#CommentCountSpan" + data.rideid).html("(" + data.commentcount + ")");
                 $("#CommentCountSpanSeeAll" + data.rideid).html("View All (" + data.commentcount + ")");
-                $("#submit_" + data.rideid).val("");
             });
+
+            //Azure Mobile Storage
+
+            var client = new WindowsAzure.MobileServiceClient(
+                        "http://bunchydev.azure-mobile.net/",
+                        "HIdMfCPoYsHPanowdOvYsYOnmbZbsq45"
+                         );
+
+            //Comments
+
+            $("#submit_AdHocComment").click(function () {
+                var item = {
+                    text: $("form #CommentAdHoc").val(),
+                    bunchid: rideId,
+                    username: userName,
+                    commentcount: commentCount
+                };
+                client.getTable("Itemadhoc").insert(item);
+            });
+
+            //Keen
+
+            $("#In").click(function () {
+                alert('ssss');
+                var item = {
+                    text: "In",
+                    bunchid: rideId,
+                    username: userName,
+                    keencount: KeenCount
+                };
+                client.getTable("keenadhoc").insert(item);
+            });
+
+            $("#Out").click(function () {
+                alert('ssss');
+                var item = {
+                    text: "Out",
+                    bunchid: rideId,
+                    username: userName,
+                    keencount: KeenCount
+                };
+                client.getTable("keenadhoc").insert(item);
+            });
+
+            $("#OnWay").click(function () {
+                alert('ssss');
+                var item = {
+                    text: "OnWay",
+                    bunchid: rideId,
+                    username: userName,
+                    keencount: KeenCount,
+                    leavetime: Date.now()
+                };
+                client.getTable("keenadhoc").insert(item);
+            });
+
+            $("form #submit_AdHocComment").val("");
 
             channel.bind('You-InAdHoc', function (data) {
                 //alert(data.message);

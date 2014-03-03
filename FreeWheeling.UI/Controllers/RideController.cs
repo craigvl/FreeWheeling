@@ -268,20 +268,20 @@ namespace FreeWheeling.UI.Controllers
                 RideModelHelper _AdHocHelper = new RideModelHelper(repository);
                 _adHocViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
 
-                Task T = new Task(() =>
-                {
-                    int CommentCount = repository.GetCommentCountForAdHocRide(adhocrideid);
-                    var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
-                    var result = pusher.Trigger("BunchyRide" + adhocrideid, "New-CommentsAdHoc", new
-                    {
-                        rideid = adhocrideid,
-                        message = CommentString,
-                        commentcount = CommentCount,
-                        username = User.Identity.Name
-                    });
-                });
+                //Task T = new Task(() =>
+                //{
+                //    int CommentCount = repository.GetCommentCountForAdHocRide(adhocrideid);
+                //    var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
+                //    var result = pusher.Trigger("BunchyRide" + adhocrideid, "New-CommentsAdHoc", new
+                //    {
+                //        rideid = adhocrideid,
+                //        message = CommentString,
+                //        commentcount = CommentCount,
+                //        username = User.Identity.Name
+                //    });
+                //});
 
-                T.Start();
+                //T.Start();
 
                Task E = new Task(() =>
                {
@@ -334,18 +334,20 @@ namespace FreeWheeling.UI.Controllers
                 RideModelHelper _RideHelper = new RideModelHelper(repository);
                 RideModel = _RideHelper.PopulateRideModel(ParentRideID, groupid, currentUser.Id, false, FromFavPage);
 
-                Task T = new Task(() =>
-                {
-                    int CommentCount = repository.GetCommentCountForRide(rideid);
-                    var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
-                    var result = pusher.Trigger("BunchyRide" + ParentRideID, "New-Comments", new { rideid = rideid,
-                        message = CommentString,
-                        commentcount = CommentCount,
-                        username = User.Identity.Name
-                    });
-                });
+                //Task T = new Task(() =>
+                //{
+                //    int CommentCount = repository.GetCommentCountForRide(rideid);
+                //    var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
+                //    var result = pusher.Trigger("BunchyRide" + ParentRideID, "New-Comments", new
+                //    {
+                //        rideid = rideid,
+                //        message = CommentString,
+                //        commentcount = CommentCount,
+                //        username = User.Identity.Name
+                //    });
+                //});
 
-                T.Start();
+                //T.Start();
 
                 Task E = new Task(() =>
                 {
@@ -409,46 +411,46 @@ namespace FreeWheeling.UI.Controllers
             RideModelHelper _RideHelper = new RideModelHelper(repository);
             RideModel = _RideHelper.PopulateRideModel(ParentRideID, Groupid, currentUser.Id, false, FromFavPage);
 
-            Task T = new Task(() =>
-               {
-                   var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
+            //Task T = new Task(() =>
+            //   {
+            //       var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
 
-                   if (Commitment == "In")
-                   {
-                       var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
-                       {
-                           rideid = RideId,
-                           message = Commitment,
-                           keencount = (repository.GetKeenCountForRide(RideId)),
-                           username = User.Identity.GetUserName()
-                       });
-                   }
+            //       if (Commitment == "In")
+            //       {
+            //           var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
+            //           {
+            //               rideid = RideId,
+            //               message = Commitment,
+            //               keencount = (repository.GetKeenCountForRide(RideId)),
+            //               username = User.Identity.GetUserName()
+            //           });
+            //       }
 
-                   if (Commitment == "Out")
-                   {
-                       var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
-                       {
-                           rideid = RideId,
-                           message = Commitment,
-                           keencount = (repository.GetKeenCountForRide(RideId)),
-                           username = User.Identity.GetUserName()
-                       });
-                   }
+            //       if (Commitment == "Out")
+            //       {
+            //           var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
+            //           {
+            //               rideid = RideId,
+            //               message = Commitment,
+            //               keencount = (repository.GetKeenCountForRide(RideId)),
+            //               username = User.Identity.GetUserName()
+            //           });
+            //       }
 
-                   if (Commitment == "OnWay")
-                   {
-                       var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
-                       {
-                           rideid = RideId,
-                           message = Commitment,
-                           keencount = (repository.GetKeenCountForRide(RideId)),
-                           username = User.Identity.GetUserName(),
-                           leavetime = DateTime.UtcNow
-                       });
-                   }
-               });
+            //       if (Commitment == "OnWay")
+            //       {
+            //           var result = pusher.Trigger("BunchyRide" + ParentRideID, "You-In", new
+            //           {    
+            //               rideid = RideId,
+            //               message = Commitment,
+            //               keencount = (repository.GetKeenCountForRide(RideId)),
+            //               username = User.Identity.GetUserName(),
+            //               leavetime = DateTime.UtcNow
+            //           });
+            //       }
+            //   });
 
-            T.Start();
+            //T.Start();
 
             Task E = new Task(() =>
             {
@@ -492,46 +494,46 @@ namespace FreeWheeling.UI.Controllers
             RideModelHelper _AdHocHelper = new RideModelHelper(repository);
             _adHocViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
 
-            Task T = new Task(() =>
-            {
-                var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
+            //Task T = new Task(() =>
+            //{
+            //    var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
 
-                if (Commitment == "In")
-                {
-                    var result = pusher.Trigger("BunchyRide" + adhocrideid, "You-InAdHoc", new
-                    {
-                        rideid = adhocrideid,
-                        message = Commitment,
-                        keencount = (repository.GetKeenCountForAdHocRide(adhocrideid)),
-                        username = User.Identity.GetUserName()
-                    });
-                }
+            //    if (Commitment == "In")
+            //    {
+            //        var result = pusher.Trigger("BunchyRide" + adhocrideid, "You-InAdHoc", new
+            //        {
+            //            rideid = adhocrideid,
+            //            message = Commitment,
+            //            keencount = (repository.GetKeenCountForAdHocRide(adhocrideid)),
+            //            username = User.Identity.GetUserName()
+            //        });
+            //    }
 
-                if (Commitment == "Out")
-                {
-                    var result = pusher.Trigger("BunchyRide" + adhocrideid, "You-InAdHoc", new
-                    {
-                        rideid = adhocrideid,
-                        message = Commitment,
-                        keencount = (repository.GetKeenCountForAdHocRide(adhocrideid)),
-                        username = User.Identity.GetUserName()
-                    });
-                }
+            //    if (Commitment == "Out")
+            //    {
+            //        var result = pusher.Trigger("BunchyRide" + adhocrideid, "You-InAdHoc", new
+            //        {
+            //            rideid = adhocrideid,
+            //            message = Commitment,
+            //            keencount = (repository.GetKeenCountForAdHocRide(adhocrideid)),
+            //            username = User.Identity.GetUserName()
+            //        });
+            //    }
 
-                if (Commitment == "OnWay")
-                {
-                    var result = pusher.Trigger("BunchyRide" + adhocrideid, "You-InAdHoc", new
-                    {
-                        rideid = adhocrideid,
-                        message = Commitment,
-                        keencount = (repository.GetKeenCountForAdHocRide(adhocrideid)),
-                        username = User.Identity.GetUserName(),
-                        leavetime = DateTime.UtcNow
-                    });
-                }
-            });
+            //    if (Commitment == "OnWay")
+            //    {
+            //        var result = pusher.Trigger("BunchyRide" + adhocrideid, "You-InAdHoc", new
+            //        {
+            //            rideid = adhocrideid,
+            //            message = Commitment,
+            //            keencount = (repository.GetKeenCountForAdHocRide(adhocrideid)),
+            //            username = User.Identity.GetUserName(),
+            //            leavetime = DateTime.UtcNow
+            //        });
+            //    }
+            //});
 
-            T.Start();
+            //T.Start();
 
             Task E = new Task(() =>
             {
