@@ -151,7 +151,7 @@ namespace FreeWheeling.UI.Controllers
 
                 T.Start();
 
-                return Json(new { success = true, Message = "New Organisation has been added." }, JsonRequestBehavior.AllowGet);  
+                return Json(new { success = true, Message = "New AdHoc Ride has been created." }, JsonRequestBehavior.AllowGet);  
             }
             
         }

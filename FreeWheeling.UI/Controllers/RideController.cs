@@ -321,7 +321,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddComment(int groupid, int rideid, string CommentString, bool FromFavPage, int ParentRideID)
+        public JsonResult AddComment(int groupid, int rideid, string CommentString, bool FromFavPage, int ParentRideID)
         {          
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
@@ -333,6 +333,8 @@ namespace FreeWheeling.UI.Controllers
                 RideModelIndex RideModel = new RideModelIndex();
                 RideModelHelper _RideHelper = new RideModelHelper(repository);
                 RideModel = _RideHelper.PopulateRideModel(ParentRideID, groupid, currentUser.Id, false, FromFavPage);
+
+                int commentCount = repository.GetCommentCountForRide(rideid);
 
                 //Task T = new Task(() =>
                 //{
@@ -376,17 +378,21 @@ namespace FreeWheeling.UI.Controllers
 
                 E.Start();
 
-                return View("Index", RideModel);
+            
+                return Json(new { success = true,
+                                  message = CommentString,
+                                  rideid = rideid,
+                                  username = currentUser.UserName,
+                                  commentcount = commentCount,
+                                  parentid = ParentRideID
+                }, JsonRequestBehavior.AllowGet);  
 
             }
             else
             {
-                RideModelIndex RideModel = new RideModelIndex();
-                RideModelHelper _RideHelper = new RideModelHelper(repository);
-                RideModel = _RideHelper.PopulateRideModel(rideid, groupid, currentUser.Id, false, FromFavPage);
-                return View("Index", RideModel);
+                return Json(new { success = false, Message = "Please enter a comment." }, JsonRequestBehavior.AllowGet);  
             }
-
+            
         }
 
         public ActionResult Attend(int RideId, string Commitment, int Groupid, bool FromFavPage, int ParentRideID)

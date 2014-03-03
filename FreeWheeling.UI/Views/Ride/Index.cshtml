@@ -183,26 +183,30 @@ else
     </div>
     </div>
     </div>
-    <div>
+            <div>
 
-        @using (Html.BeginForm("AddComment", "Ride", new
+                @using (Ajax.BeginForm("AddComment", "Ride", new
+                {
+                    groupid = @Model.Group.id,
+                    rideid = @Model.Ride.id,
+                    FromFavPage = @Model.FromFavPage,
+                    ParentRideID = @Model.Ride.id
+                }, new AjaxOptions
         {
-            groupid = @Model.Group.id,
-            rideid = @Model.Ride.id,
-            FromFavPage = @Model.FromFavPage,
-            ParentRideID = @Model.Ride.id
-        }, FormMethod.Post))
-        {
-            <div class="input-group">
-                @Html.TextBox("CommentString", null, new { @class = "form-control-C", id = "CommentStringFirst" })
-                <span class="input-group-addon-C">
-                    <button class="btn btn-success" onclick="ShowProgress();" id="@("submit_First")" type="submit">Add comment</button>
-                </span>
+           HttpMethod = "Post",
+           OnSuccess = "CommentComplete",
+           OnBegin = "ShowProgress"            
+        }) )
+        {    
+                    <div class="input-group">
+                        @Html.TextBox("CommentString", null, new { @class = "form-control-C", id = "CommentStringFirst" })
+                        <span class="input-group-addon-C">
+                            <button class="btn btn-success" id="@("submit_First")" type="submit">Add comment</button>
+                        </span>
+                    </div>
+                }
+
             </div>
-        }
-
-    </div>
-
     <hr />
 
     <h4><span class="label label-success">You in?</span></h4>
@@ -368,26 +372,31 @@ else
             }
         </div>
     </div>
-    <div>
 
-        @using (Html.BeginForm("AddComment", "Ride", new
+            <div>
+
+                @using (Ajax.BeginForm("AddComment", "Ride", new
+                {
+                    groupid = @Model.Group.id,
+                    rideid = @Model.NextRide.id,
+                    FromFavPage = @Model.FromFavPage,
+                    ParentRideID = @Model.Ride.id
+                }, new AjaxOptions
         {
-            groupid = @Model.Group.id,
-            rideid = @Model.NextRide.id,
-            FromFavPage = @Model.FromFavPage,
-            ParentRideID = @Model.Ride.id
-        }, FormMethod.Post))
-        {
-            <div class="input-group">
-                @Html.TextBox("CommentString", null, new { @class = "form-control-C", id = "CommentStringSecond" })
-                <span class="input-group-addon-C">
-                    <button class="btn btn-success" onclick="ShowProgress();" id="@("submit_Second")" type="submit">Add comment</button>
-                </span>
+            HttpMethod = "Post",
+            OnSuccess = "CommentComplete",
+            OnBegin = "ShowProgress"
+        }))
+                {
+                    <div class="input-group">
+                        @Html.TextBox("CommentString", null, new { @class = "form-control-C", id = "CommentStringSecond" })
+                        <span class="input-group-addon-C">
+                            <button class="btn btn-success" id="@("submit_Second")" type="submit">Add comment</button>
+                        </span>
+                    </div>
+                }
+
             </div>
-        }
-
-    </div>
-
     <hr />
 
     <h4><span class="label label-success">You in?</span></h4>
@@ -422,6 +431,7 @@ else
 
 @section scripts{
     @Scripts.Render("~/Scripts/jquery.timeago.js")
+    @Scripts.Render("~/bundles/jqueryval")
 
     <script>
 
@@ -429,6 +439,28 @@ else
             $(e).toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
         }
 
+        function CommentComplete(data) {
+            HideProgress();
+
+            var client = new WindowsAzure.MobileServiceClient(
+                      "http://bunchydev.azure-mobile.net/",
+                      "HIdMfCPoYsHPanowdOvYsYOnmbZbsq45"
+                       );
+
+            var item = {
+                text: data.message,
+                bunchid: data.rideid,
+                username: data.username,
+                commentcount: data.commentcount,
+                channel_id: data.parentid
+            };
+            client.getTable("Item").insert(item);
+
+            $("#collapseCommentPanel" + data.rideid).prepend("<p>" + data.username + " : " + data.message + "</p>");
+            $("#CommentCountSpan" + data.rideid).html("(" + data.commentcount + ")");
+            $("#CommentCountSpanSeeAll" + data.rideid).html("View All (" + data.commentcount + ")");
+                     
+        }
         //IDs for collapse user remember
         // 1 = FirstBunchCollapse
         // 2 = FirstKeen
@@ -451,6 +483,7 @@ else
             var keenCountNext = jQuery('#KeenCountNext').val();
 
             channel.bind('New-Comments', function (data) {
+                //alert('hello from pusher');
                 $("#collapseCommentPanel" + data.rideid).prepend("<p>" + data.username + " : " + data.message + "</p>");
                 $("#CommentCountSpan" + data.rideid).html("(" + data.commentcount + ")");
                 $("#CommentCountSpanSeeAll" + data.rideid).html("View All (" + data.commentcount + ")");
@@ -496,36 +529,12 @@ else
 
             //Azure Mobile Storage
 
-            var client = new WindowsAzure.MobileServiceClient(
-                        "http://bunchydev.azure-mobile.net/",
-                        "HIdMfCPoYsHPanowdOvYsYOnmbZbsq45"
-                         );
-
             //Comments
-
-            $("#submit_First").click(function () {
-                var item = {
-                    text: $("form #CommentStringFirst").val(),
-                    bunchid: rideId,
-                    username: userName,
-                    commentcount: commentCount
-                };
-                client.getTable("Item").insert(item);
-            });
-
-            $("#submit_Second").click(function () {
-                var item = {
-                    text: $("form #CommentStringSecond").val(),
-                    bunchid: NextRideIdHidden,
-                    username: userName,
-                    commentcount: commentCountNext
-                };
-                client.getTable("Item").insert(item);
-            });
 
             //Keen
 
             $("#InFirst").click(function () {
+                alert('lll');
                 var item = {
                     text: "In",
                     bunchid: rideId,
