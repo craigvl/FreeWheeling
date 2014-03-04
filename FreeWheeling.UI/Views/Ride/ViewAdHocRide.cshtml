@@ -10,7 +10,7 @@
 @Html.Hidden("RideUserNameHidden", User.Identity.GetUserName())
 @Html.Hidden("CommentCount", @Model.CommentCount)
 @Html.Hidden("KeenCount", @Model.KeenCount)
-<script src="http://js.pusher.com/2.1/pusher.min.js"></script>
+<script src="http://js.pusher.com/2.2.0-rc1/pusher.min.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/mobileservices/MobileServices.Web-1.1.3.min.js"></script>
 
 @if (@Model.MapUrl != null)
@@ -140,6 +140,8 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
 
+        var socketId = null;
+
         function CommentComplete(data) {
             HideProgress();
 
@@ -156,7 +158,8 @@
                 text: data.message,
                 bunchid: data.rideid,
                 username: data.username,
-                commentcount: data.commentcount
+                commentcount: data.commentcount,
+                socket_id: socketId
             };
             client.getTable("ItemAdHoc").insert(item);
 
@@ -183,6 +186,10 @@
                 $("#collapseCommentPanel" + data.rideid).prepend("<p>" + data.username + " : " + data.message + "</p>");
                 $("#CommentCountSpan" + data.rideid).html("(" + data.commentcount + ")");
                 $("#CommentCountSpanSeeAll" + data.rideid).html("View All (" + data.commentcount + ")");
+            });
+
+            pusher.connection.bind('connected', function () {
+                socketId = pusher.connection.socket_id;
             });
 
             //Keen

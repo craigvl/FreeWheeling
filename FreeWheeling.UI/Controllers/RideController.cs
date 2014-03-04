@@ -210,12 +210,10 @@ namespace FreeWheeling.UI.Controllers
 
                 if (_RideDate < LocalNow)
                 {
-
                     ModelState.AddModelError(string.Empty, "Please select date and time that is greater than current date and time");
                     _EditAdHocRideModel.Locations = repository.GetLocations().ToList();
                     _EditAdHocRideModel.LocationsId = _Location.id;
                     return View(_EditAdHocRideModel);
-
                 }
 
                 Ad_HocRide adhoc = new Ad_HocRide
@@ -260,7 +258,6 @@ namespace FreeWheeling.UI.Controllers
           
             if (CommentString != string.Empty)
             {
-
                 repository.AddAdHocRideComment(CommentString, adhocrideid, currentUser.UserName);
                 repository.Save();
 
