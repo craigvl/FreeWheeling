@@ -91,17 +91,23 @@
     </div>
 </div>
 
+
 <div>
 
-    @using (Html.BeginForm("AddAdHocComment", "Ride", new
+    @using (Ajax.BeginForm("AddAdHocComment", "Ride", new
+                {
+                    adhocrideid = @Model.Ride.id
+                }, new AjaxOptions
         {
-            adhocrideid = @Model.Ride.id
-        }, FormMethod.Post))
+            HttpMethod = "Post",
+            OnSuccess = "CommentComplete",
+            OnBegin = "ShowProgress"
+        }))
     {
         <div class="input-group">
-            @Html.TextBox("CommentString", null, new { @class = "form-control-C", id = "CommentAdHoc" })
+            @Html.TextBox("CommentString", null, new { @class = "form-control-C", id = "CommentStringFirst" })
             <span class="input-group-addon-C">
-                <button class="btn btn-success" onclick="ShowProgress();" id="@("submit_AdHocComment")" type="submit">Add comment</button>
+                <button class="btn btn-success" id="@("submit_First")" type="submit">Add comment</button>
             </span>
         </div>
     }
@@ -131,7 +137,38 @@
 
 @section scripts{
     @Scripts.Render("~/Scripts/jquery.timeago.js")
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
+
+        function CommentComplete(data) {
+            HideProgress();
+
+            //Azure Mobile Storage
+
+            //Comments
+
+            var client = new WindowsAzure.MobileServiceClient(
+                      "http://bunchydev.azure-mobile.net/",
+                      "HIdMfCPoYsHPanowdOvYsYOnmbZbsq45"
+                       );
+
+            var item = {
+                text: data.message,
+                bunchid: data.rideid,
+                username: data.username,
+                commentcount: data.commentcount
+            };
+            client.getTable("ItemAdHoc").insert(item);
+
+            $("#collapseCommentPanel" + data.rideid).prepend("<p>" + data.username + " : " + data.message + "</p>");
+            $("#CommentCountSpan" + data.rideid).html("(" + data.commentcount + ")");
+            $("#CommentCountSpanSeeAll" + data.rideid).html("View All (" + data.commentcount + ")");
+
+            //Clear comment textbox after submit for both rides.
+            $("form #CommentAdHoc").val("");
+
+        }
+
 
         jQuery(document).ready(function () {
 
@@ -146,25 +183,6 @@
                 $("#collapseCommentPanel" + data.rideid).prepend("<p>" + data.username + " : " + data.message + "</p>");
                 $("#CommentCountSpan" + data.rideid).html("(" + data.commentcount + ")");
                 $("#CommentCountSpanSeeAll" + data.rideid).html("View All (" + data.commentcount + ")");
-            });
-
-            //Azure Mobile Storage
-
-            var client = new WindowsAzure.MobileServiceClient(
-                        "http://bunchydev.azure-mobile.net/",
-                        "HIdMfCPoYsHPanowdOvYsYOnmbZbsq45"
-                         );
-
-            //Comments
-
-            $("#submit_AdHocComment").click(function () {
-                var item = {
-                    text: $("form #CommentAdHoc").val(),
-                    bunchid: rideId,
-                    username: userName,
-                    commentcount: commentCount
-                };
-                client.getTable("Itemadhoc").insert(item);
             });
 
             //Keen

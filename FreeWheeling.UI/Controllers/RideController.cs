@@ -254,7 +254,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddAdHocComment(int adhocrideid, string CommentString)
+        public JsonResult AddAdHocComment(int adhocrideid, string CommentString)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
           
@@ -267,21 +267,8 @@ namespace FreeWheeling.UI.Controllers
                 AdHocViewModel _adHocViewModel = new AdHocViewModel();
                 RideModelHelper _AdHocHelper = new RideModelHelper(repository);
                 _adHocViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
-
-                //Task T = new Task(() =>
-                //{
-                //    int CommentCount = repository.GetCommentCountForAdHocRide(adhocrideid);
-                //    var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
-                //    var result = pusher.Trigger("BunchyRide" + adhocrideid, "New-CommentsAdHoc", new
-                //    {
-                //        rideid = adhocrideid,
-                //        message = CommentString,
-                //        commentcount = CommentCount,
-                //        username = User.Identity.Name
-                //    });
-                //});
-
-                //T.Start();
+                    
+                int commentCount = repository.GetCommentCountForAdHocRide(adhocrideid);
 
                Task E = new Task(() =>
                {
@@ -309,14 +296,19 @@ namespace FreeWheeling.UI.Controllers
 
                E.Start();
 
-                return View("ViewAdHocRide", _adHocViewModel);
+               return Json(new
+               {
+                   success = true,
+                   message = CommentString,
+                   rideid = adhocrideid,
+                   username = currentUser.UserName,
+                   commentcount = commentCount
+               }, JsonRequestBehavior.AllowGet);
+
             }
             else
             {
-                AdHocViewModel _adHocViewModel = new AdHocViewModel();
-                RideModelHelper _AdHocHelper = new RideModelHelper(repository);
-                _adHocViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
-                return View("ViewAdHocRide", _adHocViewModel);
+                return Json(new { success = false, Message = "Please enter a comment." }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -335,21 +327,6 @@ namespace FreeWheeling.UI.Controllers
                 RideModel = _RideHelper.PopulateRideModel(ParentRideID, groupid, currentUser.Id, false, FromFavPage);
 
                 int commentCount = repository.GetCommentCountForRide(rideid);
-
-                //Task T = new Task(() =>
-                //{
-                //    int CommentCount = repository.GetCommentCountForRide(rideid);
-                //    var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
-                //    var result = pusher.Trigger("BunchyRide" + ParentRideID, "New-Comments", new
-                //    {
-                //        rideid = rideid,
-                //        message = CommentString,
-                //        commentcount = CommentCount,
-                //        username = User.Identity.Name
-                //    });
-                //});
-
-                //T.Start();
 
                 Task E = new Task(() =>
                 {

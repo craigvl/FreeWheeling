@@ -442,6 +442,10 @@ else
         function CommentComplete(data) {
             HideProgress();
 
+            //Azure Mobile Storage
+
+            //Comments
+
             var client = new WindowsAzure.MobileServiceClient(
                       "http://bunchydev.azure-mobile.net/",
                       "HIdMfCPoYsHPanowdOvYsYOnmbZbsq45"
@@ -459,8 +463,13 @@ else
             $("#collapseCommentPanel" + data.rideid).prepend("<p>" + data.username + " : " + data.message + "</p>");
             $("#CommentCountSpan" + data.rideid).html("(" + data.commentcount + ")");
             $("#CommentCountSpanSeeAll" + data.rideid).html("View All (" + data.commentcount + ")");
+
+            //Clear comment textbox after submit for both rides.
+            $("form #CommentStringFirst").val("");
+            $("form #CommentStringSecond").val("");
                      
         }
+
         //IDs for collapse user remember
         // 1 = FirstBunchCollapse
         // 2 = FirstKeen
@@ -526,10 +535,6 @@ else
             //End Pusher
 
             jQuery("abbr.timeago").timeago();
-
-            //Azure Mobile Storage
-
-            //Comments
 
             //Keen
 
@@ -761,11 +766,6 @@ else
             });
 
             //End Collapse user save 
-
-
-            //Clear comment textbox after submit for both rides.
-            $("form #CommentStringFirst").val("");
-            $("form #CommentStringSecond").val("");
 
         });
 
