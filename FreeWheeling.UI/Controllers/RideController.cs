@@ -369,7 +369,7 @@ namespace FreeWheeling.UI.Controllers
             
         }
 
-        public ActionResult Attend(int RideId, string Commitment, int Groupid, bool FromFavPage, int ParentRideID)
+        public JsonResult Attend(int RideId, string Commitment, int Groupid, bool FromFavPage, int ParentRideID)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Ride _Ride = new Ride();
@@ -390,7 +390,7 @@ namespace FreeWheeling.UI.Controllers
             RideModelIndex RideModel = new RideModelIndex();
             RideModelHelper _RideHelper = new RideModelHelper(repository);
             RideModel = _RideHelper.PopulateRideModel(ParentRideID, Groupid, currentUser.Id, false, FromFavPage);
-
+            string KeenCount = repository.GetKeenCountForRide(RideId).ToString();
             //Task T = new Task(() =>
             //   {
             //       var pusher = new Pusher("65360", "dba777635636cbc16582", "5205ac0b6d4b64b0ecee");
@@ -457,7 +457,18 @@ namespace FreeWheeling.UI.Controllers
 
             E.Start();
 
-            return View("Index", RideModel);
+            return Json(new { success = true,
+                                  message = Commitment,
+                                  rideid = RideId,
+                                  username = currentUser.UserName,
+                                  keencount = KeenCount,
+                                  leavetime = DateTime.UtcNow,
+                                  parentid = ParentRideID
+                }, JsonRequestBehavior.AllowGet);  
+
+                     
+                //return Json(new { success = false, Message = "Please enter a comment." }, JsonRequestBehavior.AllowGet);  
+            
         }
      
         public ActionResult AttendAdHocRider(int adhocrideid, string Commitment)

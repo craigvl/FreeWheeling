@@ -207,30 +207,56 @@ else
             </div>
     <hr />
 
-    <h4><span class="label label-success">You in?</span></h4>
+            <h4><span class="label label-success">You in?</span></h4>
 
-    @if (!@Model.InFirst)
-    {
-        if (!@Model.OnWayFirst)
-        {
-            @Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-primary", onclick = "ShowProgress();", @id = "InFirst" })
-        }
-    }
-    @if (!@Model.OutFirst)
-    {
-        @Html.ActionLink("I'm Out", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "Out", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-danger", onclick = "ShowProgress();", @id = "OutFirst" })
-    }
-    @if (!@Model.OnWayFirst)
-    {
-        if (!@Model.OutFirst)
-        {
-            @Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.Ride.id, Commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-success", onclick = "ShowProgress();", @id = "OnWayFirst" })
-        }
-    }
-    <p></p>
+            @Ajax.ActionLink("I'm In!", "Attend",
+            new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "KeenCompleteFirst",
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "btn btn-primary",
+                     onclick = "ShowProgress();",
+                     @id = "InFirst"
+                 })
+
+            @Ajax.ActionLink("I'm Out!", "Attend",
+            new { RideId = @Model.Ride.id, commitment = "Out", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "KeenCompleteFirst",
+                     OnBegin = "ShowProgress"
+                 },
+                      new
+                      {
+                          @class = "btn btn-danger",
+                          onclick = "ShowProgress();",
+                          @id = "OutFirst"
+                      })
+
+            @Ajax.ActionLink("On My Way!", "Attend",
+                 new { RideId = @Model.Ride.id, commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "KeenCompleteFirst",
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "btn btn-success",
+                     onclick = "ShowProgress();",
+                     @id = "OnWayFirst"
+                 })
+
+            <p></p>
 
 </div> @*div for end of first collapse*@
-
 
 @*-------------------------------------------------Start of Next Ride -------------------------------------------------------------*@
 
@@ -399,24 +425,45 @@ else
 
     <h4><span class="label label-success">You in?</span></h4>
 
-    @if (!@Model.InSecond)
-    {
-        if (!@Model.OnWaySecond)
-        {
-            @Html.ActionLink("I'm In!", "Attend", "Ride", new { RideId = @Model.NextRide.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-primary", onclick = "ShowProgress();", @id = "InNext" })
-        }
-    }
-    @if (!@Model.OutSecond)
-    {
-        @Html.ActionLink("I'm Out", "Attend", "Ride", new { RideId = @Model.NextRide.id, Commitment = "Out", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-danger", onclick = "ShowProgress();", @id = "OutNext" })
-    }
-    @if (!@Model.OnWaySecond)
-    {
-        if (!@Model.OutSecond)
-        {
-            @Html.ActionLink("On My Way!", "Attend", "Ride", new { RideId = @Model.NextRide.id, Commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id }, new { @class = "btn btn-success", onclick = "ShowProgress();", @id = "OnWayNext" })
-        }
-    }
+            @Ajax.ActionLink("I'm In!", "Attend", 
+            new { RideId = @Model.NextRide.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "KeenCompleteNext",
+                     OnBegin = "ShowProgress"
+                 },
+                 new { @class = "btn btn-primary",
+                       onclick = "ShowProgress();",
+                       @id = "InNext" })
+    
+        @Ajax.ActionLink("I'm Out!", "Attend", 
+            new { RideId = @Model.NextRide.id, commitment = "Out", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "KeenCompleteNext",
+                     OnBegin = "ShowProgress"
+                 },
+                      new
+                      {
+                       @class = "btn btn-danger",
+                       onclick = "ShowProgress();",
+                       @id = "OutNext" })
+   
+            @Ajax.ActionLink("On My Way!", "Attend",
+                 new { RideId = @Model.NextRide.id, commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "KeenCompleteNext",
+                     OnBegin = "ShowProgress"
+                 },
+                 new { @class = "btn btn-success",
+                       onclick = "ShowProgress();",
+                       @id = "OnWayNext"
+                 })
+  
     <p></p>
 
 </div> @*div for end of second collapse*@
@@ -437,6 +484,137 @@ else
 
         function toggleChevron(e) {
             $(e).toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
+        }
+
+        function KeenCompleteFirst(data) {
+            HideProgress();
+            //alert(data.message);
+
+            var client = new WindowsAzure.MobileServiceClient(
+                      "http://bunchydev.azure-mobile.net/",
+                      "HIdMfCPoYsHPanowdOvYsYOnmbZbsq45"
+                       );
+
+            var item = {
+                text: data.message,
+                bunchid: data.rideid,
+                username: data.username,
+                keencount: data.keencount,
+                leavetime: data.leavetime,
+                channel_id: data.parentid,
+                socket_id: socketId
+            };
+            client.getTable("Keen").insert(item);
+
+            if (data.message == 'In') {
+                $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
+                var keenuser = "#keen_" + data.username + data.rideid;
+                if ($("#keen_" + data.username + data.rideid).length) {
+                    $(keenuser).html(data.username + " is in!");
+                    $(keenuser).attr('class', 'label label-success');
+                    $(keenuser).css('text-decoration', 'none');
+                }
+                else {
+                    $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success">' + data.username + ' is in!</span>');
+                }
+
+                $("#OutFirst").show();
+                $("#OnWayFirst").show();
+                $("#InFirst").hide();
+
+            }
+
+            if (data.message == 'Out') {
+                var keenuser = "#keen_" + data.username + data.rideid;
+                $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
+                $(keenuser).html(data.username + " is Out!");
+                $(keenuser).attr('class', 'label label-danger');
+                $(keenuser).css("text-decoration", "line-through");
+
+                $("#OutFirst").hide();
+                $("#OnWayFirst").hide();
+                $("#InFirst").show();
+            }
+
+            if (data.message == 'OnWay') {
+                var keenuser = "#keen_" + data.username + data.rideid;
+                $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
+                $(keenuser).html(data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
+                $(keenuser).attr('class', 'label label-success');
+                $(keenuser).css("text-decoration", "none");
+                jQuery("abbr.timeago").timeago();
+
+                $("#OutFirst").show();
+                $("#OnWayFirst").hide();
+                $("#InFirst").hide();
+            }
+
+        }
+
+
+        function KeenCompleteNext(data) {
+            HideProgress();
+            //alert(data.message);
+
+            var client = new WindowsAzure.MobileServiceClient(
+                      "http://bunchydev.azure-mobile.net/",
+                      "HIdMfCPoYsHPanowdOvYsYOnmbZbsq45"
+                       );
+
+            var item = {
+                text: data.message,
+                bunchid: data.rideid,
+                username: data.username,
+                keencount: data.keencount,
+                leavetime: data.leavetime,
+                channel_id: data.parentid,
+                socket_id: socketId
+            };
+            client.getTable("Keen").insert(item);
+
+            if (data.message == 'In') {
+                $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
+                var keenuser = "#keen_" + data.username + data.rideid;
+                if ($("#keen_" + data.username + data.rideid).length) {
+                    $(keenuser).html(data.username + " is in!");
+                    $(keenuser).attr('class', 'label label-success');
+                    $(keenuser).css('text-decoration', 'none');
+                }
+                else {
+                    $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success">' + data.username + ' is in!</span>');
+                }
+
+                $("#OutNext").show();
+                $("#OnWayNext").show();
+                $("#InNext").hide();
+
+            }
+
+            if (data.message == 'Out') {
+                var keenuser = "#keen_" + data.username + data.rideid;
+                $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
+                $(keenuser).html(data.username + " is Out!");
+                $(keenuser).attr('class', 'label label-danger');
+                $(keenuser).css("text-decoration", "line-through");
+
+                $("#OutNext").hide();
+                $("#OnWayNext").hide();
+                $("#InNext").show();
+            }
+
+            if (data.message == 'OnWay') {
+                var keenuser = "#keen_" + data.username + data.rideid;
+                $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
+                $(keenuser).html(data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
+                $(keenuser).attr('class', 'label label-success');
+                $(keenuser).css("text-decoration", "none");
+                jQuery("abbr.timeago").timeago();
+
+                $("#OutNext").show();
+                $("#OnWayNext").hide();
+                $("#InNext").hide();
+            }
+
         }
 
         function CommentComplete(data) {
@@ -540,74 +718,7 @@ else
             //End Pusher
 
             jQuery("abbr.timeago").timeago();
-
-            //Keen
-
-            $("#InFirst").click(function () {
-                alert('lll');
-                var item = {
-                    text: "In",
-                    bunchid: rideId,
-                    username: userName,
-                    keencount: KeenCount,
-                    socket_id: socketId
-                };
-                client.getTable("keen").insert(item);
-            });
-
-            $("#OutFirst").click(function () {
-                var item = {
-                    text: "Out",
-                    bunchid: rideId,
-                    username: userName,
-                    keencount: KeenCount
-                };
-                client.getTable("keen").insert(item);
-            });
-
-            $("#OnWayFirst").click(function () {
-                var item = {
-                    text: "OnWay",
-                    bunchid: rideId,
-                    username: userName,
-                    keencount: KeenCount,
-                    leavetime: Date.now()
-                };
-                client.getTable("keen").insert(item);
-            });
-
-            $("#InNext").click(function () {
-                var item = {
-                    text: "In",
-                    bunchid: NextRideIdHidden,
-                    username: userName,
-                    keencount: keenCountNext
-                };
-                client.getTable("keenadhoc").insert(item);
-            });
-
-            $("#OutNext").click(function () {
-                var item = {
-                    text: "Out",
-                    bunchid: NextRideIdHidden,
-                    username: userName,
-                    keencount: keenCountNext
-                };
-                client.getTable("keenadhoc").insert(item);
-            });
-
-            $("#OnWayNext").click(function () {
-                var item = {
-                    text: "OnWay",
-                    bunchid: NextRideIdHidden,
-                    username: userName,
-                    keencount: keenCountNext,
-                    leavetime: Date.now()
-                };
-                client.getTable("keenadhoc").insert(item);
-            });
-
-
+           
             //End Azure
 
             //Collapse user save
@@ -648,7 +759,6 @@ else
 
                 extendDataService.save(data);
 
-
             });
 
             jQuery('#collapseCommentFirst').on('shown.bs.collapse', function (event) {
@@ -674,7 +784,6 @@ else
                 };
 
                 extendDataService.save(data);
-
 
             });
 
