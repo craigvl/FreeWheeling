@@ -48,11 +48,11 @@ else
         @if (@Model.FirstBunch)
         {
 
-            <span class="label label-primary" data-toggle="collapse" href="#collapseFirst">
+            <a class="label label-primary" data-toggle="collapse" href="#collapseFirst">
                 <span class="glyphicon glyphicon-chevron-down" id="FirstDetails" data-toggle="collapse" href="#collapseFirst">
                 </span>
                 @Model.Ride.RideDate.ToLongDateString() @Html.Raw(",") @Model.Ride.RideDate.ToShortTimeString()
-            </span>
+            </a>
  
         }
         else
@@ -82,11 +82,11 @@ else
 
         @if (@Model.FirstKeen)
         {
-            @:<span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-up">Keen<span id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</span></span>
+            @:<a id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-up">Keen<span id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</span></a>
         }
         else
         {
-            @:<span id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-down">Keen<span id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</span></span>
+            @:<a id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-down">Keen<span id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</span></a>
         }
 
     </h4>
