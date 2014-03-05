@@ -41,7 +41,7 @@ namespace FreeWheeling.UI.Infrastructure
                 emailToUser.To = email;
                 emailToUser.UserName = GetUserNameViaEmail(email);
                 emailToUser.creator = GetUserNameViaUserId(createdby);
-                emailToUser.link = "http://localhost:6049/Ride/ViewAdHocRide?adhocrideid=" + AdhocID;
+                emailToUser.link = "http://www.bunchy.com.au/Ride/ViewAdHocRide?adhocrideid=" + AdhocID;
                 emailToUser.Send();       
             }
         }
@@ -68,12 +68,12 @@ namespace FreeWheeling.UI.Infrastructure
                 emailToUser.UserName = UserName;
                 emailToUser.Comment = comment;
                 emailToUser.AdHocName = AdhocName;
-                emailToUser.link = "http://localhost:6049/Ride/ViewAdHocRide?adhocrideid=" + AdhocID;
+                emailToUser.link = "http://www.bunchy.com.au/Ride/ViewAdHocRide?adhocrideid=" + AdhocID;
                 emailToUser.Send();
             }
         }
 
-        public void SendUsersNewCommentRideEmail(List<string> Emails, string GroupName, string UserName, string comment, int GroupID, string RideDate)
+        public void SendUsersNewCommentRideEmail(List<string> Emails, string GroupName, string UserName, string comment, int GroupID, DateTime RideDate)
         {
             foreach (string email in Emails)
             {
@@ -82,13 +82,13 @@ namespace FreeWheeling.UI.Infrastructure
                 emailToUser.UserName = UserName;
                 emailToUser.Comment = comment;
                 emailToUser.GroupName = GroupName;
-                emailToUser.link = "http://localhost:6049/Ride?groupid=" + GroupID;
-                emailToUser.RideDate = RideDate;
+                emailToUser.link = "http://www.bunchy.com.au/Ride?groupid=" + GroupID;
+                emailToUser.RideDate = RideDate.ToString("dd/MM/yyyy");
                 emailToUser.Send();
             }
         }
 
-        public void SendUsersGroupAttendStatusEmail(List<string> Emails, string GroupName, string status, string UserName, int GroupID, string RideDate)
+        public void SendUsersGroupAttendStatusEmail(List<string> Emails, string GroupName, string status, string UserName, int GroupID, DateTime RideDate)
         {
             foreach (string email in Emails)
             {
@@ -97,13 +97,13 @@ namespace FreeWheeling.UI.Infrastructure
                 emailToUser.UserName = UserName;
                 emailToUser.Status = status;
                 emailToUser.GroupName = GroupName;
-                emailToUser.RideDate = RideDate;
-                emailToUser.link = "http://localhost:6049/Ride?groupid=" + GroupID;
+                emailToUser.RideDate = RideDate.ToString("dd/MM/yyyy"); ;
+                emailToUser.link = "http://www.bunchy.com.au/Ride?groupid=" + GroupID;
                 emailToUser.Send();
             }
         }
 
-        public void SendUsersAdHocAttendStatusEmail(List<string> Emails, string AdhocName, string UserName, string status, int AdhocID, string RideDate)
+        public void SendUsersAdHocAttendStatusEmail(List<string> Emails, string AdhocName, string UserName, string status, int AdhocID, DateTime RideDate)
         {
             foreach (string email in Emails)
             {
@@ -112,8 +112,8 @@ namespace FreeWheeling.UI.Infrastructure
                 emailToUser.UserName = UserName;
                 emailToUser.Status = status;
                 emailToUser.AdHocName = AdhocName;
-                emailToUser.RideDate = RideDate;
-                emailToUser.link = "http://localhost:6049/Ride/ViewAdHocRide?adhocrideid=" + AdhocID;
+                emailToUser.RideDate = RideDate.ToString("dd/MM/yyyy"); ;
+                emailToUser.link = "http://www.bunchy.com.au/Ride/ViewAdHocRide?adhocrideid=" + AdhocID;
                 emailToUser.Send();
             }
         }

@@ -346,7 +346,7 @@ namespace FreeWheeling.UI.Controllers
                         Emails.Add(email);
                     }
 
-                    _UserHelp.SendUsersNewCommentRideEmail(Emails, GroupName, currentUser.UserName, CommentString, _Ride.Group.id, RideDate);
+                    _UserHelp.SendUsersNewCommentRideEmail(Emails, GroupName, currentUser.UserName, CommentString, _Ride.Group.id, _Ride.RideDate);
 
                 });
 
@@ -411,7 +411,7 @@ namespace FreeWheeling.UI.Controllers
                     Emails.Add(email);
                 }
 
-                _UserHelp.SendUsersGroupAttendStatusEmail(Emails, GroupName,Commitment, currentUser.UserName, _Ride.Group.id, RideDate);
+                _UserHelp.SendUsersGroupAttendStatusEmail(Emails, GroupName, Commitment, currentUser.UserName, _Ride.Group.id, _Ride.RideDate);
 
             });
 
@@ -464,7 +464,7 @@ namespace FreeWheeling.UI.Controllers
                     Emails.Add(email);
                 }
 
-                _UserHelp.SendUsersAdHocAttendStatusEmail(Emails, _Ride.Name, currentUser.UserName, Commitment, _Ride.id, RideDate);
+                _UserHelp.SendUsersAdHocAttendStatusEmail(Emails, _Ride.Name, currentUser.UserName, Commitment, _Ride.id, _Ride.RideDate);
 
             });
 
