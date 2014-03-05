@@ -47,22 +47,21 @@ else
     <h4>
         @if (@Model.FirstBunch)
         {
-
+            <a class="glyphicon glyphicon-chevron-down" id="FirstDetails" data-toggle="collapse" href="#collapseFirst">
+                </a>
             <a class="label label-primary" data-toggle="collapse" href="#collapseFirst">
-                <span class="glyphicon glyphicon-chevron-down" id="FirstDetails" data-toggle="collapse" href="#collapseFirst">
-                </span>
+               
                 @Model.Ride.RideDate.ToLongDateString() @Html.Raw(",") @Model.Ride.RideDate.ToShortTimeString()
             </a>
- 
+  
         }
         else
         {
-
-            <span class="label label-primary" data-toggle="collapse" href="#collapseFirst">
-                <span class="glyphicon glyphicon-chevron-up" id="FirstDetails" data-toggle="collapse" href="#collapseFirst">
-                </span>
+             <a class="glyphicon glyphicon-chevron-up" id="FirstDetails" data-toggle="collapse" href="#collapseFirst">
+                </a>
+            <a class="label label-primary" data-toggle="collapse" href="#collapseFirst">         
                 @Model.Ride.RideDate.ToLongDateString() @Html.Raw(",") @Model.Ride.RideDate.ToShortTimeString()
-            </span>
+            </a>
 
         }
     </h4>
