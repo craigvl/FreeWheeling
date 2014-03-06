@@ -81,11 +81,15 @@ else
 
         @if (@Model.FirstKeen)
         {
-            @:<a id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-up">Keen<span id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</span></a>
+            @:<a class="glyphicon glyphicon-chevron-up" id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst"></a>
+            @:<a id="KeenCount1" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success">Keen</a>
+            @:<a id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</a>
         }
         else
         {
-            @:<a id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-down">Keen<span id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</span></a>
+            @:<a class="glyphicon glyphicon-chevron-down" id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst"></a>
+            @:<a id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success glyphicon glyphicon-chevron-down">Keen</a>
+            @:<a id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</a>
         }
 
     </h4>
@@ -135,18 +139,22 @@ else
         </div>
         <hr />
 
-        <div>
+        <div id="CommentCollapseArea">
 
             @if (@Model.Comments != null)
             {
                 <h4>
                     @if (@Model.FirstComment)
                     {
-                        @:<span id="CommentCount" class="label label-success glyphicon glyphicon-chevron-up" data-toggle="collapse" href="#collapseCommentFirst">Comments <span id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</span></span>
+                        @:<a id="CommentCount" class="glyphicon glyphicon-chevron-up" data-toggle="collapse" href="#collapseCommentFirst"></a>
+                        @:<a class="label label-success" data-toggle="collapse" href="#collapseCommentFirst">Comments</a>
+                        @:<a id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</a>
                     }
                     else
                     {
-                        @:<span id="CommentCount" class="label label-success glyphicon glyphicon-chevron-down" data-toggle="collapse" href="#collapseCommentFirst">Comments <span id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</span></span>
+                        @:<a id="CommentCount" class="glyphicon glyphicon-chevron-down" data-toggle="collapse" href="#collapseCommentFirst"></a>
+                        @:<a class="label label-success" data-toggle="collapse" href="#collapseCommentFirst">Comments</a>
+                        @:<a id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</a>
                     }
 
                     @Html.ActionLink(string.Concat("View all (", @Model.CommentCount, ")"), "SeeAllComments", "Ride",
@@ -264,23 +272,25 @@ else
 <p>
     <h4>
         @if (@Model.SecondBunch)
-        {
-       
-            <span class="label label-primary" data-toggle="collapse" href="#collapseSecond">
-                <span class="glyphicon glyphicon-chevron-down" id="SecondDetails" data-toggle="collapse" href="#collapseFirst">
-                </span>
+{
+
+    <a class="glyphicon glyphicon-chevron-down" id="SecondDetails" data-toggle="collapse" href="#collapseSecond"></a>
+
+            <a class="label label-primary" data-toggle="collapse" href="#collapseSecond">
+         
                 @Model.NextRide.RideDate.ToLongDateString() @Html.Raw(",") @Model.NextRide.RideDate.ToShortTimeString()
-            </span>
-     
-        }
+            </a>
+
+}
         else
         {
-      
-            <span class="label label-primary" data-toggle="collapse" href="#collapseSecond">
-                <span class="glyphicon glyphicon-chevron-up" id="SecondDetails" data-toggle="collapse" href="#collapseFirst">
-                </span>
+
+            <a class="glyphicon glyphicon-chevron-up" id="SecondDetails" data-toggle="collapse" href="#collapseSecond">
+            </a>
+            <a class="label label-primary" data-toggle="collapse" href="#collapseSecond">
+                
                 @Model.NextRide.RideDate.ToLongDateString() @Html.Raw(",") @Model.NextRide.RideDate.ToShortTimeString()
-            </span>
+            </a>
   
         }
     </h4>
@@ -300,11 +310,15 @@ else
 
         @if (@Model.SecondKeen)
         {
-            @:<span id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond" class="label label-success glyphicon glyphicon-chevron-up">Keen <span id="@("KeenCountSpan" + @Model.NextRide.id)">(@Model.NextKeenCount.ToString())</span></span>
+            @:<a class="glyphicon glyphicon-chevron-up" id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond"></a>
+            @:<a id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond" class="label label-success">Keen</a>
+            @:<a id="@("KeenCountSpan"+@Model.NextRide.id)">(@Model.NextKeenCount.ToString())</a>
         }
         else
         {
-            @:<span id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond" class="label label-success glyphicon glyphicon-chevron-down">Keen <span id="@("KeenCountSpan" + @Model.NextRide.id)">(@Model.NextKeenCount.ToString())</span></span>
+            @:<a class="glyphicon glyphicon-chevron-down" id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond"></a>
+            @:<a id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond" class="label label-success">Keen</a>
+            @:<a id="@("KeenCountSpan"+@Model.NextRide.id)">(@Model.NextKeenCount.ToString())</a>
         }
 
     </h4>
@@ -354,51 +368,55 @@ else
         </div>
         <hr />
 
-        <div>
+        <div id="SecondCommentCollapseArea">
 
-            @if (@Model.NextComments != null)
+    @if (@Model.NextComments != null)
+    {
+        <h4>
+
+            @if (@Model.SecondComment)
             {
-                <h4>
-
-                    @if (@Model.SecondComment)
-                    {
-                        @:<span id="CommentCountSecond" class="label label-success glyphicon glyphicon-chevron-up" data-toggle="collapse" href="#collapseCommentSecond">Comments <span id="@("CommentCountSpan" + @Model.NextRide.id)">(@Model.NextCommentCount)</span></span>
+                @:<a id="CommentCountSecond" class="glyphicon glyphicon-chevron-up" data-toggle="collapse" href="#collapseCommentSecond"></a>
+                @:<a class="label label-success" data-toggle="collapse" href="#collapseCommentSecond">Comments</a>
+                @:<a id="@("CommentCountSpan" + @Model.NextRide.id)">(@Model.NextCommentCount)</a>
                     }
-                    else
-                    {
-                        @:<span id="CommentCountSecond" class="label label-success glyphicon glyphicon-chevron-down" data-toggle="collapse" href="#collapseCommentSecond">Comments <span id="@("CommentCountSpan" + @Model.NextRide.id)">(@Model.NextCommentCount)</span></span>
+            else
+            {
+                @:<a id="CommentCountSecond" class="glyphicon glyphicon-chevron-down" data-toggle="collapse" href="#collapseCommentSecond"></a>
+                @:<a class="label label-success" data-toggle="collapse" href="#collapseCommentSecond">Comments</a>
+                @:<a id="@("CommentCountSpan" + @Model.NextRide.id)">(@Model.NextCommentCount)</a>
                     }
 
-                </h4>
+        </h4>
 
-                if (@Model.SecondComment)
-                {
-                    @:<div id="collapseCommentSecond" class="panel-collapse collapse in">
+        if (@Model.SecondComment)
+        {
+            @:<div id="collapseCommentSecond" class="panel-collapse collapse in">
     }
-                else
-                {
-                    @:<div id="collapseCommentSecond" class="panel-collapse collapse">
+        else
+        {
+            @:<div id="collapseCommentSecond" class="panel-collapse collapse">
     }
-             <div id="@("collapseCommentPanel" + @Model.NextRide.id)">
-                @foreach (Comment item in Model.NextComments)
-                {
+    <div id="@("collapseCommentPanel" + @Model.NextRide.id)">
+        @foreach (Comment item in Model.NextComments)
+        {
 
-                    @item.userName <text>: </text>
-                    @item.CommentText
-                    @:<p></p>
+            @item.userName <text>: </text>
+            @item.CommentText
+            @:<p></p>
         }
-        </div>
+    </div>
         @Html.ActionLink(string.Concat("See all Comments (", @Model.NextCommentCount, ")"), "SeeAllComments", "Ride",
         new { RideId = @Model.Ride.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage },
                      new { @class = "btn btn-success", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @Model.Ride.id.ToString()) })
 
-            }
-        </div>
-    </div>
+    }
+</div>
+</div>
 
-            <div>
+<div>
 
-                @using (Ajax.BeginForm("AddComment", "Ride", new
+    @using (Ajax.BeginForm("AddComment", "Ride", new
                 {
                     groupid = @Model.Group.id,
                     rideid = @Model.NextRide.id,
@@ -410,21 +428,21 @@ else
             OnSuccess = "CommentComplete",
             OnBegin = "ShowProgress"
         }))
-                {
-                    <div class="input-group">
-                        @Html.TextBox("CommentString", null, new { @class = "form-control-C", id = "CommentStringSecond" })
-                        <span class="input-group-addon-C">
-                            <button class="btn btn-success" id="@("submit_Second")" type="submit">Add comment</button>
-                        </span>
-                    </div>
-                }
+    {
+        <div class="input-group">
+            @Html.TextBox("CommentString", null, new { @class = "form-control-C", id = "CommentStringSecond" })
+            <span class="input-group-addon-C">
+                <button class="btn btn-success" id="@("submit_Second")" type="submit">Add comment</button>
+            </span>
+        </div>
+    }
 
-            </div>
-    <hr />
+</div>
+<hr />
 
-    <h4><span class="label label-success">You in?</span></h4>
+<h4><span class="label label-success">You in?</span></h4>
 
-            @Ajax.ActionLink("I'm In!", "Attend", 
+@Ajax.ActionLink("I'm In!", "Attend",
             new { RideId = @Model.NextRide.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id },
                  new AjaxOptions
                  {
@@ -432,11 +450,14 @@ else
                      OnSuccess = "KeenCompleteNext",
                      OnBegin = "ShowProgress"
                  },
-                 new { @class = "btn btn-primary",
-                       onclick = "ShowProgress();",
-                       @id = "InNext" })
-    
-        @Ajax.ActionLink("I'm Out!", "Attend", 
+                 new
+                 {
+                     @class = "btn btn-primary",
+                     onclick = "ShowProgress();",
+                     @id = "InNext"
+                 })
+
+@Ajax.ActionLink("I'm Out!", "Attend",
             new { RideId = @Model.NextRide.id, commitment = "Out", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id },
                  new AjaxOptions
                  {
@@ -446,11 +467,12 @@ else
                  },
                       new
                       {
-                       @class = "btn btn-danger",
-                       onclick = "ShowProgress();",
-                       @id = "OutNext" })
-   
-            @Ajax.ActionLink("On My Way!", "Attend",
+                          @class = "btn btn-danger",
+                          onclick = "ShowProgress();",
+                          @id = "OutNext"
+                      })
+
+@Ajax.ActionLink("On My Way!", "Attend",
                  new { RideId = @Model.NextRide.id, commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id },
                  new AjaxOptions
                  {
@@ -458,12 +480,14 @@ else
                      OnSuccess = "KeenCompleteNext",
                      OnBegin = "ShowProgress"
                  },
-                 new { @class = "btn btn-success",
-                       onclick = "ShowProgress();",
-                       @id = "OnWayNext"
+                 new
+                 {
+                     @class = "btn btn-success",
+                     onclick = "ShowProgress();",
+                     @id = "OnWayNext"
                  })
-  
-    <p></p>
+
+<p></p>
 
 </div> @*div for end of second collapse*@
 
@@ -724,7 +748,7 @@ else
 
             jQuery('#collapseKeenFirst').on('hidden.bs.collapse', function (event) {
                 event.stopPropagation();
-                toggleChevron('#KeenCount');
+                toggleChevron('#collapseFirst #KeenCount');
 
                 var data = {
                     'id': 2,
@@ -736,7 +760,7 @@ else
 
             jQuery('#collapseKeenFirst').on('shown.bs.collapse', function (event) {
                 event.stopPropagation();
-                toggleChevron('#KeenCount');
+                toggleChevron('#collapseFirst #KeenCount');
 
                 var data = {
                     'id': 2,
@@ -749,7 +773,7 @@ else
 
             jQuery('#collapseCommentFirst').on('hidden.bs.collapse', function (event) {
                 event.stopPropagation();
-                toggleChevron('#CommentCount');
+                toggleChevron('#CommentCollapseArea #CommentCount');
 
                 var data = {
                     'id': 3,
@@ -762,7 +786,7 @@ else
 
             jQuery('#collapseCommentFirst').on('shown.bs.collapse', function (event) {
                 event.stopPropagation();
-                toggleChevron('#CommentCount');
+                toggleChevron('#CommentCollapseArea #CommentCount');
 
                 var data = {
                     'id': 3,
@@ -828,7 +852,7 @@ else
 
             jQuery('#collapseCommentSecond').on('hidden.bs.collapse', function (event) {
                 event.stopPropagation();
-                toggleChevron('#CommentCountSecond');
+                toggleChevron('#SecondCommentCollapseArea #CommentCountSecond');
 
                 var data = {
                     'id': 6,
@@ -842,7 +866,7 @@ else
 
             jQuery('#collapseCommentSecond').on('shown.bs.collapse', function (event) {
                 event.stopPropagation();
-                toggleChevron('#CommentCountSecond');
+                toggleChevron('#SecondCommentCollapseArea #CommentCountSecond');
 
                 var data = {
                     'id': 6,
