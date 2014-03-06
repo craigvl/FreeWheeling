@@ -451,7 +451,7 @@
     <Content Include="Views\Group\Index.cshtml" />
     <Content Include="Views\Group\CreateAdHoc.cshtml" />
     <Content Include="Views\Shared\_GroupDetailPartial.cshtml" />
-    <Content Include="Views\Ride\AddHocList.cshtml" />
+    <Content Include="Views\Ride\AdHocList.cshtml" />
     <Content Include="Views\Ride\ViewAdHocRide.cshtml" />
     <Content Include="Views\Home\LocationChange.cshtml" />
     <Content Include="Views\Ride\SeeAllComments.cshtml" />

@@ -33,7 +33,7 @@ else
         {
             <p class="text-left">@Html.ActionLink("bunches", "Index", "Group", new { }, new { @class = "btn btn-primary", onclick = "ShowProgress();" }) @Html.ActionLink("+", "Create", "Group", new { }, new { @class = "btn btn-success", onclick = "ShowProgress();" }) </p>
             <p class="text-left">@Html.ActionLink("Favourite bunches", "Mybunches", "Group", new { }, new { @class = "btn btn-primary", onclick = "ShowProgress();" })</p>
-            <p class="text-left">@Html.ActionLink("Ad Hoc bunch (" + @Model.UpCommingAd_HocCount + ")", "AddHocList", "Ride", new { }, new { @class = "btn btn-primary", onclick = "ShowProgress();" }) @Html.ActionLink("+", "CreateAdHoc", "Group", new { }, new { @class = "btn btn-success", onclick = "ShowProgress();" }) </p>
+            <p class="text-left">@Html.ActionLink("Ad Hoc bunch (" + @Model.UpCommingAd_HocCount + ")", "AdHocList", "Ride", new { }, new { @class = "btn btn-primary", onclick = "ShowProgress();" }) @Html.ActionLink("+", "CreateAdHoc", "Group", new { }, new { @class = "btn btn-success", onclick = "ShowProgress();" }) </p>
 
             <hr />     
         }

@@ -52,7 +52,7 @@ namespace FreeWheeling.UI.Controllers
             return View(RideModel);
         }
 
-        public ActionResult AddHocList()
+        public ActionResult AdHocList()
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Member _Member = repository.GetMemberByUserID(currentUser.Id);
@@ -96,7 +96,7 @@ namespace FreeWheeling.UI.Controllers
 
             if (!repository.IsAdHocCreator(adhocrideid, currentUser.Id))
             {
-                return RedirectToAction("AddHocList", "Ride");
+                return RedirectToAction("AdHocList", "Ride");
             }
             else
             {
@@ -119,7 +119,7 @@ namespace FreeWheeling.UI.Controllers
 
             if (!repository.IsAdHocCreator(adhocrideid, currentUser.Id))
             {
-                return RedirectToAction("AddHocList", "Ride");
+                return RedirectToAction("AdHocList", "Ride");
             }
             else
             {
@@ -146,7 +146,7 @@ namespace FreeWheeling.UI.Controllers
 
                 T.Start();
 
-                return RedirectToAction("AddHocList", "Ride");
+                return RedirectToAction("AdHocList", "Ride");
             }
         }
 
@@ -156,7 +156,7 @@ namespace FreeWheeling.UI.Controllers
 
             if (!repository.IsAdHocCreator(adhocrideid,currentUser.Id))
             {
-                 return RedirectToAction("AddHocList", "Ride");
+                 return RedirectToAction("AdHocList", "Ride");
             }
             else
             {

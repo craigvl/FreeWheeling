@@ -25,7 +25,8 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("bunches", "Index", "Group")</li>
-                    <li>@Html.ActionLink("Favourite bunches", "Mybunches", "Group")</li>
+                    <li>@Html.ActionLink("Favourites", "Mybunches", "Group")</li>
+                    <li>@Html.ActionLink("Ad Hoc bunches", "AdHocList", "Ride")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
