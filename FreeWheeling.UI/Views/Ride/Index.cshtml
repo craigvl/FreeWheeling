@@ -550,9 +550,15 @@ else
             if (data.message == 'Out') {
                 var keenuser = "#keen_" + data.username + data.rideid;
                 $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-                $(keenuser).html(data.username + " is Out!");
-                $(keenuser).attr('class', 'label label-danger');
-                $(keenuser).css("text-decoration", "line-through");
+                if ($("#keen_" + data.username + data.rideid).length) {
+                    $(keenuser).html(data.username + " is Out!");
+                    $(keenuser).attr('class', 'label label-danger');
+                    $(keenuser).css("text-decoration", "line-through");
+                }
+                else {
+                    $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-danger">' + data.username + ' is out!</span>');
+                }
+
 
                 $("#OutFirst").hide();
                 $("#OnWayFirst").hide();
@@ -616,9 +622,14 @@ else
             if (data.message == 'Out') {
                 var keenuser = "#keen_" + data.username + data.rideid;
                 $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-                $(keenuser).html(data.username + " is Out!");
-                $(keenuser).attr('class', 'label label-danger');
-                $(keenuser).css("text-decoration", "line-through");
+                if ($("#keen_" + data.username + data.rideid).length) {
+                    $(keenuser).html(data.username + " is Out!");
+                    $(keenuser).attr('class', 'label label-danger');
+                    $(keenuser).css("text-decoration", "line-through");
+                }
+                else {
+                    $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-danger">' + data.username + ' is out!</span>');
+                }
 
                 $("#OutNext").hide();
                 $("#OnWayNext").hide();
