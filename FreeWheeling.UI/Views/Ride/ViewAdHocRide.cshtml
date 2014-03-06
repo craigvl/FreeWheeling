@@ -267,7 +267,7 @@
 
 
         jQuery(document).ready(function () {
-
+            HideProgress();
             var rideId = jQuery('#RideIdHidden').val();
             var pusher = new Pusher('dba777635636cbc16582');
             var channel = pusher.subscribe('BunchyRide' + rideId);

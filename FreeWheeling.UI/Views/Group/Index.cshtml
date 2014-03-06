@@ -136,6 +136,10 @@
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
 <script>
     
+    jQuery(document).ready(function () {
+        HideProgress();
+    });
+
     function HideInfoLink(GroupId) {
         $("#infoButton" + GroupId).hide();
         

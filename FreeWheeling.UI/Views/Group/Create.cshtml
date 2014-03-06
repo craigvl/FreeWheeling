@@ -94,6 +94,11 @@
     @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 <script type="text/javascript">
+    jQuery(document).ready(function () {
+        HideProgress();
+    });
+
+
     $("form").submit(function () {
         if (!$(this).valid()) {
             HideProgress();
