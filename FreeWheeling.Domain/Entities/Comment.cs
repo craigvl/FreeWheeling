@@ -15,5 +15,6 @@ namespace FreeWheeling.Domain.Entities
         [Required]
         public Ride Ride { get; set; }
         public string userName { get; set; }
+        public string userId { get; set; }
     }
 }

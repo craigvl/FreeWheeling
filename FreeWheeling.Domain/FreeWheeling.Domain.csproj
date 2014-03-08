@@ -99,6 +99,10 @@
     <Compile Include="DataContexts\CycleMigrations\201402050305171_Userid_Change.Designer.cs">
       <DependentUpon>201402050305171_Userid_Change.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201403080618303_Added_UserId_To_Comments.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201403080618303_Added_UserId_To_Comments.Designer.cs">
+      <DependentUpon>201403080618303_Added_UserId_To_Comments.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\AdHocComment.cs" />
     <Compile Include="Entities\Comment.cs" />
@@ -154,6 +158,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\CycleMigrations\201402050305171_Userid_Change.resx">
       <DependentUpon>201402050305171_Userid_Change.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201403080618303_Added_UserId_To_Comments.resx">
+      <DependentUpon>201403080618303_Added_UserId_To_Comments.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -258,7 +258,7 @@ namespace FreeWheeling.UI.Controllers
           
             if (CommentString != string.Empty)
             {
-                repository.AddAdHocRideComment(CommentString, adhocrideid, currentUser.UserName);
+                repository.AddAdHocRideComment(CommentString, adhocrideid, currentUser.UserName, currentUser.Id);
                 repository.Save();
 
                 AdHocViewModel _adHocViewModel = new AdHocViewModel();
@@ -277,7 +277,7 @@ namespace FreeWheeling.UI.Controllers
                    string AdHocRideName = _Ad_HocRide.Name;
 
                    UserHelper _UserHelp = new UserHelper();
-                   List<AdHocRider> _AdHocRiders = repository.GetRidersForAdHocRideDontIncludeCurrentUser(adhocrideid, TZone, currentUser.Id);
+                   List<AdHocRider> _AdHocRiders = repository.GetRidersAndCommentersForAdHocRideDontIncludeCurrentUser(adhocrideid, TZone, currentUser.Id);
 
                    List<string> Emails = new List<string>();
 
@@ -316,7 +316,7 @@ namespace FreeWheeling.UI.Controllers
 
             if(CommentString != string.Empty)
             {            
-                repository.AddRideComment(CommentString, rideid, currentUser.UserName);
+                repository.AddRideComment(CommentString, rideid, currentUser.UserName, currentUser.Id);
                 repository.Save();
 
                 RideModelIndex RideModel = new RideModelIndex();
@@ -336,7 +336,7 @@ namespace FreeWheeling.UI.Controllers
                     string GroupName = _Ride.Group.name;
 
                     UserHelper _UserHelp = new UserHelper();
-                    List<Rider> _Riders = repository.GetRidersForRideDontIncludeCurrentUser(_Ride.id, TZone, currentUser.Id);
+                    List<Rider> _Riders = repository.GetRidersAndCommentersForRideDontIncludeCurrentUser(_Ride.id, TZone, currentUser.Id);
 
                     List<string> Emails = new List<string>();
 
@@ -401,7 +401,7 @@ namespace FreeWheeling.UI.Controllers
                 string GroupName = _Ride.Group.name;
 
                 UserHelper _UserHelp = new UserHelper();
-                List<Rider> _Riders = repository.GetRidersForRideDontIncludeCurrentUser(_Ride.id, TZone, currentUser.Id);
+                List<Rider> _Riders = repository.GetRidersAndCommentersForRideDontIncludeCurrentUser(_Ride.id, TZone, currentUser.Id);
 
                 List<string> Emails = new List<string>();
 
@@ -454,7 +454,7 @@ namespace FreeWheeling.UI.Controllers
                 string RideDate = _Ride.RideDate.ToShortDateString();
 
                 UserHelper _UserHelp = new UserHelper();
-                List<AdHocRider> _Riders = repository.GetRidersForAdHocRideDontIncludeCurrentUser(_Ride.id, TZone, currentUser.Id);
+                List<AdHocRider> _Riders = repository.GetRidersAndCommentersForAdHocRideDontIncludeCurrentUser(_Ride.id, TZone, currentUser.Id);
 
                 List<string> Emails = new List<string>();
 

@@ -15,5 +15,6 @@ namespace FreeWheeling.Domain.Entities
         [Required]
         public Ad_HocRide AdHocRide { get; set; }
         public string userName { get; set; }
+        public string userId { get; set; }
     }
 }

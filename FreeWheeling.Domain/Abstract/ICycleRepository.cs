@@ -45,7 +45,9 @@ namespace FreeWheeling.Domain.Abstract
         int GetKeenCountForRide(int Rideid);
         int GetKeenCountForAdHocRide(int AdHocRideid);
         List<Rider> GetRidersForRideDontIncludeCurrentUser(int id, TimeZoneInfo TimeZone, string CurrentUserId);
+        List<Rider> GetRidersAndCommentersForRideDontIncludeCurrentUser(int id, TimeZoneInfo TimeZone, string CurrentUserId);
         List<AdHocRider> GetRidersForAdHocRideDontIncludeCurrentUser(int AdHocRideid, TimeZoneInfo TimeZone, string CurrentUserId);
+        List<AdHocRider> GetRidersAndCommentersForAdHocRideDontIncludeCurrentUser(int AdHocRideid, TimeZoneInfo TimeZone, string CurrentUserId);
 
         //Get .. Comments
         List<Comment> GetTop2CommentsForRide(int Rideid);
@@ -64,8 +66,8 @@ namespace FreeWheeling.Domain.Abstract
         void AddAdHocRider(AdHocRider _Rider, Ad_HocRide _Ride);
         void AddGroup(Group _Group);
         void AddAdHocRide(Ad_HocRide _AdHocRide);
-        void AddRideComment(string Comment, int RideId, string UserName);
-        void AddAdHocRideComment(string Comment, int RideId, string UserName);
+        void AddRideComment(string Comment, int RideId, string UserName, string UserId);
+        void AddAdHocRideComment(string Comment, int RideId, string UserName, string UserId);
         void AddUserExpand(UserExpand _UserExpand);
 
         //Delete

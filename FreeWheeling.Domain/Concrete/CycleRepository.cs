@@ -179,6 +179,56 @@ namespace FreeWheeling.Domain.Concrete
             return Riders.Where(g => g.userId != CurrentUserId).ToList();
         }
 
+        public List<Rider> GetRidersAndCommentersForRideDontIncludeCurrentUser(int id, TimeZoneInfo TimeZone, string CurrentUserId)
+        {
+            List<Rider> Riders = context.Riders.Where(r => r.Ride.id == id).ToList();
+
+            Ride _Ride = context.Rides.Where(r => r.id == id).FirstOrDefault();
+
+            foreach (Rider R in Riders)
+            {
+                R.LeaveTime = TimeZoneInfo.ConvertTimeFromUtc(R.LeaveTime, TimeZone);
+            }
+
+            Riders.AddRange(GetCommentersForRide(_Ride));
+
+            return Riders.Where(g => g.userId != CurrentUserId).ToList();
+        }
+
+        public List<Rider> GetCommentersForRide(Ride _Ride)
+        {
+
+            List<Comment> Comments = context.Comment.Where(k => k.Ride.id == _Ride.id).ToList();
+
+            List<Rider> Riders = new List<Rider>();
+
+            foreach (Comment item in Comments)
+            {
+
+                Rider r = context.Riders.Where(u => u.Name == item.userName).FirstOrDefault();
+
+                if (r == null)
+                {
+                    //Userdb 
+                    Rider CommentRider = new Rider { Name = item.userName, Ride = _Ride, userId = item.userId };
+                    Riders.Add(CommentRider);
+                }
+                else
+                {
+
+                    Riders.Add(r);
+                    
+                }
+
+                
+
+
+            }
+
+            return Riders.Distinct().ToList();
+
+        }
+
         public Member GetMemberByUserID(string id)
         {
             return context.Members.Where(m => m.userId == id).FirstOrDefault();
@@ -231,6 +281,50 @@ namespace FreeWheeling.Domain.Concrete
             }
 
             return AList.Where(g => g.userId != CurrentUserId).ToList();
+        }
+
+        public List<AdHocRider> GetRidersAndCommentersForAdHocRideDontIncludeCurrentUser(int AdHocRideid, TimeZoneInfo TimeZone, string CurrentUserId)
+        {
+            List<AdHocRider> AList = context.AdHocRider.Where(r => r.AdHocRide.id == AdHocRideid).ToList();
+            Ad_HocRide AdHocRide = context.Ad_HocRide.Where(l => l.id == AdHocRideid).FirstOrDefault();
+
+            foreach (AdHocRider AdHoc in AList)
+            {
+                AdHoc.LeaveTime = TimeZoneInfo.ConvertTimeFromUtc(AdHoc.LeaveTime, TimeZone);
+            }
+
+            AList.AddRange(GetCommentersForAdHocRide(AdHocRide));
+
+            return AList.Where(g => g.userId != CurrentUserId).ToList();
+        }
+
+        public List<AdHocRider> GetCommentersForAdHocRide(Ad_HocRide _AdHocRide)
+        {
+
+            List<AdHocComment> Comments = context.AdHocComment.Where(k => k.AdHocRide.id == _AdHocRide.id).ToList();
+
+            List<AdHocRider> Riders = new List<AdHocRider>();
+
+            foreach (AdHocComment item in Comments)
+            {
+
+                AdHocRider r = context.AdHocRider.Where(u => u.Name == item.userName).FirstOrDefault();
+
+                if (r == null)
+                {
+                    //Userdb 
+                    AdHocRider CommentRider = new AdHocRider { Name = item.userName,  AdHocRide = _AdHocRide, userId = item.userId };
+                    Riders.Add(CommentRider);
+                }
+                else
+                {
+                    Riders.Add(r);
+                }
+
+            }
+
+            return Riders;
+
         }
 
         /// <summary>
@@ -300,13 +394,14 @@ namespace FreeWheeling.Domain.Concrete
 
         }
 
-        public void AddRideComment(string Comment, int RideId, string UserName)
+        public void AddRideComment(string Comment, int RideId, string UserName, string UserId)
         {
             Comment _comment = new Comment
             {
                 CommentText = Comment,
                 Ride = context.Rides.Where(t => t.id == RideId).FirstOrDefault(),
                 userName = UserName,
+                userId = UserId,
                 Date = DateTime.Now
             };
 
@@ -362,12 +457,13 @@ namespace FreeWheeling.Domain.Concrete
             }
         }
 
-        public void AddAdHocRideComment(string Comment, int RideId, string UserName)
+        public void AddAdHocRideComment(string Comment, int RideId, string UserName, string UserId)
         {
             AdHocComment _comment = new AdHocComment
             {
                 CommentText = Comment,
                 AdHocRide = context.Ad_HocRide.Where(t => t.id == RideId).FirstOrDefault(),
+                userId = UserId,
                 userName = UserName,
                 Date = DateTime.Now
             };
