@@ -40,5 +40,12 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/respond")
     @RenderSection("scripts", required: false)
+    <script>
+        window.onpageshow = function (event) {
+            if (event.persisted) {
+                window.location.reload()
+            }
+        };
+    </script>
 </body>
 </html>
