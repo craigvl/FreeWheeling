@@ -263,6 +263,17 @@ else
 
             <p></p>
 
+    <div id="Invite_Users_First">
+
+        @Html.ActionLink("Invite Users", "InviteOthersToBunch", "Ride",
+        new
+        {
+            RideId = @Model.Ride.id
+        },
+        new { @class = "btn btn-success", onclick = "ShowProgress();", id = "InviteFirst" })
+
+    </div>
+
 </div> @*div for end of first collapse*@
 
 @*-------------------------------------------------Start of Next Ride -------------------------------------------------------------*@
@@ -488,6 +499,17 @@ else
                  })
 
 <p></p>
+
+ <div id="Invite_Users_Second">
+
+                @Html.ActionLink("Invite Users", "InviteOthersToBunch", "Ride",
+        new
+        {
+            RideId = @Model.NextRide.id
+        },
+        new { @class = "btn btn-success", onclick = "ShowProgress();", id = "InviteFirst" })
+
+            </div>
 
 </div> @*div for end of second collapse*@
 
