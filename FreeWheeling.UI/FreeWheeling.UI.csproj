@@ -471,9 +471,10 @@
     <Content Include="Views\Emails\SendGroupRideEmailsAttend.cshtml" />
     <Content Include="Views\Emails\SendAdHocEmailsAttend.cshtml" />
     <Content Include="Views\Ride\InviteOthersToBunch.cshtml" />
-    <Content Include="Views\Ride\InviteOthersToAHocBunch.cshtml" />
+    <Content Include="Views\Ride\InviteOthersToAdHocBunch.cshtml" />
     <Content Include="Views\Emails\SendUsersBunchInviteEmail.cshtml" />
     <Content Include="Views\Ride\ViewSingleRide.cshtml" />
+    <Content Include="Views\Emails\SendUsersAdHocBunchInviteEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

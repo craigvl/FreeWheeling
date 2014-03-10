@@ -50,6 +50,23 @@ namespace FreeWheeling.UI.Infrastructure
             }
         }
 
+        public void SendUsersAdHocBunchInviteEmail(List<string> Emails,
+           int RideId,
+           string createdby,
+           string bunchDate)
+        {
+            foreach (string email in Emails)
+            {
+                dynamic emailToUser = new Email("SendUsersAdHocBunchInviteEmail");
+                emailToUser.To = email;
+                emailToUser.UserName = GetUserNameViaEmail(email);
+                emailToUser.creator = createdby;
+                emailToUser.bunchDate = bunchDate;
+                emailToUser.link = "http://www.bunchy.com.au/Ride/ViewAdHocRide?adhocrideid=" + RideId;
+                emailToUser.Send();
+            }
+        }
+
         public void SendUsersCreateAdHocEmail(List<string> Emails, int AdhocID, string createdby)
         {
             foreach (string email in Emails)

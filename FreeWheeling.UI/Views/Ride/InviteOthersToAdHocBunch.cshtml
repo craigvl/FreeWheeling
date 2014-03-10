@@ -1,0 +1,123 @@
+﻿@model FreeWheeling.UI.Models.InviteOthersToAdHocBunchModel
+@{
+    ViewBag.Title = "Edit Ad Hoc bunch";
+}
+
+<h4>Invite Others To Ad Hoc Bunch @Model.Name</h4>
+<h4>Date: @Model.RideDate</h4>
+
+<div id="templated">
+    @Html.HiddenFor(model => model.adhocrideid, new { @id = "RideIdHidden" })
+    <table>
+        <tbody data-bind="template: { name: 'userRowTemplate', foreach: usersLines }"></tbody>
+    </table>
+
+    <script type="text/html" id="userRowTemplate">
+        <tr>
+            <td>User name: <input id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" /></td>
+            @* <td><a href="#" data-bind="click: function() { viewModelForTemplated.removeGift($data) }">Delete</a></td>*@
+        </tr>
+    </script>
+
+    <p></p>
+
+    <!-- when Add Gift is clicked, the method addGift() in the view model (viewModelForTemplated) object will be called -->
+    <button data-bind="click: addUser">Invite a User/s</button>
+
+    <!-- when Save is clicked, the method save() in the view model (viewModelForTemplated) object will be called. Simple eh? -->
+    @* <button data-bind="click: save">Save</button>*@
+</div>
+
+<div>
+    <p></p>
+    <input onclick="ShowProgress();" data-bind="click: save" id="btnSubmit" type="submit" value="Invite Others" />
+</div>
+
+<div class="loading" style="display:none;" align="center">
+    Loading. Please wait.<br />
+    <br />
+    <img src="~/Content/Images/loader.gif" alt="" />
+</div>
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/knockout")
+    @Scripts.Render("~/bundles/jqueryui")
+
+    <script type="text/javascript">
+
+        $('body').on('focus', "#InviteUser", function () {
+            $(this).autocomplete({
+                source: '@Url.Action("GetNames","Group")'
+            });
+        })
+
+        function UserModel() {
+
+            var self = this;
+            self.UserName = ko.observable();
+        }
+
+        var RideModel = function () {
+            var self = this;
+            self.usersLines = ko.observableArray([]);
+
+
+            self.addUser = function () {
+
+                self.usersLines.push(new UserModel);
+
+            };
+
+            self.save = function () {
+
+                RideData = {
+                    InviteUsers: self.usersLines(),
+                    adhocrideid: $('#RideIdHidden').val()
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("InviteOthersToAdHocBunch", "Ride")',
+                    data: ko.toJSON(RideData), //Convert the Observable Data into JSON
+                    contentType: "application/json",
+                    success: function (data, textStatus, jqXHR) {
+                        var err = eval("(" + jqXHR.responseText + ")");
+                        if (data.success == false) {
+
+                            alert(err.Message);
+                            HideProgress();
+
+                        }
+
+                        if (data.success == true) {
+                            // alert(ko.toJSON(self));
+                            HideProgress();
+                            alert(data.message);
+                            window.location.href = '@Url.Action("AdHocList", "Ride")'
+
+                        }
+                    },
+                    error: function () {
+                        alert("Failed");
+                    }
+                });
+
+            };
+
+        }
+
+        $(document).ready(function () {
+            $('#InviteUser').autocomplete({
+                source: '@Url.Action("GetNames","Group")'
+            });
+
+
+            ko.applyBindings(RideModel);
+
+        })
+
+    </script>
+
+
+}

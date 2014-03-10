@@ -164,7 +164,7 @@ namespace FreeWheeling.UI.Controllers
 
         }
 
-        public ActionResult InviteOthersToAHocBunch(int adhocrideid)
+        public ActionResult InviteOthersToAdHocBunch(int adhocrideid)
         {
 
             Ad_HocRide _AdHocRide = repository.GetAdHocRideByID(adhocrideid);
@@ -176,6 +176,42 @@ namespace FreeWheeling.UI.Controllers
 
             return View(_InviteOthersToAdHocBunchModel);
 
+        }
+
+        [HttpPost]
+        public JsonResult InviteOthersToAdHocBunch(InviteOthersToAdHocBunchModel _InviteOthersToAdHocBunchModel)
+        {
+
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+
+            Task T = new Task(() =>
+            {
+
+                Ad_HocRide _Ride = repository.GetAdHocRideByID(_InviteOthersToAdHocBunchModel.adhocrideid);
+
+                List<string> UserNames = new List<string>();
+
+                foreach (InviteUser item in _InviteOthersToAdHocBunchModel.InviteUsers)
+                {
+                    UserNames.Add(item.UserName);
+                }
+
+                UserHelper _UserHelp = new UserHelper();
+
+                _UserHelp.SendUsersAdHocBunchInviteEmail(_UserHelp.GetEmailsForUserNames(UserNames),
+                    _InviteOthersToAdHocBunchModel.adhocrideid,
+                    currentUser.UserName, _Ride.RideDate.ToString("dd/MM/yyyy"));
+
+            });
+
+            T.Start();
+
+            return Json(new
+            {
+                success = true,
+                message = "Emails Sent",
+                RideId = _InviteOthersToAdHocBunchModel.adhocrideid
+            }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult DeleteAdHocRide(int adhocrideid)
