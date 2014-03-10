@@ -84,6 +84,16 @@ namespace FreeWheeling.UI.Controllers
             return View(_adHocViewModel);
         }
 
+        //[Compress]
+        public ActionResult ViewSingleRide(int RideId)
+        {
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            SingleRideViewModel _SingleRideViewModel = new SingleRideViewModel();
+            RideModelHelper _AdHocHelper = new RideModelHelper(repository);
+            _SingleRideViewModel = _AdHocHelper.PopulateSingleRideModel(RideId, currentUser.Id);
+            return View(_SingleRideViewModel);
+        }
+
         public ActionResult SeeAllComments(int RideId, int GroupId)
         {
             AllRideComments _AllRideComments = new AllRideComments();

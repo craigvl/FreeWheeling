@@ -45,7 +45,7 @@ namespace FreeWheeling.UI.Infrastructure
                 emailToUser.UserName = GetUserNameViaEmail(email);
                 emailToUser.creator = createdby;
                 emailToUser.bunchDate = bunchDate;
-                emailToUser.link = "http://www.bunchy.com.au/Ride?RideId=" + RideId;
+                emailToUser.link = "http://www.bunchy.com.au/Ride/ViewSingleRide?RideId=" + RideId;
                 emailToUser.Send();
             }
         }

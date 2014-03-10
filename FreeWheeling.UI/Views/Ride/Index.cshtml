@@ -407,8 +407,8 @@ else
         }
     </div>
         @Html.ActionLink(string.Concat("See all Comments (", @Model.NextCommentCount, ")"), "SeeAllComments", "Ride",
-        new { RideId = @Model.Ride.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage },
-                     new { @class = "btn btn-success", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @Model.Ride.id.ToString()) })
+             new { RideId = @Model.NextRide.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage },
+                          new { @class = "btn btn-success", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @Model.NextRide.id.ToString()) })
 
     }
 </div>

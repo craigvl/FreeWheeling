@@ -42,6 +42,34 @@ namespace FreeWheeling.UI.Models
             return adHocViewModel;
         }
 
+        public SingleRideViewModel PopulateSingleRideModel(int RideId, string UserId)
+        {
+            Ride _Ride = repository.GetRideByIDIncludeGroup(RideId);
+            SingleRideViewModel _SingleRideViewModel = new SingleRideViewModel
+            {
+                Ride = _Ride,
+                RideDate = _Ride.RideDate,
+                RideTime = _Ride.RideTime
+            };
+            _SingleRideViewModel.CommentCount = repository.GetCommentCountForRide(RideId);
+            _SingleRideViewModel.IsOwner = repository.IsGroupCreator(_Ride.Group.id,UserId);
+
+            if (_SingleRideViewModel.MapUrl != null)
+            {
+                _SingleRideViewModel.MapUrl =
+                string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", _Ride.Group.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
+                //https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D108681
+            }
+            CultureHelper _CultureHelper = new CultureHelper(repository);
+            Group _Group = repository.GetGroupByID(_Ride.Group.id);
+            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Group.Location.id);        
+            _SingleRideViewModel.Riders = repository.GetRidersForRide(RideId, TZone);
+            _SingleRideViewModel.KeenCount = repository.GetKeenCountForRide(RideId);
+            _SingleRideViewModel.Comments = repository.GetTop2CommentsForRide(RideId);
+
+            return _SingleRideViewModel;
+        }
+
         public RideModelIndex PopulateRideModel(int RideId, int GroupId, string UserId, bool NeedPreviousRide, bool FromFavPage)
         {
             Ride _Ride = new Ride();
@@ -176,6 +204,21 @@ namespace FreeWheeling.UI.Models
         public List<AdHocRider> Riders { get; set; }
         public List<Route> Routes { get; set; }
         public List<AdHocComment> Comments { get; set; }
+        public int CommentCount { get; set; }
+        public Boolean IsOwner { get; set; }
+        public string MapUrl { get; set; }
+        public int KeenCount { get; set; }
+    }
+
+    public class SingleRideViewModel
+    {
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime RideDate { get; set; }
+        public string RideTime { get; set; }
+        public Ride Ride { get; set; }
+        public List<Rider> Riders { get; set; }
+        public List<Route> Routes { get; set; }
+        public List<Comment> Comments { get; set; }
         public int CommentCount { get; set; }
         public Boolean IsOwner { get; set; }
         public string MapUrl { get; set; }

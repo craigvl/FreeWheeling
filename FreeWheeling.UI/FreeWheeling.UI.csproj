@@ -473,6 +473,7 @@
     <Content Include="Views\Ride\InviteOthersToBunch.cshtml" />
     <Content Include="Views\Ride\InviteOthersToAHocBunch.cshtml" />
     <Content Include="Views\Emails\SendUsersBunchInviteEmail.cshtml" />
+    <Content Include="Views\Ride\ViewSingleRide.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
