@@ -53,6 +53,13 @@ namespace FreeWheeling.Domain.Concrete
             return group;
         }
 
+        public Group GetGroupByRideID(int Rideid)
+        {
+            Ride _Ride = context.Rides.Include("Group").Where(r => r.id == Rideid).FirstOrDefault();
+            Group group = context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").Where(i => i.id == _Ride.Group.id).FirstOrDefault();
+            return group;
+        }
+
         public Group GetGroupByIDNoIncludes(int id)
         {
             Group group = context.Groups.Where(i => i.id == id).FirstOrDefault();
@@ -97,6 +104,11 @@ namespace FreeWheeling.Domain.Concrete
         public Ride GetRideByID(int id)
         {
             return context.Rides.Where(r => r.id == id).FirstOrDefault();
+        }
+
+        public Ride GetRideByIDIncludeGroup(int id)
+        {
+            return context.Rides.Include("Group").Where(r => r.id == id).FirstOrDefault();
         }
 
         public Ride GetNextRideForGroup(Group _Group, TimeZoneInfo TimeZone)
@@ -745,5 +757,6 @@ namespace FreeWheeling.Domain.Concrete
         {
             context.SaveChanges();
         }
+
     }
 }

@@ -28,7 +28,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [Compress]
-        public ActionResult Index(int groupid, int rideid = -1, bool FromFavPage = false)
+        public ActionResult Index(int groupid = -1, int rideid = -1, bool FromFavPage = false)
         {
             //var TimeZone = TimeZoneInfo.Local.Id;
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
@@ -36,7 +36,18 @@ namespace FreeWheeling.UI.Controllers
             
             Group _Group = repository.GetGroupByID(groupid);
             RideModelHelper _RideHelper = new RideModelHelper(repository);
-            RideModel = _RideHelper.PopulateRideModel(rideid, groupid, currentUser.Id, true, FromFavPage);
+
+            if (groupid != -1 || rideid != -1)
+            {
+                RideModel = _RideHelper.PopulateRideModel(rideid, groupid, currentUser.Id, true, FromFavPage);
+            }
+            else
+            {
+                GroupModel GroupModel = new GroupModel();
+                GroupModel._Groups = repository.GetGroups().ToList();
+                GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
+                return RedirectToAction("index", "group", GroupModel);
+            }
 
             if (RideModel.Ride != null)
             {              
@@ -88,6 +99,73 @@ namespace FreeWheeling.UI.Controllers
             _AllAdHocRideComments.adhocrideid = adhocrideid;
             _AllAdHocRideComments.Comments = repository.GetAllCommentsForAdHocRide(adhocrideid);
             return View(_AllAdHocRideComments);
+        }
+
+        public ActionResult InviteOthersToBunch(int RideId)
+        {
+
+            
+            Ride _Ride = repository.GetRideByIDIncludeGroup(RideId);
+            InviteOthersToBunchModel _InviteOthersToBunchModel = new InviteOthersToBunchModel
+            {
+                Name = _Ride.Group.name,
+                RideDate = _Ride.RideDate.ToString("dd/MM/yyyy")
+            };
+
+
+            return View(_InviteOthersToBunchModel);
+
+        }
+
+        [HttpPost]
+        public JsonResult InviteOthersToBunch(InviteOthersToBunchModel _InviteOthersToBunchModel)
+        {
+
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+
+            Task T = new Task(() =>
+            {
+
+                Ride _Ride = repository.GetRideByID(_InviteOthersToBunchModel.RideId);
+
+                List<string> UserNames = new List<string>();
+
+                foreach (InviteUser item in _InviteOthersToBunchModel.InviteUsers)
+                {
+                    UserNames.Add(item.UserName);
+                }
+
+                UserHelper _UserHelp = new UserHelper();
+
+                _UserHelp.SendUsersBunchInviteEmail(_UserHelp.GetEmailsForUserNames(UserNames),
+                    _InviteOthersToBunchModel.RideId,
+                    currentUser.UserName, _Ride.RideDate.ToString("dd/MM/yyyy"));
+
+            });
+
+            T.Start();
+
+            return Json(new
+            {
+                success = true,
+                message = "Emails Sent",
+                RideId = _InviteOthersToBunchModel.RideId
+            }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public ActionResult InviteOthersToAHocBunch(int adhocrideid)
+        {
+
+            Ad_HocRide _AdHocRide = repository.GetAdHocRideByID(adhocrideid);
+            InviteOthersToAdHocBunchModel _InviteOthersToAdHocBunchModel = new InviteOthersToAdHocBunchModel
+            {
+                Name = _AdHocRide.Name,
+                RideDate = _AdHocRide.RideDate.ToString("dd/MM/yyyy")
+            };
+
+            return View(_InviteOthersToAdHocBunchModel);
+
         }
 
         public ActionResult DeleteAdHocRide(int adhocrideid)

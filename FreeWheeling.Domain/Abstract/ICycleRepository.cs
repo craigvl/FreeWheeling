@@ -18,6 +18,7 @@ namespace FreeWheeling.Domain.Abstract
         IEnumerable<Group> GetFavouriteGroupsByLocationWithSearch(int? LocationID,string SearchString);
         IEnumerable<Group> GetGroupsWithRiders();
         Group GetGroupByID(int id);
+        Group GetGroupByRideID(int Rideid);
         Group GetGroupByIDNoIncludes(int id);
         List<CycleDays> GetCycleDaysForGroup(int GroupId);
         Ride GetPreviousRideForGroup(Group _Group);
@@ -29,6 +30,7 @@ namespace FreeWheeling.Domain.Abstract
 
         //Get .. Ride
         Ride GetRideByID(int id);
+        Ride GetRideByIDIncludeGroup(int id);
         Ride GetNextRideForGroup(Group _Group, TimeZoneInfo TimeZone);
         List<Ad_HocRide> GetAdHocRides(Location _Location, TimeZoneInfo TimeZone);
 

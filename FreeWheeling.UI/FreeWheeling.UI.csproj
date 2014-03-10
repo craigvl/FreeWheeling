@@ -470,6 +470,9 @@
     <Content Include="Views\Emails\SendAdHocNewCommentEmails.cshtml" />
     <Content Include="Views\Emails\SendGroupRideEmailsAttend.cshtml" />
     <Content Include="Views\Emails\SendAdHocEmailsAttend.cshtml" />
+    <Content Include="Views\Ride\InviteOthersToBunch.cshtml" />
+    <Content Include="Views\Ride\InviteOthersToAHocBunch.cshtml" />
+    <Content Include="Views\Emails\SendUsersBunchInviteEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

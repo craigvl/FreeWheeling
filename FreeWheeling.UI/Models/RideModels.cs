@@ -47,6 +47,14 @@ namespace FreeWheeling.UI.Models
             Ride _Ride = new Ride();
             Group _Group = new Group();
             _Group = repository.GetGroupByID(GroupId);
+
+            if(_Group == null)
+            {
+
+                _Group = repository.GetGroupByRideID(RideId);
+
+            }
+
             CultureHelper _CultureHelper = new CultureHelper(repository);
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Group.Location.id);
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
@@ -192,6 +200,22 @@ namespace FreeWheeling.UI.Models
     {
         public List<AdHocComment> Comments { get; set; }
         public int adhocrideid { get; set; }
+    }
+
+    public class InviteOthersToBunchModel
+    {
+        public int RideId { get; set; }
+        public string Name { get; set; }
+        public string RideDate { get; set; }
+        public List<InviteUser> InviteUsers { get; set; }
+    }
+
+    public class InviteOthersToAdHocBunchModel
+    {
+       public int adhocrideid { get; set; }
+       public string Name { get; set; }
+       public string RideDate { get; set; }
+       public List<InviteUser> InviteUsers { get; set; }
     }
 
     public class EditAdHocRideModel
