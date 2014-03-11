@@ -5,7 +5,15 @@
     ViewBag.Title = "See All Comments";
 }
 
-@Html.ActionLink("<-- Back to Bunch", "Index", "Ride", new { RideId = @Model.RideId, Groupid = @Model.GroupId }, new { @class = "btn btn-default", onclick = "ShowProgress();" })
+@if (@Model.PreviousID != -1)
+{
+    @Html.ActionLink("<-- Back to Bunch", "Index", "Ride", new { RideId = @Model.PreviousID, Groupid = @Model.GroupId }, new { @class = "btn btn-default", onclick = "ShowProgress();" })
+}
+else
+{
+    @Html.ActionLink("<-- Back to Bunch", "Index", "Ride", new { RideId = @Model.RideId, Groupid = @Model.GroupId }, new { @class = "btn btn-default", onclick = "ShowProgress();" })
+}
+
 
 <h2>All Comments</h2>
 

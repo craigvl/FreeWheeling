@@ -2,7 +2,18 @@
 @{
     ViewBag.Title = "Invite Others to Bunch";
 }
+   
+
+
+@if (@Model.PreviousID != -1)
+{
+    @Html.ActionLink("<-- Back to Bunch", "Index", "Ride", new { RideId = @Model.PreviousID }, new { @class = "btn btn-info", onclick = "ShowProgress();" })
+}
+else
+{
     @Html.ActionLink("Back <---", "Index", "Ride", new { rideid = @Model.RideId }, new { @class = "btn btn-info", onclick = "ShowProgress();" })
+}
+
     <h4>Invite Others To Bunch @Model.Name</h4>
     <h4>Date: @Model.RideDate</h4>
 <div id="templated">

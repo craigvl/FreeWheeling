@@ -237,6 +237,7 @@ namespace FreeWheeling.UI.Models
         public List<Comment> Comments { get; set; }
         public int RideId { get; set; }
         public int GroupId { get; set; }
+        public int PreviousID { get; set; }
     }
 
     public class AllAdHocRideComments
@@ -250,6 +251,7 @@ namespace FreeWheeling.UI.Models
         public int RideId { get; set; }
         public string Name { get; set; }
         public string RideDate { get; set; }
+        public int PreviousID { get; set; }
         public List<InviteUser> InviteUsers { get; set; }
     }
 

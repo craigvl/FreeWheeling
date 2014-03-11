@@ -99,12 +99,13 @@ namespace FreeWheeling.UI.Controllers
             return View(_SingleRideViewModel);
         }
 
-        public ActionResult SeeAllComments(int RideId, int GroupId)
+        public ActionResult SeeAllComments(int RideId, int GroupId, int PreviousID = -1)
         {
             AllRideComments _AllRideComments = new AllRideComments();
             _AllRideComments.RideId = RideId;
             _AllRideComments.GroupId = GroupId;
             _AllRideComments.Comments = repository.GetAllCommentsForRide(RideId);
+            _AllRideComments.PreviousID = PreviousID;
             return View(_AllRideComments);
         }
 
@@ -116,7 +117,7 @@ namespace FreeWheeling.UI.Controllers
             return View(_AllAdHocRideComments);
         }
 
-        public ActionResult InviteOthersToBunch(int RideId)
+        public ActionResult InviteOthersToBunch(int RideId, int PreviousID = -1)
         {
       
             Ride _Ride = repository.GetRideByIDIncludeGroup(RideId);
@@ -124,7 +125,8 @@ namespace FreeWheeling.UI.Controllers
             {
                 RideId = _Ride.id,
                 Name = _Ride.Group.name,
-                RideDate = _Ride.RideDate.ToString("dd/MM/yyyy")
+                RideDate = _Ride.RideDate.ToString("dd/MM/yyyy"),
+                PreviousID = PreviousID
             };
 
             return View(_InviteOthersToBunchModel);
