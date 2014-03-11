@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Edit Ad Hoc bunch";
 }
-
+@Html.ActionLink("Back <---", "ViewAdHocRide", "Ride", new { adhocrideid = @Model.adhocrideid }, new { @class = "btn btn-info", onclick = "ShowProgress();" })
 <h4>Invite Others To Ad Hoc Bunch @Model.Name</h4>
 <h4>Date: @Model.RideDate</h4>
 
@@ -11,21 +11,13 @@
     <table>
         <tbody data-bind="template: { name: 'userRowTemplate', foreach: usersLines }"></tbody>
     </table>
-
     <script type="text/html" id="userRowTemplate">
         <tr>
             <td>User name: <input id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" /></td>
-            @* <td><a href="#" data-bind="click: function() { viewModelForTemplated.removeGift($data) }">Delete</a></td>*@
         </tr>
     </script>
-
     <p></p>
-
-    <!-- when Add Gift is clicked, the method addGift() in the view model (viewModelForTemplated) object will be called -->
     <button data-bind="click: addUser">Invite a User/s</button>
-
-    <!-- when Save is clicked, the method save() in the view model (viewModelForTemplated) object will be called. Simple eh? -->
-    @* <button data-bind="click: save">Save</button>*@
 </div>
 
 <div>

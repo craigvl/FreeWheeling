@@ -75,8 +75,13 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [Compress]
-        public ActionResult ViewAdHocRide(int adhocrideid)
-        {         
+        public ActionResult ViewAdHocRide(int adhocrideid = -1)
+        {    
+            if(adhocrideid == -1)
+            {
+                return RedirectToAction("index", "Home");
+            }
+
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             AdHocViewModel _adHocViewModel = new AdHocViewModel();
             RideModelHelper _AdHocHelper = new RideModelHelper(repository);
@@ -113,15 +118,14 @@ namespace FreeWheeling.UI.Controllers
 
         public ActionResult InviteOthersToBunch(int RideId)
         {
-
-            
+      
             Ride _Ride = repository.GetRideByIDIncludeGroup(RideId);
             InviteOthersToBunchModel _InviteOthersToBunchModel = new InviteOthersToBunchModel
             {
+                RideId = _Ride.id,
                 Name = _Ride.Group.name,
                 RideDate = _Ride.RideDate.ToString("dd/MM/yyyy")
             };
-
 
             return View(_InviteOthersToBunchModel);
 
@@ -170,6 +174,7 @@ namespace FreeWheeling.UI.Controllers
             Ad_HocRide _AdHocRide = repository.GetAdHocRideByID(adhocrideid);
             InviteOthersToAdHocBunchModel _InviteOthersToAdHocBunchModel = new InviteOthersToAdHocBunchModel
             {
+                adhocrideid = adhocrideid,  
                 Name = _AdHocRide.Name,
                 RideDate = _AdHocRide.RideDate.ToString("dd/MM/yyyy")
             };
