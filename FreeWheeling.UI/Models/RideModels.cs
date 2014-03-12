@@ -96,7 +96,7 @@ namespace FreeWheeling.UI.Models
             }
             else
             {
-                _Ride = repository.GetRideByID(RideId);            
+                _Ride = repository.GetClosestNextRide(_Group, TZone);
             }
             
             RideModelIndex RideModel = new RideModelIndex();
