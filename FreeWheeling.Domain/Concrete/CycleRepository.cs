@@ -21,24 +21,24 @@ namespace FreeWheeling.Domain.Concrete
         public IEnumerable<Group> GetGroupsByLocation(int? LocationID)
         {
             //return context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").Where(g => g.Location.id == LocationID).ToList();
-            return context.Groups.Include("Rides").Where(g => g.Location.id == LocationID).ToList();
+            return context.Groups.Include("Rides").Include("RideDays").Where(g => g.Location.id == LocationID).ToList();
         }
 
         public IEnumerable<Group> GetGroupsByLocationWithSearch(int? LocationID, string SearchString)
         {
-            return context.Groups.Include("Rides").Where(g => g.Location.id == LocationID
+            return context.Groups.Include("Rides").Include("RideDays").Where(g => g.Location.id == LocationID
                 && g.name.ToUpper().Contains(SearchString)).ToList();
         }
 
         public IEnumerable<Group> GetFavouriteGroupsByLocation(int? LocationID)
         {
             //return context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").Where(g => g.Location.id == LocationID).ToList();
-            return context.Groups.Include("Members").Include("Rides").Where(g => g.Location.id == LocationID).ToList();
+            return context.Groups.Include("Members").Include("Rides").Include("RideDays").Where(g => g.Location.id == LocationID).ToList();
         }
 
         public IEnumerable<Group> GetFavouriteGroupsByLocationWithSearch(int? LocationID, string SearchString)
         {
-            return context.Groups.Include("Members").Include("Rides").Where(g => g.Location.id == LocationID
+            return context.Groups.Include("Members").Include("Rides").Include("RideDays").Where(g => g.Location.id == LocationID
                 && g.name.ToUpper().Contains(SearchString)).ToList();
         }
 
@@ -530,25 +530,24 @@ namespace FreeWheeling.Domain.Concrete
                 if (item.DayOfWeek == "Saturday") { RideDays.Add(DayOfWeek.Saturday); }
             }
 
+            List<Ride> RidesToAdd = new List<Ride>();
+
             foreach (DayOfWeek day in RideDays)
-            {              
+            {
+
                 if (LocalNow.DayOfWeek == day)
                 {
                    if (LocalNow.TimeOfDay <= (new TimeSpan(_Group.RideHour, _Group.RideMinute, 0)))
                    {
                        Ride NewRide = new Ride { Group = _Group, RideTime = _Group.RideTime, RideDate = LocalNow.Date.Add(new TimeSpan(_Group.RideHour, _Group.RideMinute, 0)) };
-                       context.Rides.Add(NewRide);
-                       context.Entry(NewRide).State = System.Data.Entity.EntityState.Added;
-                       context.SaveChanges();
+                       RidesToAdd.Add(NewRide);
                    }
                    else
                    {
                        DateTime nextdate = GetNextDateForDay(LocalNow, day);
 
                         Ride NewRide = new Ride { Group = _Group, RideTime = _Group.RideTime, RideDate = nextdate.Date.Add(new TimeSpan(_Group.RideHour, _Group.RideMinute, 0)) };
-                        context.Rides.Add(NewRide);
-                        context.Entry(NewRide).State = System.Data.Entity.EntityState.Added;
-                        context.SaveChanges();                      
+                        RidesToAdd.Add(NewRide);                     
                    }
 
                 }
@@ -556,11 +555,18 @@ namespace FreeWheeling.Domain.Concrete
                 {
                     DateTime nextdate = GetNextDateForDay(LocalNow, day);
                     Ride NewRide = new Ride { Group = _Group, RideTime = _Group.RideTime, RideDate = nextdate.Date.Add(new TimeSpan(_Group.RideHour, _Group.RideMinute, 0)) };
-                    context.Rides.Add(NewRide);
-                    context.Entry(NewRide).State = System.Data.Entity.EntityState.Added;
-                    context.SaveChanges();
-                }    
+                    RidesToAdd.Add(NewRide);
+                }
+
             }
+
+            foreach (Ride item in RidesToAdd.OrderBy(h => h.RideDate))
+            {
+                context.Rides.Add(item);
+                context.Entry(item).State = System.Data.Entity.EntityState.Added;
+                context.SaveChanges();
+            }
+
             return _Group;
         }
 
