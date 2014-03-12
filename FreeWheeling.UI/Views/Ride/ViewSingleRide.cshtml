@@ -97,7 +97,7 @@
                     groupid = @Model.Ride.Group.id,
                     rideid = @Model.Ride.id,
                     FromFavPage = false,
-                    ParentRideID = @Model.Ride.id
+                    ParentRideID = @Model.PusherChannel
                 }, new AjaxOptions
         {
             HttpMethod = "Post",
@@ -120,8 +120,8 @@
 
 <h4><span class="label label-success">You in?</span></h4>
 
-@Ajax.ActionLink("I'm In!", "Attend",
-            new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Ride.Group.id, FromFavPage = false, ParentRideID = @Model.Ride.id },
+@Ajax.ActionLink("I'm In!", "AttendSingleRide",
+                new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Ride.Group.id, FromFavPage = false, ParentRideID = @Model.PusherChannel },
                  new AjaxOptions
                  {
                      HttpMethod = "POST",
@@ -135,8 +135,8 @@
                      @id = "InFirst"
                  })
 
-@Ajax.ActionLink("I'm Out!", "Attend",
-                new { RideId = @Model.Ride.id, commitment = "Out", Groupid = @Model.Ride.Group.id, FromFavPage = false, ParentRideID = @Model.Ride.id },
+@Ajax.ActionLink("I'm Out!", "AttendSingleRide",
+                    new { RideId = @Model.Ride.id, commitment = "Out", Groupid = @Model.Ride.Group.id, FromFavPage = false, ParentRideID = @Model.PusherChannel },
                  new AjaxOptions
                  {
                      HttpMethod = "POST",
@@ -150,8 +150,8 @@
                           @id = "OutFirst"
                       })
 
-@Ajax.ActionLink("On My Way!", "Attend",
-                     new { RideId = @Model.Ride.id, commitment = "OnWay", Groupid = @Model.Ride.Group.id, FromFavPage = false, ParentRideID = @Model.Ride.id },
+@Ajax.ActionLink("On My Way!", "AttendSingleRide",
+                     new { RideId = @Model.Ride.id, commitment = "OnWay", Groupid = @Model.Ride.Group.id, FromFavPage = false, ParentRideID = @Model.PusherChannel },
                  new AjaxOptions
                  {
                      HttpMethod = "POST",

@@ -63,8 +63,8 @@ namespace FreeWheeling.UI.Models
             CultureHelper _CultureHelper = new CultureHelper(repository);
             Group _Group = repository.GetGroupByID(_Ride.Group.id);
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Group.Location.id);
-            Ride NextRide = repository.GetNextRideForGroup(_Ride.Group, TZone);
-            _SingleRideViewModel.PusherChannel = NextRide.id;
+            Ride ClosestRide = repository.GetClosestNextRide(_Ride.Group, TZone);
+            _SingleRideViewModel.PusherChannel = ClosestRide.id;
             _SingleRideViewModel.Riders = repository.GetRidersForRide(RideId, TZone);
             _SingleRideViewModel.KeenCount = repository.GetKeenCountForRide(RideId);
             _SingleRideViewModel.Comments = repository.GetTop2CommentsForRide(RideId);

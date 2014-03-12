@@ -32,6 +32,8 @@ namespace FreeWheeling.Domain.Abstract
         Ride GetRideByID(int id);
         Ride GetRideByIDIncludeGroup(int id);
         Ride GetNextRideForGroup(Group _Group, TimeZoneInfo TimeZone);
+        Ride GetClosestNextRide(Group _Group, TimeZoneInfo TimeZone);
+        Ride Get2ndClosestNextRide(Group _Group, TimeZoneInfo TimeZone);
         List<Ad_HocRide> GetAdHocRides(Location _Location, TimeZoneInfo TimeZone);
 
         //Get .. AdHoc

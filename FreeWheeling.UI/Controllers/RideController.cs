@@ -561,6 +561,72 @@ namespace FreeWheeling.UI.Controllers
                 //return Json(new { success = false, Message = "Please enter a comment." }, JsonRequestBehavior.AllowGet);  
             
         }
+
+        public JsonResult AttendSingleRide(int RideId, string Commitment, int Groupid, bool FromFavPage, int ParentRideID)
+        {
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            Ride _Ride = new Ride();
+            Group _Group = new Group();
+
+            _Ride = repository.GetRideByID(RideId);
+            _Group = repository.GetGroupByID(Groupid);
+
+            Rider _Rider = new Rider
+            {
+                userId = currentUser.Id,
+                Name = currentUser.UserName,
+                Ride = _Ride,
+                LeaveTime = DateTime.UtcNow,
+                PercentKeen = Commitment
+            };
+
+            repository.AddRider(_Rider, _Group);
+            repository.Save();
+
+            SingleRideViewModel RideModel = new SingleRideViewModel();
+            RideModelHelper _RideHelper = new RideModelHelper(repository);
+            RideModel = _RideHelper.PopulateSingleRideModel(RideId,currentUser.Id);
+            string KeenCount = repository.GetKeenCountForRide(RideId).ToString();
+
+            Task E = new Task(() =>
+            {
+                CultureHelper _CultureHelper = new CultureHelper(repository);
+                TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
+
+                string RideDate = _Ride.RideDate.ToShortDateString();
+                string GroupName = _Ride.Group.name;
+
+                UserHelper _UserHelp = new UserHelper();
+                List<Rider> _Riders = repository.GetRidersAndCommentersForRideDontIncludeCurrentUser(_Ride.id, TZone, currentUser.Id);
+
+                List<string> Emails = new List<string>();
+
+                foreach (Rider item in _Riders)
+                {
+                    string email = _UserHelp.GetUserEmailViaUserId(item.userId);
+                    Emails.Add(email);
+                }
+
+                _UserHelp.SendUsersGroupAttendStatusEmail(Emails, GroupName, Commitment, currentUser.UserName, _Ride.Group.id, _Ride.RideDate);
+
+            });
+
+            E.Start();
+
+            return Json(new
+            {
+                success = true,
+                message = Commitment,
+                rideid = RideId,
+                username = currentUser.UserName,
+                keencount = KeenCount,
+                leavetime = DateTime.UtcNow,
+                parentid = ParentRideID
+            }, JsonRequestBehavior.AllowGet);
+
+            //return Json(new { success = false, Message = "Please enter a comment." }, JsonRequestBehavior.AllowGet);  
+
+        }
      
         public JsonResult AttendAdHocRider(int adhocrideid, string Commitment)
         {
