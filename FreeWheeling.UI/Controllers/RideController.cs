@@ -93,6 +93,7 @@ namespace FreeWheeling.UI.Controllers
         public ActionResult ViewSingleRide(int RideId)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
+
             SingleRideViewModel _SingleRideViewModel = new SingleRideViewModel();
             RideModelHelper _AdHocHelper = new RideModelHelper(repository);
             _SingleRideViewModel = _AdHocHelper.PopulateSingleRideModel(RideId, currentUser.Id);
