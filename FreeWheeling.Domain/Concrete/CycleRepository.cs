@@ -104,25 +104,25 @@ namespace FreeWheeling.Domain.Concrete
             return context.Rides.Include("Group").Where(r => r.id == id).FirstOrDefault();
         }
 
-        public Ride GetPreviousRideForGroup(Group _Group)
-        {
-            Ride _NextRide = context.Rides.Include("Riders").Where(t => t.Group.id == _Group.id && t.RideDate >= DateTime.Now).OrderBy(r => r.RideDate).FirstOrDefault();
-            Ride PreviousRide = context.Rides.Include("Riders").Where(x => x.Group.id == _Group.id && x.RideDate <= _NextRide.RideDate).OrderBy(r => r.RideDate).FirstOrDefault();
-            return PreviousRide;
-        }
+        //public Ride GetPreviousRideForGroup(Group _Group)
+        //{
+        //    Ride _NextRide = context.Rides.Include("Riders").Where(t => t.Group.id == _Group.id && t.RideDate >= DateTime.Now).OrderBy(r => r.RideDate).FirstOrDefault();
+        //    Ride PreviousRide = context.Rides.Include("Riders").Where(x => x.Group.id == _Group.id && x.RideDate <= _NextRide.RideDate).OrderBy(r => r.RideDate).FirstOrDefault();
+        //    return PreviousRide;
+        //}
 
-        public Ride GetNextRideForGroup(Group _Group, TimeZoneInfo TimeZone)
-        {
-            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZone);
-            Ride _Ride = context.Rides.Include("Riders").Where(t => t.Group.id == _Group.id && t.RideDate >= LocalNow).OrderBy(r => r.RideDate).FirstOrDefault();
+        //public Ride GetNextRideForGroup(Group _Group, TimeZoneInfo TimeZone)
+        //{
+        //    DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZone);
+        //    Ride _Ride = context.Rides.Include("Riders").Where(t => t.Group.id == _Group.id && t.RideDate >= LocalNow).OrderBy(r => r.RideDate).FirstOrDefault();
 
-            if (context.Rides.Where(t => t.Group.id == _Group.id && t.RideDate >= LocalNow).Count() == 1)
-            {
-                PopulateRideDatesFromDate(_Group, _Ride.RideDate, TimeZone);
-            }
+        //    if (context.Rides.Where(t => t.Group.id == _Group.id && t.RideDate >= LocalNow).Count() == 1)
+        //    {
+        //        PopulateRideDatesFromDate(_Group, _Ride.RideDate, TimeZone);
+        //    }
 
-            return _Ride;
-        }
+        //    return _Ride;
+        //}
 
         public Ride GetClosestNextRide(Group _Group, TimeZoneInfo TimeZone)
         {
@@ -254,13 +254,8 @@ namespace FreeWheeling.Domain.Concrete
                 }
                 else
                 {
-
-                    Riders.Add(r);
-                    
+                    Riders.Add(r);                    
                 }
-
-                
-
 
             }
 
@@ -408,7 +403,6 @@ namespace FreeWheeling.Domain.Concrete
 
             if (CurrentRiders != null)
             {
-
                 if (CurrentRiders.id != 0)
                 {
                     CurrentRiders.PercentKeen = _Rider.PercentKeen;
@@ -422,7 +416,6 @@ namespace FreeWheeling.Domain.Concrete
                     context.Riders.Add(NewRider);
                     context.Entry(NewRider).State = System.Data.Entity.EntityState.Added;
                 }
-
             }
             else
             {
@@ -430,7 +423,6 @@ namespace FreeWheeling.Domain.Concrete
                 context.Riders.Add(NewRider);
                 context.Entry(NewRider).State = System.Data.Entity.EntityState.Added;
             }
-
         }
 
         public void AddRideComment(string Comment, int RideId, string UserName, string UserId)
@@ -517,6 +509,7 @@ namespace FreeWheeling.Domain.Concrete
             //_DateTime = TimeZoneInfo.ConvertTimeFromUtc(_DateTime, TZone); //Not needed as time passed in is in local time.
             _Group.RideDays = GetCycleDaysForGroup(_Group.id);
             List<DayOfWeek> RideDays = new List<DayOfWeek>();
+            List<Ride> RidesToAdd = new List<Ride>();
 
             foreach (CycleDays item in _Group.RideDays)
             {
@@ -533,10 +526,15 @@ namespace FreeWheeling.Domain.Concrete
             {
                 DateTime nextdate = GetNextDateForDay(_DateTime, day);
                 Ride NewRide = new Ride { Group = _Group, RideTime = _Group.RideTime, RideDate = nextdate.Date.Add(new TimeSpan(_Group.RideHour, _Group.RideMinute, 0)) };
-                context.Rides.Add(NewRide);
-                context.Entry(NewRide).State = System.Data.Entity.EntityState.Added;
+                RidesToAdd.Add(NewRide); 
+            }
+
+            foreach (Ride item in RidesToAdd.OrderBy(h => h.RideDate))
+            {
+                context.Rides.Add(item);
+                context.Entry(item).State = System.Data.Entity.EntityState.Added;
                 context.SaveChanges();
-            }       
+            }
         }
 
         public Group PopulateRideDates(Group _Group, TimeZoneInfo _TimeZoneInfo)
@@ -561,7 +559,6 @@ namespace FreeWheeling.Domain.Concrete
 
             foreach (DayOfWeek day in RideDays)
             {
-
                 if (LocalNow.DayOfWeek == day)
                 {
                    if (LocalNow.TimeOfDay <= (new TimeSpan(_Group.RideHour, _Group.RideMinute, 0)))
@@ -572,11 +569,9 @@ namespace FreeWheeling.Domain.Concrete
                    else
                    {
                        DateTime nextdate = GetNextDateForDay(LocalNow, day);
-
-                        Ride NewRide = new Ride { Group = _Group, RideTime = _Group.RideTime, RideDate = nextdate.Date.Add(new TimeSpan(_Group.RideHour, _Group.RideMinute, 0)) };
-                        RidesToAdd.Add(NewRide);                     
+                       Ride NewRide = new Ride { Group = _Group, RideTime = _Group.RideTime, RideDate = nextdate.Date.Add(new TimeSpan(_Group.RideHour, _Group.RideMinute, 0)) };
+                       RidesToAdd.Add(NewRide);                     
                    }
-
                 }
                 else
                 {
@@ -584,7 +579,6 @@ namespace FreeWheeling.Domain.Concrete
                     Ride NewRide = new Ride { Group = _Group, RideTime = _Group.RideTime, RideDate = nextdate.Date.Add(new TimeSpan(_Group.RideHour, _Group.RideMinute, 0)) };
                     RidesToAdd.Add(NewRide);
                 }
-
             }
 
             foreach (Ride item in RidesToAdd.OrderBy(h => h.RideDate))

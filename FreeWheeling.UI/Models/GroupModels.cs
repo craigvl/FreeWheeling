@@ -94,7 +94,8 @@ namespace FreeWheeling.UI.Models
                 repository.DeleteOldRides(item.id, TZone);
 
                 item.Rides = item.Rides.Where(t => t.RideDate >= LocalNow).ToList();
-                Ride NextRide = repository.GetNextRideForGroup(item, TZone);
+                //Ride NextRide = repository.GetNextRideForGroup(item, TZone);
+                Ride NextRide = repository.GetClosestNextRide(item, TZone);
 
                 if (NextRide != null)
                 {
@@ -106,6 +107,8 @@ namespace FreeWheeling.UI.Models
                     {
                         repository.PopulateRideDates(item,TZone);
                         repository.Save();
+                        NextRide = repository.GetClosestNextRide(item, TZone);
+                        _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
                     }
 
                 }
