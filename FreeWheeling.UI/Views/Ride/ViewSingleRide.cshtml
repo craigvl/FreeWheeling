@@ -272,9 +272,14 @@
             if (data.message == 'OnWay') {
                 var keenuser = "#keen_" + data.username + data.rideid;
                 $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-                $(keenuser).html(data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
-                $(keenuser).attr('class', 'label label-success');
-                $(keenuser).css("text-decoration", "none");
+                if ($("#keen_" + data.username + data.rideid).length) {
+                    $(keenuser).html(data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
+                    $(keenuser).attr('class', 'label label-success');
+                    $(keenuser).css("text-decoration", "none");
+                }
+                else {
+                    $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success" style"text-decoration: none;">' + data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
+                }
                 jQuery("abbr.timeago").timeago();
 
                 $("#OutFirst").show();
