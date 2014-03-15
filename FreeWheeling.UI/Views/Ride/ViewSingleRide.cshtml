@@ -21,7 +21,6 @@
     @Html.Raw(@Model.MapUrl)
 }
 <p></p>
-
 <h2>@Model.Ride.Group.name</h2>
 <h3>@Model.Ride.RideDate.ToLongDateString()</h3>
 <h3>Start Location: @Model.Ride.Group.StartLocation</h3>
@@ -31,23 +30,19 @@
 <h4><span class="label label-success">Keen<span id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</span></span></h4>
 <div id="@("keendiv_" + @Model.Ride.id)">
     @{
-
         foreach (Rider item in @Model.Riders)
         {
-
             {
                 switch (item.PercentKeen)
                 {
                     case "Out":
                         <text>
                             <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" style="text-decoration:line-through;" class="label label-danger">@item.Name is Out</span></p>
-
                         </text>
                         break;  // Always break each case
                     case "OnWay":
                     <text>
                         <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
-
                     </text>
                         break;  // Always break each case
                     case "In":
@@ -59,11 +54,9 @@
             }
             <p></p>
         }
-
     }
 </div>
 <br />
-
 <div>
     <hr />
     @if (@Model.Comments != null)
@@ -87,13 +80,10 @@
             FromFavPage = false
         },
         new { @class = "btn btn-success", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @Model.Ride.id.ToString()) })
-
     }
 </div>
 </div>
-
 <div>
-
     @using (Ajax.BeginForm("AddComment", "Ride", new
                 {
                     groupid = @Model.Ride.Group.id,
@@ -114,12 +104,8 @@
             </span>
         </div>
     }
-
 </div>
-
 <hr />
-
-
 <h4><span class="label label-success">You in?</span></h4>
 
 @Ajax.ActionLink("I'm In!", "AttendSingleRide",
@@ -151,7 +137,6 @@
                           onclick = "ShowProgress();",
                           @id = "OutFirst"
                       })
-
 @Ajax.ActionLink("On My Way!", "AttendSingleRide",
                      new { RideId = @Model.Ride.id, commitment = "OnWay", Groupid = @Model.Ride.Group.id, FromFavPage = false, ParentRideID = @Model.PusherChannel },
                  new AjaxOptions
@@ -166,28 +151,21 @@
                      onclick = "ShowProgress();",
                      @id = "OnWayFirst"
                  })
-
 <p></p>
-
-
 <div class="loading" style="display:none;" align="center">
     Loading. Please wait.<br />
     <br />
     <img src="~/Content/Images/loader.gif" alt="" />
 </div>
-
 @section scripts{
     @Scripts.Render("~/Scripts/jquery.timeago.js")
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-
         var socketId = null;
 
         function CommentComplete(data) {
             HideProgress();
             //Azure Mobile Storage
-
-            //Comments
 
             var client = new WindowsAzure.MobileServiceClient(
                       "http://bunchydev.azure-mobile.net/",
@@ -211,7 +189,6 @@
             //Clear comment textbox after submit for both rides.
             $("form #CommentStringFirst").val("");
             $("form #CommentStringSecond").val("");
-
         }
 
         function KeenCompleteFirst(data) {
@@ -286,9 +263,7 @@
                 $("#OnWayFirst").hide();
                 $("#InFirst").hide();
             }
-
         }
-
 
         jQuery(document).ready(function () {
             HideProgress();
@@ -311,7 +286,6 @@
             pusher.connection.bind('connected', function () {
                 socketId = pusher.connection.socket_id;
             });
-
 
             channel.bind('You-In', function (data) {
                 //alert(data.message);
@@ -344,14 +318,10 @@
                     $(keenuser).css("text-decoration", "none");
                     jQuery("abbr.timeago").timeago();
                 }
-
             });
 
             //End Pusher
-
             jQuery("abbr.timeago").timeago();
-
         });
-
     </script>
 }
