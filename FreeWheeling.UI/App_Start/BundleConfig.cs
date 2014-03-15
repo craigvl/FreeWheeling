@@ -35,8 +35,8 @@ namespace FreeWheeling.UI
             bootstrap.CdnFallbackExpression = "window.jQuery";
             bundles.Add(bootstrap);
 
-            var knockout = new ScriptBundle("~/bundles/knockout", "http://cdnjs.cloudflare.com/ajax/libs/knockout/3.0.0/knockout-min.js").Include(
-                      "~/Scripts/knockout-3.0.0.js");
+            var knockout = new ScriptBundle("~/bundles/knockout", "http://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js").Include(
+                      "~/Scripts/knockout-3.1.0.js");
             bootstrap.CdnFallbackExpression = "window.jQuery";
             bundles.Add(knockout);
 
@@ -65,8 +65,9 @@ namespace FreeWheeling.UI
             bundles.Add(new StyleBundle("~/Content/css", "//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css").Include(
                       "~/Content/bootstrap.css"));
 
-            bundles.Add(new StyleBundle("~/Content/jqueryui", "~/Content/jquery-ui-1.10.4.custom.min.css").Include(
-                      "~/Content/jquery-ui-1.10.4.custom.css"));
+            bundles.Add(new StyleBundle("~/Content/jqueryui").Include(
+                      "~/Content/jquery-ui-1.10.4.custom.css",
+                      "~/Content/jquery-ui-1.10.4.custom.min.css"));
         }
     }
 }
