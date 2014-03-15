@@ -405,7 +405,7 @@
     <Content Include="Scripts\locales\bootstrap-datepicker.vi.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-CN.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-TW.js" />
-    <Content Include="Scripts\modernizr-2.7.1.js" />
+    <Content Include="Scripts\modernizr-2.7.2.js" />
     <Content Include="Scripts\moment-datepicker-ko.js" />
     <Content Include="Scripts\moment-datepicker.d.ts" />
     <Content Include="Scripts\moment-datepicker.js" />
