@@ -225,6 +225,10 @@
 
                     }
 
+                    $("#OutNext").show();
+                    $("#OnWayNext").show();
+                    $("#InNext").hide();
+
                 }
 
                 if (data.message == 'Out') {
@@ -236,10 +240,13 @@
                         $(keenuser).css("text-decoration", "line-through");
                     }
                     else {
-
                         $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-danger">' + data.username + ' is out!</span>');
-
                     }
+
+                    $("#OutNext").hide();
+                    $("#OnWayNext").hide();
+                    $("#InNext").show();
+                    
                 }
 
                 if (data.message == 'OnWay') {
@@ -254,6 +261,10 @@
                         $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success" style"text-decoration: none;">' + data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
                     }
                     jQuery("abbr.timeago").timeago();
+
+                    $("#OutNext").show();
+                    $("#OnWayNext").hide();
+                    $("#InNext").hide();
                 }
         }
 
