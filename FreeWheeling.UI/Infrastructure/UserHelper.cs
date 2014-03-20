@@ -36,7 +36,8 @@ namespace FreeWheeling.UI.Infrastructure
         public void SendUsersBunchInviteEmail(List<string> Emails,
             int RideId,
             string createdby,
-            string bunchDate)
+            string bunchDate,
+            string bunchName)
         {
             foreach (string email in Emails)
             {
@@ -45,6 +46,7 @@ namespace FreeWheeling.UI.Infrastructure
                 emailToUser.UserName = GetUserNameViaEmail(email);
                 emailToUser.creator = createdby;
                 emailToUser.bunchDate = bunchDate;
+                emailToUser.bunchName = bunchName;
                 emailToUser.link = "http://www.bunchy.com.au/Ride/ViewSingleRide?RideId=" + RideId;
                 emailToUser.Send();
             }
@@ -53,7 +55,8 @@ namespace FreeWheeling.UI.Infrastructure
         public void SendUsersAdHocBunchInviteEmail(List<string> Emails,
            int RideId,
            string createdby,
-           string bunchDate)
+           string bunchDate,
+           string bunchName)
         {
             foreach (string email in Emails)
             {
@@ -61,19 +64,21 @@ namespace FreeWheeling.UI.Infrastructure
                 emailToUser.To = email;
                 emailToUser.UserName = GetUserNameViaEmail(email);
                 emailToUser.creator = createdby;
+                emailToUser.BunchName = bunchName;
                 emailToUser.bunchDate = bunchDate;
                 emailToUser.link = "http://www.bunchy.com.au/Ride/ViewAdHocRide?adhocrideid=" + RideId;
                 emailToUser.Send();
             }
         }
 
-        public void SendUsersCreateAdHocEmail(List<string> Emails, int AdhocID, string createdby)
+        public void SendUsersCreateAdHocEmail(List<string> Emails, int AdhocID, string createdby, string bunchName)
         {
             foreach (string email in Emails)
             {
                 dynamic emailToUser = new Email("SendAdHocEmails");
                 emailToUser.To = email;
                 emailToUser.UserName = GetUserNameViaEmail(email);
+                emailToUser.BunchName = bunchName;
                 emailToUser.creator = GetUserNameViaUserId(createdby);
                 emailToUser.link = "http://www.bunchy.com.au/Ride/ViewAdHocRide?adhocrideid=" + AdhocID;
                 emailToUser.Send();       
