@@ -7,7 +7,7 @@
 <link href="~/Content/datepicker.css" rel="stylesheet" />
 @Styles.Render("~/Content/jqueryui")
 
-@Html.ActionLink("Back Home <---", "Index", "Home", null, new { @class = "btn btn-info" })
+@Html.ActionLink("Back Home <---", "Index", "Home", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
 
 <h2>Create Ad Hoc bunch</h2>
 
