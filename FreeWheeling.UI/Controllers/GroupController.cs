@@ -145,8 +145,10 @@ namespace FreeWheeling.UI.Controllers
 
                 UserHelper _UserHelp = new UserHelper();
 
-                _UserHelp.SendUsersCreateAdHocEmail(_UserHelp.GetEmailsForUserNames(UserNames), NewAdHoc.id, NewAdHoc.CreatedBy);
-
+                _UserHelp.SendUsersCreateAdHocEmail(_UserHelp.GetEmailsForUserNames(UserNames),
+                    NewAdHoc.id,
+                    NewAdHoc.CreatedBy,
+                    NewAdHoc.Name);
                 });
 
                 T.Start();

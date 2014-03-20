@@ -89,7 +89,7 @@ namespace FreeWheeling.UI.Controllers
             return View(_adHocViewModel);
         }
 
-        //[Compress]
+        [Compress]
         public ActionResult ViewSingleRide(int RideId)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
@@ -143,7 +143,7 @@ namespace FreeWheeling.UI.Controllers
             Task T = new Task(() =>
             {
 
-                Ride _Ride = repository.GetRideByID(_InviteOthersToBunchModel.RideId);
+                Ride _Ride = repository.GetRideByIDIncludeGroup(_InviteOthersToBunchModel.RideId);
 
                 List<string> UserNames = new List<string>();
 
@@ -156,7 +156,7 @@ namespace FreeWheeling.UI.Controllers
 
                 _UserHelp.SendUsersBunchInviteEmail(_UserHelp.GetEmailsForUserNames(UserNames),
                     _InviteOthersToBunchModel.RideId,
-                    currentUser.UserName, _Ride.RideDate.ToString("dd/MM/yyyy"));
+                    currentUser.UserName, _Ride.RideDate.ToString("dd/MM/yyyy"), _Ride.Group.name );
 
             });
 
@@ -208,7 +208,9 @@ namespace FreeWheeling.UI.Controllers
 
                 _UserHelp.SendUsersAdHocBunchInviteEmail(_UserHelp.GetEmailsForUserNames(UserNames),
                     _InviteOthersToAdHocBunchModel.adhocrideid,
-                    currentUser.UserName, _Ride.RideDate.ToString("dd/MM/yyyy"));
+                    currentUser.UserName,
+                    _Ride.RideDate.ToString("dd/MM/yyyy"),
+                    _Ride.Name);
 
             });
 
@@ -266,7 +268,7 @@ namespace FreeWheeling.UI.Controllers
 
                     List<string> Emails = new List<string>();
 
-                    foreach (AdHocRider item in _AdHocRiders)
+                    foreach (AdHocRider item in _AdHocRiders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
                     {
                         string email = _UserHelp.GetUserEmailViaUserId(item.userId);
                         Emails.Add(email);
@@ -412,8 +414,8 @@ namespace FreeWheeling.UI.Controllers
                    List<AdHocRider> _AdHocRiders = repository.GetRidersAndCommentersForAdHocRideDontIncludeCurrentUser(adhocrideid, TZone, currentUser.Id);
 
                    List<string> Emails = new List<string>();
-
-                   foreach (AdHocRider item in _AdHocRiders)
+                   
+                   foreach (AdHocRider item in _AdHocRiders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
                    {
                        string email = _UserHelp.GetUserEmailViaUserId(item.userId);
                        Emails.Add(email);
@@ -472,7 +474,7 @@ namespace FreeWheeling.UI.Controllers
 
                     List<string> Emails = new List<string>();
 
-                    foreach (Rider item in _Riders)
+                    foreach (Rider item in _Riders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
                     {
                         string email = _UserHelp.GetUserEmailViaUserId(item.userId);
                         Emails.Add(email);
@@ -483,8 +485,7 @@ namespace FreeWheeling.UI.Controllers
                 });
 
                 E.Start();
-
-            
+          
                 return Json(new { success = true,
                                   message = CommentString,
                                   rideid = rideid,
@@ -537,7 +538,7 @@ namespace FreeWheeling.UI.Controllers
 
                 List<string> Emails = new List<string>();
 
-                foreach (Rider item in _Riders)
+                foreach (Rider item in _Riders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
                 {
                     string email = _UserHelp.GetUserEmailViaUserId(item.userId);
                     Emails.Add(email);
@@ -558,8 +559,7 @@ namespace FreeWheeling.UI.Controllers
                                   parentid = ParentRideID
                 }, JsonRequestBehavior.AllowGet);  
                    
-                //return Json(new { success = false, Message = "Please enter a comment." }, JsonRequestBehavior.AllowGet);  
-            
+                //return Json(new { success = false, Message = "Please enter a comment." }, JsonRequestBehavior.AllowGet);          
         }
 
         public JsonResult AttendSingleRide(int RideId, string Commitment, int Groupid, bool FromFavPage, int ParentRideID)
@@ -601,7 +601,7 @@ namespace FreeWheeling.UI.Controllers
 
                 List<string> Emails = new List<string>();
 
-                foreach (Rider item in _Riders)
+                foreach (Rider item in _Riders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
                 {
                     string email = _UserHelp.GetUserEmailViaUserId(item.userId);
                     Emails.Add(email);
@@ -624,8 +624,7 @@ namespace FreeWheeling.UI.Controllers
                 parentid = ParentRideID
             }, JsonRequestBehavior.AllowGet);
 
-            //return Json(new { success = false, Message = "Please enter a comment." }, JsonRequestBehavior.AllowGet);  
-
+            //return Json(new { success = false, Message = "Please enter a comment." }, JsonRequestBehavior.AllowGet);
         }
      
         public JsonResult AttendAdHocRider(int adhocrideid, string Commitment)
@@ -656,7 +655,7 @@ namespace FreeWheeling.UI.Controllers
 
                 List<string> Emails = new List<string>();
 
-                foreach (AdHocRider item in _Riders)
+                foreach (AdHocRider item in _Riders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
                 {
                     string email = _UserHelp.GetUserEmailViaUserId(item.userId);
                     Emails.Add(email);
