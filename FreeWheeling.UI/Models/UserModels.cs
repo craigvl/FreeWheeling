@@ -209,9 +209,6 @@ namespace FreeWheeling.UI.Models
 
     public class UserModels
     {
-
-
-
     }
 
     public class UserExpandModel
