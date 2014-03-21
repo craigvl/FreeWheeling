@@ -216,7 +216,7 @@
     <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RideController.cs" />
-    <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Controllers\UserSettingsController.cs" />
     <Compile Include="DataContexts\IdentityDb.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201312270037160_Initial_Create.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201312270037160_Initial_Create.Designer.cs">
@@ -240,6 +240,7 @@
     <Compile Include="Infrastructure\UserHelper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ExternalLoginViewModel.cs" />
+    <Compile Include="Models\UserSettingsModels.cs" />
     <Compile Include="Models\HomeModels.cs" />
     <Compile Include="Models\GroupModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -479,7 +480,7 @@
     <Content Include="Views\Emails\SendUsersBunchInviteEmail.cshtml" />
     <Content Include="Views\Ride\ViewSingleRide.cshtml" />
     <Content Include="Views\Emails\SendUsersAdHocBunchInviteEmail.cshtml" />
-    <Content Include="Views\Settings\Index.cshtml" />
+    <Content Include="Views\UserSettings\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

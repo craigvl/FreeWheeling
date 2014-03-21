@@ -417,8 +417,16 @@ namespace FreeWheeling.UI.Controllers
                    
                    foreach (AdHocRider item in _AdHocRiders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
                    {
-                       string email = _UserHelp.GetUserEmailViaUserId(item.userId);
-                       Emails.Add(email);
+                       var ThisUser = idb.Users.Find(item.userId);
+
+                       if (ThisUser != null)
+                       {
+                           if (ThisUser.ReceiveEmails)
+                           {
+                               string email = _UserHelp.GetUserEmailViaUserId(item.userId);
+                               Emails.Add(email);
+                           }
+                       }
                    }
 
                    _UserHelp.SendUsersNewCommentAdHocEmail(Emails, AdHocRideName, currentUser.UserName, CommentString, adhocrideid);
@@ -476,8 +484,16 @@ namespace FreeWheeling.UI.Controllers
 
                     foreach (Rider item in _Riders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
                     {
-                        string email = _UserHelp.GetUserEmailViaUserId(item.userId);
-                        Emails.Add(email);
+                        ApplicationUser ThisUser = idb.Users.Where(u => u.Id == item.userId).FirstOrDefault();
+
+                        if (ThisUser != null)
+                        {
+                            if (ThisUser.ReceiveEmails)
+                            {
+                                string email = _UserHelp.GetUserEmailViaUserId(item.userId);
+                                Emails.Add(email);
+                            }
+                        }
                     }
 
                     _UserHelp.SendUsersNewCommentRideEmail(Emails, GroupName, currentUser.UserName, CommentString, _Ride.Group.id, _Ride.RideDate);
@@ -540,8 +556,15 @@ namespace FreeWheeling.UI.Controllers
 
                 foreach (Rider item in _Riders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
                 {
-                    string email = _UserHelp.GetUserEmailViaUserId(item.userId);
-                    Emails.Add(email);
+                     var ThisUser = idb.Users.Find(item.userId);
+                     if (ThisUser != null)
+                     {
+                         if (ThisUser.ReceiveEmails)
+                         {
+                             string email = _UserHelp.GetUserEmailViaUserId(item.userId);
+                             Emails.Add(email);
+                         }
+                     }
                 }
 
                 _UserHelp.SendUsersGroupAttendStatusEmail(Emails, GroupName, Commitment, currentUser.UserName, _Ride.Group.id, _Ride.RideDate);
@@ -603,8 +626,15 @@ namespace FreeWheeling.UI.Controllers
 
                 foreach (Rider item in _Riders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
                 {
-                    string email = _UserHelp.GetUserEmailViaUserId(item.userId);
-                    Emails.Add(email);
+                     var ThisUser = idb.Users.Find(item.userId);
+                     if (ThisUser != null)
+                     {
+                         if (ThisUser.ReceiveEmails)
+                         {
+                             string email = _UserHelp.GetUserEmailViaUserId(item.userId);
+                             Emails.Add(email);
+                         }
+                     }
                 }
 
                 _UserHelp.SendUsersGroupAttendStatusEmail(Emails, GroupName, Commitment, currentUser.UserName, _Ride.Group.id, _Ride.RideDate);
@@ -657,8 +687,15 @@ namespace FreeWheeling.UI.Controllers
 
                 foreach (AdHocRider item in _Riders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
                 {
-                    string email = _UserHelp.GetUserEmailViaUserId(item.userId);
-                    Emails.Add(email);
+                     var ThisUser = idb.Users.Find(item.userId);
+                     if (ThisUser != null)
+                     {
+                         if (ThisUser.ReceiveEmails)
+                         {
+                             string email = _UserHelp.GetUserEmailViaUserId(item.userId);
+                             Emails.Add(email);
+                         }
+                     }
                 }
 
                 _UserHelp.SendUsersAdHocAttendStatusEmail(Emails, _Ride.Name, currentUser.UserName, Commitment, _Ride.id, _Ride.RideDate);

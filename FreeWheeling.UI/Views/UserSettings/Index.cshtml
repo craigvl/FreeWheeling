@@ -1,0 +1,64 @@
+﻿@model FreeWheeling.UI.Models.UserSettingsModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@Html.ActionLink("Back <---", "Index", "Home", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
+
+<h2>Settings</h2>
+
+<h2>Change Location</h2>
+
+@using (Ajax.BeginForm("Index",
+    new AjaxOptions { HttpMethod = "POST", OnSuccess = "OnSuccess", OnFailure = "OnFailure" }))
+    {
+    @Html.DropDownListFor(
+             x => x.LocationsId,
+    new SelectList(
+        Model.Locations.ToList().Select(
+                     x => new { Value = x.id, Text = x.Name }
+        ),
+        "Value",
+                 "Text", Model.LocationsId
+    ), "-- Set a Location --", new { @class = "form-control" }
+)
+    <p></p>
+<h2>Email Settings</h2>
+    @:Receive email updates: 
+    @Html.CheckBoxFor(x => x.ReceiveEmails)
+        
+    <p></p>
+    <input onclick="ShowProgress();" type="submit" value="Save" class="btn btn-primary" />
+
+}
+
+<div class="loading" style="display:none;" align="center">
+    Loading. Please wait.<br />
+    <br />
+    <img src="~/Content/Images/loader.gif" alt="" />
+</div>
+
+@section scripts{
+@Scripts.Render("~/bundles/jqueryval")
+  
+    <script>
+
+        jQuery(document).ready(function () {
+            HideProgress();
+        });
+
+        function OnSuccess(data) {
+            alert(data.message);
+            HideProgress();
+        }
+
+        function OnFailure(data) {
+            alert("Whoops! That didn't go so well did it?");
+        }
+
+    </script>
+}
+
+
+
