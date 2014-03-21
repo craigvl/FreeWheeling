@@ -7,6 +7,11 @@ namespace FreeWheeling.UI.Models
     {
         public int? LocationID {get;set;}
         public string Email { get; set; }
+        public bool ReceiveEmails { get; set; }
+        public bool ReceiveKeen { get; set; }
+        public bool ReceiveComments { get; set; }
+        public bool ReceiveSummary { get; set; }
+        public string TimeBefore { get; set; }
     }
 
 }
