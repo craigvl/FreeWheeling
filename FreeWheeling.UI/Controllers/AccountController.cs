@@ -79,7 +79,13 @@ namespace FreeWheeling.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email };
+                var user = new ApplicationUser() { UserName = model.UserName,
+                    Email = model.Email,
+                    ReceiveKeen = true,
+                    ReceiveComments = true,
+                    ReceiveSummary = false,
+                    ReceiveEmails = true,
+                    TimeBefore = "0"};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

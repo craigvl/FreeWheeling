@@ -216,6 +216,7 @@
     <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RideController.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="DataContexts\IdentityDb.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201312270037160_Initial_Create.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201312270037160_Initial_Create.Designer.cs">
@@ -224,6 +225,10 @@
     <Compile Include="DataContexts\IdentityMigrations\201402210521537_Added_Email.cs" />
     <Compile Include="DataContexts\IdentityMigrations\201402210521537_Added_Email.Designer.cs">
       <DependentUpon>201402210521537_Added_Email.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201403210008557_Added_Email_Settings.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201403210008557_Added_Email_Settings.Designer.cs">
+      <DependentUpon>201403210008557_Added_Email_Settings.cs</DependentUpon>
     </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Filters\CompressAttribute.cs" />
@@ -474,6 +479,7 @@
     <Content Include="Views\Emails\SendUsersBunchInviteEmail.cshtml" />
     <Content Include="Views\Ride\ViewSingleRide.cshtml" />
     <Content Include="Views\Emails\SendUsersAdHocBunchInviteEmail.cshtml" />
+    <Content Include="Views\Settings\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -494,6 +500,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201402210521537_Added_Email.resx">
       <DependentUpon>201402210521537_Added_Email.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201403210008557_Added_Email_Settings.resx">
+      <DependentUpon>201403210008557_Added_Email_Settings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
