@@ -22,13 +22,12 @@
                 @Html.ActionLink("bunchy", "Index", "Home", null, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("bunches", "Index", "Group")</li>
-                    <li>@Html.ActionLink("Favourites", "Mybunches", "Group")</li>
-                    <li>@Html.ActionLink("Ad Hoc bunches", "AdHocList", "Ride")</li>
-                    <li>@Html.ActionLink("Settings", "Index", "UserSettings")</li>
-                </ul>
+				<ul class="nav navbar-nav">
+					<li>@Html.ActionLink("Home", "Index", "Home")</li>
+					<li>@Html.ActionLink("bunches", "Index", "Group")</li>
+					<li>@Html.ActionLink("Favourites", "Mybunches", "Group")</li>
+					<li>@Html.ActionLink("Ad Hoc bunches", "AdHocList", "Ride")</li>
+				</ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>

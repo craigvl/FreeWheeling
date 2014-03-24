@@ -5,43 +5,58 @@
 
 @if (Model.LocationsId != 0)
 {
-  <span class="btn btn-primary"> @Model.CurrentUserLocation </span>  @Html.ActionLink(" ", "LocationChange", "Home", new { }, new { @class = "glyphicon glyphicon-pencil", onclick = "ShowProgress();" }) 
+	<div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:20px;">
+			@Html.ActionLink("Favourite Bunches", "Mybunches", "Group", new { }, new { @class = "btn btn-lg col-xs-12 btn-primary", style = "color:white", onclick = "ShowProgress();" })
+	</div>
+
+	<div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:20px;">
+		@Html.ActionLink("Bunches", "Index", "Group", new { }, new { @class = "btn col-xs-9 btn-lg btn-primary", style = "color:white", onclick = "ShowProgress();" })
+		@Html.ActionLink("+", "Create", "Group", new { }, new { @class = "btn col-xs-3 btn-lg btn-success", style = "color:white", onclick = "ShowProgress();" })
+	</div>
+
+	<div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:20px;">
+		@Html.ActionLink("Ad Hoc bunch (" + @Model.UpCommingAd_HocCount + ")", "AdHocList", "Ride", new { }, new { @class = "btn btn-lg col-xs-9 btn-primary", style = "color:white", onclick = "ShowProgress();" })
+		@Html.ActionLink("+", "CreateAdHoc", "Group", new { }, new { @class = "btn col-xs-3 btn-lg btn-success", style = "color:white", onclick = "ShowProgress();" })
+	</div>
+
+<hr class="visible-xs"/>     
 }
+
+@if (Model.LocationsId != 0)
+{
+	<div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:20px;">
+		@Html.ActionLink(@Model.CurrentUserLocation, null, null, new { }, new { @class = "btn btn-lg col-xs-9 btn-default disabled", onclick = "ShowProgress();" })
+		@Html.ActionLink(" ", "LocationChange", "Home", new { }, new { @class = "btn btn-lg btn-success col-xs-3 glyphicon glyphicon-pencil", style = "top: 0px; line-height: 1.3;", onclick = "ShowProgress();" })
+	</div>
+}
+
+
+
+
+
 else
 {
-
-    using (Html.BeginForm())
-    {
-        @Html.DropDownListFor(
-             x => x.LocationsId,
-             new SelectList(
-             Model.Locations.ToList().Select(
-             x => new { Value = x.id, Text = x.Name }
-            ),
-            "Value",
-            "Text", Model.LocationsId
-            ), "-- Set a Location --", new {@class = "form-control" }
-            )
-        <p></p>
-        <input type="submit" value="Set Location" class="btn btn-primary" />
-    }    
+	using (Html.BeginForm())
+	{
+		@Html.DropDownListFor(
+			 x => x.LocationsId,
+			 new SelectList(
+			 Model.Locations.ToList().Select(
+			 x => new { Value = x.id, Text = x.Name }
+			),
+			"Value",
+			"Text", Model.LocationsId
+			), "-- Set a Location --", new { @class = "form-control" }
+			)
+		<p></p>
+		<input type="submit" value="Set Location" class="btn btn-primary" />
+	}
 }
-    <p></p>
-    <hr />
-    <p></p>
-    @if (Model.LocationsId != 0)
-        {
-            <p class="text-left">@Html.ActionLink("bunches", "Index", "Group", new { }, new { @class = "btn btn-primary", onclick = "ShowProgress();" }) @Html.ActionLink("+", "Create", "Group", new { }, new { @class = "btn btn-success", onclick = "ShowProgress();" }) </p>
-            <p class="text-left">@Html.ActionLink("Favourite bunches", "Mybunches", "Group", new { }, new { @class = "btn btn-primary", onclick = "ShowProgress();" })</p>
-            <p class="text-left">@Html.ActionLink("Ad Hoc bunch (" + @Model.UpCommingAd_HocCount + ")", "AdHocList", "Ride", new { }, new { @class = "btn btn-primary", onclick = "ShowProgress();" }) @Html.ActionLink("+", "CreateAdHoc", "Group", new { }, new { @class = "btn btn-success", onclick = "ShowProgress();" }) </p>
-
-            <hr />     
-        }
         
-<div class="loading" style="display:none;" align="center">
+<div class="loading" style="display:none; border-radius:15px; box-shadow:0px 0px 10px grey;" align="center">
     Loading. Please wait.<br />
     <br />
-    <img src="~/Content/Images/loader.gif" alt="" />
+    <img src="~/Content/Images/loader.gif" alt="" style="padding-bottom:20px"/>
 </div>
 @section scripts{
     <script>
