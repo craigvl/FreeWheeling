@@ -57,12 +57,9 @@ namespace FreeWheeling.UI.Models
                     _GroupModel.OnFavPage = true;
                     _GroupModel.title = "Favourite bunches";
                 }
-
-
             }
             else
             {
-
                 if (!FavouritePage)
                 {
                     _GroupModel._Groups = repository.GetGroupsByLocation(LocationId).ToList();
@@ -74,7 +71,6 @@ namespace FreeWheeling.UI.Models
                     _GroupModel.OnFavPage = true;
                     _GroupModel.title = "Favourite bunches";
                 }
-
             }
 
             _GroupModel._NextRideDetails = new List<NextRideDetails>();
@@ -90,11 +86,8 @@ namespace FreeWheeling.UI.Models
             foreach (Group item in _GroupModel._Groups)
             {
                 //Delete any old rides
-
                 repository.DeleteOldRides(item.id, TZone);
-
                 item.Rides = item.Rides.Where(t => t.RideDate >= LocalNow).ToList();
-                //Ride NextRide = repository.GetNextRideForGroup(item, TZone);
                 Ride NextRide = repository.GetClosestNextRide(item, TZone);
 
                 if (NextRide != null)
@@ -110,24 +103,17 @@ namespace FreeWheeling.UI.Models
                         NextRide = repository.GetClosestNextRide(item, TZone);
                         _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
                     }
-
                 }
 
                 if (repository.IsGroupCreator(item.id, UserId))
                 {
-
                     _GroupModel._OwnerGroupList.Add(item.id);
-
                 }
-
             }
 
             _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(UserId);
-
             return _GroupModel;
-
         }
-
     }
 
     public class AdHocRidesModel
