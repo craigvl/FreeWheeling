@@ -7,13 +7,13 @@ using System.Web;
 
 namespace FreeWheeling.UI.Models
 {
-
     public class HomeIndexModel
     {
         public int LocationsId { get; set; }
         public string CurrentUserLocation { get; set; }
         public List<Location> Locations { get; set; }
         public int UpCommingAd_HocCount { get; set; }
+        public List<Group> FavouriteBunches { get; set; }
     }
 
     public class LocationChangeModel
@@ -22,5 +22,4 @@ namespace FreeWheeling.UI.Models
         public string CurrentUserLocation { get; set; }
         public List<Location> Locations { get; set; }
     }
-
 }

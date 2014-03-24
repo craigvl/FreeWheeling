@@ -37,7 +37,8 @@ namespace FreeWheeling.UI.Controllers
 
             Member _CurrentMember = repository.GetMemberByUserID(currentUser.Id);
             Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
-            
+            _HomeIndexModel.FavouriteBunches = repository.GetFavouriteGroupsByLocation(_Location.id).Where(u => u.Members.Any(m => m.userId == currentUser.Id)).ToList();
+
             if (currentUser.LocationID != null)
             {
                 Session["Culture"] = _CultureHelper.GetCulture(Convert.ToInt32(currentUser.LocationID));
