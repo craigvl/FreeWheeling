@@ -34,22 +34,25 @@
     <div class="form-group">
         <label for="" class="col-sm-2 control-label">Date</label>
         <div class="col-sm-2">
-            <input readonly type="text" class="span2" data-bind="datepicker: DateString, datepickerOptions: { dataType: 'format', format: 'DD/MM/YYYY' }">
+            <input type="text" class="form-control" data-bind="datepicker: DateString, datepickerOptions: { dataType: 'format', format: 'DD/MM/YYYY' }">
             @Html.ValidationMessageFor(model => model.DateString)
         </div>
-
-        <label for="" class="col-sm-2 control-label">Hour (24 Hour)</label>
-        <div class="col-sm-2">
-            <div data-bind="validationElement: Hour">
-                @Html.TextBoxFor(model => model.Hour, new { data_bind = "value:Hour, uniqueName:true", @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Hour)
+        <div class="col-xs-6">
+            <label for="" class="col-sm-2 control-label">Hour (24 Hour)</label>
+            <div class="col-sm-2">
+                <div data-bind="validationElement: Hour">
+                    @Html.TextBoxFor(model => model.Hour, new { data_bind = "value:Hour, uniqueName:true", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Hour)
+                </div>
             </div>
         </div>
-        <label for="" class="col-sm-1 control-label">Minute</label>
-        <div class="col-sm-2">
-            <div data-bind="validationElement: Minute">
-                @Html.TextBoxFor(model => model.Minute, new { data_bind = "value:Minute, uniqueName:true", @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Minute)
+        <div class="col-xs-6">
+            <label for="" class="col-sm-1 control-label">Minute</label>
+            <div class="col-sm-2">
+                <div data-bind="validationElement: Minute">
+                    @Html.TextBoxFor(model => model.Minute, new { data_bind = "value:Minute, uniqueName:true", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Minute)
+                </div>
             </div>
         </div>
     </div>
