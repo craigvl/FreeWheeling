@@ -29,22 +29,24 @@ namespace FreeWheeling.UI.Controllers
         public ActionResult Index()
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            CultureHelper _CultureHelper = new CultureHelper(repository);
-            
+            CultureHelper _CultureHelper = new CultureHelper(repository);           
             HomeIndexModel _HomeIndexModel = new HomeIndexModel();
             _HomeIndexModel.Locations = repository.GetLocations().ToList();
-            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-
             Member _CurrentMember = repository.GetMemberByUserID(currentUser.Id);
             
             if (currentUser.LocationID != null)
             {
-                Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
-                _HomeIndexModel.FavouriteBunches = repository.GetFavouriteGroupsByLocation(_Location.id).Where(u => u.Members.Any(m => m.userId == currentUser.Id)).ToList();
-                Session["Culture"] = _CultureHelper.GetCulture(Convert.ToInt32(currentUser.LocationID));
-                _HomeIndexModel.LocationsId = _Location.id;
-                _HomeIndexModel.CurrentUserLocation = _Location.Name;
-                _HomeIndexModel.UpCommingAd_HocCount = repository.GetUpCommingAd_HocCount(repository.GetLocations().Where(o => o.id == currentUser.LocationID).FirstOrDefault(),TZone);
+                //Check that user ID is a current location ID
+                if (_HomeIndexModel.Locations.Any(l => l.id == currentUser.LocationID))
+                {
+                    TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
+                    Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
+                    _HomeIndexModel.FavouriteBunches = repository.GetFavouriteGroupsByLocation(_Location.id).Where(u => u.Members.Any(m => m.userId == currentUser.Id)).ToList();
+                    Session["Culture"] = _CultureHelper.GetCulture(Convert.ToInt32(currentUser.LocationID));
+                    _HomeIndexModel.LocationsId = _Location.id;
+                    _HomeIndexModel.CurrentUserLocation = _Location.Name;
+                    _HomeIndexModel.UpCommingAd_HocCount = repository.GetUpCommingAd_HocCount(repository.GetLocations().Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone);
+                }
             }
             else
             {
@@ -107,22 +109,32 @@ namespace FreeWheeling.UI.Controllers
         [HttpPost]
         public ActionResult LocationChange(LocationChangeModel _LocationChangeModel)
         {
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            currentUser.LocationID = repository.GetLocations().Where(l => l.id == _LocationChangeModel.LocationsId).Select(o => o.id).FirstOrDefault();
-            idb.SaveChanges();
-
-            Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
-            HomeIndexModel _HomeIndexModel = new HomeIndexModel();
+            HomeIndexModel _HomeIndexModel = new HomeIndexModel();          
             _HomeIndexModel.Locations = repository.GetLocations().ToList();
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
             CultureHelper _CultureHelper = new CultureHelper(repository);
-            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
 
-            _HomeIndexModel.LocationsId = _Location.id;
-            _HomeIndexModel.CurrentUserLocation = _Location.Name;
-            _HomeIndexModel.UpCommingAd_HocCount = repository.GetUpCommingAd_HocCount(repository.GetLocations().Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone);
+            //Check that user ID is a current location ID
+            if (_HomeIndexModel.Locations.Any(l => l.id == _LocationChangeModel.LocationsId))
+            {
+                currentUser.LocationID = repository.GetLocations().Where(l => l.id == _LocationChangeModel.LocationsId).Select(o => o.id).FirstOrDefault();
+                idb.SaveChanges();
+                Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
+                TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
+                _HomeIndexModel.LocationsId = _Location.id;
+                _HomeIndexModel.CurrentUserLocation = _Location.Name;
+                _HomeIndexModel.UpCommingAd_HocCount = repository.GetUpCommingAd_HocCount(repository.GetLocations().Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone);
+            }
+            else
+            {
+                TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
+                Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
+                _HomeIndexModel.LocationsId = _Location.id;
+                _HomeIndexModel.CurrentUserLocation = _Location.Name;
+                _HomeIndexModel.UpCommingAd_HocCount = repository.GetUpCommingAd_HocCount(repository.GetLocations().Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone);
+            }
 
             return View("Index",_HomeIndexModel);
-
         }
 
         public ActionResult About()
@@ -135,7 +147,6 @@ namespace FreeWheeling.UI.Controllers
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
-
             return View();
         }
     }

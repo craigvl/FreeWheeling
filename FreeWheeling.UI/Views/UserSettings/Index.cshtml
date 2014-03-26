@@ -13,6 +13,7 @@
 @using (Ajax.BeginForm("Index",
     new AjaxOptions { HttpMethod = "POST", OnSuccess = "OnSuccess", OnFailure = "OnFailure" }))
     {
+    @Html.ValidationMessageFor(c => c.LocationsId,"Please select a Location")
     @Html.DropDownListFor(
              x => x.LocationsId,
     new SelectList(
@@ -54,11 +55,18 @@
         }
 
         function OnFailure(data) {
-            alert("Whoops! That didn't go so well did it?");
+            alert(data.message);
         }
+
+        $("form").submit(function () {
+            if (!$(this).valid()) {
+                HideProgress();
+                return false;
+            }
+            else {
+                return true;
+            }
+        });
 
     </script>
 }
-
-
-
