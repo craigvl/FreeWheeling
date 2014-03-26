@@ -12,8 +12,7 @@ namespace FreeWheeling.Domain.DataContexts.CycleMigrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            MigrationsDirectory = @"DataContexts\CycleMigrations";
-            
+            MigrationsDirectory = @"DataContexts\CycleMigrations";          
         }
 
         protected override void Seed(FreeWheeling.Domain.DataContexts.CycleDb context)

@@ -51,19 +51,31 @@ namespace FreeWheeling.UI.Controllers
         public JsonResult Index(UserSettingsModel _SettingsModel)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
-
             _SettingsModel.Locations = repository.GetLocations().ToList();
 
-            currentUser.LocationID = repository.GetLocations().Where(l => l.id == _SettingsModel.LocationsId).Select(o => o.id).FirstOrDefault();
-            currentUser.ReceiveEmails = _SettingsModel.ReceiveEmails;
-            idb.SaveChanges();
-
-            return Json(new
+            //Check that user ID is a current location ID
+            if (_SettingsModel.Locations.Any(l => l.id == _SettingsModel.LocationsId))
             {
-                success = true,
-                message = "Settings Saved"
-            }, JsonRequestBehavior.AllowGet);
 
+                currentUser.LocationID = repository.GetLocations().Where(l => l.id == _SettingsModel.LocationsId).Select(o => o.id).FirstOrDefault();
+                currentUser.ReceiveEmails = _SettingsModel.ReceiveEmails;
+                idb.SaveChanges();
+
+                return Json(new
+                {
+                    success = true,
+                    message = "Settings Saved"
+                }, JsonRequestBehavior.AllowGet);
+
+            }
+            else
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Please Select a Location"
+                }, JsonRequestBehavior.AllowGet);
+            }
         }
 	}
 }
