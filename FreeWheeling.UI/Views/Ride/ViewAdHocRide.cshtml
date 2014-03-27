@@ -10,8 +10,6 @@
 @Html.Hidden("RideUserNameHidden", User.Identity.GetUserName())
 @Html.Hidden("CommentCount", @Model.CommentCount)
 @Html.Hidden("KeenCount", @Model.KeenCount)
-<script src="http://js.pusher.com/2.2.0-rc1/pusher.min.js"></script>
-<script src="http://ajax.aspnetcdn.com/ajax/mobileservices/MobileServices.Web-1.1.3.min.js"></script>
 
 @if (@Model.MapUrl != null)
 {
@@ -185,6 +183,8 @@
 @section scripts{
     @Scripts.Render("~/Scripts/jquery.timeago.js")
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/azuremobile")
+    @Scripts.Render("~/bundles/pusher")
     <script>
 
         var socketId = null;
