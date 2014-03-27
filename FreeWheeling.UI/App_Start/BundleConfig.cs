@@ -58,6 +58,11 @@ namespace FreeWheeling.UI
                    "~/Scripts/app/extendDataService.js",
                     "~/Scripts/moment.js"));
 
+            //Pusher
+            bundles.Add(new ScriptBundle("~/bundles/pusher", "//js.pusher.com/2.2.0-rc2/pusher.min.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/azuremobile", "http://ajax.aspnetcdn.com/ajax/mobileservices/MobileServices.Web-1.1.5.min.js"));
+
             //Custom css
             bundles.Add(new StyleBundle("~/Content/custom").Include(
                    "~/Content/site.css"));

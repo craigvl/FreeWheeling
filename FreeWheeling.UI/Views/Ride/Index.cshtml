@@ -14,8 +14,6 @@
 @Html.Hidden("KeenCount", @Model.KeenCount)
 @Html.Hidden("KeenCountNext", @Model.NextKeenCount)
 
-<script src="http://js.pusher.com/2.2.0-rc1/pusher.min.js"></script>
-<script src="http://ajax.aspnetcdn.com/ajax/mobileservices/MobileServices.Web-1.1.3.min.js"></script>
 <h2>
     @Model.Group.name
 </h2>
@@ -523,7 +521,9 @@ else
 @section scripts{
     @Scripts.Render("~/Scripts/jquery.timeago.js")
     @Scripts.Render("~/bundles/jqueryval")
-
+    @Scripts.Render("~/bundles/azuremobile")
+    @Scripts.Render("~/bundles/pusher")
+    
     <script>
 
         var socketId = null;
