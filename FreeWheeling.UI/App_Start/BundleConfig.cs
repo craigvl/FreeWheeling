@@ -68,7 +68,9 @@ namespace FreeWheeling.UI
                    "~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/css", "//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css").Include(
-                      "~/Content/bootstrap.css"));
+                      "~/Content/bootstrap.css",
+                      "~/Content/bootstrap-social.css",
+                      "~/Content/font-awesome.css"));
 
             bundles.Add(new StyleBundle("~/Content/jqueryui").Include(
                       "~/Content/jquery-ui-1.10.4.custom.css",
