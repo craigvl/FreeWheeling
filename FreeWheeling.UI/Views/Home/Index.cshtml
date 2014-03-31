@@ -6,40 +6,43 @@
 
 @if (Model.LocationsId != 0)
 {
-	<div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:20px;">
-		@Html.ActionLink("Bunches", "Index", "Group", new { }, new { @class = "btn col-xs-9 btn-lg btn-primary", style = "color:white", onclick = "ShowProgress();" })
-		@Html.ActionLink("+", "Create", "Group", new { }, new { @class = "btn col-xs-3 btn-lg btn-success", style = "color:white", onclick = "ShowProgress();" })
-	</div>
-
-	<div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:20px;">
-		@Html.ActionLink("Ad Hoc bunch (" + @Model.UpCommingAd_HocCount + ")", "AdHocList", "Ride", new { }, new { @class = "btn btn-lg col-xs-9 btn-primary", style = "color:white", onclick = "ShowProgress();" })
-		@Html.ActionLink("+", "CreateAdHoc", "Group", new { }, new { @class = "btn col-xs-3 btn-lg btn-success", style = "color:white", onclick = "ShowProgress();" })
+    
+     <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;">
+		@Html.ActionLink("Bunches", "Index", "Group", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
+		@Html.ActionLink(" ", "Create", "Group", new { }, new { @class = "btn btn-default col-xs-3 glyphicon glyphicon-plus", style = "top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })
 	</div>
     
-     <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:20px;">
-		@Html.ActionLink(@Model.CurrentUserLocation, null, null, new { }, new { @class = "btn btn-lg col-xs-9 btn-default disabled", onclick = "ShowProgress();" })
-		@Html.ActionLink(" ", "LocationChange", "Home", new { }, new { @class = "btn btn-lg btn-success col-xs-3 glyphicon glyphicon-pencil", style = "top: 0px; line-height: 1.3;", onclick = "ShowProgress();" })
+    <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:15px;">
+		@Html.ActionLink("One Off Bunches (" + @Model.UpCommingAd_HocCount + ")", "AdHocList", "Ride", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
+		@Html.ActionLink(" ", "CreateAdHoc", "Group", new { }, new { @class = "btn btn-default col-xs-3 glyphicon glyphicon-plus", style = "top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })
 	</div>
     
-    <div class="btn-group col-xs-12 col-md-12 col-sm-12" style="margin-bottom:20px;">
+    
+    @*<div class="btn-group col-xs-12 col-md-12 col-sm-12" style="margin-bottom:5px;">
         @Html.ActionLink("Favourite Bunches", "Mybunches", "Group", new { }, new { @class = "btn btn-lg col-xs-12 btn-primary", style = "color:white", onclick = "ShowProgress();" })
-    </div>
-    
-if (Model.FavouriteBunches != null)
-{
-    foreach (Group bunch in Model.FavouriteBunches)
+    </div>*@
+
+    if (Model.FavouriteBunches != null)
     {
-        <div class="btn-group col-xs-12 col-md-12 col-sm-12" style="margin-bottom:20px;">
-        @Html.ActionLink(@bunch.name, "Index", "Ride", new { groupid = bunch.id, FromFavPage = true }, new { @class = "btn btn-lg col-xs-12 btn-primary", style = "color:white", onclick = "ShowProgress();" })
-        </div>
+        <table class="table content-box">
+            <tr>
+                <th><span style="font-size:1.5em" class="glyphicon glyphicon-star">&nbsp;</span><span style="position: relative; top: -3px;">FAVOURITES</span></th>
+            </tr>
+            @foreach (Group bunch in Model.FavouriteBunches)
+            {
+                <tr>
+                    <td><a href="Ride?groupid=@bunch.id&FromFavPage=True"><div>@bunch.name<div class=" pull-right glyphicon glyphicon-zoom-in"></div></div></a></td>
+                </tr>
+            }
+
+        </table>
     }
-}
-<hr class="visible-xs"/>     
+    <hr class="visible-xs" />
 }
 else
 {
-	using (Html.BeginForm())
-	{
+    using (Html.BeginForm())
+    {
 		@Html.DropDownListFor(
 			 x => x.LocationsId,
 			 new SelectList(
@@ -54,10 +57,8 @@ else
 		<input type="submit" value="Set Location" class="btn btn-primary" />
 	}
 }
-    <div class="loading" style="display:none; border-radius:15px; box-shadow:0px 0px 10px grey;" align="center">
-        Loading. Please wait.<br />
-        <br />
-        <img src="~/Content/Images/loader.gif" alt="" style="padding-bottom:20px" />
+    <div class="loading" border-radius:100%;" align="center">
+        <img src="~/Content/Images/loader.gif" alt="loading" />
     </div>
     @section scripts{
         <script>
