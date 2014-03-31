@@ -80,11 +80,21 @@ border-radius: .25em;
 .navbar-inverse .navbar-toggle {
 border: none;
 }
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #333;
+}
+.navbar-inverse .navbar-nav > li > a:hover {
+color: #999;
+}
 .navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
 background-color: #fff;
 }
 .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
 border-color: #e5e5e5;
+}
+.body-content {
+    padding-top: 60px;
 }
 /*Style for loading image*/
  .modal {
@@ -101,10 +111,8 @@ border-color: #e5e5e5;
     }
 
     .loading {
-        font-family: Arial;
-        font-size: 10pt;
-        border: 1px solid #67CFF5;
-        width: 200px;
+        border-radius:100%;
+        width: 100px;
         height: 100px;
         display: none;
         position: fixed;
@@ -219,3 +227,21 @@ border-color: #e5e5e5;
         margin-left:-15px;
         margin-right:-15px;
     }
+
+
+
+@media all and (max-width: 767px) {
+    .nav-height{
+        float: left;
+        padding: 15px 15px;
+        font-size: 18px;
+        line-height: 20px;
+        height:auto;
+    }
+}
+
+@media all and (min-width: 768px) {
+    .nav-height{
+        height:50px;
+    }
+}
