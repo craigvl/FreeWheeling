@@ -68,9 +68,18 @@ namespace FreeWheeling.UI
                    "~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/css", "//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/bootstrap-social.css",
-                      "~/Content/font-awesome.css"));
+                      "~/Content/bootstrap.css"));
+
+            bundles.Add(new StyleBundle("~/Content/csssocial").Include(
+                      "~/Content/font-awesome.css",
+                      "~/Content/bootstrap-social.css"
+                      ));
+
+            //var Socialbundle = new StyleBundle("~/Content/csssocial").Include
+            //("~/Content/font-awesome.css").Include
+            //("~/Content/bootstrap-social.css");
+            //bundles.FileSetOrderList.Clear();
+            //bundles.Add(Socialbundle);
 
             bundles.Add(new StyleBundle("~/Content/jqueryui").Include(
                       "~/Content/jquery-ui-1.10.4.custom.css",
