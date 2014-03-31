@@ -7,17 +7,17 @@
 <div class="row">
     <div class="col-md-8">
         <section id="loginForm">
+            <div class="col-md-4">
+                <section id="socialLoginForm">
+                    @Html.Partial("_ExternalLoginsListPartial", new FreeWheeling.UI.Models.ExternalLoginViewModel() { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
+                </section>
+            </div>
+            <div style="clear:both"></div>
+            <hr class="full-line" />
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
                 
-                <div class="col-md-4">
-                    <section id="socialLoginForm">
-                        @Html.Partial("_ExternalLoginsListPartial", new FreeWheeling.UI.Models.ExternalLoginViewModel() { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
-                    </section>
-                </div>
-                <div style="clear:both"></div>
-                <hr class="full-line"/>
                 <div class="content-box">
                     <br />
                     <h4 style="padding-left:15px;">
