@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using FreeWheeling.UI.Models;
 using FreeWheeling.UI.DataContexts;
+using System.Web.Security;
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -50,6 +51,16 @@ namespace FreeWheeling.UI.Controllers
                 if (user != null)
                 {
                     await SignInAsync(user, model.RememberMe);
+
+                    //Create cookie if select remember me to expire in a year.
+                    int timeout = model.RememberMe ? 525600 : 30; // Timeout in minutes, 525600 = 365 days.
+                    var ticket = new FormsAuthenticationTicket(model.UserName, model.RememberMe, timeout);
+                    string encrypted = FormsAuthentication.Encrypt(ticket);
+                    var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
+                    cookie.Expires = System.DateTime.Now.AddMinutes(timeout);// Not my line
+                    cookie.HttpOnly = true; // cookie not available in javascript.
+                    Response.Cookies.Add(cookie);
+
                     return RedirectToLocal(returnUrl);
                 }
                 else
