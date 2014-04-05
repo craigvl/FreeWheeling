@@ -18,6 +18,11 @@ namespace FreeWheeling.Domain.Concrete
             return context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").ToList(); 
         }
 
+        public IEnumerable<Rider> GetRiders()
+        {
+            return context.Riders;
+        }
+
         public IEnumerable<Group> GetGroupsByLocation(int? LocationID)
         {
             //return context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").Where(g => g.Location.id == LocationID).ToList();

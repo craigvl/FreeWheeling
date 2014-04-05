@@ -44,6 +44,7 @@ namespace FreeWheeling.Domain.Abstract
         int GetUpCommingAd_HocCount(Location _Location, TimeZoneInfo TimeZone);
 
         //Get .. Riders
+        IEnumerable<Rider> GetRiders();
         List<Rider> GetRidersForRide(int id, TimeZoneInfo TimeZone);
         List<AdHocRider> GetRidersForAdHocRide(int AdHocRideid, TimeZoneInfo TimeZone);
         int GetKeenCountForRide(int Rideid);
