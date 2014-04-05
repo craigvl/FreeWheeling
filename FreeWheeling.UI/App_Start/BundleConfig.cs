@@ -59,9 +59,16 @@ namespace FreeWheeling.UI
                     "~/Scripts/moment.js"));
 
             //Pusher
-            bundles.Add(new ScriptBundle("~/bundles/pusher", "//js.pusher.com/2.2.0-rc2/pusher.min.js"));
+            var pusher = new ScriptBundle("~/bundles/pusher", "//js.pusher.com/2.2.0-rc2/pusher.min.js").Include(
+                      "~/Scripts/pusher.min.js");
+            pusher.CdnFallbackExpression = "window.jQuery";
+            bundles.Add(pusher);
 
-            bundles.Add(new ScriptBundle("~/bundles/azuremobile", "http://ajax.aspnetcdn.com/ajax/mobileservices/MobileServices.Web-1.1.5.min.js"));
+            var azuremobile = new ScriptBundle("~/bundles/azuremobile",
+                 "http://ajax.aspnetcdn.com/ajax/mobileservices/MobileServices.Web-1.1.5.min.js").Include(
+                     "~/Scripts/MobileServices.Web-1.1.5.min.js");
+            azuremobile.CdnFallbackExpression = "window.jQuery";
+            bundles.Add(azuremobile);
 
             //Custom css
             bundles.Add(new StyleBundle("~/Content/custom").Include(

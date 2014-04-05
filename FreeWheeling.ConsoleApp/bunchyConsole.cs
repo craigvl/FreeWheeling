@@ -10,16 +10,18 @@ namespace FreeWheeling.ConsoleApp
 {
     public class bunchyConsole
     {
-
         static void Main()    
         {
-            GetRiders();
+            PopulateHomePageRide();
             Console.WriteLine("Hello World");
             Console.ReadLine();
         }
 
-        private static void GetRiders()
+        private static void PopulateHomePageRide()
         {
+
+
+
             using (var context= new CycleDb())
             {
                 List<Rider> _Rider = context.Riders.ToList();
