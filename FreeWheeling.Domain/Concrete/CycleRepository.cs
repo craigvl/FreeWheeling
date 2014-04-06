@@ -785,7 +785,7 @@ namespace FreeWheeling.Domain.Concrete
 
             foreach (Ride _Ride in CurrentGroup.Rides.ToList())
             {
-                if(_Ride.RideDate < LocalNow.AddHours(1))
+                if(_Ride.RideDate.AddHours(1) < LocalNow)
                 {
                     foreach (Rider _Rider in _Ride.Riders.ToList())
                     {
