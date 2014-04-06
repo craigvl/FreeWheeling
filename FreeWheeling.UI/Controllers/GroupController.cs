@@ -21,7 +21,6 @@ namespace FreeWheeling.UI.Controllers
     public class GroupController : Controller
     {
         private IdentityDb idb = new IdentityDb(); 
-
         private ICycleRepository repository;
 
         public GroupController(ICycleRepository repoParam)
@@ -35,28 +34,20 @@ namespace FreeWheeling.UI.Controllers
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             CultureHelper _CultureHelper = new CultureHelper(repository);
             Session["Culture"] = _CultureHelper.GetCulture(Convert.ToInt32(currentUser.LocationID));
-             
             GroupModel _GroupModel = new GroupModel();
-
             GroupModelHelper _GroupHelper = new GroupModelHelper(repository);
-
             _GroupModel =_GroupHelper.PopulateGroupModel(currentUser.Id, currentUser.LocationID, searchString);
-
             return View(_GroupModel);
         }
 
         public PartialViewResult GetGroupDetails(int id)
         {
             Group _Group = new Group();
-
             _Group = repository.GetGroupByID(id);
-
             MoreGroupDetailsModel _MoreGroupDetailsModel = new MoreGroupDetailsModel();
-
             _MoreGroupDetailsModel.AverageSpeed = _Group.AverageSpeed;
             _MoreGroupDetailsModel.StartLocation = _Group.StartLocation;
             _MoreGroupDetailsModel.Description = _Group.Description;
-
             return PartialView("_GroupDetailPartial", _MoreGroupDetailsModel);
         }
 
@@ -67,7 +58,6 @@ namespace FreeWheeling.UI.Controllers
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);          
             Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
-
             AdHocCreateModel _Ad_HocRide = new AdHocCreateModel();
             _Ad_HocRide.Locations = repository.GetLocations().ToList();
             _Ad_HocRide.RideDate = LocalNow;
@@ -84,11 +74,9 @@ namespace FreeWheeling.UI.Controllers
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Location _Location = repository.GetLocations().Where(l => l.id == _AdHocCreateModel.LocationsId).FirstOrDefault();
-
             CultureHelper _CultureHelper = new CultureHelper(repository);
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
-
             DateTime dateResult;
 
             if (!DateTime.TryParse(_AdHocCreateModel.DateString, _CultureHelper.GetCulture(_Location.id), DateTimeStyles.None, out dateResult))
