@@ -20,6 +20,7 @@ namespace FreeWheeling.ConsoleApp
         {
             _CycleRepository = new CycleRepository();
             PopulateHomePageRide();
+            DeleteOldRides();
             //Console.ReadLine();
         }
 
@@ -32,13 +33,9 @@ namespace FreeWheeling.ConsoleApp
           foreach (Member item in _CycleRepository.GetMembersWithGroups().ToList())
                 {
                     Group _Group = _CycleRepository.GetGroupByID(item.Group.id);
- 
                     Location _Location = _CycleRepository.GetLocations().Where(l => l.id == _Group.Location.id).FirstOrDefault();
-                    
                     TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Location.id);
-
                     Ride _ClosestRide = _CycleRepository.GetClosestNextRide(item.Group,TZone);
-
                     _ListOfRides.Add(new ListOfRides { RideId = _ClosestRide.id, userId = item.userId, RideDate = _ClosestRide.RideDate });
                 }
 
@@ -47,7 +44,6 @@ namespace FreeWheeling.ConsoleApp
                     CycleRepository _CycleRepository1 = new CycleRepository();
                     foreach (Rider _Rider in _Ride.Riders)
                     {
-                        
                         if (_CycleRepository1.IsOnWay(_Ride.id,_Rider.userId))
                         {
                             _ListOfRides.Add(new ListOfRides { RideId = _Ride.id, userId = _Rider.userId, RideDate = _Ride.RideDate });
@@ -58,35 +54,38 @@ namespace FreeWheeling.ConsoleApp
                             _ListOfRides.Add(new ListOfRides { RideId = _Ride.id, userId = _Rider.userId, RideDate = _Ride.RideDate });
                         }
                     }
-
                 }
 
                 _ListOfRides = _ListOfRides.Distinct().ToList();
                 _ListOfRides = _ListOfRides.GroupBy(x => x.userId).Select(x => x.OrderBy(y => y.RideDate)).Select(x => x.First()).ToList();
-  
                 List<HomePageRide> _HomePageRide = new List<HomePageRide>();   
 
                 foreach (ListOfRides item in _ListOfRides)
                 {
-
                     _HomePageRide.Add(new HomePageRide{ Rideid = item.RideId, Userid = item.userId});
 
                    // Console.WriteLine(item.RideId + ", " + item.RideDate + ", " + item.userId);                 
                 }
 
                 _CycleRepository.PopulateUserHomePageRides(_HomePageRide);
-
         }
 
+        private static void DeleteOldRides()
+        {
+            CultureHelper _CultureHelper = new CultureHelper(_CycleRepository);
+            foreach (Group item in _CycleRepository.GetGroups())
+            {
+                Location _Location = _CycleRepository.GetLocations().Where(l => l.id == item.Location.id).FirstOrDefault();
+                TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Location.id);
+                _CycleRepository.DeleteOldRides(item.id, TZone);
+            }
+        }
     }
 
     public class ListOfRides
     {
-
         public int RideId { get; set; }
         public string userId {get;set;}
         public DateTime RideDate { get; set; }
-
-
     }
 }
