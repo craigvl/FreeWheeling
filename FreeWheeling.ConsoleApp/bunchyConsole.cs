@@ -20,7 +20,7 @@ namespace FreeWheeling.ConsoleApp
         {
             _CycleRepository = new CycleRepository();
             PopulateHomePageRide();
-            Console.ReadLine();
+            //Console.ReadLine();
         }
 
         private static void PopulateHomePageRide()
@@ -66,7 +66,7 @@ namespace FreeWheeling.ConsoleApp
 
                 foreach (ListOfRides item in _ListOfRides)
                 {
-                    Console.WriteLine(item.RideId + ", " + item.RideDate + ", " + item.userId);                 
+                   // Console.WriteLine(item.RideId + ", " + item.RideDate + ", " + item.userId);                 
                 }
 
         }
