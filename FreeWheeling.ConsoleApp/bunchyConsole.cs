@@ -63,11 +63,18 @@ namespace FreeWheeling.ConsoleApp
 
                 _ListOfRides = _ListOfRides.Distinct().ToList();
                 _ListOfRides = _ListOfRides.GroupBy(x => x.userId).Select(x => x.OrderBy(y => y.RideDate)).Select(x => x.First()).ToList();
+  
+                List<HomePageRide> _HomePageRide = new List<HomePageRide>();   
 
                 foreach (ListOfRides item in _ListOfRides)
                 {
+
+                    _HomePageRide.Add(new HomePageRide{ Rideid = item.RideId, Userid = item.userId});
+
                    // Console.WriteLine(item.RideId + ", " + item.RideDate + ", " + item.userId);                 
                 }
+
+                _CycleRepository.PopulateUserHomePageRides(_HomePageRide);
 
         }
 

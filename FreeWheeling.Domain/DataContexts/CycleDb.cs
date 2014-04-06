@@ -9,12 +9,10 @@ namespace FreeWheeling.Domain.DataContexts
 {
     public class CycleDb : DbContext
     {
-
         public CycleDb()
             : base("DefaultConnection")
         {
         }
-
         public DbSet<Group> Groups { get; set; }
         public DbSet<Member> Members { get; set; }
         public DbSet<Route> Routes { get; set; }
@@ -27,6 +25,6 @@ namespace FreeWheeling.Domain.DataContexts
         public DbSet<AdHocComment> AdHocComment { get; set; }
         public DbSet<CycleDays> CycleDays { get; set; }
         public DbSet<UserExpand> UserExpands { get; set; }
-  
+        public DbSet<HomePageRide> HomePageRide { get; set; }  
     }
 }

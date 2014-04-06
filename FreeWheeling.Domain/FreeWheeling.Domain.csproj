@@ -103,12 +103,17 @@
     <Compile Include="DataContexts\CycleMigrations\201403080618303_Added_UserId_To_Comments.Designer.cs">
       <DependentUpon>201403080618303_Added_UserId_To_Comments.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201404060424133_Add_HomePageRide.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201404060424133_Add_HomePageRide.Designer.cs">
+      <DependentUpon>201404060424133_Add_HomePageRide.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\AdHocComment.cs" />
     <Compile Include="Entities\Comment.cs" />
     <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\CycleDays.cs" />
     <Compile Include="Entities\Group.cs" />
+    <Compile Include="Entities\HomePageRide.cs" />
     <Compile Include="Entities\Member.cs" />
     <Compile Include="Entities\Ad_HocRide.cs" />
     <Compile Include="Entities\AdHocRider.cs" />
@@ -161,6 +166,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\CycleMigrations\201403080618303_Added_UserId_To_Comments.resx">
       <DependentUpon>201403080618303_Added_UserId_To_Comments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201404060424133_Add_HomePageRide.resx">
+      <DependentUpon>201404060424133_Add_HomePageRide.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

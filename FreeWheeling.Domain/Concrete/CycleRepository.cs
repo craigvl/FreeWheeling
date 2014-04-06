@@ -800,6 +800,19 @@ namespace FreeWheeling.Domain.Concrete
             context.Entry(CurrentMember).State = System.Data.Entity.EntityState.Deleted;
         }
 
+        public void PopulateUserHomePageRides(List<HomePageRide> _HomePageRides)
+        {
+            context.Database.ExecuteSqlCommand("TRUNCATE TABLE [HomePageRides]");
+
+            foreach (HomePageRide item in _HomePageRides)
+            {
+                context.HomePageRide.Add(item);
+                context.Entry(item).State = System.Data.Entity.EntityState.Added;
+                context.SaveChanges();
+            }
+
+        }
+
         public void Save()
         {
             context.SaveChanges();
