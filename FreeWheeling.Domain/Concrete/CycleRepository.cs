@@ -787,6 +787,11 @@ namespace FreeWheeling.Domain.Concrete
             {
                 if(_Ride.RideDate < LocalNow )
                 {
+                    foreach (Rider _Rider in _Ride.Riders.ToList())
+                    {
+                        context.Entry(_Rider).State = System.Data.Entity.EntityState.Deleted;
+                    }
+
                     context.Entry(_Ride).State = System.Data.Entity.EntityState.Deleted;
                     context.SaveChanges();
                 }                

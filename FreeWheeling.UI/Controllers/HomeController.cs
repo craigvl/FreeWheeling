@@ -59,23 +59,16 @@ namespace FreeWheeling.UI.Controllers
         [HttpPost]
         public ActionResult Index(HomeIndexModel _HomeIndexModel)
         {
-           
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            
             if (_HomeIndexModel.LocationsId != null)
             {
-
                 _HomeIndexModel.Locations = repository.GetLocations().ToList();
-
                 currentUser.LocationID = repository.GetLocations().Where(l => l.id == _HomeIndexModel.LocationsId ).Select(o => o.id).FirstOrDefault();
                 idb.SaveChanges();
-
             }
             else
             {
-
                 _HomeIndexModel.LocationsId = 0;
-
             }
 
             if (currentUser.LocationID != null)
@@ -84,9 +77,7 @@ namespace FreeWheeling.UI.Controllers
             }
             else
             {
-
                 _HomeIndexModel.CurrentUserLocation = "Please set a Location";
-
             }
             return View(_HomeIndexModel);
         }
@@ -94,16 +85,12 @@ namespace FreeWheeling.UI.Controllers
         public ActionResult LocationChange()
         {
             LocationChangeModel _LocationChangeModel = new LocationChangeModel();
-
             _LocationChangeModel.Locations = repository.GetLocations().ToList();
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
-
             _LocationChangeModel.LocationsId = _Location.id;
             _LocationChangeModel.CurrentUserLocation = _Location.Name;
-
             return View(_LocationChangeModel);
-
         }
 
         [HttpPost]
@@ -140,7 +127,6 @@ namespace FreeWheeling.UI.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-
             return View();
         }
 

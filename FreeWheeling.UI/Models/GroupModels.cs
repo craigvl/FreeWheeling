@@ -13,7 +13,6 @@ using System.Web.Script.Serialization;
 
 namespace FreeWheeling.UI.Models
 {
-
     public class GroupModel
     {
         public string Name;
@@ -28,16 +27,12 @@ namespace FreeWheeling.UI.Models
 
     public class GroupModelHelper
     {
-
         private IdentityDb idb = new IdentityDb(); 
-
         private ICycleRepository repository;
 
         public GroupModelHelper(ICycleRepository repoParam)
         {
-
             repository = repoParam;
-
         }
 
         public GroupModel PopulateGroupModel(string UserId, int? LocationId, string searchString, Boolean FavouritePage = false)
@@ -75,12 +70,9 @@ namespace FreeWheeling.UI.Models
 
             _GroupModel._NextRideDetails = new List<NextRideDetails>();
             _GroupModel.UserLocation = repository.GetLocationName(LocationId);
-
             CultureHelper _CultureHelper = new CultureHelper(repository);
-
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(LocationId);
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
-
             _GroupModel._OwnerGroupList = new List<int>();
 
             foreach (Group item in _GroupModel._Groups)
@@ -108,7 +100,6 @@ namespace FreeWheeling.UI.Models
                     _GroupModel._OwnerGroupList.Add(item.id);
                 }
             }
-
             _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(UserId);
             return _GroupModel;
         }

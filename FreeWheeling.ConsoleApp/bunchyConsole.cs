@@ -20,7 +20,7 @@ namespace FreeWheeling.ConsoleApp
         {
             _CycleRepository = new CycleRepository();
             PopulateHomePageRide();
-            DeleteOldRides();
+            DeleteOldRidesAndCreateNew();
             //Console.ReadLine();
         }
 
@@ -70,7 +70,7 @@ namespace FreeWheeling.ConsoleApp
                 _CycleRepository.PopulateUserHomePageRides(_HomePageRide);
         }
 
-        private static void DeleteOldRides()
+        private static void DeleteOldRidesAndCreateNew()
         {
             CultureHelper _CultureHelper = new CultureHelper(_CycleRepository);
             foreach (Group item in _CycleRepository.GetGroups())
@@ -78,6 +78,16 @@ namespace FreeWheeling.ConsoleApp
                 Location _Location = _CycleRepository.GetLocations().Where(l => l.id == item.Location.id).FirstOrDefault();
                 TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Location.id);
                 _CycleRepository.DeleteOldRides(item.id, TZone);
+                _CycleRepository.Save();
+                Ride NextRide = _CycleRepository.GetClosestNextRide(item, TZone);
+                 if (NextRide == null)
+                 {
+                     if (item.RideDays != null)
+                     {
+                         _CycleRepository.PopulateRideDates(item, TZone);
+                         _CycleRepository.Save();
+                     }
+                 }
             }
         }
     }
