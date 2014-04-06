@@ -52,6 +52,21 @@ namespace FreeWheeling.Domain.Concrete
             return context.Groups.Include("Members").Include("Rides").ToList();
         }
 
+        public IEnumerable<Ride> GetRides()
+        {
+            return context.Rides;
+        }
+
+        public IEnumerable<Ride> GetRidesWithRiders()
+        {
+            return context.Rides.Include("Riders");
+        }
+
+        public IEnumerable<Member> GetMembersWithGroups()
+        {
+            return context.Members.Include("Group");
+        }
+
         public Group GetGroupByID(int id)
         {
             Group group = context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").Where(i => i.id == id).FirstOrDefault();

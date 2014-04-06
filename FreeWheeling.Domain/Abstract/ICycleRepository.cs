@@ -29,6 +29,8 @@ namespace FreeWheeling.Domain.Abstract
         string GetLocationName(int? id);
 
         //Get .. Ride
+        IEnumerable<Ride> GetRides();
+        IEnumerable<Ride> GetRidesWithRiders();
         Ride GetRideByID(int id);
         Ride GetRideByIDIncludeGroup(int id);
         //Ride GetNextRideForGroup(Group _Group, TimeZoneInfo TimeZone);
@@ -60,8 +62,9 @@ namespace FreeWheeling.Domain.Abstract
         List<Comment> GetAllCommentsForRide(int Rideid);
 
         //Get .. Members
+        IEnumerable<Member> GetMembersWithGroups();
         Member GetMemberByUserID(string id);
-
+        
         //Get .. UserExpand
         UserExpand GetUserExpandByUserID(string UserId);
         

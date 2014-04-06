@@ -61,6 +61,10 @@
       <Project>{6d7d8a1f-8213-47b0-a567-6570480162d4}</Project>
       <Name>FreeWheeling.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FreeWheeling.UI\FreeWheeling.UI.csproj">
+      <Project>{82567f6a-2b48-4057-ad76-c63ae9b79158}</Project>
+      <Name>FreeWheeling.UI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
