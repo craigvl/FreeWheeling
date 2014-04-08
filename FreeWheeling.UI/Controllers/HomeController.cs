@@ -41,7 +41,7 @@ namespace FreeWheeling.UI.Controllers
                 {
                     TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
                     Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
-                    _HomeIndexModel.FavouriteBunches = repository.GetFavouriteGroupsByLocation(_Location.id).Where(u => u.Members.Any(m => m.userId == currentUser.Id)).ToList();
+                    _HomeIndexModel.FavouriteBunches = repository.GetFavouriteGroupsByLocation(_Location.id,currentUser.Id).ToList();
                     Session["Culture"] = _CultureHelper.GetCulture(Convert.ToInt32(currentUser.LocationID));
                     _HomeIndexModel.LocationsId = _Location.id;
                     _HomeIndexModel.CurrentUserLocation = _Location.Name;
