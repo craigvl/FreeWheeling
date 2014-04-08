@@ -14,6 +14,7 @@ namespace FreeWheeling.UI.Models
         public List<Location> Locations { get; set; }
         public int UpCommingAd_HocCount { get; set; }
         public List<Group> FavouriteBunches { get; set; }
+        public Ride HomePageRide { get; set; }
     }
 
     public class LocationChangeModel

@@ -6,7 +6,19 @@
 
 @if (Model.LocationsId != 0)
 {
-    
+    if (Model.HomePageRide != null)
+    {
+        <table class="table content-box">
+            <tr>
+                <th><span style="position: relative; top: -3px;"><a href="Ride/ViewSingleRide?RideId=@Model.HomePageRide.id&FromFavPage=False">Next bunch</a></span></th>
+            </tr>
+            <tr>
+                <td>
+                    @Model.HomePageRide.RideDate
+                </td>
+            </tr>
+        </table>
+    }
      <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;">
 		@Html.ActionLink("Bunches", "Index", "Group", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
 		@Html.ActionLink(" ", "Create", "Group", new { }, new { @class = "btn btn-default col-xs-3 glyphicon glyphicon-plus", style = "top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })
