@@ -224,7 +224,6 @@ namespace FreeWheeling.Domain.Concrete
             {
                 R.LeaveTime = TimeZoneInfo.ConvertTimeFromUtc(R.LeaveTime, TimeZone);
             }
-
             return Riders;
         }
 
@@ -236,14 +235,12 @@ namespace FreeWheeling.Domain.Concrete
             {
                 R.LeaveTime = TimeZoneInfo.ConvertTimeFromUtc(R.LeaveTime, TimeZone);
             }
-
             return Riders.Where(g => g.userId != CurrentUserId).ToList();
         }
 
         public List<Rider> GetRidersAndCommentersForRideDontIncludeCurrentUser(int id, TimeZoneInfo TimeZone, string CurrentUserId)
         {
             List<Rider> Riders = context.Riders.Where(r => r.Ride.id == id).ToList();
-
             Ride _Ride = context.Rides.Where(r => r.id == id).FirstOrDefault();
 
             foreach (Rider R in Riders)
@@ -252,20 +249,16 @@ namespace FreeWheeling.Domain.Concrete
             }
 
             Riders.AddRange(GetCommentersForRide(_Ride));
-
             return Riders.Where(g => g.userId != CurrentUserId).ToList();
         }
 
         public List<Rider> GetCommentersForRide(Ride _Ride)
         {
-
             List<Comment> Comments = context.Comment.Where(k => k.Ride.id == _Ride.id).ToList();
-
             List<Rider> Riders = new List<Rider>();
 
             foreach (Comment item in Comments)
             {
-
                 Rider r = context.Riders.Where(u => u.Name == item.userName).FirstOrDefault();
 
                 if (r == null)
@@ -278,11 +271,8 @@ namespace FreeWheeling.Domain.Concrete
                 {
                     Riders.Add(r);                    
                 }
-
             }
-
             return Riders.Distinct().ToList();
-
         }
 
         public Member GetMemberByUserID(string id)
@@ -303,6 +293,12 @@ namespace FreeWheeling.Domain.Concrete
         public int GetKeenCountForRide(int Rideid)
         {
             return context.Riders.Where(r => (r.Ride.id == Rideid && r.PercentKeen == "In") || (r.Ride.id == Rideid && r.PercentKeen == "OnWay")).Count();
+        }
+
+        public Ride GetHomePageRideByUserID(string UserId)
+        {
+            HomePageRide _HomePageRide = context.HomePageRide.Where(i => i.Userid == UserId).FirstOrDefault();
+            return context.Rides.Where(r => r.id == _HomePageRide.Rideid).FirstOrDefault();
         }
 
         public int GetKeenCountForAdHocRide(int AdHocRideid)
@@ -826,6 +822,5 @@ namespace FreeWheeling.Domain.Concrete
         {
             context.SaveChanges();
         }
-
     }
 }
