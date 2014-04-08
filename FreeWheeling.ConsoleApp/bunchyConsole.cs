@@ -19,8 +19,8 @@ namespace FreeWheeling.ConsoleApp
         static void Main()    
         {
             _CycleRepository = new CycleRepository();
-            PopulateHomePageRide();
             DeleteOldRidesAndCreateNew();
+            PopulateHomePageRide();
             //Console.ReadLine();
         }
 
