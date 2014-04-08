@@ -48,7 +48,7 @@ namespace FreeWheeling.UI.Models
                 }
                 else
                 {
-                    _GroupModel._Groups = repository.GetFavouriteGroupsByLocationWithSearch(LocationId,searchString).Where(u => u.Members.Any(m => m.userId == UserId)).ToList();
+                    _GroupModel._Groups = repository.GetFavouriteGroupsByLocationWithSearch(LocationId,searchString,UserId).ToList();
                     _GroupModel.OnFavPage = true;
                     _GroupModel.title = "Favourite bunches";
                 }
@@ -62,7 +62,7 @@ namespace FreeWheeling.UI.Models
                 }
                 else
                 {
-                    _GroupModel._Groups = repository.GetFavouriteGroupsByLocation(LocationId).Where(u => u.Members.Any(m => m.userId == UserId)).ToList();
+                    _GroupModel._Groups = repository.GetFavouriteGroupsByLocation(LocationId,UserId).ToList();
                     _GroupModel.OnFavPage = true;
                     _GroupModel.title = "Favourite bunches";
                 }

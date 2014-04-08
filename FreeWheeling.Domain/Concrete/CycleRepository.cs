@@ -35,16 +35,18 @@ namespace FreeWheeling.Domain.Concrete
                 && g.name.ToUpper().Contains(SearchString)).ToList();
         }
 
-        public IEnumerable<Group> GetFavouriteGroupsByLocation(int? LocationID)
+        public IEnumerable<Group> GetFavouriteGroupsByLocation(int? LocationID, string CurrentUserId)
         {
             //return context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").Where(g => g.Location.id == LocationID).ToList();
-            return context.Groups.Include("Members").Include("Rides").Include("RideDays").Where(g => g.Location.id == LocationID).ToList();
+            return context.Groups.Include("Members").Include("Rides").Include("RideDays")
+                .Where(g => g.Location.id == LocationID && g.Members.Any(m => m.userId == CurrentUserId)).ToList();
         }
 
-        public IEnumerable<Group> GetFavouriteGroupsByLocationWithSearch(int? LocationID, string SearchString)
+        public IEnumerable<Group> GetFavouriteGroupsByLocationWithSearch(int? LocationID, string SearchString, string CurrentUserId)
         {
-            return context.Groups.Include("Members").Include("Rides").Include("RideDays").Where(g => g.Location.id == LocationID
-                && g.name.ToUpper().Contains(SearchString)).ToList();
+            return context.Groups.Include("Members").Include("Rides").Include("RideDays")
+                .Where(g => g.Location.id == LocationID
+                && g.name.ToUpper().Contains(SearchString) && g.Members.Any(m => m.userId == CurrentUserId)).ToList();
         }
 
         public IEnumerable<Group> GetGroupsWithRiders()
@@ -787,11 +789,13 @@ namespace FreeWheeling.Domain.Concrete
             {
                 if(_Ride.RideDate.AddHours(1) < LocalNow)
                 {
-                    foreach (Rider _Rider in _Ride.Riders.ToList())
+                    if (_Ride.Riders != null)
                     {
-                        context.Entry(_Rider).State = System.Data.Entity.EntityState.Deleted;
+                        foreach (Rider _Rider in _Ride.Riders.ToList())
+                        {
+                            context.Entry(_Rider).State = System.Data.Entity.EntityState.Deleted;
+                        } 
                     }
-
                     context.Entry(_Ride).State = System.Data.Entity.EntityState.Deleted;
                     context.SaveChanges();
                 }                
