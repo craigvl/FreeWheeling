@@ -59,9 +59,16 @@ namespace FreeWheeling.UI
                     "~/Scripts/moment.js"));
 
             //Pusher
-            bundles.Add(new ScriptBundle("~/bundles/pusher", "//js.pusher.com/2.2.0-rc2/pusher.min.js"));
+            var pusher = new ScriptBundle("~/bundles/pusher", "//js.pusher.com/2.2.0-rc2/pusher.min.js").Include(
+                      "~/Scripts/pusher.min.js");
+            pusher.CdnFallbackExpression = "window.jQuery";
+            bundles.Add(pusher);
 
-            bundles.Add(new ScriptBundle("~/bundles/azuremobile", "http://ajax.aspnetcdn.com/ajax/mobileservices/MobileServices.Web-1.1.5.min.js"));
+            var azuremobile = new ScriptBundle("~/bundles/azuremobile",
+                 "http://ajax.aspnetcdn.com/ajax/mobileservices/MobileServices.Web-1.1.5.min.js").Include(
+                     "~/Scripts/MobileServices.Web-1.1.5.min.js");
+            azuremobile.CdnFallbackExpression = "window.jQuery";
+            bundles.Add(azuremobile);
 
             //Custom css
             bundles.Add(new StyleBundle("~/Content/custom").Include(
@@ -69,6 +76,13 @@ namespace FreeWheeling.UI
 
             bundles.Add(new StyleBundle("~/Content/css", "//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css").Include(
                       "~/Content/bootstrap.css"));
+
+            bundles.Add(new StyleBundle("~/Content/awesome", "//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css").Include(
+                      "~/Content/font-awesome.css"));
+
+            bundles.Add(new StyleBundle("~/Content/csssocial").Include(
+                      "~/Content/bootstrap-social.css"
+                      ));
 
             bundles.Add(new StyleBundle("~/Content/jqueryui").Include(
                       "~/Content/jquery-ui-1.10.4.custom.css",

@@ -29,6 +29,8 @@ namespace FreeWheeling.Domain.Abstract
         string GetLocationName(int? id);
 
         //Get .. Ride
+        IEnumerable<Ride> GetRides();
+        IEnumerable<Ride> GetRidesWithRiders();
         Ride GetRideByID(int id);
         Ride GetRideByIDIncludeGroup(int id);
         //Ride GetNextRideForGroup(Group _Group, TimeZoneInfo TimeZone);
@@ -44,6 +46,7 @@ namespace FreeWheeling.Domain.Abstract
         int GetUpCommingAd_HocCount(Location _Location, TimeZoneInfo TimeZone);
 
         //Get .. Riders
+        IEnumerable<Rider> GetRiders();
         List<Rider> GetRidersForRide(int id, TimeZoneInfo TimeZone);
         List<AdHocRider> GetRidersForAdHocRide(int AdHocRideid, TimeZoneInfo TimeZone);
         int GetKeenCountForRide(int Rideid);
@@ -59,8 +62,9 @@ namespace FreeWheeling.Domain.Abstract
         List<Comment> GetAllCommentsForRide(int Rideid);
 
         //Get .. Members
+        IEnumerable<Member> GetMembersWithGroups();
         Member GetMemberByUserID(string id);
-
+        
         //Get .. UserExpand
         UserExpand GetUserExpandByUserID(string UserId);
         
@@ -96,6 +100,7 @@ namespace FreeWheeling.Domain.Abstract
         //Populate
         Group PopulateRideDates(Group _Group, TimeZoneInfo _TimeZoneInfo);
         void PopulateRideDatesFromDate(Group _Group, DateTime _DateTime, TimeZoneInfo _TimeZoneInfo);
+        void PopulateUserHomePageRides(List<HomePageRide> _HomePageRides);
 
         void Save();
       

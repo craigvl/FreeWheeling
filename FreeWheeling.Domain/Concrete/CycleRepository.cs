@@ -18,6 +18,11 @@ namespace FreeWheeling.Domain.Concrete
             return context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").ToList(); 
         }
 
+        public IEnumerable<Rider> GetRiders()
+        {
+            return context.Riders;
+        }
+
         public IEnumerable<Group> GetGroupsByLocation(int? LocationID)
         {
             //return context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").Where(g => g.Location.id == LocationID).ToList();
@@ -45,6 +50,21 @@ namespace FreeWheeling.Domain.Concrete
         public IEnumerable<Group> GetGroupsWithRiders()
         {
             return context.Groups.Include("Members").Include("Rides").ToList();
+        }
+
+        public IEnumerable<Ride> GetRides()
+        {
+            return context.Rides;
+        }
+
+        public IEnumerable<Ride> GetRidesWithRiders()
+        {
+            return context.Rides.Include("Riders");
+        }
+
+        public IEnumerable<Member> GetMembersWithGroups()
+        {
+            return context.Members.Include("Group");
         }
 
         public Group GetGroupByID(int id)
@@ -765,8 +785,13 @@ namespace FreeWheeling.Domain.Concrete
 
             foreach (Ride _Ride in CurrentGroup.Rides.ToList())
             {
-                if(_Ride.RideDate < LocalNow )
+                if(_Ride.RideDate.AddHours(1) < LocalNow)
                 {
+                    foreach (Rider _Rider in _Ride.Riders.ToList())
+                    {
+                        context.Entry(_Rider).State = System.Data.Entity.EntityState.Deleted;
+                    }
+
                     context.Entry(_Ride).State = System.Data.Entity.EntityState.Deleted;
                     context.SaveChanges();
                 }                
@@ -778,6 +803,19 @@ namespace FreeWheeling.Domain.Concrete
             Member CurrentMember = context.Members.Where(g => g.Group.id == _Group.id && g.userId == UserId).FirstOrDefault();
             context.Members.Remove(CurrentMember);
             context.Entry(CurrentMember).State = System.Data.Entity.EntityState.Deleted;
+        }
+
+        public void PopulateUserHomePageRides(List<HomePageRide> _HomePageRides)
+        {
+            context.Database.ExecuteSqlCommand("TRUNCATE TABLE [HomePageRides]");
+
+            foreach (HomePageRide item in _HomePageRides)
+            {
+                context.HomePageRide.Add(item);
+                context.Entry(item).State = System.Data.Entity.EntityState.Added;
+                context.SaveChanges();
+            }
+
         }
 
         public void Save()

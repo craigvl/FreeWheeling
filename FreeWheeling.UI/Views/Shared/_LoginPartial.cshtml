@@ -5,21 +5,18 @@
     {
     @Html.AntiForgeryToken()
 
-    <ul class="nav navbar-nav navbar-right">
-		<li class="dropdown">
-			<a href="#" class="dropdown-toggle" data-toggle="dropdown">@User.Identity.Name <b class="caret"></b></a>
-			<ul class="dropdown-menu">
-				<li>@Html.ActionLink("Change Password", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })</li>
-				<li>@Html.ActionLink("Account Settings", "Index", "UserSettings")</li>
-				<li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-			</ul>
-		</li>
+    <ul class="nav navbar-nav">
+			<li style="padding-left:15px;" class="" data-toggle="dropdown">@User.Identity.Name <b class="caret"></b></li>
+
+        <li style="padding-left:15px;">@Html.ActionLink("Change Password", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })</li>
+        <li style="padding-left:15px;">@Html.ActionLink("Account Settings", "Index", "UserSettings")</li>
+        <li style="padding-left:15px;"><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     </ul>
     }
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
+    <ul class="nav navbar-nav">
         <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
         <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     </ul>

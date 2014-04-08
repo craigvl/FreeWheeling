@@ -3,45 +3,68 @@
 @{
     ViewBag.Title = "Log in";
 }
-
-<h2>@ViewBag.Title.</h2>
+@Styles.Render("~/Content/awesome")
+@Styles.Render("~/Content/csssocial")
 <div class="row">
     <div class="col-md-8">
         <section id="loginForm">
+            <div class="col-md-4">
+                <section id="socialLoginForm">
+                    @Html.Partial("_ExternalLoginsListPartial", new FreeWheeling.UI.Models.ExternalLoginViewModel() { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
+                </section>
+            </div>
+            <div style="clear:both"></div>
+            <hr class="full-line" />
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
-                <h4>Use a local account to log in.</h4>
-                <hr />
-                @Html.ValidationSummary(true)
-                <div class="form-group">
-                    @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.UserName)
+                
+                <div class="content-box">
+                    <br />
+                    <h4 style="padding-left:15px;">
+                        <b><u>@Html.ActionLink("Create Account", "Register")</u></b> or sign in below.
+                    </h4>
+                    <br />
+                    @Html.ValidationSummary(true)
+
+                    <div class="col-md-12" style="margin-bottom: 15px;">
+                        <div class="input-group col-md-11">
+                            <span class="input-group-btn">
+                                <label class="glyphicon glyphicon-user btn-login" style="top: 0px; line-height: 1.45;"></label>
+                            </span>
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder="User Name" })
+                            @Html.ValidationMessageFor(m => m.UserName)
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Password)
+
+                    <div class="col-md-12" style="margin-bottom: 15px;">
+                        <div class="input-group col-md-11">
+                            <span class="input-group-btn">
+                                <label class="glyphicon glyphicon-asterisk btn-login" style="top: 0px; line-height: 1.45;"></label>
+                            </span>
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+                            @Html.ValidationMessageFor(m => m.Password)
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input onclick="ShowProgress();" type="submit" value="Log in" class="btn btn-default" />
+                    <div class="col-md-6">
+                        <a href="#" style="padding:15px;"><u><b>forgot password</b></u></a>
                     </div>
+                    <p></p>
+                    <div class="col-md-6">
+                        <label style="padding:15px;"><u><b>remember me @Html.CheckBoxFor(m => m.RememberMe)</b></u></label>
+                        <div class="checkbox">                           
+                        </div>
+                    </div>
+                    <p></p>
+                    <div class="form-group col-md-12">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input onclick="ShowProgress();" type="submit" value="Log in" class="btn btn-default" />
+                        </div>
+                    </div>
+                    <div style="clear:both"></div>
                 </div>
-                <p>
-                    @Html.ActionLink("Register", "Register") if you don't have a local account.
-                </p>
+                
             }
-        </section>
-    </div>
-    <div class="col-md-4">
-        <section id="socialLoginForm">
-            @Html.Partial("_ExternalLoginsListPartial", new FreeWheeling.UI.Models.ExternalLoginViewModel() { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
         </section>
     </div>
 

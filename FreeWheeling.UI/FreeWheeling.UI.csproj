@@ -253,16 +253,22 @@
   <ItemGroup>
     <Content Include="Content\bootstrap-datepicker.css" />
     <Content Include="Content\bootstrap-datepicker3.css" />
+    <Content Include="Content\bootstrap-social.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\datepicker.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Images\autocompleteLoader.gif" />
     <Content Include="Content\Images\animated-overlay.gif" />
     <Content Include="Content\Images\bike.jpg" />
+    <Content Include="Content\Images\bunchy_logo.png" />
     <Content Include="Content\Images\loader.gif" />
+    <Content Include="Content\Images\logo_with_name.png" />
     <Content Include="Content\Images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
     <Content Include="Content\Images\ui-bg_diagonals-thick_20_666666_40x40.png" />
     <Content Include="Content\Images\ui-bg_flat_10_000000_40x100.png" />
@@ -281,6 +287,7 @@
     <Content Include="Content\jquery-ui-1.10.4.custom.min.css" />
     <Content Include="Content\moment-datepicker\datepicker.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -337,6 +344,14 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\fonts\FontAwesome.otf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\bunchy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\custom.js" />
@@ -411,6 +426,7 @@
     <Content Include="Scripts\locales\bootstrap-datepicker.vi.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-CN.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-TW.js" />
+    <Content Include="Scripts\MobileServices.Web-1.1.5.min.js" />
     <Content Include="Scripts\modernizr-2.7.2.js" />
     <Content Include="Scripts\moment-datepicker-ko.js" />
     <Content Include="Scripts\moment-datepicker.d.ts" />
@@ -420,6 +436,7 @@
     <Content Include="Scripts\moment-with-langs.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\pusher.min.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\underscore.js" />
