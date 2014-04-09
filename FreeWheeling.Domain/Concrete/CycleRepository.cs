@@ -298,7 +298,14 @@ namespace FreeWheeling.Domain.Concrete
         public Ride GetHomePageRideByUserID(string UserId)
         {
             HomePageRide _HomePageRide = context.HomePageRide.Where(i => i.Userid == UserId).FirstOrDefault();
-            return context.Rides.Where(r => r.id == _HomePageRide.Rideid).FirstOrDefault();
+            if (_HomePageRide != null)
+            {
+                return context.Rides.Where(r => r.id == _HomePageRide.Rideid).FirstOrDefault();
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public int GetKeenCountForAdHocRide(int AdHocRideid)
