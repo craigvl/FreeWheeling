@@ -10,7 +10,7 @@
     {
         <table class="table content-box">
             <tr>
-                <th><span style="position: relative; top: -3px;"><a href="Ride/ViewSingleRide?RideId=@Model.HomePageRide.id&FromFavPage=False">Next bunch</a></span></th>
+                <th><span style="position: relative; top: -3px;"><a href="Ride/ViewSingleRide?RideId=@Model.HomePageRide.id&FromFavPage=False">Your next bunch</a></span></th>
             </tr>
             <tr>
                 <td>
@@ -25,14 +25,9 @@
 	</div>
     
     <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:15px;">
-		@Html.ActionLink("One Off Bunches (" + @Model.UpCommingAd_HocCount + ")", "AdHocList", "Ride", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
+		@Html.ActionLink("Random bunches (" + @Model.UpCommingAd_HocCount + ")", "AdHocList", "Ride", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
 		@Html.ActionLink(" ", "CreateAdHoc", "Group", new { }, new { @class = "btn btn-default col-xs-3 glyphicon glyphicon-plus", style = "top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })
 	</div>
-    
-    
-    @*<div class="btn-group col-xs-12 col-md-12 col-sm-12" style="margin-bottom:5px;">
-        @Html.ActionLink("Favourite Bunches", "Mybunches", "Group", new { }, new { @class = "btn btn-lg col-xs-12 btn-primary", style = "color:white", onclick = "ShowProgress();" })
-    </div>*@
 
     if (Model.FavouriteBunches != null)
     {
