@@ -15,7 +15,6 @@ namespace FreeWheeling.UI.Infrastructure
     [Authorize]
     public class CultureHelper
     {
-
         private ICycleRepository repository;
 
         public CultureHelper(ICycleRepository repoParam)
@@ -25,19 +24,16 @@ namespace FreeWheeling.UI.Infrastructure
 
         public CultureInfo GetCulture(int UserLocationId)
         {
-
             Location _Location = repository.GetLocations().Where(l => l.id == UserLocationId).FirstOrDefault();
 
             if (_Location.Name == "Townsville" ||
                 _Location.Name == "Cairns")
             {
                 return  new CultureInfo("en-AU");
-
             }else
             {
                 return new CultureInfo("en-AU");
             }
-            
         }
 
         public TimeZoneInfo GetTimeZoneInfo(int? UserLocationId)
@@ -57,14 +53,17 @@ namespace FreeWheeling.UI.Infrastructure
                     TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
                     return TZone;
                 }
+                if (_Location.Name == "Perth")
+                {
+                    TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("W. Australia Standard Time");
+                    return TZone;
+                }
                 else
                 {
                     TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
                     return TZone;
                 }
             }
-
         }
-
     }
 }
