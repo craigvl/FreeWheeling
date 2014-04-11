@@ -15,7 +15,12 @@ namespace FreeWheeling.Domain.Concrete
 
         public IEnumerable<Group> GetGroups()
         {
-            return context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").ToList(); 
+            return context.Groups.Include("Members")
+                .Include("Rides")
+                .Include("Location")
+                .Include("RideDays")
+                .Where(g => g.IsPrivate == false)
+                .ToList(); 
         }
 
         public IEnumerable<Rider> GetRiders()
@@ -26,32 +31,51 @@ namespace FreeWheeling.Domain.Concrete
         public IEnumerable<Group> GetGroupsByLocation(int? LocationID)
         {
             //return context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").Where(g => g.Location.id == LocationID).ToList();
-            return context.Groups.Include("Rides").Include("RideDays").Where(g => g.Location.id == LocationID).ToList();
+            return context.Groups
+                .Include("Rides")
+                .Include("RideDays")
+                .Where(g => g.Location.id == LocationID && g.IsPrivate == false).ToList();
         }
 
         public IEnumerable<Group> GetGroupsByLocationWithSearch(int? LocationID, string SearchString)
         {
-            return context.Groups.Include("Rides").Include("RideDays").Where(g => g.Location.id == LocationID
-                && g.name.ToUpper().Contains(SearchString)).ToList();
+            return context.Groups.Include("Rides")
+                .Include("RideDays")
+                .Where(g => g.Location.id == LocationID
+                && g.name.ToUpper().Contains(SearchString) && g.IsPrivate == false).ToList();
         }
 
         public IEnumerable<Group> GetFavouriteGroupsByLocation(int? LocationID, string CurrentUserId)
         {
             //return context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").Where(g => g.Location.id == LocationID).ToList();
-            return context.Groups.Include("Members").Include("Rides").Include("RideDays")
-                .Where(g => g.Location.id == LocationID && g.Members.Any(m => m.userId == CurrentUserId)).ToList();
+            return context.Groups
+                .Include("Members")
+                .Include("Rides")
+                .Include("RideDays")
+                .Where(g => g.Location.id == LocationID 
+                    && g.Members.Any(m => m.userId == CurrentUserId)
+                    && g.IsPrivate == false).ToList();
         }
 
         public IEnumerable<Group> GetFavouriteGroupsByLocationWithSearch(int? LocationID, string SearchString, string CurrentUserId)
         {
-            return context.Groups.Include("Members").Include("Rides").Include("RideDays")
+            return context.Groups
+                .Include("Members")
+                .Include("Rides")
+                .Include("RideDays")
                 .Where(g => g.Location.id == LocationID
-                && g.name.ToUpper().Contains(SearchString) && g.Members.Any(m => m.userId == CurrentUserId)).ToList();
+                && g.name.ToUpper().Contains(SearchString) 
+                && g.Members.Any(m => m.userId == CurrentUserId)
+                && g.IsPrivate == false).ToList();
         }
 
         public IEnumerable<Group> GetGroupsWithRiders()
         {
-            return context.Groups.Include("Members").Include("Rides").ToList();
+            return context.Groups
+                .Include("Members")
+                .Include("Rides")
+                .Where(g => g.IsPrivate == false)
+                .ToList();
         }
 
         public IEnumerable<Ride> GetRides()
@@ -66,19 +90,29 @@ namespace FreeWheeling.Domain.Concrete
 
         public IEnumerable<Member> GetMembersWithGroups()
         {
-            return context.Members.Include("Group");
+            return context.Members.Include("Group").Where(g => g.Group.IsPrivate == false);
         }
 
         public Group GetGroupByID(int id)
         {
-            Group group = context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").Where(i => i.id == id).FirstOrDefault();
+            Group group = context.Groups
+                .Include("Members")
+                .Include("Rides")
+                .Include("Location")
+                .Include("RideDays")
+                .Where(i => i.id == id).FirstOrDefault();
             return group;
         }
 
         public Group GetGroupByRideID(int Rideid)
         {
             Ride _Ride = context.Rides.Include("Group").Where(r => r.id == Rideid).FirstOrDefault();
-            Group group = context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").Where(i => i.id == _Ride.Group.id).FirstOrDefault();
+            Group group = context.Groups
+                .Include("Members")
+                .Include("Rides")
+                .Include("Location")
+                .Include("RideDays")
+                .Where(i => i.id == _Ride.Group.id).FirstOrDefault();
             return group;
         }
 
@@ -177,7 +211,9 @@ namespace FreeWheeling.Domain.Concrete
         {
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZone);
             LocalNow = LocalNow.AddHours(-2);
-            return context.Ad_HocRide.Where(l => l.Location.id == _Location.id && l.RideDate >= LocalNow).ToList();
+            return context.Ad_HocRide.Where(l => l.Location.id == _Location.id 
+                && l.RideDate >= LocalNow 
+                && l.IsPrivate == false).ToList();
         }
 
         public Ad_HocRide GetAdHocRideByID(int id)
@@ -213,7 +249,9 @@ namespace FreeWheeling.Domain.Concrete
         {
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZone);
             LocalNow = LocalNow.AddHours(-2);
-            return context.Ad_HocRide.Where(l => l.Location.id == _Location.id && l.RideDate >= LocalNow).Count();
+            return context.Ad_HocRide.Where(l => l.Location.id == _Location.id 
+                && l.RideDate >= LocalNow
+                && l.IsPrivate == false).Count();
         }
 
         public List<Rider> GetRidersForRide(int id, TimeZoneInfo TimeZone)
@@ -381,9 +419,7 @@ namespace FreeWheeling.Domain.Concrete
                 }
 
             }
-
             return Riders;
-
         }
 
         /// <summary>
