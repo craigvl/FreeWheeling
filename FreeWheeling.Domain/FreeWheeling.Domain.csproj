@@ -111,6 +111,10 @@
     <Compile Include="DataContexts\CycleMigrations\201404110654018_Add_isprivate.Designer.cs">
       <DependentUpon>201404110654018_Add_isprivate.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201404110816447_Add_PrivateUserInviteTables.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201404110816447_Add_PrivateUserInviteTables.Designer.cs">
+      <DependentUpon>201404110816447_Add_PrivateUserInviteTables.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\AdHocComment.cs" />
     <Compile Include="Entities\PrivateRandomUsers.cs" />
@@ -178,6 +182,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\CycleMigrations\201404110654018_Add_isprivate.resx">
       <DependentUpon>201404110654018_Add_isprivate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201404110816447_Add_PrivateUserInviteTables.resx">
+      <DependentUpon>201404110816447_Add_PrivateUserInviteTables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
