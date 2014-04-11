@@ -65,7 +65,6 @@ namespace FreeWheeling.UI.Controllers
             _Ad_HocRide.LocationsId = _Location.id;
             _Ad_HocRide.Hour = 5;
             _Ad_HocRide.Minute = 30;
-       
             return View(_Ad_HocRide);
         }
 
@@ -97,7 +96,8 @@ namespace FreeWheeling.UI.Controllers
                     ModelState.AddModelError(string.Empty, "Please select date and time that is greater than current date and time");
                     _AdHocCreateModel.Locations = repository.GetLocations().ToList();
                     _AdHocCreateModel.LocationsId = _Location.id;
-                    return Json(new { success = false, Message = "Please select date and time that is greater than current date and time" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = false,
+                        Message = "Please select date and time that is greater than current date and time" }, JsonRequestBehavior.AllowGet);
                 }
 
                 Ad_HocRide NewAdHoc = new Ad_HocRide
@@ -141,7 +141,8 @@ namespace FreeWheeling.UI.Controllers
 
                 T.Start();
 
-                return Json(new { success = true, Message = "New AdHoc Ride has been created." }, JsonRequestBehavior.AllowGet);  
+                return Json(new { success = true, Message = "New AdHoc Ride has been created." }, 
+                    JsonRequestBehavior.AllowGet);  
             }
             
         }
@@ -153,7 +154,8 @@ namespace FreeWheeling.UI.Controllers
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
             // A list of names to mimic results from a database
-            List<string> nameList = idb.Users.Where(y => y.LocationID == currentUser.LocationID).Select(i => i.UserName).ToList();
+            List<string> nameList = idb.Users.Where(y => y.LocationID == currentUser.LocationID)
+                .Select(i => i.UserName).ToList();
 
             var results = nameList.Where(n =>
                 n.StartsWith(term, StringComparison.OrdinalIgnoreCase));
@@ -195,7 +197,8 @@ namespace FreeWheeling.UI.Controllers
                     MapUrl = CurrentGroup.MapUrl
                 };
 
-                _EditGroupModel.LocationsId = repository.GetLocations().Where(l => l.id == CurrentGroup.Location.id).Select(t => t.id).FirstOrDefault();
+                _EditGroupModel.LocationsId = repository.GetLocations()
+                    .Where(l => l.id == CurrentGroup.Location.id).Select(t => t.id).FirstOrDefault();
 
                 foreach (DayOfWeekViewModel ditem in _EditGroupModel.DaysOfWeek)
                 {
@@ -216,7 +219,8 @@ namespace FreeWheeling.UI.Controllers
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             List<CycleDays> _CycleDays = new List<CycleDays>();
-            Location _Location = repository.GetLocations().Where(l => l.id == _EditGroupModel.LocationsId).FirstOrDefault();
+            Location _Location = repository.GetLocations()
+                .Where(l => l.id == _EditGroupModel.LocationsId).FirstOrDefault();
             CultureHelper _CultureHelper = new CultureHelper(repository);
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);         
@@ -301,12 +305,9 @@ namespace FreeWheeling.UI.Controllers
             _GroupCreateModel.Locations = repository.GetLocations().ToList();
             _GroupCreateModel.Hour = 5;
             _GroupCreateModel.Minute = 30;
-
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
-
             _GroupCreateModel.LocationsId = _Location.id;
-
             return View(_GroupCreateModel);
         }
        
@@ -315,10 +316,8 @@ namespace FreeWheeling.UI.Controllers
         {
             List<CycleDays> _CycleDays = new List<CycleDays>();
             Location _Location = repository.GetLocations().Where(l => l.id == _GroupCreateModel.LocationsId).FirstOrDefault();
-
             CultureHelper _CultureHelper = new CultureHelper(repository);
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_GroupCreateModel.LocationsId);
-
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             bool DayOfWeekSelected = false;
@@ -353,15 +352,14 @@ namespace FreeWheeling.UI.Controllers
                 CreatedBy = currentUser.Id,
                 ModifiedTimeStamp = LocalNow,              
                 CreatedTimeStamp = LocalNow,
-                MapUrl = _GroupCreateModel.MapUrl
+                MapUrl = _GroupCreateModel.MapUrl,
+                IsPrivate = false
             };
 
             repository.AddGroup(NewGroup);
             repository.Save();
-
             NewGroup = repository.PopulateRideDates(NewGroup,TZone);
             repository.Save();
-
             return RedirectToAction("Index", "Group");
         }
 
@@ -370,10 +368,8 @@ namespace FreeWheeling.UI.Controllers
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Member _Member = repository.GetMemberByUserID(currentUser.Id);
             Group group = repository.GetGroupByID(id);
-
             CultureHelper _CultureHelper = new CultureHelper(repository);
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-
             repository.RemoveMember(currentUser.Id, group);
             repository.Save();
 
@@ -392,10 +388,8 @@ namespace FreeWheeling.UI.Controllers
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Member _Member = repository.GetMemberByUserID(currentUser.Id);
             Group group = repository.GetGroupByID(id);
-
             repository.AddMember(currentUser.Id, group);
             repository.Save();
-
             return RedirectToAction("Index", "Group");
         }
 
