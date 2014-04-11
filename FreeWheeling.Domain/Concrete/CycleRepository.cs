@@ -160,26 +160,6 @@ namespace FreeWheeling.Domain.Concrete
             return context.Rides.Include("Group").Where(r => r.id == id).FirstOrDefault();
         }
 
-        //public Ride GetPreviousRideForGroup(Group _Group)
-        //{
-        //    Ride _NextRide = context.Rides.Include("Riders").Where(t => t.Group.id == _Group.id && t.RideDate >= DateTime.Now).OrderBy(r => r.RideDate).FirstOrDefault();
-        //    Ride PreviousRide = context.Rides.Include("Riders").Where(x => x.Group.id == _Group.id && x.RideDate <= _NextRide.RideDate).OrderBy(r => r.RideDate).FirstOrDefault();
-        //    return PreviousRide;
-        //}
-
-        //public Ride GetNextRideForGroup(Group _Group, TimeZoneInfo TimeZone)
-        //{
-        //    DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZone);
-        //    Ride _Ride = context.Rides.Include("Riders").Where(t => t.Group.id == _Group.id && t.RideDate >= LocalNow).OrderBy(r => r.RideDate).FirstOrDefault();
-
-        //    if (context.Rides.Where(t => t.Group.id == _Group.id && t.RideDate >= LocalNow).Count() == 1)
-        //    {
-        //        PopulateRideDatesFromDate(_Group, _Ride.RideDate, TimeZone);
-        //    }
-
-        //    return _Ride;
-        //}
-
         public Ride GetClosestNextRide(Group _Group, TimeZoneInfo TimeZone)
         {
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZone);
@@ -223,6 +203,16 @@ namespace FreeWheeling.Domain.Concrete
             Ad = context.Ad_HocRide.Include("Location").Where(i => i.id == id).FirstOrDefault();
 
             return Ad;
+        }
+
+        public Group GetPrivateGroupsByUserID(string UserId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Ad_HocRide GetPrivateAdHocRideByUserID(string UserId)
+        {
+            throw new NotImplementedException();
         }
 
         public List<Comment> GetTop2CommentsForRide(int Rideid)

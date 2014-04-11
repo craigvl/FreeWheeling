@@ -113,7 +113,9 @@
     </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\AdHocComment.cs" />
+    <Compile Include="Entities\PrivateRandomUsers.cs" />
     <Compile Include="Entities\Comment.cs" />
+    <Compile Include="Entities\PrivateGroupUsers.cs" />
     <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\CycleDays.cs" />
     <Compile Include="Entities\Group.cs" />

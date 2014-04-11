@@ -21,7 +21,6 @@ namespace FreeWheeling.Domain.Abstract
         Group GetGroupByRideID(int Rideid);
         Group GetGroupByIDNoIncludes(int id);
         List<CycleDays> GetCycleDaysForGroup(int GroupId);
-        //Ride GetPreviousRideForGroup(Group _Group);
         List<int> CurrentGroupsForUser(string UserId);
 
         //Get .. Location
@@ -33,7 +32,6 @@ namespace FreeWheeling.Domain.Abstract
         IEnumerable<Ride> GetRidesWithRiders();
         Ride GetRideByID(int id);
         Ride GetRideByIDIncludeGroup(int id);
-        //Ride GetNextRideForGroup(Group _Group, TimeZoneInfo TimeZone);
         Ride GetClosestNextRide(Group _Group, TimeZoneInfo TimeZone);
         Ride Get2ndClosestNextRide(Group _Group, TimeZoneInfo TimeZone);
         List<Ad_HocRide> GetAdHocRides(Location _Location, TimeZoneInfo TimeZone);
@@ -70,6 +68,10 @@ namespace FreeWheeling.Domain.Abstract
 
         //Get HomePageRide
         Ride GetHomePageRideByUserID(string UserId);
+
+        //Get Private
+        Group GetPrivateGroupsByUserID(string UserId);
+        Ad_HocRide GetPrivateAdHocRideByUserID(string UserId);
         
         //Add
         void AddMember(string UserId, Group _Group);
