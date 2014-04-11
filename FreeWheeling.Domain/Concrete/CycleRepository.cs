@@ -497,6 +497,24 @@ namespace FreeWheeling.Domain.Concrete
             context.Entry(_Group).State = System.Data.Entity.EntityState.Added;
         }
 
+        public void AddPrivateAdHocInvite(List<PrivateRandomUsers> _PrivateRandomUsers)
+        {
+            foreach (PrivateRandomUsers item in _PrivateRandomUsers)
+            {
+                context.PrivateRandomUsers.Add(item);
+                context.Entry(item).State = System.Data.Entity.EntityState.Added;
+            }
+        }
+
+        public void AddPrivateGroupInvite(List<PrivateGroupUsers> _PrivateGroupUsers)
+        {
+            foreach (PrivateGroupUsers item in _PrivateGroupUsers)
+            {
+                context.PrivateGroupUsers.Add(item);
+                context.Entry(item).State = System.Data.Entity.EntityState.Added;
+            }
+        }
+
         public void AddUserExpand(UserExpand _UserExpand)
         {
             context.UserExpands.Add(_UserExpand);
@@ -854,6 +872,6 @@ namespace FreeWheeling.Domain.Concrete
         public void Save()
         {
             context.SaveChanges();
-        }
+        }      
     }
 }

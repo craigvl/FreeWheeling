@@ -82,6 +82,8 @@ namespace FreeWheeling.Domain.Abstract
         void AddRideComment(string Comment, int RideId, string UserName, string UserId);
         void AddAdHocRideComment(string Comment, int RideId, string UserName, string UserId);
         void AddUserExpand(UserExpand _UserExpand);
+        void AddPrivateAdHocInvite(List<PrivateRandomUsers> _PrivateRandomUsers);
+        void AddPrivateGroupInvite(List<PrivateGroupUsers> _PrivateGroupUsers);
 
         //Delete
         void RemoveMember(string UserId, Group _Group);

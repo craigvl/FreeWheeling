@@ -127,14 +127,39 @@ namespace FreeWheeling.UI.Controllers
                     Task T = new Task(() =>
                     {
                         List<string> UserNames = new List<string>();
+                        UserHelper _UserHelp = new UserHelper();
+                        List<PrivateRandomUsers> _PrivateRandomUsersList = new List<PrivateRandomUsers>();
 
                         foreach (InviteUser item in _AdHocCreateModel.InviteUsers)
                         {
                             UserNames.Add(item.UserName);
+
+                            if (_AdHocCreateModel.IsPrivate)
+                            {
+                                if (_UserHelp.IsValidUserName(item.UserName))
+                                {
+                                    var _User = idb.Users.Where(g => g.UserName == item.UserName).FirstOrDefault();
+                                    PrivateRandomUsers _PrivateRandomUsers = new PrivateRandomUsers
+                                    {
+                                        RideId = NewAdHoc.id,
+                                        Email = _User.Email,
+                                        UserId = _User.Id
+                                    };
+                                    _PrivateRandomUsersList.Add(_PrivateRandomUsers);
+                                }
+                                else
+                                {
+                                    PrivateRandomUsers _PrivateRandomUsers = new PrivateRandomUsers
+                                    {
+                                        RideId = NewAdHoc.id,
+                                        Email = item.UserName,
+                                    };
+                                    _PrivateRandomUsersList.Add(_PrivateRandomUsers);
+                                }
+                            }
                         }
-
-                        UserHelper _UserHelp = new UserHelper();
-
+                        repository.AddPrivateAdHocInvite(_PrivateRandomUsersList);
+                        repository.Save();
                         _UserHelp.SendUsersCreateAdHocEmail(_UserHelp.GetEmailsForUserNames(UserNames),
                             NewAdHoc.id,
                             NewAdHoc.CreatedBy,

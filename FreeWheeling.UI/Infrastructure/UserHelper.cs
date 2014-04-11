@@ -157,6 +157,24 @@ namespace FreeWheeling.UI.Infrastructure
             }
         }
 
+        public bool IsValidUserName(string UserName)
+        {
+            int userNameCount = idb.Users.Where(u => u.UserName == UserName).Count();
+            if (userNameCount > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public string GetEmailViaUserName(string UserName)
+        {
+            return idb.Users.Where(e => e.UserName == UserName).Select(f => f.Email).FirstOrDefault();
+        }
+
         public string GetUserNameViaEmail(string email)
         {
             return idb.Users.Where(e => e.Email == email).Select(f => f.UserName).FirstOrDefault() ?? "New User";
