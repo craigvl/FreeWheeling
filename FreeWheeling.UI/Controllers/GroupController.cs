@@ -115,32 +115,34 @@ namespace FreeWheeling.UI.Controllers
                     CreatedBy = currentUser.Id,
                     CreatedTimeStamp = LocalNow,
                     ModifiedTimeStamp = LocalNow,
-                    MapUrl = _AdHocCreateModel.MapUrl
+                    MapUrl = _AdHocCreateModel.MapUrl,
+                    IsPrivate = _AdHocCreateModel.IsPrivate
                 };
 
                 repository.AddAdHocRide(NewAdHoc);
                 repository.Save();
 
-                Task T = new Task(() =>
+                if (_AdHocCreateModel.InviteUsers != null)
                 {
+                    Task T = new Task(() =>
+                    {
+                        List<string> UserNames = new List<string>();
 
-                List<string> UserNames = new List<string>();
+                        foreach (InviteUser item in _AdHocCreateModel.InviteUsers)
+                        {
+                            UserNames.Add(item.UserName);
+                        }
 
-                foreach (InviteUser item in _AdHocCreateModel.InviteUsers)
-                {
-                    UserNames.Add(item.UserName);                 
+                        UserHelper _UserHelp = new UserHelper();
+
+                        _UserHelp.SendUsersCreateAdHocEmail(_UserHelp.GetEmailsForUserNames(UserNames),
+                            NewAdHoc.id,
+                            NewAdHoc.CreatedBy,
+                            NewAdHoc.Name);
+                    });
+
+                    T.Start();
                 }
-
-                UserHelper _UserHelp = new UserHelper();
-
-                _UserHelp.SendUsersCreateAdHocEmail(_UserHelp.GetEmailsForUserNames(UserNames),
-                    NewAdHoc.id,
-                    NewAdHoc.CreatedBy,
-                    NewAdHoc.Name);
-                });
-
-                T.Start();
-
                 return Json(new { success = true, Message = "New AdHoc Ride has been created." }, 
                     JsonRequestBehavior.AllowGet);  
             }
@@ -177,11 +179,9 @@ namespace FreeWheeling.UI.Controllers
             }
             else
             {
-
                 CultureHelper _CultureHelper = new CultureHelper(repository);
                 TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
                 DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
-
                 Group CurrentGroup = repository.GetGroupByID(groupId);
 
                 EditGroupModel _EditGroupModel = new EditGroupModel
@@ -255,7 +255,6 @@ namespace FreeWheeling.UI.Controllers
 
             repository.UpdateGroup(UpdatedGroup);
             repository.Save();
-
             repository.UpdateRideTimes(UpdatedGroup,TZone);
             repository.Save();
             //Not needed if not able to change days would need to do some work here if allowed.
@@ -263,7 +262,6 @@ namespace FreeWheeling.UI.Controllers
             //repository.Save();
 
             return RedirectToAction("Index", "Group");
-
         }
 
         public ActionResult DeleteGroup(int GroupId)
@@ -353,7 +351,7 @@ namespace FreeWheeling.UI.Controllers
                 ModifiedTimeStamp = LocalNow,              
                 CreatedTimeStamp = LocalNow,
                 MapUrl = _GroupCreateModel.MapUrl,
-                IsPrivate = false
+                IsPrivate = _GroupCreateModel.IsPrivate
             };
 
             repository.AddGroup(NewGroup);

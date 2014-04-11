@@ -130,7 +130,6 @@ namespace FreeWheeling.UI.Models
         [Required(ErrorMessage = "Please select a date")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public string DateString { get; set; }
-        
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
         [Required]
@@ -142,6 +141,7 @@ namespace FreeWheeling.UI.Models
         public string Creator { get; set; }
         public string Description { get; set; }
         public string MapUrl { get; set; }
+        public bool IsPrivate { get; set; }
         public List<InviteUser> InviteUsers { get; set; }
     }
 
@@ -197,7 +197,7 @@ namespace FreeWheeling.UI.Models
     public string AverageSpeed { get; set; }
     public string Description { get; set; }
     public string MapUrl { get; set; }
-
+    public bool IsPrivate { get; set; }
     }
 
     public class MyGroupsModel
