@@ -114,6 +114,12 @@ namespace FreeWheeling.UI.Models
             RideModel.OnWayFirst = repository.IsOnWay(RideModel.Ride.id, UserId);
 
             RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
+            if (RideModel.NextRide == null)
+            {
+                //If no next ride need to poulate from the latest date, will catch some issues.
+                repository.PopulateRideDatesFromDate(_Group,RideModel.RideDate,TZone);
+                RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
+            }
             RideModel.NextRideDate = RideModel.NextRide.RideDate;
             RideModel.NextComments = repository.GetTop2CommentsForRide(RideModel.NextRide.id);
             RideModel.NextCommentCount = repository.GetCommentCountForRide(RideModel.NextRide.id);

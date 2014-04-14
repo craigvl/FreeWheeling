@@ -459,7 +459,6 @@ namespace FreeWheeling.UI.Controllers
                     List<string> UserNames = new List<string>();
                     foreach (InviteUser item in _InviteOthersToPrivateBunchModel.InviteUsers)
                     {
-
                         UserNames.Add(item.UserName);
 
                         if (_UserHelp.IsValidUserName(item.UserName))
@@ -482,17 +481,15 @@ namespace FreeWheeling.UI.Controllers
                             };
                             _PrivateGroupUsersList.Add(_PrivateGroupUsers);
                         }
-                        
                     }
 
                     repository.AddPrivateGroupInvite(_PrivateGroupUsersList);
                     repository.Save();
 
-                    //_UserHelp.SendUsersAdHocBunchInviteEmail(_UserHelp.GetEmailsForUserNames(UserNames),
-                    //    _InviteOthersToAdHocBunchModel.adhocrideid,
-                    //    currentUser.UserName,
-                    //    _Ride.RideDate.ToString("dd/MM/yyyy"),
-                    //    _Ride.Name);
+                    _UserHelp.SendUsersPrivateBunchInviteEmail(_UserHelp.GetEmailsForUserNames(UserNames),
+                        _InviteOthersToPrivateBunchModel.GroupId,
+                        currentUser.UserName,
+                        _Group.name);
                 });
 
                 T.Start();

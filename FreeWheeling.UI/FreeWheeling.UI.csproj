@@ -499,6 +499,7 @@
     <Content Include="Views\Emails\SendUsersAdHocBunchInviteEmail.cshtml" />
     <Content Include="Views\UserSettings\Index.cshtml" />
     <Content Include="Views\Group\InviteOthersToPrivateBunch.cshtml" />
+    <Content Include="Views\Emails\SendUsersPrivateBunchInviteEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
