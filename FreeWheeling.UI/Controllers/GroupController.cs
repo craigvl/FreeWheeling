@@ -383,6 +383,12 @@ namespace FreeWheeling.UI.Controllers
             repository.Save();
             NewGroup = repository.PopulateRideDates(NewGroup,TZone);
             repository.Save();
+
+            if (_GroupCreateModel.IsPrivate)
+            {
+                return RedirectToAction("InviteOthersToPrivateBunch", "Group", new { GroupId = NewGroup.id });
+            }
+
             return RedirectToAction("Index", "Group");
         }
 
@@ -423,6 +429,22 @@ namespace FreeWheeling.UI.Controllers
             GroupModelHelper _GroupHelper = new GroupModelHelper(repository);
             _GroupModel = _GroupHelper.PopulateGroupModel(currentUser.Id, currentUser.LocationID, searchString, true);
             return View("Index",_GroupModel);
+        }
+
+        public ActionResult InviteOthersToPrivateBunch(int GroupId)
+        {
+            return View("");
+        }
+
+        [HttpPost]
+        public JsonResult InviteOthersToPrivateBunch(InviteOthersToBunchModel _InviteOthersToBunchModel)
+        {
+            return Json(new
+            {
+                success = true,
+                message = "Emails Sent",
+                RideId = _InviteOthersToBunchModel.RideId
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

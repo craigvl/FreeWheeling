@@ -114,6 +114,8 @@ namespace FreeWheeling.UI.Controllers
             return View(_AllAdHocRideComments);
         }
 
+        
+
         public ActionResult InviteOthersToBunch(int RideId, int PreviousID = -1)
         {
             Ride _Ride = repository.GetRideByIDIncludeGroup(RideId);
