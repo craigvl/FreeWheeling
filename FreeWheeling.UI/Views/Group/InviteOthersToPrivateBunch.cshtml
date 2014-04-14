@@ -1,6 +1,103 @@
-﻿
+﻿@model FreeWheeling.UI.Models.InviteOthersToPrivateBunchModel
 @{
     ViewBag.Title = "InviteOthersToPrivateBunch";
 }
 
-<h2>Invite Others To Private Bunch</h2>
+<h2>Invite Others To Private Bunch @Model.Name</h2>
+
+<div id="templated">
+    @Html.HiddenFor(model => model.GroupId, new { @id = "GroupIdHidden" })
+    <table>
+        <tbody data-bind="template: { name: 'userRowTemplate', foreach: usersLines }"></tbody>
+    </table>
+
+    <script type="text/html" id="userRowTemplate">
+        <tr>
+            <td>User name: <input id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" /></td>
+        </tr>
+    </script>
+    <p></p>
+
+    <button data-bind="click: addUser">Invite a User/s</button>
+</div>
+
+<div>
+    <p></p>
+    <input onclick="ShowProgress();" data-bind="click: save" id="btnSubmit" type="submit" value="Invite" />
+</div> 
+
+<div class="loading" style="display:none;" align="center">
+    Loading. Please wait.<br />
+    <br />
+    <img src="~/Content/Images/loader.gif" alt="" />
+</div>
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/knockout")
+    @Scripts.Render("~/bundles/jqueryui")
+
+    <script type="text/javascript">
+
+    $('body').on('focus', "#InviteUser", function () {
+        $(this).autocomplete({
+            source: '@Url.Action("GetNames","Group")'
+        });
+    })
+
+    function UserModel() {
+        var self = this;
+        self.UserName = ko.observable();
+    }
+
+    var GroupModel = function () {
+        var self = this;
+        self.usersLines = ko.observableArray([]);
+        self.addUser = function () {
+            self.usersLines.push(new UserModel);
+        };
+
+        self.save = function () {
+            GroupData = {
+                InviteUsers: self.usersLines(),
+                GroupId: $('#GroupIdHidden').val()
+            };
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("InviteOthersToPrivateBunch", "Group")',
+                data: ko.toJSON(GroupData), //Convert the Observable Data into JSON
+                contentType: "application/json",
+                success: function (data, textStatus, jqXHR) {
+                    var err = eval("(" + jqXHR.responseText + ")");
+                    if (data.success == false) {
+                        alert(err.Message);
+                        HideProgress();
+                    }
+
+                    if (data.success == true) {
+                        // alert(ko.toJSON(self));
+                        HideProgress();
+                        alert(data.message);
+                        var RId = $('#RideIdHidden').val();
+                        //window.location.href = '@Url.Action("Index", "Ride")';
+                        window.location.href = '/Ride?rideid=' + RId;
+                        }
+                    },
+                    error: function () {
+                        alert("Failed");
+                    }
+                });
+
+            };
+        }
+
+        $(document).ready(function () {
+            $('#InviteUser').autocomplete({
+                source: '@Url.Action("GetNames","Group")'
+        });
+        ko.applyBindings(GroupModel);
+    })
+
+</script>
+}

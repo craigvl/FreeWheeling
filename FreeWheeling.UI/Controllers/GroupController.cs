@@ -433,17 +433,76 @@ namespace FreeWheeling.UI.Controllers
 
         public ActionResult InviteOthersToPrivateBunch(int GroupId)
         {
-            return View("");
+            Group _Group = repository.GetGroupByID(GroupId);
+            InviteOthersToPrivateBunchModel _InviteOthersToPrivateBunchModel = new InviteOthersToPrivateBunchModel
+            {
+                GroupId = GroupId,
+                Name = _Group.name
+            };
+
+            return View(_InviteOthersToPrivateBunchModel);
         }
 
         [HttpPost]
-        public JsonResult InviteOthersToPrivateBunch(InviteOthersToBunchModel _InviteOthersToBunchModel)
+        public JsonResult InviteOthersToPrivateBunch(InviteOthersToPrivateBunchModel _InviteOthersToPrivateBunchModel)
         {
+
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+
+            if (_InviteOthersToPrivateBunchModel.InviteUsers != null)
+            {
+                Task T = new Task(() =>
+                {
+                    UserHelper _UserHelp = new UserHelper();
+                    Group _Group = repository.GetGroupByID(_InviteOthersToPrivateBunchModel.GroupId);
+                    List<PrivateGroupUsers> _PrivateGroupUsersList = new List<PrivateGroupUsers>();
+                    List<string> UserNames = new List<string>();
+                    foreach (InviteUser item in _InviteOthersToPrivateBunchModel.InviteUsers)
+                    {
+
+                        UserNames.Add(item.UserName);
+
+                        if (_UserHelp.IsValidUserName(item.UserName))
+                        {
+                            var _User = idb.Users.Where(g => g.UserName == item.UserName).FirstOrDefault();
+                            PrivateGroupUsers _PrivateGroupUsers = new PrivateGroupUsers
+                            {
+                                GroupId = _InviteOthersToPrivateBunchModel.GroupId,
+                                Email = _User.Email,
+                                UserId = _User.Id
+                            };
+                            _PrivateGroupUsersList.Add(_PrivateGroupUsers);
+                        }
+                        else
+                        {
+                            PrivateGroupUsers _PrivateGroupUsers = new PrivateGroupUsers
+                            {
+                                GroupId = _InviteOthersToPrivateBunchModel.GroupId,
+                                Email = item.UserName,
+                            };
+                            _PrivateGroupUsersList.Add(_PrivateGroupUsers);
+                        }
+                        
+                    }
+
+                    repository.AddPrivateGroupInvite(_PrivateGroupUsersList);
+                    repository.Save();
+
+                    //_UserHelp.SendUsersAdHocBunchInviteEmail(_UserHelp.GetEmailsForUserNames(UserNames),
+                    //    _InviteOthersToAdHocBunchModel.adhocrideid,
+                    //    currentUser.UserName,
+                    //    _Ride.RideDate.ToString("dd/MM/yyyy"),
+                    //    _Ride.Name);
+                });
+
+                T.Start();
+            }
+
             return Json(new
             {
                 success = true,
                 message = "Emails Sent",
-                RideId = _InviteOthersToBunchModel.RideId
+                GroupId = _InviteOthersToPrivateBunchModel.GroupId
             }, JsonRequestBehavior.AllowGet);
         }
     }

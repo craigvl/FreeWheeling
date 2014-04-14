@@ -392,7 +392,6 @@ namespace FreeWheeling.UI.Controllers
                            }
                        }
                    }
-
                    _UserHelp.SendUsersNewCommentAdHocEmail(Emails, AdHocRideName, currentUser.UserName, CommentString, adhocrideid);
                });
 
@@ -406,7 +405,6 @@ namespace FreeWheeling.UI.Controllers
                    username = currentUser.UserName,
                    commentcount = commentCount
                }, JsonRequestBehavior.AllowGet);
-
             }
             else
             {

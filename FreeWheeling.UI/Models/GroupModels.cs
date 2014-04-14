@@ -149,6 +149,13 @@ namespace FreeWheeling.UI.Models
     {
         public string UserName { get; set; }
     }
+
+    public class InviteOthersToPrivateBunchModel
+    {
+        public int GroupId { get; set; }
+        public string Name { get; set; }
+        public List<InviteUser> InviteUsers { get; set; }
+    }
     
     public class GroupCreateModel
     {
