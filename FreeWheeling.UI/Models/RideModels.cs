@@ -80,9 +80,7 @@ namespace FreeWheeling.UI.Models
 
             if(_Group == null)
             {
-
                 _Group = repository.GetGroupByRideID(RideId);
-
             }
 
             CultureHelper _CultureHelper = new CultureHelper(repository);

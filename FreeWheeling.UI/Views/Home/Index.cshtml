@@ -45,6 +45,40 @@
         </table>
     }
     <hr class="visible-xs" />
+    
+     if (Model.PrivateBunches != null)
+    {
+        <table class="table content-box">
+            <tr>
+                <th><span style="font-size:1.5em" class="">&nbsp;</span><span style="position: relative; top: -3px;">PRIVATE BUNCHES</span></th>
+            </tr>
+            @foreach (Group bunch in Model.PrivateBunches)
+            {
+                <tr>
+                    <td><a href="Ride?groupid=@bunch.id&FromFavPage=True"><div>@bunch.name<div class=" pull-right glyphicon glyphicon-zoom-in"></div></div></a></td>
+                </tr>
+            }
+
+        </table>
+    }
+    <hr class="visible-xs" />
+    
+     if (Model.PrivateRandomBunches != null)
+    {
+        <table class="table content-box">
+            <tr>
+                <th><span style="font-size:1.5em" class="">&nbsp;</span><span style="position: relative; top: -3px;">PRIVATE RANDOM BUNCHES</span></th>
+            </tr>
+            @foreach (Ad_HocRide bunch in Model.PrivateRandomBunches)
+            {
+                <tr>
+                    <td><a href="/Ride/ViewAdHocRide?adhocrideid=@bunch.id"><div>@bunch.Name<div class=" pull-right glyphicon glyphicon-zoom-in"></div></div></a></td>
+                </tr>
+            }
+
+        </table>
+    }
+    
 }
 else
 {

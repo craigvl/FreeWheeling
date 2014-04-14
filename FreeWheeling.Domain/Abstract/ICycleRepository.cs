@@ -70,8 +70,8 @@ namespace FreeWheeling.Domain.Abstract
         Ride GetHomePageRideByUserID(string UserId);
 
         //Get Private
-        Group GetPrivateGroupsByUserID(string UserId);
-        Ad_HocRide GetPrivateAdHocRideByUserID(string UserId);
+        List<Group> GetPrivateGroupsByUserEmail(string UserId, Location _Location, string Email);
+        List<Ad_HocRide> GetPrivateAdHocRideByUserEmail(string UserId, Location _Location, string Email);
         
         //Add
         void AddMember(string UserId, Group _Group);

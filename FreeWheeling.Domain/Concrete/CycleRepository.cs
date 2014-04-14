@@ -199,20 +199,30 @@ namespace FreeWheeling.Domain.Concrete
         public Ad_HocRide GetAdHocRideByID(int id)
         {
             Ad_HocRide Ad = new Ad_HocRide();
-
             Ad = context.Ad_HocRide.Include("Location").Where(i => i.id == id).FirstOrDefault();
-
             return Ad;
         }
 
-        public Group GetPrivateGroupsByUserID(string UserId)
+        public List<Group> GetPrivateGroupsByUserEmail(string UserId, Location _Location, string Email)
         {
-            throw new NotImplementedException();
+            List<int> UsersPrivateGroups = context.PrivateGroupUsers.Where(u => u.Email == Email)
+                .Select(g => g.GroupId)
+                .ToList();
+            UsersPrivateGroups.AddRange(context.Groups.Where(u => u.IsPrivate == true
+                && u.CreatedBy == UserId).Select(t => t.id).ToList());
+            return context.Groups.Where(g => UsersPrivateGroups.Contains(g.id)
+                && g.Location.id == _Location.id).Distinct().ToList();
         }
 
-        public Ad_HocRide GetPrivateAdHocRideByUserID(string UserId)
+        public List<Ad_HocRide> GetPrivateAdHocRideByUserEmail(string UserId, Location _Location, string Email)
         {
-            throw new NotImplementedException();
+            List<int> UsersPrivateRandomRides = context.PrivateRandomUsers.Where(u => u.Email == Email)
+                .Select(g => g.RideId)
+                .ToList();
+            UsersPrivateRandomRides.AddRange(context.Ad_HocRide.Where(u => u.IsPrivate == true
+                && u.CreatedBy == UserId).Select(t => t.id).ToList());
+            return context.Ad_HocRide.Where(g => UsersPrivateRandomRides.Contains(g.id) 
+                && g.Location.id == _Location.id).Distinct().ToList();
         }
 
         public List<Comment> GetTop2CommentsForRide(int Rideid)
