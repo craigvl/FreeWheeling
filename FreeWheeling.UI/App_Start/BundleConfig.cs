@@ -59,7 +59,7 @@ namespace FreeWheeling.UI
                     "~/Scripts/moment.js"));
 
             //Pusher
-            var pusher = new ScriptBundle("~/bundles/pusher", "//js.pusher.com/2.2.0-rc2/pusher.min.js").Include(
+            var pusher = new ScriptBundle("~/bundles/pusher", "//js.pusher.com/2.2/pusher.min.js").Include(
                       "~/Scripts/pusher.min.js");
             pusher.CdnFallbackExpression = "window.jQuery";
             bundles.Add(pusher);

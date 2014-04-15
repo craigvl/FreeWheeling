@@ -33,10 +33,11 @@ namespace FreeWheeling.UI.Controllers
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             CultureHelper _CultureHelper = new CultureHelper(repository);
+            Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
             Session["Culture"] = _CultureHelper.GetCulture(Convert.ToInt32(currentUser.LocationID));
             GroupModel _GroupModel = new GroupModel();
             GroupModelHelper _GroupHelper = new GroupModelHelper(repository);
-            _GroupModel =_GroupHelper.PopulateGroupModel(currentUser.Id, currentUser.LocationID, searchString);
+            _GroupModel = _GroupHelper.PopulateGroupModel(currentUser.Id, _Location, searchString, currentUser.Email);
             return View(_GroupModel);
         }
 
@@ -115,32 +116,59 @@ namespace FreeWheeling.UI.Controllers
                     CreatedBy = currentUser.Id,
                     CreatedTimeStamp = LocalNow,
                     ModifiedTimeStamp = LocalNow,
-                    MapUrl = _AdHocCreateModel.MapUrl
+                    MapUrl = _AdHocCreateModel.MapUrl,
+                    IsPrivate = _AdHocCreateModel.IsPrivate
                 };
 
                 repository.AddAdHocRide(NewAdHoc);
                 repository.Save();
 
-                Task T = new Task(() =>
+                if (_AdHocCreateModel.InviteUsers != null)
                 {
+                    Task T = new Task(() =>
+                    {
+                        List<string> UserNames = new List<string>();
+                        UserHelper _UserHelp = new UserHelper();
+                        List<PrivateRandomUsers> _PrivateRandomUsersList = new List<PrivateRandomUsers>();
 
-                List<string> UserNames = new List<string>();
+                        foreach (InviteUser item in _AdHocCreateModel.InviteUsers)
+                        {
+                            UserNames.Add(item.UserName);
 
-                foreach (InviteUser item in _AdHocCreateModel.InviteUsers)
-                {
-                    UserNames.Add(item.UserName);                 
+                            if (_AdHocCreateModel.IsPrivate)
+                            {
+                                if (_UserHelp.IsValidUserName(item.UserName))
+                                {
+                                    var _User = idb.Users.Where(g => g.UserName == item.UserName).FirstOrDefault();
+                                    PrivateRandomUsers _PrivateRandomUsers = new PrivateRandomUsers
+                                    {
+                                        RideId = NewAdHoc.id,
+                                        Email = _User.Email,
+                                        UserId = _User.Id
+                                    };
+                                    _PrivateRandomUsersList.Add(_PrivateRandomUsers);
+                                }
+                                else
+                                {
+                                    PrivateRandomUsers _PrivateRandomUsers = new PrivateRandomUsers
+                                    {
+                                        RideId = NewAdHoc.id,
+                                        Email = item.UserName,
+                                    };
+                                    _PrivateRandomUsersList.Add(_PrivateRandomUsers);
+                                }
+                            }
+                        }
+                        repository.AddPrivateAdHocInvite(_PrivateRandomUsersList);
+                        repository.Save();
+                        _UserHelp.SendUsersCreateAdHocEmail(_UserHelp.GetEmailsForUserNames(UserNames),
+                            NewAdHoc.id,
+                            NewAdHoc.CreatedBy,
+                            NewAdHoc.Name);
+                    });
+
+                    T.Start();
                 }
-
-                UserHelper _UserHelp = new UserHelper();
-
-                _UserHelp.SendUsersCreateAdHocEmail(_UserHelp.GetEmailsForUserNames(UserNames),
-                    NewAdHoc.id,
-                    NewAdHoc.CreatedBy,
-                    NewAdHoc.Name);
-                });
-
-                T.Start();
-
                 return Json(new { success = true, Message = "New AdHoc Ride has been created." }, 
                     JsonRequestBehavior.AllowGet);  
             }
@@ -177,11 +205,9 @@ namespace FreeWheeling.UI.Controllers
             }
             else
             {
-
                 CultureHelper _CultureHelper = new CultureHelper(repository);
                 TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
                 DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
-
                 Group CurrentGroup = repository.GetGroupByID(groupId);
 
                 EditGroupModel _EditGroupModel = new EditGroupModel
@@ -194,7 +220,8 @@ namespace FreeWheeling.UI.Controllers
                     Name = CurrentGroup.name,
                     StartLocation = CurrentGroup.StartLocation,
                     Locations = repository.GetLocations().ToList(),
-                    MapUrl = CurrentGroup.MapUrl
+                    MapUrl = CurrentGroup.MapUrl,
+                    IsPrivate = CurrentGroup.IsPrivate
                 };
 
                 _EditGroupModel.LocationsId = repository.GetLocations()
@@ -250,12 +277,12 @@ namespace FreeWheeling.UI.Controllers
                 CreatedTimeStamp = CurrentGroup.CreatedTimeStamp,
                 ModifiedTimeStamp = LocalNow,
                 MapUrl = _EditGroupModel.MapUrl,  
-                id = _EditGroupModel.GroupId
+                id = _EditGroupModel.GroupId,
+                IsPrivate = _EditGroupModel.IsPrivate
             };
 
             repository.UpdateGroup(UpdatedGroup);
             repository.Save();
-
             repository.UpdateRideTimes(UpdatedGroup,TZone);
             repository.Save();
             //Not needed if not able to change days would need to do some work here if allowed.
@@ -263,7 +290,6 @@ namespace FreeWheeling.UI.Controllers
             //repository.Save();
 
             return RedirectToAction("Index", "Group");
-
         }
 
         public ActionResult DeleteGroup(int GroupId)
@@ -353,13 +379,19 @@ namespace FreeWheeling.UI.Controllers
                 ModifiedTimeStamp = LocalNow,              
                 CreatedTimeStamp = LocalNow,
                 MapUrl = _GroupCreateModel.MapUrl,
-                IsPrivate = false
+                IsPrivate = _GroupCreateModel.IsPrivate
             };
 
             repository.AddGroup(NewGroup);
             repository.Save();
             NewGroup = repository.PopulateRideDates(NewGroup,TZone);
             repository.Save();
+
+            if (_GroupCreateModel.IsPrivate)
+            {
+                return RedirectToAction("InviteOthersToPrivateBunch", "Group", new { GroupId = NewGroup.id });
+            }
+
             return RedirectToAction("Index", "Group");
         }
 
@@ -395,11 +427,84 @@ namespace FreeWheeling.UI.Controllers
 
         public ViewResult Mybunches(string searchString)
         {
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());      
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
             GroupModel _GroupModel = new GroupModel();
             GroupModelHelper _GroupHelper = new GroupModelHelper(repository);
-            _GroupModel = _GroupHelper.PopulateGroupModel(currentUser.Id, currentUser.LocationID, searchString, true);
+            _GroupModel = _GroupHelper.PopulateGroupModel(currentUser.Id, _Location, currentUser.Email, searchString, true);
             return View("Index",_GroupModel);
+        }
+
+        public ActionResult InviteOthersToPrivateBunch(int GroupId)
+        {
+            Group _Group = repository.GetGroupByID(GroupId);
+            InviteOthersToPrivateBunchModel _InviteOthersToPrivateBunchModel = new InviteOthersToPrivateBunchModel
+            {
+                GroupId = GroupId,
+                Name = _Group.name
+            };
+
+            return View(_InviteOthersToPrivateBunchModel);
+        }
+
+        [HttpPost]
+        public JsonResult InviteOthersToPrivateBunch(InviteOthersToPrivateBunchModel _InviteOthersToPrivateBunchModel)
+        {
+
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+
+            if (_InviteOthersToPrivateBunchModel.InviteUsers != null)
+            {
+                Task T = new Task(() =>
+                {
+                    UserHelper _UserHelp = new UserHelper();
+                    Group _Group = repository.GetGroupByID(_InviteOthersToPrivateBunchModel.GroupId);
+                    List<PrivateGroupUsers> _PrivateGroupUsersList = new List<PrivateGroupUsers>();
+                    List<string> UserNames = new List<string>();
+                    foreach (InviteUser item in _InviteOthersToPrivateBunchModel.InviteUsers)
+                    {
+                        UserNames.Add(item.UserName);
+
+                        if (_UserHelp.IsValidUserName(item.UserName))
+                        {
+                            var _User = idb.Users.Where(g => g.UserName == item.UserName).FirstOrDefault();
+                            PrivateGroupUsers _PrivateGroupUsers = new PrivateGroupUsers
+                            {
+                                GroupId = _InviteOthersToPrivateBunchModel.GroupId,
+                                Email = _User.Email,
+                                UserId = _User.Id
+                            };
+                            _PrivateGroupUsersList.Add(_PrivateGroupUsers);
+                        }
+                        else
+                        {
+                            PrivateGroupUsers _PrivateGroupUsers = new PrivateGroupUsers
+                            {
+                                GroupId = _InviteOthersToPrivateBunchModel.GroupId,
+                                Email = item.UserName,
+                            };
+                            _PrivateGroupUsersList.Add(_PrivateGroupUsers);
+                        }
+                    }
+
+                    repository.AddPrivateGroupInvite(_PrivateGroupUsersList);
+                    repository.Save();
+
+                    _UserHelp.SendUsersPrivateBunchInviteEmail(_UserHelp.GetEmailsForUserNames(UserNames),
+                        _InviteOthersToPrivateBunchModel.GroupId,
+                        currentUser.UserName,
+                        _Group.name);
+                });
+
+                T.Start();
+            }
+
+            return Json(new
+            {
+                success = true,
+                message = "Emails Sent",
+                GroupId = _InviteOthersToPrivateBunchModel.GroupId
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

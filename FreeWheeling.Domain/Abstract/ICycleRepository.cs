@@ -21,7 +21,6 @@ namespace FreeWheeling.Domain.Abstract
         Group GetGroupByRideID(int Rideid);
         Group GetGroupByIDNoIncludes(int id);
         List<CycleDays> GetCycleDaysForGroup(int GroupId);
-        //Ride GetPreviousRideForGroup(Group _Group);
         List<int> CurrentGroupsForUser(string UserId);
 
         //Get .. Location
@@ -33,7 +32,6 @@ namespace FreeWheeling.Domain.Abstract
         IEnumerable<Ride> GetRidesWithRiders();
         Ride GetRideByID(int id);
         Ride GetRideByIDIncludeGroup(int id);
-        //Ride GetNextRideForGroup(Group _Group, TimeZoneInfo TimeZone);
         Ride GetClosestNextRide(Group _Group, TimeZoneInfo TimeZone);
         Ride Get2ndClosestNextRide(Group _Group, TimeZoneInfo TimeZone);
         List<Ad_HocRide> GetAdHocRides(Location _Location, TimeZoneInfo TimeZone);
@@ -70,6 +68,10 @@ namespace FreeWheeling.Domain.Abstract
 
         //Get HomePageRide
         Ride GetHomePageRideByUserID(string UserId);
+
+        //Get Private
+        List<Group> GetPrivateGroupsByUserEmail(string UserId, Location _Location, string Email);
+        List<Ad_HocRide> GetPrivateAdHocRideByUserEmail(string UserId, Location _Location, string Email);
         
         //Add
         void AddMember(string UserId, Group _Group);
@@ -80,6 +82,8 @@ namespace FreeWheeling.Domain.Abstract
         void AddRideComment(string Comment, int RideId, string UserName, string UserId);
         void AddAdHocRideComment(string Comment, int RideId, string UserName, string UserId);
         void AddUserExpand(UserExpand _UserExpand);
+        void AddPrivateAdHocInvite(List<PrivateRandomUsers> _PrivateRandomUsers);
+        void AddPrivateGroupInvite(List<PrivateGroupUsers> _PrivateGroupUsers);
 
         //Delete
         void RemoveMember(string UserId, Group _Group);
@@ -99,6 +103,8 @@ namespace FreeWheeling.Domain.Abstract
         Boolean IsIn(int RideId, string UserId);
         Boolean IsOut(int RideId, string UserId);
         Boolean IsOnWay(int RideId, string UserId);
+        Boolean IsInvitedToPrivateBunch(int GroupId, string UserId);
+        Boolean IsInvitedToPrivateRandomBunch(int RideId, string UserId);
         
         //Populate
         Group PopulateRideDates(Group _Group, TimeZoneInfo _TimeZoneInfo);

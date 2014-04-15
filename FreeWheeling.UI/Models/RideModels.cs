@@ -80,9 +80,7 @@ namespace FreeWheeling.UI.Models
 
             if(_Group == null)
             {
-
                 _Group = repository.GetGroupByRideID(RideId);
-
             }
 
             CultureHelper _CultureHelper = new CultureHelper(repository);
@@ -114,6 +112,12 @@ namespace FreeWheeling.UI.Models
             RideModel.OnWayFirst = repository.IsOnWay(RideModel.Ride.id, UserId);
 
             RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
+            if (RideModel.NextRide == null)
+            {
+                //If no next ride need to poulate from the latest date, will catch some issues.
+                repository.PopulateRideDatesFromDate(_Group,RideModel.RideDate,TZone);
+                RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
+            }
             RideModel.NextRideDate = RideModel.NextRide.RideDate;
             RideModel.NextComments = repository.GetTop2CommentsForRide(RideModel.NextRide.id);
             RideModel.NextCommentCount = repository.GetCommentCountForRide(RideModel.NextRide.id);
@@ -268,7 +272,6 @@ namespace FreeWheeling.UI.Models
 
     public class EditAdHocRideModel
     {
-
         public string Name { get; set; }
         public DateTime RideDate { get; set; }
         public string RideTime { get; set; }
@@ -287,7 +290,7 @@ namespace FreeWheeling.UI.Models
         public int adhocrideid { get; set; }
         public string Description { get; set; }
         public string MapUrl { get; set; }
-
+        public bool IsPrivate { get; set; }
     }
 
     public class DeleteAdHocRideModel

@@ -107,9 +107,19 @@
     <Compile Include="DataContexts\CycleMigrations\201404060424133_Add_HomePageRide.Designer.cs">
       <DependentUpon>201404060424133_Add_HomePageRide.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201404110654018_Add_isprivate.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201404110654018_Add_isprivate.Designer.cs">
+      <DependentUpon>201404110654018_Add_isprivate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201404110816447_Add_PrivateUserInviteTables.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201404110816447_Add_PrivateUserInviteTables.Designer.cs">
+      <DependentUpon>201404110816447_Add_PrivateUserInviteTables.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\AdHocComment.cs" />
+    <Compile Include="Entities\PrivateRandomUsers.cs" />
     <Compile Include="Entities\Comment.cs" />
+    <Compile Include="Entities\PrivateGroupUsers.cs" />
     <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\CycleDays.cs" />
     <Compile Include="Entities\Group.cs" />
@@ -169,6 +179,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\CycleMigrations\201404060424133_Add_HomePageRide.resx">
       <DependentUpon>201404060424133_Add_HomePageRide.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201404110654018_Add_isprivate.resx">
+      <DependentUpon>201404110654018_Add_isprivate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201404110816447_Add_PrivateUserInviteTables.resx">
+      <DependentUpon>201404110816447_Add_PrivateUserInviteTables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
