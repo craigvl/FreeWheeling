@@ -72,7 +72,7 @@ namespace FreeWheeling.UI.Models
 
             _GroupModel.PrivateBunches = repository.GetPrivateGroupsByUserEmail(UserId,
                        _Location, Email);
-            
+
             _GroupModel._NextRideDetails = new List<NextRideDetails>();
             _GroupModel.UserLocation = _Location.Name;
             CultureHelper _CultureHelper = new CultureHelper(repository);
@@ -87,7 +87,9 @@ namespace FreeWheeling.UI.Models
 
                 if (NextRide != null)
                 {
-                    _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
+                    _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate,
+                        GroupId = item.id,
+                        NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
                 }
                 else
                 {
@@ -96,7 +98,9 @@ namespace FreeWheeling.UI.Models
                         repository.PopulateRideDates(item,TZone);
                         repository.Save();
                         NextRide = repository.GetClosestNextRide(item, TZone);
-                        _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
+                        _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate,
+                            GroupId = item.id,
+                            NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
                     }
                 }
 
@@ -108,6 +112,15 @@ namespace FreeWheeling.UI.Models
 
             _GroupModel._Groups.OrderByDescending(g => g.IsPrivate);
             _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(UserId);
+
+            foreach (Group item in _GroupModel.PrivateBunches)
+            {
+                if (repository.IsGroupCreator(item.id, UserId))
+                {
+                    _GroupModel._OwnerGroupList.Add(item.id);
+                }
+            }
+
             return _GroupModel;
         }
     }
@@ -266,8 +279,8 @@ namespace FreeWheeling.UI.Models
         public List<Location> Locations { get; set; }
         public IList<DayOfWeekViewModel> DaysOfWeek { get; set; }
         public string Description { get; set; }
+        public bool IsPrivate { get; set; }
         public string MapUrl { get; set; }
-        
     }
 
     public class DeleteGroupModel

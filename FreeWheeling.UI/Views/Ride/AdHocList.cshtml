@@ -11,6 +11,8 @@
 
 @if (@Model.PrivateRandomBunches.Count > 0)
 {
+    @:<div style="background-color:blanchedalmond">
+    
      foreach (Ad_HocRide item in @Model.PrivateRandomBunches)
     {
         <h3> <span class="label label-info">@item.Name </span></h3>
@@ -21,6 +23,7 @@
         new { @class = "btn btn-success", onclick = "ShowProgress();" })
         <hr />   
     }
+    @:</div>
 }
 
 @if (@Model._Ad_HocRide.Count > 0 )

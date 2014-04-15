@@ -272,7 +272,6 @@ namespace FreeWheeling.UI.Models
 
     public class EditAdHocRideModel
     {
-
         public string Name { get; set; }
         public DateTime RideDate { get; set; }
         public string RideTime { get; set; }
@@ -291,7 +290,7 @@ namespace FreeWheeling.UI.Models
         public int adhocrideid { get; set; }
         public string Description { get; set; }
         public string MapUrl { get; set; }
-
+        public bool IsPrivate { get; set; }
     }
 
     public class DeleteAdHocRideModel
