@@ -38,6 +38,9 @@
                     {
                         @Html.ActionLink(" ", "EditGroup", "Group", new { groupId = item.id },
                         new { @class = "glyphicon glyphicon-pencil", onclick = "ShowProgress();" })
+                        <p></p>
+                        @Html.ActionLink("Invite Others", "InviteOthersToPrivateBunch", "Group", new { groupId = item.id },
+                        new { @class = "", onclick = "ShowProgress();" })
                     }
                     
                     if (isMember)

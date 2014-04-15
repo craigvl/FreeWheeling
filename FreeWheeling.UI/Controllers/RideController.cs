@@ -58,6 +58,14 @@ namespace FreeWheeling.UI.Controllers
                 return RedirectToAction("index", "group", GroupModel);
             }
 
+            if (!repository.IsInvitedToPrivateBunch(RideModel.Group.id,currentUser.Id))
+            {
+                GroupModel GroupModel = new GroupModel();
+                GroupModel._Groups = repository.GetGroups().ToList();
+                GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
+                return RedirectToAction("index", "group", GroupModel);
+            }
+
             return View(RideModel);
         }
 
@@ -83,7 +91,14 @@ namespace FreeWheeling.UI.Controllers
             {
                 return RedirectToAction("index", "Home");
             }
+
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
+
+            if (!repository.IsInvitedToPrivateRandomBunch(adhocrideid, currentUser.Id))
+            {
+                return RedirectToAction("index", "Home");
+            }
+
             AdHocViewModel _adHocViewModel = new AdHocViewModel();
             RideModelHelper _AdHocHelper = new RideModelHelper(repository);
             _adHocViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
@@ -117,8 +132,6 @@ namespace FreeWheeling.UI.Controllers
             _AllAdHocRideComments.Comments = repository.GetAllCommentsForAdHocRide(adhocrideid);
             return View(_AllAdHocRideComments);
         }
-
-        
 
         public ActionResult InviteOthersToBunch(int RideId, int PreviousID = -1)
         {
@@ -529,8 +542,6 @@ namespace FreeWheeling.UI.Controllers
                                   leavetime = DateTime.UtcNow,
                                   parentid = ParentRideID
                 }, JsonRequestBehavior.AllowGet);  
-                   
-                //return Json(new { success = false, Message = "Please enter a comment." }, JsonRequestBehavior.AllowGet);          
         }
 
         public JsonResult AttendSingleRide(int RideId, string Commitment, int Groupid, bool FromFavPage, int ParentRideID)

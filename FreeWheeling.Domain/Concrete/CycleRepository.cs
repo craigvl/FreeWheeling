@@ -47,7 +47,6 @@ namespace FreeWheeling.Domain.Concrete
 
         public IEnumerable<Group> GetFavouriteGroupsByLocation(int? LocationID, string CurrentUserId)
         {
-            //return context.Groups.Include("Members").Include("Rides").Include("Location").Include("RideDays").Where(g => g.Location.id == LocationID).ToList();
             return context.Groups
                 .Include("Members")
                 .Include("Rides")
@@ -696,6 +695,47 @@ namespace FreeWheeling.Domain.Concrete
             return (n > 7) ? n % 7 : n;
         }
 
+        public bool IsInvitedToPrivateBunch(int GroupId, string UserId)
+        {
+            if (IsGroupCreator(GroupId,UserId))
+            {
+                return true;
+            }
+
+            int _Count = context.PrivateGroupUsers.Where(g => g.GroupId == GroupId
+                && g.UserId == UserId).Count();
+
+            if (_Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        public bool IsInvitedToPrivateRandomBunch(int RideId, string UserId)
+        {
+            if (IsAdHocCreator(RideId, UserId))
+            {
+                return true;
+            } 
+
+            int _Count = context.PrivateRandomUsers.Where(g => g.RideId == RideId
+                && g.UserId == UserId).Count();
+
+            if (_Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public bool IsAdHocCreator(int AdHocRideid, string UserId)
         {
             Ad_HocRide adHoc = GetAdHocRideByID(AdHocRideid);
@@ -884,9 +924,6 @@ namespace FreeWheeling.Domain.Concrete
         public void Save()
         {
             context.SaveChanges();
-        }
-
-
-        
+        }       
     }
 }

@@ -103,6 +103,8 @@ namespace FreeWheeling.Domain.Abstract
         Boolean IsIn(int RideId, string UserId);
         Boolean IsOut(int RideId, string UserId);
         Boolean IsOnWay(int RideId, string UserId);
+        Boolean IsInvitedToPrivateBunch(int GroupId, string UserId);
+        Boolean IsInvitedToPrivateRandomBunch(int RideId, string UserId);
         
         //Populate
         Group PopulateRideDates(Group _Group, TimeZoneInfo _TimeZoneInfo);
