@@ -16,9 +16,7 @@ namespace FreeWheeling.UI.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-
         private IdentityDb idb = new IdentityDb(); 
-
         private ICycleRepository repository;
 
         public HomeController(ICycleRepository repoParam)
@@ -47,6 +45,8 @@ namespace FreeWheeling.UI.Controllers
                     _HomeIndexModel.CurrentUserLocation = _Location.Name;
                     _HomeIndexModel.UpCommingAd_HocCount = repository.GetUpCommingAd_HocCount(repository.GetLocations()
                         .Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone);
+                    _HomeIndexModel.UpCommingAd_HocCount = _HomeIndexModel.UpCommingAd_HocCount + repository.GetPrivateAdHocRideByUserEmail(currentUser.Id
+                        , _Location, currentUser.Email).Count();
                     _HomeIndexModel.HomePageRide = repository.GetHomePageRideByUserID(currentUser.Id);
                 }
             }

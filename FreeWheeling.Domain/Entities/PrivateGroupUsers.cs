@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace FreeWheeling.Domain.Entities
 {
-    public class Member
+    public class PrivateGroupUsers
     {
         public int id { get; set; }
-        public string userId { get; set; }
-        public Group Group { get; set; }
+        public int GroupId { get; set; }
+        public string UserId { get; set; }
+        public string Email { get; set; }
     }
 }

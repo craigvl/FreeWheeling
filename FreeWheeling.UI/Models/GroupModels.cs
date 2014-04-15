@@ -22,6 +22,7 @@ namespace FreeWheeling.UI.Models
         public string UserLocation;
         public string title;
         public List<int> _OwnerGroupList;
+        public List<Group> PrivateBunches { get; set; }
         public bool OnFavPage;
     }
 
@@ -35,7 +36,8 @@ namespace FreeWheeling.UI.Models
             repository = repoParam;
         }
 
-        public GroupModel PopulateGroupModel(string UserId, int? LocationId, string searchString, Boolean FavouritePage = false)
+        public GroupModel PopulateGroupModel(string UserId, Location _Location, string searchString, string Email,
+            Boolean FavouritePage = false)
         {
             GroupModel _GroupModel = new GroupModel();
 
@@ -43,12 +45,12 @@ namespace FreeWheeling.UI.Models
             {
                 if (!FavouritePage)
                 {
-                    _GroupModel._Groups = repository.GetGroupsByLocationWithSearch(LocationId,searchString).ToList();
+                    _GroupModel._Groups = repository.GetGroupsByLocationWithSearch(_Location.id, searchString).ToList();
                     _GroupModel.title = "All bunches";
                 }
                 else
                 {
-                    _GroupModel._Groups = repository.GetFavouriteGroupsByLocationWithSearch(LocationId,searchString,UserId).ToList();
+                    _GroupModel._Groups = repository.GetFavouriteGroupsByLocationWithSearch(_Location.id, searchString, UserId).ToList();
                     _GroupModel.OnFavPage = true;
                     _GroupModel.title = "Favourite bunches";
                 }
@@ -57,21 +59,24 @@ namespace FreeWheeling.UI.Models
             {
                 if (!FavouritePage)
                 {
-                    _GroupModel._Groups = repository.GetGroupsByLocation(LocationId).ToList();
+                    _GroupModel._Groups = repository.GetGroupsByLocation(_Location.id).ToList();
                     _GroupModel.title = "All bunches";
                 }
                 else
                 {
-                    _GroupModel._Groups = repository.GetFavouriteGroupsByLocation(LocationId,UserId).ToList();
+                    _GroupModel._Groups = repository.GetFavouriteGroupsByLocation(_Location.id, UserId).ToList();
                     _GroupModel.OnFavPage = true;
                     _GroupModel.title = "Favourite bunches";
                 }
             }
 
+            _GroupModel.PrivateBunches = repository.GetPrivateGroupsByUserEmail(UserId,
+                       _Location, Email);
+
             _GroupModel._NextRideDetails = new List<NextRideDetails>();
-            _GroupModel.UserLocation = repository.GetLocationName(LocationId);
+            _GroupModel.UserLocation = _Location.Name;
             CultureHelper _CultureHelper = new CultureHelper(repository);
-            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(LocationId);
+            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Location.id);
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
             _GroupModel._OwnerGroupList = new List<int>();
 
@@ -82,7 +87,9 @@ namespace FreeWheeling.UI.Models
 
                 if (NextRide != null)
                 {
-                    _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
+                    _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate,
+                        GroupId = item.id,
+                        NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
                 }
                 else
                 {
@@ -91,7 +98,9 @@ namespace FreeWheeling.UI.Models
                         repository.PopulateRideDates(item,TZone);
                         repository.Save();
                         NextRide = repository.GetClosestNextRide(item, TZone);
-                        _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate, GroupId = item.id, NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
+                        _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate,
+                            GroupId = item.id,
+                            NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
                     }
                 }
 
@@ -100,14 +109,26 @@ namespace FreeWheeling.UI.Models
                     _GroupModel._OwnerGroupList.Add(item.id);
                 }
             }
+
+            _GroupModel._Groups.OrderByDescending(g => g.IsPrivate);
             _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(UserId);
+
+            foreach (Group item in _GroupModel.PrivateBunches)
+            {
+                if (repository.IsGroupCreator(item.id, UserId))
+                {
+                    _GroupModel._OwnerGroupList.Add(item.id);
+                }
+            }
+
             return _GroupModel;
         }
     }
 
     public class AdHocRidesModel
     {
-        public List<Ad_HocRide> _Ad_HocRide;
+        public List<Ad_HocRide> _Ad_HocRide { get; set; }
+        public List<Ad_HocRide> PrivateRandomBunches { get; set; }
     }
 
     public class DayOfWeekViewModel
@@ -130,7 +151,6 @@ namespace FreeWheeling.UI.Models
         [Required(ErrorMessage = "Please select a date")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public string DateString { get; set; }
-        
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
         [Required]
@@ -142,12 +162,20 @@ namespace FreeWheeling.UI.Models
         public string Creator { get; set; }
         public string Description { get; set; }
         public string MapUrl { get; set; }
+        public bool IsPrivate { get; set; }
         public List<InviteUser> InviteUsers { get; set; }
     }
 
     public class InviteUser
     {
         public string UserName { get; set; }
+    }
+
+    public class InviteOthersToPrivateBunchModel
+    {
+        public int GroupId { get; set; }
+        public string Name { get; set; }
+        public List<InviteUser> InviteUsers { get; set; }
     }
     
     public class GroupCreateModel
@@ -197,7 +225,7 @@ namespace FreeWheeling.UI.Models
     public string AverageSpeed { get; set; }
     public string Description { get; set; }
     public string MapUrl { get; set; }
-
+    public bool IsPrivate { get; set; }
     }
 
     public class MyGroupsModel
@@ -251,8 +279,8 @@ namespace FreeWheeling.UI.Models
         public List<Location> Locations { get; set; }
         public IList<DayOfWeekViewModel> DaysOfWeek { get; set; }
         public string Description { get; set; }
+        public bool IsPrivate { get; set; }
         public string MapUrl { get; set; }
-        
     }
 
     public class DeleteGroupModel

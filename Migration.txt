@@ -4,7 +4,7 @@ update-database -ConfigurationTypeName FreeWheeling.Domain.DataContexts.CycleMig
 update-database -ConfigurationTypeName FreeWheeling.UI.DataContexts.IdentityMigrations.Configuration -verbose
 
 
-add-migration -ConfigurationTypeName FreeWheeling.Domain.DataContexts.CycleMigrations.Configuration "Add_HomePageRide" -verbose
+add-migration -ConfigurationTypeName FreeWheeling.Domain.DataContexts.CycleMigrations.Configuration "Add_isprivate" -verbose
 
 add-migration -ConfigurationTypeName FreeWheeling.Domain.DataContexts.CycleMigrations.Configuration "Userid_Change" -verbose
 

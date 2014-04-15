@@ -52,6 +52,23 @@ namespace FreeWheeling.UI.Infrastructure
             }
         }
 
+        public void SendUsersPrivateBunchInviteEmail(List<string> Emails,
+            int GroupId,
+            string createdby,
+            string bunchName)
+        {
+            foreach (string email in Emails)
+            {
+                dynamic emailToUser = new Email("SendUsersPrivateBunchInviteEmail");
+                emailToUser.To = email;
+                emailToUser.UserName = GetUserNameViaEmail(email);
+                emailToUser.creator = createdby;
+                emailToUser.bunchName = bunchName;
+                emailToUser.link = "http://www.bunchy.com.au/Ride?groupId=" + GroupId;
+                emailToUser.Send();
+            }
+        }
+
         public void SendUsersAdHocBunchInviteEmail(List<string> Emails,
            int RideId,
            string createdby,
@@ -155,6 +172,24 @@ namespace FreeWheeling.UI.Infrastructure
                 emailToUser.link = "http://www.bunchy.com.au/Ride/ViewAdHocRide?adhocrideid=" + AdhocID;
                 emailToUser.Send();
             }
+        }
+
+        public bool IsValidUserName(string UserName)
+        {
+            int userNameCount = idb.Users.Where(u => u.UserName == UserName).Count();
+            if (userNameCount > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public string GetEmailViaUserName(string UserName)
+        {
+            return idb.Users.Where(e => e.UserName == UserName).Select(f => f.Email).FirstOrDefault();
         }
 
         public string GetUserNameViaEmail(string email)

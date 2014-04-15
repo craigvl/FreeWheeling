@@ -30,10 +30,8 @@ namespace FreeWheeling.UI.Controllers
         [Compress]
         public ActionResult Index(int groupid = -1, int rideid = -1, bool FromFavPage = false)
         {
-            //var TimeZone = TimeZoneInfo.Local.Id;
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             RideModelIndex RideModel = new RideModelIndex();
-            
             Group _Group = repository.GetGroupByID(groupid);
             RideModelHelper _RideHelper = new RideModelHelper(repository);
 
@@ -60,17 +58,29 @@ namespace FreeWheeling.UI.Controllers
                 return RedirectToAction("index", "group", GroupModel);
             }
 
+            if (!repository.IsInvitedToPrivateBunch(RideModel.Group.id,currentUser.Id))
+            {
+                GroupModel GroupModel = new GroupModel();
+                GroupModel._Groups = repository.GetGroups().ToList();
+                GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
+                return RedirectToAction("index", "group", GroupModel);
+            }
+
             return View(RideModel);
         }
 
         public ActionResult AdHocList()
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
             Member _Member = repository.GetMemberByUserID(currentUser.Id);
             AdHocRidesModel _AdHocRidesModel = new AdHocRidesModel();
             CultureHelper _CultureHelper = new CultureHelper(repository);
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-            _AdHocRidesModel._Ad_HocRide = repository.GetAdHocRides(repository.GetLocations().Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone).OrderBy(c => c.RideDate).ToList();
+            _AdHocRidesModel._Ad_HocRide = repository.GetAdHocRides(repository.GetLocations()
+                .Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone).OrderBy(c => c.RideDate).ToList();
+            _AdHocRidesModel.PrivateRandomBunches = repository.GetPrivateAdHocRideByUserEmail(currentUser.Id,
+                _Location, currentUser.Email);
             return View(_AdHocRidesModel);
         }
 
@@ -83,6 +93,12 @@ namespace FreeWheeling.UI.Controllers
             }
 
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
+
+            if (!repository.IsInvitedToPrivateRandomBunch(adhocrideid, currentUser.Id))
+            {
+                return RedirectToAction("index", "Home");
+            }
+
             AdHocViewModel _adHocViewModel = new AdHocViewModel();
             RideModelHelper _AdHocHelper = new RideModelHelper(repository);
             _adHocViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
@@ -119,7 +135,6 @@ namespace FreeWheeling.UI.Controllers
 
         public ActionResult InviteOthersToBunch(int RideId, int PreviousID = -1)
         {
-      
             Ride _Ride = repository.GetRideByIDIncludeGroup(RideId);
             InviteOthersToBunchModel _InviteOthersToBunchModel = new InviteOthersToBunchModel
             {
@@ -128,22 +143,16 @@ namespace FreeWheeling.UI.Controllers
                 RideDate = _Ride.RideDate.ToString("dd/MM/yyyy"),
                 PreviousID = PreviousID
             };
-
             return View(_InviteOthersToBunchModel);
-
         }
 
         [HttpPost]
         public JsonResult InviteOthersToBunch(InviteOthersToBunchModel _InviteOthersToBunchModel)
         {
-
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
-
             Task T = new Task(() =>
             {
-
                 Ride _Ride = repository.GetRideByIDIncludeGroup(_InviteOthersToBunchModel.RideId);
-
                 List<string> UserNames = new List<string>();
 
                 foreach (InviteUser item in _InviteOthersToBunchModel.InviteUsers)
@@ -152,27 +161,22 @@ namespace FreeWheeling.UI.Controllers
                 }
 
                 UserHelper _UserHelp = new UserHelper();
-
                 _UserHelp.SendUsersBunchInviteEmail(_UserHelp.GetEmailsForUserNames(UserNames),
                     _InviteOthersToBunchModel.RideId,
                     currentUser.UserName, _Ride.RideDate.ToString("dd/MM/yyyy"), _Ride.Group.name );
-
             });
 
             T.Start();
-
             return Json(new
             {
                 success = true,
                 message = "Emails Sent",
                 RideId = _InviteOthersToBunchModel.RideId
             }, JsonRequestBehavior.AllowGet);
-
         }
 
         public ActionResult InviteOthersToAdHocBunch(int adhocrideid)
         {
-
             Ad_HocRide _AdHocRide = repository.GetAdHocRideByID(adhocrideid);
             InviteOthersToAdHocBunchModel _InviteOthersToAdHocBunchModel = new InviteOthersToAdHocBunchModel
             {
@@ -182,35 +186,28 @@ namespace FreeWheeling.UI.Controllers
             };
 
             return View(_InviteOthersToAdHocBunchModel);
-
         }
 
         [HttpPost]
         public JsonResult InviteOthersToAdHocBunch(InviteOthersToAdHocBunchModel _InviteOthersToAdHocBunchModel)
         {
-
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
             Task T = new Task(() =>
             {
-
                 Ad_HocRide _Ride = repository.GetAdHocRideByID(_InviteOthersToAdHocBunchModel.adhocrideid);
-
                 List<string> UserNames = new List<string>();
-
                 foreach (InviteUser item in _InviteOthersToAdHocBunchModel.InviteUsers)
                 {
                     UserNames.Add(item.UserName);
                 }
 
                 UserHelper _UserHelp = new UserHelper();
-
                 _UserHelp.SendUsersAdHocBunchInviteEmail(_UserHelp.GetEmailsForUserNames(UserNames),
                     _InviteOthersToAdHocBunchModel.adhocrideid,
                     currentUser.UserName,
                     _Ride.RideDate.ToString("dd/MM/yyyy"),
                     _Ride.Name);
-
             });
 
             T.Start();
@@ -245,9 +242,7 @@ namespace FreeWheeling.UI.Controllers
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             CultureHelper _CultureHelper = new CultureHelper(repository);
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-
             Ad_HocRide _Ad_HocRide = repository.GetAdHocRideByID(adhocrideid);
-
             string AdHocRideName = _Ad_HocRide.Name;
 
             if (!repository.IsAdHocCreator(adhocrideid, currentUser.Id))
@@ -262,9 +257,7 @@ namespace FreeWheeling.UI.Controllers
 
                 Task T = new Task(() =>
                 {
-                    
                     UserHelper _UserHelp = new UserHelper();
-
                     List<string> Emails = new List<string>();
 
                     foreach (AdHocRider item in _AdHocRiders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
@@ -274,11 +267,9 @@ namespace FreeWheeling.UI.Controllers
                     }
 
                     _UserHelp.SendUsersDeleteAdHocEmail(Emails, AdHocRideName, currentUser.UserName);
-
                 });
 
                 T.Start();
-
                 return RedirectToAction("AdHocList", "Ride");
             }
         }
@@ -367,13 +358,11 @@ namespace FreeWheeling.UI.Controllers
 
                 repository.UpdateAdHocRide(adhoc);
                 repository.Save();
-
                 AdHocViewModel _adHocViewModel = new AdHocViewModel();
                 RideModelHelper _AdHocHelper = new RideModelHelper(repository);
                 _adHocViewModel = _AdHocHelper.PopulateAdHocModel(_EditAdHocRideModel.adhocrideid, currentUser.Id);
                 return View("ViewAdHocRide", _adHocViewModel);
             }
-
         }
 
         public ActionResult AddAdHocComment(int adhocrideid)
@@ -393,31 +382,24 @@ namespace FreeWheeling.UI.Controllers
             {
                 repository.AddAdHocRideComment(CommentString, adhocrideid, currentUser.UserName, currentUser.Id);
                 repository.Save();
-
                 AdHocViewModel _adHocViewModel = new AdHocViewModel();
                 RideModelHelper _AdHocHelper = new RideModelHelper(repository);
                 _adHocViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
-                    
                 int commentCount = repository.GetCommentCountForAdHocRide(adhocrideid);
 
                Task E = new Task(() =>
                {
                    CultureHelper _CultureHelper = new CultureHelper(repository);
                    TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-
                    Ad_HocRide _Ad_HocRide = repository.GetAdHocRideByID(adhocrideid);
-
                    string AdHocRideName = _Ad_HocRide.Name;
-
                    UserHelper _UserHelp = new UserHelper();
                    List<AdHocRider> _AdHocRiders = repository.GetRidersAndCommentersForAdHocRideDontIncludeCurrentUser(adhocrideid, TZone, currentUser.Id);
-
                    List<string> Emails = new List<string>();
                    
                    foreach (AdHocRider item in _AdHocRiders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
                    {
                        var ThisUser = idb.Users.Find(item.userId);
-
                        if (ThisUser != null)
                        {
                            if (ThisUser.ReceiveEmails)
@@ -427,9 +409,7 @@ namespace FreeWheeling.UI.Controllers
                            }
                        }
                    }
-
                    _UserHelp.SendUsersNewCommentAdHocEmail(Emails, AdHocRideName, currentUser.UserName, CommentString, adhocrideid);
-
                });
 
                E.Start();
@@ -442,7 +422,6 @@ namespace FreeWheeling.UI.Controllers
                    username = currentUser.UserName,
                    commentcount = commentCount
                }, JsonRequestBehavior.AllowGet);
-
             }
             else
             {
@@ -459,32 +438,25 @@ namespace FreeWheeling.UI.Controllers
             {            
                 repository.AddRideComment(CommentString, rideid, currentUser.UserName, currentUser.Id);
                 repository.Save();
-
                 RideModelIndex RideModel = new RideModelIndex();
                 RideModelHelper _RideHelper = new RideModelHelper(repository);
                 RideModel = _RideHelper.PopulateRideModel(ParentRideID, groupid, currentUser.Id, false, FromFavPage);
-
                 int commentCount = repository.GetCommentCountForRide(rideid);
 
                 Task E = new Task(() =>
                 {
                     CultureHelper _CultureHelper = new CultureHelper(repository);
                     TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-
                     Ride _Ride = repository.GetRideByID(rideid);
-
                     string RideDate = _Ride.RideDate.ToShortDateString();
                     string GroupName = _Ride.Group.name;
-
                     UserHelper _UserHelp = new UserHelper();
                     List<Rider> _Riders = repository.GetRidersAndCommentersForRideDontIncludeCurrentUser(_Ride.id, TZone, currentUser.Id);
-
                     List<string> Emails = new List<string>();
 
                     foreach (Rider item in _Riders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
                     {
                         ApplicationUser ThisUser = idb.Users.Where(u => u.Id == item.userId).FirstOrDefault();
-
                         if (ThisUser != null)
                         {
                             if (ThisUser.ReceiveEmails)
@@ -496,7 +468,6 @@ namespace FreeWheeling.UI.Controllers
                     }
 
                     _UserHelp.SendUsersNewCommentRideEmail(Emails, GroupName, currentUser.UserName, CommentString, _Ride.Group.id, _Ride.RideDate);
-
                 });
 
                 E.Start();
@@ -508,13 +479,11 @@ namespace FreeWheeling.UI.Controllers
                                   commentcount = commentCount,
                                   parentid = ParentRideID
                 }, JsonRequestBehavior.AllowGet);  
-
             }
             else
             {
                 return Json(new { success = false, Message = "Please enter a comment." }, JsonRequestBehavior.AllowGet);  
             }
-            
         }
 
         public JsonResult Attend(int RideId, string Commitment, int Groupid, bool FromFavPage, int ParentRideID)
@@ -522,10 +491,8 @@ namespace FreeWheeling.UI.Controllers
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Ride _Ride = new Ride();
             Group _Group = new Group();
-
             _Ride = repository.GetRideByID(RideId);
             _Group = repository.GetGroupByID(Groupid);
-
             Rider _Rider = new Rider { userId = currentUser.Id,
                                        Name = currentUser.UserName,
                                        Ride = _Ride,
@@ -534,7 +501,6 @@ namespace FreeWheeling.UI.Controllers
                 
             repository.AddRider(_Rider, _Group);
             repository.Save();
-
             RideModelIndex RideModel = new RideModelIndex();
             RideModelHelper _RideHelper = new RideModelHelper(repository);
             RideModel = _RideHelper.PopulateRideModel(ParentRideID, Groupid, currentUser.Id, false, FromFavPage);
@@ -544,13 +510,10 @@ namespace FreeWheeling.UI.Controllers
             {
                 CultureHelper _CultureHelper = new CultureHelper(repository);
                 TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-
                 string RideDate = _Ride.RideDate.ToShortDateString();
                 string GroupName = _Ride.Group.name;
-
                 UserHelper _UserHelp = new UserHelper();
                 List<Rider> _Riders = repository.GetRidersAndCommentersForRideDontIncludeCurrentUser(_Ride.id, TZone, currentUser.Id);
-
                 List<string> Emails = new List<string>();
 
                 foreach (Rider item in _Riders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
@@ -567,7 +530,6 @@ namespace FreeWheeling.UI.Controllers
                 }
 
                 _UserHelp.SendUsersGroupAttendStatusEmail(Emails, GroupName, Commitment, currentUser.UserName, _Ride.Group.id, _Ride.RideDate);
-
             });
 
             E.Start();
@@ -580,8 +542,6 @@ namespace FreeWheeling.UI.Controllers
                                   leavetime = DateTime.UtcNow,
                                   parentid = ParentRideID
                 }, JsonRequestBehavior.AllowGet);  
-                   
-                //return Json(new { success = false, Message = "Please enter a comment." }, JsonRequestBehavior.AllowGet);          
         }
 
         public JsonResult AttendSingleRide(int RideId, string Commitment, int Groupid, bool FromFavPage, int ParentRideID)
@@ -589,7 +549,6 @@ namespace FreeWheeling.UI.Controllers
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Ride _Ride = new Ride();
             Group _Group = new Group();
-
             _Ride = repository.GetRideByID(RideId);
             _Group = repository.GetGroupByID(Groupid);
 
@@ -604,7 +563,6 @@ namespace FreeWheeling.UI.Controllers
 
             repository.AddRider(_Rider, _Group);
             repository.Save();
-
             SingleRideViewModel RideModel = new SingleRideViewModel();
             RideModelHelper _RideHelper = new RideModelHelper(repository);
             RideModel = _RideHelper.PopulateSingleRideModel(RideId,currentUser.Id);
@@ -614,15 +572,11 @@ namespace FreeWheeling.UI.Controllers
             {
                 CultureHelper _CultureHelper = new CultureHelper(repository);
                 TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-
                 string RideDate = _Ride.RideDate.ToShortDateString();
                 string GroupName = _Ride.Group.name;
-
                 UserHelper _UserHelp = new UserHelper();
                 List<Rider> _Riders = repository.GetRidersAndCommentersForRideDontIncludeCurrentUser(_Ride.id, TZone, currentUser.Id);
-
                 List<string> Emails = new List<string>();
-
                 foreach (Rider item in _Riders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
                 {
                      var ThisUser = idb.Users.Find(item.userId);
@@ -635,9 +589,7 @@ namespace FreeWheeling.UI.Controllers
                          }
                      }
                 }
-
                 _UserHelp.SendUsersGroupAttendStatusEmail(Emails, GroupName, Commitment, currentUser.UserName, _Ride.Group.id, _Ride.RideDate);
-
             });
 
             E.Start();
@@ -652,8 +604,6 @@ namespace FreeWheeling.UI.Controllers
                 leavetime = DateTime.UtcNow,
                 parentid = ParentRideID
             }, JsonRequestBehavior.AllowGet);
-
-            //return Json(new { success = false, Message = "Please enter a comment." }, JsonRequestBehavior.AllowGet);
         }
      
         public JsonResult AttendAdHocRider(int adhocrideid, string Commitment)
@@ -662,26 +612,20 @@ namespace FreeWheeling.UI.Controllers
             Ad_HocRide _Ride = new Ad_HocRide();           
             _Ride = repository.GetAdHocRideByID(adhocrideid);
             AdHocRider _Rider = new AdHocRider { userId = currentUser.Id, Name = currentUser.UserName, AdHocRide = _Ride, LeaveTime = DateTime.UtcNow, PercentKeen = Commitment };
-
             repository.AddAdHocRider(_Rider, _Ride);
             repository.Save();
-
             AdHocViewModel _adHocViewModel = new AdHocViewModel();
             RideModelHelper _AdHocHelper = new RideModelHelper(repository);
             _adHocViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
-
             string KeenCount = repository.GetKeenCountForAdHocRide(adhocrideid).ToString();
 
             Task E = new Task(() =>
             {
                 CultureHelper _CultureHelper = new CultureHelper(repository);
                 TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-
                 string RideDate = _Ride.RideDate.ToShortDateString();
-
                 UserHelper _UserHelp = new UserHelper();
                 List<AdHocRider> _Riders = repository.GetRidersAndCommentersForAdHocRideDontIncludeCurrentUser(_Ride.id, TZone, currentUser.Id);
-
                 List<string> Emails = new List<string>();
 
                 foreach (AdHocRider item in _Riders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
@@ -698,7 +642,6 @@ namespace FreeWheeling.UI.Controllers
                 }
 
                 _UserHelp.SendUsersAdHocAttendStatusEmail(Emails, _Ride.Name, currentUser.UserName, Commitment, _Ride.id, _Ride.RideDate);
-
             });
 
             E.Start();

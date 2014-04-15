@@ -10,6 +10,7 @@ namespace FreeWheeling.Domain.Entities
     {
         public int id { get; set; }
         public string Name { get; set; }
+        public bool IsPrivate { get; set; }
         public string Creator { get; set; }
         public DateTime RideDate { get; set; }
         public string RideTime { get; set; }

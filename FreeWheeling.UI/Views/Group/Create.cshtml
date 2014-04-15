@@ -46,6 +46,11 @@
             }
         </div>
         <hr />
+    <div>
+        Private:
+        @Html.CheckBoxFor(f  => f.IsPrivate)
+    </div>
+    <p></p>
     <div>Time</div>
         <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
         <div>
@@ -80,7 +85,7 @@
     
         <div>
             <p></p>
-            <input onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create bunch" />
+            <input onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create" />
         </div>
     
 }

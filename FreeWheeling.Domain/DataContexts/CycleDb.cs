@@ -25,6 +25,8 @@ namespace FreeWheeling.Domain.DataContexts
         public DbSet<AdHocComment> AdHocComment { get; set; }
         public DbSet<CycleDays> CycleDays { get; set; }
         public DbSet<UserExpand> UserExpands { get; set; }
-        public DbSet<HomePageRide> HomePageRide { get; set; }  
+        public DbSet<HomePageRide> HomePageRide { get; set; }
+        public DbSet<PrivateGroupUsers> PrivateGroupUsers { get; set; }
+        public DbSet<PrivateRandomUsers> PrivateRandomUsers { get; set; }  
     }
 }
