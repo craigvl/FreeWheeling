@@ -33,10 +33,11 @@ namespace FreeWheeling.UI.Controllers
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             CultureHelper _CultureHelper = new CultureHelper(repository);
+            Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
             Session["Culture"] = _CultureHelper.GetCulture(Convert.ToInt32(currentUser.LocationID));
             GroupModel _GroupModel = new GroupModel();
             GroupModelHelper _GroupHelper = new GroupModelHelper(repository);
-            _GroupModel =_GroupHelper.PopulateGroupModel(currentUser.Id, currentUser.LocationID, searchString);
+            _GroupModel = _GroupHelper.PopulateGroupModel(currentUser.Id, _Location, searchString, currentUser.Email);
             return View(_GroupModel);
         }
 
@@ -424,10 +425,11 @@ namespace FreeWheeling.UI.Controllers
 
         public ViewResult Mybunches(string searchString)
         {
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());      
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
             GroupModel _GroupModel = new GroupModel();
             GroupModelHelper _GroupHelper = new GroupModelHelper(repository);
-            _GroupModel = _GroupHelper.PopulateGroupModel(currentUser.Id, currentUser.LocationID, searchString, true);
+            _GroupModel = _GroupHelper.PopulateGroupModel(currentUser.Id, _Location, currentUser.Email, searchString, true);
             return View("Index",_GroupModel);
         }
 

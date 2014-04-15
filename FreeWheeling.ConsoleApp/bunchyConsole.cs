@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using FreeWheeling.UI.Infrastructure;
 using FreeWheeling.UI.DataContexts;
 
-
 namespace FreeWheeling.ConsoleApp
 {
     public class bunchyConsole

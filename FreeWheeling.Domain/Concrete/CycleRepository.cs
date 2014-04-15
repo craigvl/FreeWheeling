@@ -54,7 +54,7 @@ namespace FreeWheeling.Domain.Concrete
                 .Include("RideDays")
                 .Where(g => g.Location.id == LocationID 
                     && g.Members.Any(m => m.userId == CurrentUserId)
-                    && g.IsPrivate == false).ToList();
+                    ).ToList();
         }
 
         public IEnumerable<Group> GetFavouriteGroupsByLocationWithSearch(int? LocationID, string SearchString, string CurrentUserId)
@@ -66,7 +66,7 @@ namespace FreeWheeling.Domain.Concrete
                 .Where(g => g.Location.id == LocationID
                 && g.name.ToUpper().Contains(SearchString) 
                 && g.Members.Any(m => m.userId == CurrentUserId)
-                && g.IsPrivate == false).ToList();
+                ).ToList();
         }
 
         public IEnumerable<Group> GetGroupsWithRiders()
@@ -210,7 +210,7 @@ namespace FreeWheeling.Domain.Concrete
                 .ToList();
             UsersPrivateGroups.AddRange(context.Groups.Where(u => u.IsPrivate == true
                 && u.CreatedBy == UserId).Select(t => t.id).ToList());
-            return context.Groups.Where(g => UsersPrivateGroups.Contains(g.id)
+            return context.Groups.Include("Rides").Where(g => UsersPrivateGroups.Contains(g.id)
                 && g.Location.id == _Location.id).Distinct().ToList();
         }
 

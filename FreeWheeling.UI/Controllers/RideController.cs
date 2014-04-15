@@ -64,11 +64,15 @@ namespace FreeWheeling.UI.Controllers
         public ActionResult AdHocList()
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
             Member _Member = repository.GetMemberByUserID(currentUser.Id);
             AdHocRidesModel _AdHocRidesModel = new AdHocRidesModel();
             CultureHelper _CultureHelper = new CultureHelper(repository);
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-            _AdHocRidesModel._Ad_HocRide = repository.GetAdHocRides(repository.GetLocations().Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone).OrderBy(c => c.RideDate).ToList();
+            _AdHocRidesModel._Ad_HocRide = repository.GetAdHocRides(repository.GetLocations()
+                .Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone).OrderBy(c => c.RideDate).ToList();
+            _AdHocRidesModel.PrivateRandomBunches = repository.GetPrivateAdHocRideByUserEmail(currentUser.Id,
+                _Location, currentUser.Email);
             return View(_AdHocRidesModel);
         }
 
