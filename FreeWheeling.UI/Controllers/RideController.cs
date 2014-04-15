@@ -58,12 +58,15 @@ namespace FreeWheeling.UI.Controllers
                 return RedirectToAction("index", "group", GroupModel);
             }
 
-            if (!repository.IsInvitedToPrivateBunch(RideModel.Group.id,currentUser.Id))
+            if (RideModel.Group.IsPrivate)
             {
-                GroupModel GroupModel = new GroupModel();
-                GroupModel._Groups = repository.GetGroups().ToList();
-                GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
-                return RedirectToAction("index", "group", GroupModel);
+                if (!repository.IsInvitedToPrivateBunch(RideModel.Group.id, currentUser.Id))
+                {
+                    GroupModel GroupModel = new GroupModel();
+                    GroupModel._Groups = repository.GetGroups().ToList();
+                    GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
+                    return RedirectToAction("index", "group", GroupModel);
+                }
             }
 
             return View(RideModel);
@@ -94,9 +97,14 @@ namespace FreeWheeling.UI.Controllers
 
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
-            if (!repository.IsInvitedToPrivateRandomBunch(adhocrideid, currentUser.Id))
+            Ad_HocRide _Ad_HocRide = repository.GetAdHocRideByID(adhocrideid);
+
+            if (_Ad_HocRide.IsPrivate)
             {
-                return RedirectToAction("index", "Home");
+                if (!repository.IsInvitedToPrivateRandomBunch(adhocrideid, currentUser.Id))
+                {
+                    return RedirectToAction("index", "Home");
+                }
             }
 
             AdHocViewModel _adHocViewModel = new AdHocViewModel();
