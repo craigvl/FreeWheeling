@@ -24,8 +24,21 @@ namespace FreeWheeling.UI.Controllers
             repository = repoParam;
         }
 
-        public ActionResult Index()
+        private ActionResult RedirectToLocal(string returnUrl)
         {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        public ActionResult Index(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             CultureHelper _CultureHelper = new CultureHelper(repository);           
             HomeIndexModel _HomeIndexModel = new HomeIndexModel();
@@ -45,8 +58,8 @@ namespace FreeWheeling.UI.Controllers
                     _HomeIndexModel.CurrentUserLocation = _Location.Name;
                     _HomeIndexModel.UpCommingAd_HocCount = repository.GetUpCommingAd_HocCount(repository.GetLocations()
                         .Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone);
-                    _HomeIndexModel.UpCommingAd_HocCount = _HomeIndexModel.UpCommingAd_HocCount + repository.GetPrivateAdHocRideByUserEmail(currentUser.Id
-                        , _Location, currentUser.Email).Count();
+                    _HomeIndexModel.UpCommingAd_HocCount = _HomeIndexModel.UpCommingAd_HocCount + repository.GetPrivateAdHocRideByUserID(currentUser.Id
+                        , _Location).Count();
                     _HomeIndexModel.HomePageRide = repository.GetHomePageRideByUserID(currentUser.Id);
                 }
             }
@@ -54,13 +67,16 @@ namespace FreeWheeling.UI.Controllers
             {
                 _HomeIndexModel.CurrentUserLocation = "Please set a Location";
             }
-
             return View(_HomeIndexModel);
         }
 
         [HttpPost]
-        public ActionResult Index(HomeIndexModel _HomeIndexModel)
+        public ActionResult Index(HomeIndexModel _HomeIndexModel, string returnUrl)
         {
+            if (returnUrl != null)
+            {
+                return RedirectToLocal(returnUrl);
+            }
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             if (_HomeIndexModel.LocationsId != null)
             {

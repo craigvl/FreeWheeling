@@ -4,14 +4,14 @@
 
 To: @ViewBag.To
 From: no-reply@bunchy.com.au
-Subject: Invite to random Bunch "@ViewBag.bunchName"
+Subject: Invite to private random Bunch "@ViewBag.bunchName"
 
 Hello @ViewBag.UserName,
 
-@ViewBag.creator has invited you to a random bunch "@ViewBag.bunchName" and would like you to attend.
+@ViewBag.creator has invited you to a private random bunch "@ViewBag.bunchName" and would like you to attend.
 
 The bunch date is: @ViewBag.bunchDate
 
 To let them know if you are coming use the link below:
 
-@ViewBag.link
+@Html.Raw(@ViewBag.link)

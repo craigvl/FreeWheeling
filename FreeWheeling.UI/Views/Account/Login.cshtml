@@ -22,7 +22,7 @@
                 <div class="content-box">
                     <br />
                     <h4 style="padding-left:15px;">
-                        <b><u>@Html.ActionLink("Create Account", "Register")</u></b> or sign in below.
+                        <b><u>@Html.ActionLink("Create Account", "Register", new { ReturnUrl = ViewBag.ReturnUrl })</u></b> or sign in below.
                     </h4>
                     <br />
                     @Html.ValidationSummary(true)
