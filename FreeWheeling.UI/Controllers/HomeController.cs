@@ -24,42 +24,54 @@ namespace FreeWheeling.UI.Controllers
             repository = repoParam;
         }
 
-        public ActionResult Index()
+        private ActionResult RedirectToLocal(string returnUrl)
         {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        public ActionResult Index(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             CultureHelper _CultureHelper = new CultureHelper(repository);           
             HomeIndexModel _HomeIndexModel = new HomeIndexModel();
             _HomeIndexModel.Locations = repository.GetLocations().ToList();
             Member _CurrentMember = repository.GetMemberByUserID(currentUser.Id);
-            
+
             if (currentUser.LocationID != null)
             {
-                //Check that user ID is a current location ID
-                if (_HomeIndexModel.Locations.Any(l => l.id == currentUser.LocationID))
-                {
-                    TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-                    Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
-                    _HomeIndexModel.FavouriteBunches = repository.GetFavouriteGroupsByLocation(_Location.id,currentUser.Id).ToList();
-                    Session["Culture"] = _CultureHelper.GetCulture(Convert.ToInt32(currentUser.LocationID));
-                    _HomeIndexModel.LocationsId = _Location.id;
-                    _HomeIndexModel.CurrentUserLocation = _Location.Name;
-                    _HomeIndexModel.UpCommingAd_HocCount = repository.GetUpCommingAd_HocCount(repository.GetLocations()
-                        .Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone);
-                    _HomeIndexModel.UpCommingAd_HocCount = _HomeIndexModel.UpCommingAd_HocCount + repository.GetPrivateAdHocRideByUserEmail(currentUser.Id
-                        , _Location, currentUser.Email).Count();
-                    _HomeIndexModel.HomePageRide = repository.GetHomePageRideByUserID(currentUser.Id);
-                }
+                    //Check that user ID is a current location ID
+                    if (_HomeIndexModel.Locations.Any(l => l.id == currentUser.LocationID))
+                    {
+                        TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
+                        Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
+                        _HomeIndexModel.FavouriteBunches = repository.GetFavouriteGroupsByLocation(_Location.id, currentUser.Id).ToList();
+                        Session["Culture"] = _CultureHelper.GetCulture(Convert.ToInt32(currentUser.LocationID));
+                        _HomeIndexModel.LocationsId = _Location.id;
+                        _HomeIndexModel.CurrentUserLocation = _Location.Name;
+                        _HomeIndexModel.UpCommingAd_HocCount = repository.GetUpCommingAd_HocCount(repository.GetLocations()
+                            .Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone);
+                        _HomeIndexModel.UpCommingAd_HocCount = _HomeIndexModel.UpCommingAd_HocCount + repository.GetPrivateAdHocRideByUserID(currentUser.Id
+                            , _Location).Count();
+                        _HomeIndexModel.HomePageRide = repository.GetHomePageRideByUserID(currentUser.Id);
+                    }
             }
             else
             {
                 _HomeIndexModel.CurrentUserLocation = "Please set a Location";
             }
-
             return View(_HomeIndexModel);
         }
 
         [HttpPost]
-        public ActionResult Index(HomeIndexModel _HomeIndexModel)
+        public ActionResult Index(HomeIndexModel _HomeIndexModel, string returnUrl)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             if (_HomeIndexModel.LocationsId != null)
@@ -81,7 +93,15 @@ namespace FreeWheeling.UI.Controllers
             {
                 _HomeIndexModel.CurrentUserLocation = "Please set a Location";
             }
-            return View(_HomeIndexModel);
+
+            if (returnUrl != null)
+            {
+               return  RedirectToLocal(returnUrl);
+            }
+            else
+            {
+                return View(_HomeIndexModel);
+            }
         }
 
         public ActionResult LocationChange()

@@ -268,6 +268,7 @@ namespace FreeWheeling.UI.Models
        public string Name { get; set; }
        public string RideDate { get; set; }
        public List<InviteUser> InviteUsers { get; set; }
+       public bool IsPrivate { get; set; }
     }
 
     public class EditAdHocRideModel

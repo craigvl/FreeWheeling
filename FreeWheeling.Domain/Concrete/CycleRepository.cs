@@ -202,9 +202,9 @@ namespace FreeWheeling.Domain.Concrete
             return Ad;
         }
 
-        public List<Group> GetPrivateGroupsByUserEmail(string UserId, Location _Location, string Email)
+        public List<Group> GetPrivateGroupsByUserID(string UserId, Location _Location)
         {
-            List<int> UsersPrivateGroups = context.PrivateGroupUsers.Where(u => u.Email == Email)
+            List<int> UsersPrivateGroups = context.PrivateGroupUsers.Where(u => u.UserId == UserId)
                 .Select(g => g.GroupId)
                 .ToList();
             UsersPrivateGroups.AddRange(context.Groups.Where(u => u.IsPrivate == true
@@ -213,9 +213,9 @@ namespace FreeWheeling.Domain.Concrete
                 && g.Location.id == _Location.id).Distinct().ToList();
         }
 
-        public List<Ad_HocRide> GetPrivateAdHocRideByUserEmail(string UserId, Location _Location, string Email)
+        public List<Ad_HocRide> GetPrivateAdHocRideByUserID(string UserId, Location _Location)
         {
-            List<int> UsersPrivateRandomRides = context.PrivateRandomUsers.Where(u => u.Email == Email)
+            List<int> UsersPrivateRandomRides = context.PrivateRandomUsers.Where(u => u.UserId == UserId)
                 .Select(g => g.RideId)
                 .ToList();
             UsersPrivateRandomRides.AddRange(context.Ad_HocRide.Where(u => u.IsPrivate == true
@@ -695,6 +695,32 @@ namespace FreeWheeling.Domain.Concrete
             return (n > 7) ? n % 7 : n;
         }
 
+        public bool PrivateRandomBunchInviteUserEmailNotSet(int id)
+        {
+            string Userid = context.PrivateRandomUsers.Where(i => i.id == id).Select(j => j.UserId).FirstOrDefault();
+            if (Userid == null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool PrivateBunchInviteUserEmailNotSet(int id)
+        {
+            string Userid = context.PrivateGroupUsers.Where(i => i.id == id).Select(j => j.UserId).FirstOrDefault();
+            if (Userid == null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public bool IsInvitedToPrivateBunch(int GroupId, string UserId)
         {
             if (IsGroupCreator(GroupId,UserId))
@@ -852,11 +878,26 @@ namespace FreeWheeling.Domain.Concrete
             Group CurrentGroup = context.Groups.Where(i => i.id == _Group.id).FirstOrDefault();
             foreach (Ride _Ride in CurrentGroup.Rides)
             {
-                //_Ride.RideDate = TimeZoneInfo.ConvertTimeToUtc(_Ride.RideDate, TZone);
                 _Ride.RideDate = new DateTime(_Ride.RideDate.Year, _Ride.RideDate.Month, _Ride.RideDate.Day, _Group.RideHour, _Group.RideMinute, 0);
                 _Ride.RideTime = _Group.RideTime;
             }
             context.Entry(CurrentGroup).State = System.Data.Entity.EntityState.Modified;
+        }
+
+        public void UpdateInvitePrivateUser(string UserId, string UserEmail, int id)
+        {
+            PrivateGroupUsers _CurrentPrivateGroupUser = context.PrivateGroupUsers.Where(i => i.id == id).FirstOrDefault();
+            _CurrentPrivateGroupUser.UserId = UserId;
+            _CurrentPrivateGroupUser.Email = UserEmail;
+            context.Entry(_CurrentPrivateGroupUser).State = System.Data.Entity.EntityState.Modified;
+        }
+
+        public void UpdateInviteRandomPrivateUser(string UserId, string UserEmail, int id)
+        {
+            PrivateRandomUsers _CurrentPrivateRandomUser = context.PrivateRandomUsers.Where(i => i.id == id).FirstOrDefault();
+            _CurrentPrivateRandomUser.UserId = UserId;
+            _CurrentPrivateRandomUser.Email = UserEmail;
+            context.Entry(_CurrentPrivateRandomUser).State = System.Data.Entity.EntityState.Modified;
         }
 
         public void DeleteGroup(int GroupId)
@@ -918,12 +959,13 @@ namespace FreeWheeling.Domain.Concrete
                 context.Entry(item).State = System.Data.Entity.EntityState.Added;
                 context.SaveChanges();
             }
-
         }
 
         public void Save()
         {
             context.SaveChanges();
-        }       
+        }
+
+
     }
 }

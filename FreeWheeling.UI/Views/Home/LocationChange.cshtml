@@ -7,7 +7,7 @@
 
 <h2>Change Location</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Index", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.DropDownListFor(
              x => x.LocationsId,
