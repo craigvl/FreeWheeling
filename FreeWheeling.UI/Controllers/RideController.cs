@@ -28,7 +28,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [Compress]
-        public ActionResult Index(int groupid = -1, int rideid = -1, int InviteId = -1, int InviteRandomId = -1, bool FromFavPage = false)
+        public ActionResult Index(int groupid = -1, int rideid = -1, int InviteId = -1, bool FromFavPage = false)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             if (InviteId != -1)
@@ -40,15 +40,6 @@ namespace FreeWheeling.UI.Controllers
                 }            
             }
 
-            if (InviteRandomId != -1)
-            {
-                if (repository.PrivateRandomBunchInviteUserEmailNotSet(InviteRandomId))
-                {
-                    repository.UpdateInviteRandomPrivateUser(currentUser.Id, currentUser.Email, InviteRandomId);
-                    repository.Save();
-                }
-            }
-            
             RideModelIndex RideModel = new RideModelIndex();
             Group _Group = repository.GetGroupByID(groupid);
             RideModelHelper _RideHelper = new RideModelHelper(repository);
@@ -106,7 +97,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [Compress]
-        public ActionResult ViewAdHocRide(int adhocrideid = -1)
+        public ActionResult ViewAdHocRide(int adhocrideid = -1, int InviteRandomId = -1)
         {    
             if(adhocrideid == -1)
             {
@@ -114,6 +105,16 @@ namespace FreeWheeling.UI.Controllers
             }
 
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
+
+            if (InviteRandomId != -1)
+            {
+                if (repository.PrivateRandomBunchInviteUserEmailNotSet(InviteRandomId))
+                {
+                    repository.UpdateInviteRandomPrivateUser(currentUser.Id, currentUser.Email, InviteRandomId);
+                    repository.Save();
+                }
+            }
+
             Ad_HocRide _Ad_HocRide = repository.GetAdHocRideByID(adhocrideid);
 
             if (_Ad_HocRide.IsPrivate)

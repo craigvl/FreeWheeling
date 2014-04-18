@@ -115,7 +115,7 @@ namespace FreeWheeling.UI.Infrastructure
                 {
                     NameValueCollection queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
 
-                    queryString["RideId"] = RideId.ToString();
+                    queryString["adhocrideid"] = RideId.ToString();
                     queryString["InviteRandomId"] = item.id.ToString();
 
                     dynamic emailToUser = new Email("SendUsersPrivateAdHocBunchInviteEmail");
@@ -124,7 +124,7 @@ namespace FreeWheeling.UI.Infrastructure
                     emailToUser.creator = createdby;
                     emailToUser.BunchName = bunchName;
                     emailToUser.bunchDate = bunchDate;
-                    emailToUser.link = "http://www.bunchy.com.au/Ride/ViewAdHocRide?adhocrideid=" + queryString.ToString();
+                    emailToUser.link = "http://www.bunchy.com.au/Ride/ViewAdHocRide?" + queryString.ToString();
                     emailToUser.Send();
                 }
             }
