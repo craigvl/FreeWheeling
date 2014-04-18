@@ -42,6 +42,14 @@ namespace FreeWheeling.UI.Controllers
 
             RideModelIndex RideModel = new RideModelIndex();
             Group _Group = repository.GetGroupByID(groupid);
+
+            //Just in case location ID has not been set, set to same as ride.
+            if (currentUser.LocationID == null)
+            {
+                currentUser.LocationID = _Group.Location.id;
+                idb.SaveChanges();
+            }
+
             RideModelHelper _RideHelper = new RideModelHelper(repository);
             var t = Request.QueryString["groupId"];
             if (groupid != -1 || rideid != -1)
@@ -116,6 +124,13 @@ namespace FreeWheeling.UI.Controllers
             }
 
             Ad_HocRide _Ad_HocRide = repository.GetAdHocRideByID(adhocrideid);
+
+            //Just in case location ID has not been set, set to same as ride.
+            if (currentUser.LocationID == null)
+            {
+                currentUser.LocationID = _Ad_HocRide.Location.id;
+                idb.SaveChanges();
+            }
 
             if (_Ad_HocRide.IsPrivate)
             {

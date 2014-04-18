@@ -45,12 +45,8 @@ namespace FreeWheeling.UI.Controllers
             _HomeIndexModel.Locations = repository.GetLocations().ToList();
             Member _CurrentMember = repository.GetMemberByUserID(currentUser.Id);
 
-            
-            
             if (currentUser.LocationID != null)
             {
-               
-
                     //Check that user ID is a current location ID
                     if (_HomeIndexModel.Locations.Any(l => l.id == currentUser.LocationID))
                     {
@@ -66,7 +62,6 @@ namespace FreeWheeling.UI.Controllers
                             , _Location).Count();
                         _HomeIndexModel.HomePageRide = repository.GetHomePageRideByUserID(currentUser.Id);
                     }
-                
             }
             else
             {
