@@ -199,7 +199,8 @@
 
                 }
                 }
-                else
+                
+                @if (@Model._Groups.Count + @Model.PrivateBunches.Count <= 0)
                 {
                     if (@Model.OnFavPage)
                     {
