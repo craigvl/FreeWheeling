@@ -28,6 +28,15 @@ namespace FreeWheeling.UI.Models
         public string ConfirmPassword { get; set; }
     }
 
+    public class LostPasswordModel
+    {
+        [Required(ErrorMessage = "We need your email to send you a reset link!")]
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "Email")]
+        [EmailAddress(ErrorMessage = "Not a valid email")]
+        public string Email { get; set; }
+    }
+
     public class LoginViewModel
     {
         [Required]
@@ -61,7 +70,9 @@ namespace FreeWheeling.UI.Models
         public string ConfirmPassword { get; set; }
 
         [Required]
+        [DataType(DataType.EmailAddress)]
         [Display(Name = "Email")]
+        [EmailAddress(ErrorMessage = "Not a valid email")]
         public string Email { get; set; }
     }
 }
