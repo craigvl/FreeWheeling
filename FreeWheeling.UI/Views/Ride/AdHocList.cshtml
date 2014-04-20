@@ -39,7 +39,7 @@
         <hr />   
     }
 }
- else
+ @if (@Model._Ad_HocRide.Count + @Model.PrivateRandomBunches.Count <= 0)
     {
        @Html.ActionLink("No Ad Hoc bunches yet, please create some!", "CreateAdHoc", "Group", null,
        new { @class = "btn btn-default", onclick = "ShowProgress();" })                

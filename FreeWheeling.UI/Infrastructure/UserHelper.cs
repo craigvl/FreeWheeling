@@ -1,7 +1,9 @@
-﻿using FreeWheeling.UI.DataContexts;
+﻿using FreeWheeling.Domain.Entities;
+using FreeWheeling.UI.DataContexts;
 using Postal;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -52,20 +54,79 @@ namespace FreeWheeling.UI.Infrastructure
             }
         }
 
-        public void SendUsersPrivateBunchInviteEmail(List<string> Emails,
+        public void SendUsersPrivateBunchInviteEmail(List<PrivateGroupUsers> _PrivateGroupUsers,
             int GroupId,
             string createdby,
             string bunchName)
         {
-            foreach (string email in Emails)
+
+            foreach (PrivateGroupUsers item in _PrivateGroupUsers)
             {
-                dynamic emailToUser = new Email("SendUsersPrivateBunchInviteEmail");
-                emailToUser.To = email;
-                emailToUser.UserName = GetUserNameViaEmail(email);
-                emailToUser.creator = createdby;
-                emailToUser.bunchName = bunchName;
-                emailToUser.link = "http://www.bunchy.com.au/Ride?groupId=" + GroupId;
-                emailToUser.Send();
+                if (item.UserId != null)
+                {
+                    dynamic emailToUser = new Email("SendUsersPrivateBunchInviteEmail");
+                    emailToUser.To = item.Email;
+                    emailToUser.UserName = GetUserNameViaEmail(item.Email);
+                    emailToUser.creator = createdby;
+                    emailToUser.bunchName = bunchName;
+                    emailToUser.link = "http://www.bunchy.com.au/Ride?groupId=" + GroupId;
+                    emailToUser.Send();
+                }
+                else
+                {
+
+                    NameValueCollection queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
+
+                    queryString["groupid"] = GroupId.ToString();
+                    queryString["InviteId"] = item.id.ToString();
+
+                    dynamic emailToUser = new Email("SendUsersPrivateBunchInviteEmail");
+                    emailToUser.To = item.Email;
+                    emailToUser.UserName = GetUserNameViaEmail(item.Email);
+                    emailToUser.creator = createdby;
+                    emailToUser.bunchName = bunchName;
+                    emailToUser.link ="http://www.bunchy.com.au/Ride?" +  queryString.ToString(); 
+                    emailToUser.Send();
+                }
+            }
+        }
+
+        public void SendUsersPrivateAdHocBunchInviteEmail(
+           List<PrivateRandomUsers> _PrivateRandomUsers,
+           int RideId,
+           string createdby,
+           string bunchDate,
+           string bunchName)
+        {
+            foreach (PrivateRandomUsers item in _PrivateRandomUsers)
+            {
+                if (item.UserId != null)
+                {
+                    dynamic emailToUser = new Email("SendUsersPrivateAdHocBunchInviteEmail");
+                    emailToUser.To = item.Email;
+                    emailToUser.UserName = GetUserNameViaEmail(item.Email);
+                    emailToUser.creator = createdby;
+                    emailToUser.BunchName = bunchName;
+                    emailToUser.bunchDate = bunchDate;
+                    emailToUser.link = "http://www.bunchy.com.au/Ride/ViewAdHocRide?adhocrideid=" + RideId;
+                    emailToUser.Send();
+                }
+                else
+                {
+                    NameValueCollection queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
+
+                    queryString["adhocrideid"] = RideId.ToString();
+                    queryString["InviteRandomId"] = item.id.ToString();
+
+                    dynamic emailToUser = new Email("SendUsersPrivateAdHocBunchInviteEmail");
+                    emailToUser.To = item.Email;
+                    emailToUser.UserName = GetUserNameViaEmail(item.Email);
+                    emailToUser.creator = createdby;
+                    emailToUser.BunchName = bunchName;
+                    emailToUser.bunchDate = bunchDate;
+                    emailToUser.link = "http://www.bunchy.com.au/Ride/ViewAdHocRide?" + queryString.ToString();
+                    emailToUser.Send();
+                }
             }
         }
 

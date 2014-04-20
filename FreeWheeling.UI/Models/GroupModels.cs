@@ -70,8 +70,8 @@ namespace FreeWheeling.UI.Models
                 }
             }
 
-            _GroupModel.PrivateBunches = repository.GetPrivateGroupsByUserEmail(UserId,
-                       _Location, Email);
+            _GroupModel.PrivateBunches = repository.GetPrivateGroupsByUserID(UserId,
+                       _Location);
 
             _GroupModel._NextRideDetails = new List<NextRideDetails>();
             _GroupModel.UserLocation = _Location.Name;

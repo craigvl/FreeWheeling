@@ -70,8 +70,8 @@ namespace FreeWheeling.Domain.Abstract
         Ride GetHomePageRideByUserID(string UserId);
 
         //Get Private
-        List<Group> GetPrivateGroupsByUserEmail(string UserId, Location _Location, string Email);
-        List<Ad_HocRide> GetPrivateAdHocRideByUserEmail(string UserId, Location _Location, string Email);
+        List<Group> GetPrivateGroupsByUserID(string UserId, Location _Location);
+        List<Ad_HocRide> GetPrivateAdHocRideByUserID(string UserId, Location _Location);
         
         //Add
         void AddMember(string UserId, Group _Group);
@@ -96,6 +96,8 @@ namespace FreeWheeling.Domain.Abstract
         void UpdateRideTimes(Group _Group, TimeZoneInfo TimeZone);
         void UpdateAdHocRide(Ad_HocRide _AdHocRide);
         void UpdateUserExpand(UserExpand _UserExpand);
+        void UpdateInvitePrivateUser(String UserId, String UserEmail, int id);
+        void UpdateInviteRandomPrivateUser(String UserId, String UserEmail, int id);
 
         //Checks
         Boolean IsAdHocCreator(int AdHocRideid, string UserId);
@@ -105,6 +107,8 @@ namespace FreeWheeling.Domain.Abstract
         Boolean IsOnWay(int RideId, string UserId);
         Boolean IsInvitedToPrivateBunch(int GroupId, string UserId);
         Boolean IsInvitedToPrivateRandomBunch(int RideId, string UserId);
+        Boolean PrivateBunchInviteUserEmailNotSet(int id);
+        Boolean PrivateRandomBunchInviteUserEmailNotSet(int id);
         
         //Populate
         Group PopulateRideDates(Group _Group, TimeZoneInfo _TimeZoneInfo);

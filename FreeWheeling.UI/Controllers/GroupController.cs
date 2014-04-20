@@ -450,7 +450,6 @@ namespace FreeWheeling.UI.Controllers
         [HttpPost]
         public JsonResult InviteOthersToPrivateBunch(InviteOthersToPrivateBunchModel _InviteOthersToPrivateBunchModel)
         {
-
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
             if (_InviteOthersToPrivateBunchModel.InviteUsers != null)
@@ -490,7 +489,7 @@ namespace FreeWheeling.UI.Controllers
                     repository.AddPrivateGroupInvite(_PrivateGroupUsersList);
                     repository.Save();
 
-                    _UserHelp.SendUsersPrivateBunchInviteEmail(_UserHelp.GetEmailsForUserNames(UserNames),
+                    _UserHelp.SendUsersPrivateBunchInviteEmail(_PrivateGroupUsersList,
                         _InviteOthersToPrivateBunchModel.GroupId,
                         currentUser.UserName,
                         _Group.name);
