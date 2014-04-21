@@ -7,12 +7,13 @@
 
 @if (!ViewData.ModelState.IsValid)
 {
-
 }
 
-@Html.ActionLink("<-- Back to Ad Hoc Bunch", "ViewAdHocRide", "Ride", new { adhocrideid = @Model.adhocrideid }, new { @class = "btn btn-default", onclick = "ShowProgress();" })
+@Html.ActionLink("<-- Back to Ad Hoc Bunch", "ViewAdHocRide", "Ride",
+new { adhocrideid = @Model.adhocrideid }, new { @class = "btn btn-default", onclick = "ShowProgress();" })
 
-@Html.ActionLink("Delete", "DeleteAdHocRide", "Ride", new { adhocrideid = @Model.adhocrideid }, new { @class = "btn btn-default", onclick = "ShowProgress();" })
+@Html.ActionLink("Delete", "DeleteAdHocRide", "Ride",
+new { adhocrideid = @Model.adhocrideid }, new { @class = "btn btn-default", onclick = "ShowProgress();" })
 
 <h2>Edit Ad Hoc bunch</h2>
 @using (Html.BeginForm())
@@ -32,8 +33,7 @@
                  "Text", Model.LocationsId
     ),  new { @class = "form-control" }
 
-    )
-        
+    )       
         <div><span class="RequiredField">*&nbsp;</span>Date</div>
           
         <div>
@@ -53,9 +53,10 @@
             @Html.TextBoxFor(model => model.RideMinute)
             @Html.ValidationMessageFor(model => model.RideMinute)
         </div>
+    <p></p>
+           <div>Private</div>
+            <div>@Html.CheckBoxFor(model => model.IsPrivate)</div>
            
-        <hr />
-    
         <div><span class="RequiredField">*&nbsp;</span>Start Location</div>
         
         <div> 
@@ -74,7 +75,6 @@
         <div> 
             @Html.TextBoxFor(model => model.MapUrl)
         </div>
-    
     <div>
             <p></p>
         <input onclick="ShowProgress();" id="btnSubmit" type="submit" value="Update" />
@@ -98,8 +98,6 @@
                     HideProgress();
                 });
  
-
-
         $(function () {
 
             $('#MyDateDiv div').datepicker({
