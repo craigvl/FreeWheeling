@@ -501,6 +501,7 @@
     <Content Include="Views\Group\InviteOthersToPrivateBunch.cshtml" />
     <Content Include="Views\Emails\SendUsersPrivateBunchInviteEmail.cshtml" />
     <Content Include="Views\Emails\SendUsersPrivateAdHocBunchInviteEmail.cshtml" />
+    <Content Include="Views\Account\LostPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
