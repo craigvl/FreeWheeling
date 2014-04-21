@@ -388,7 +388,8 @@ namespace FreeWheeling.UI.Controllers
                     adhocrideid = adhocrideid,
                     DateString = CurrentRide.RideDate.ToString("dd/MM/yyyy"),
                     Description = CurrentRide.Description,
-                    MapUrl = CurrentRide.MapUrl
+                    MapUrl = CurrentRide.MapUrl,
+                    IsPrivate = CurrentRide.IsPrivate
                 };
 
                 return View(_EditAdHocRideModel);
@@ -438,7 +439,8 @@ namespace FreeWheeling.UI.Controllers
                     Location = _Location,
                     id = _EditAdHocRideModel.adhocrideid,
                     Description = _EditAdHocRideModel.Description,
-                    MapUrl = _EditAdHocRideModel.MapUrl
+                    MapUrl = _EditAdHocRideModel.MapUrl,
+                    IsPrivate = _EditAdHocRideModel.IsPrivate
                 };
 
                 repository.UpdateAdHocRide(adhoc);
