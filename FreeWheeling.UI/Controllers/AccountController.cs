@@ -29,6 +29,83 @@ namespace FreeWheeling.UI.Controllers
 
         public UserManager<ApplicationUser> UserManager { get; private set; }
 
+        [AllowAnonymous]
+        public ActionResult LostPassword()
+        {
+            return View();
+        }
+
+//        [HttpPost]
+//        [AllowAnonymous]
+//        [ValidateAntiForgeryToken]
+//public ActionResult LostPassword(LostPasswordModel model)
+//{
+//   if (ModelState.IsValid)
+//   {
+//      MembershipUser user;
+//      using (var context = new IdentityDbContext())
+//      {
+//         var foundUserName = (from u in context.Users
+//                              where u.email == model.Email
+//                              select u.UserName).FirstOrDefault();
+//         if (foundUserName != null)
+//         {
+//            user = Membership.GetUser(foundUserName.ToString());
+//         }
+//         else
+//         {
+//            user = null;
+//         }
+//      }
+//      if (user != null)
+//      {
+//         // Generae password token that will be used in the email link to authenticate user
+//         var token = WebSecurity.GeneratePasswordResetToken(user.UserName);
+//         // Generate the html link sent via email
+//         string resetLink = "<a href='"
+//            + Url.Action("ResetPassword", "Account", new { rt = token }, "http") 
+//            + "'>Reset Password Link</a>";
+ 
+//         // Email stuff
+//         string subject = "Reset your password for asdf.com";
+//         string body = "You link: " + resetLink;
+//         string from = "donotreply@asdf.com";
+ 
+//         MailMessage message = new MailMessage(from, model.Email);
+//         message.Subject = subject;
+//         message.Body = body;
+//         SmtpClient client = new SmtpClient();
+ 
+//         // Attempt to send the email
+//         try
+//         {
+//            client.Send(message);
+//         }
+//         catch (Exception e)
+//         {
+//            ModelState.AddModelError("", "Issue sending email: " + e.Message);
+//         }
+//      }         
+//      else // Email not found
+//      {
+//         /* Note: You may not want to provide the following information
+//         * since it gives an intruder information as to whether a
+//         * certain email address is registered with this website or not.
+//         * If you're really concerned about privacy, you may want to
+//         * forward to the same "Success" page regardless whether an
+//         * user was found or not. This is only for illustration purposes.
+//         */
+//         ModelState.AddModelError("", "No user found by that email.");
+//      }
+//   }
+ 
+//   /* You may want to send the user to a "Success" page upon the successful
+//   * sending of the reset email link. Right now, if we are 100% successful
+//   * nothing happens on the page. :P
+//   */
+//   return View(model);
+//}
+
         ///
         // GET: /Account/Login
         [AllowAnonymous]
