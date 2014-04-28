@@ -12,6 +12,7 @@ namespace FreeWheeling.Domain.Abstract
 
         //Get .. Group
         IEnumerable<Group> GetGroups();
+        IEnumerable<Group> GetGroupsIncludePrivate();
         IEnumerable<Group> GetGroupsByLocation(int? LocationID);
         IEnumerable<Group> GetGroupsByLocationWithSearch(int? LocationID, string SearchString);
         IEnumerable<Group> GetFavouriteGroupsByLocation(int? LocationID, string CurrentUserId);

@@ -23,6 +23,15 @@ namespace FreeWheeling.Domain.Concrete
                 .ToList(); 
         }
 
+        public IEnumerable<Group> GetGroupsIncludePrivate()
+        {
+            return context.Groups.Include("Members")
+                .Include("Rides")
+                .Include("Location")
+                .Include("RideDays")
+                .ToList();
+        }
+
         public IEnumerable<Rider> GetRiders()
         {
             return context.Riders;
