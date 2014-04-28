@@ -72,7 +72,7 @@ namespace FreeWheeling.ConsoleApp
         private static void DeleteOldRidesAndCreateNew()
         {
             CultureHelper _CultureHelper = new CultureHelper(_CycleRepository);
-            foreach (Group item in _CycleRepository.GetGroups())
+            foreach (Group item in _CycleRepository.GetGroupsIncludePrivate())
             {
                 Location _Location = _CycleRepository.GetLocations().Where(l => l.id == item.Location.id).FirstOrDefault();
                 TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Location.id);
