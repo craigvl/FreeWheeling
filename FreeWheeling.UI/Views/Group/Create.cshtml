@@ -33,9 +33,14 @@
         @Html.ValidationMessageFor(model => model.LocationsId)
         <p></p>
     </div>
-    
-    <div>   Days Of Week</div>
-        <div>
+    <span id="show" class="btn btn-default">Set Days</span>
+    <select name="Category" id="DaysOfWeek" multiple>
+        @for (int i = 0; i < Model.DaysOfWeek.Count; i++)
+        {
+            <option value="@Model.DaysOfWeek[i].Name">@Model.DaysOfWeek[i].Name</option>
+        }
+    </select>
+        <div class="hidden">
             @for (int i = 0; i < Model.DaysOfWeek.Count; i++)
             {
                 <div>
@@ -123,7 +128,34 @@
         }
     });
     $(function () {
-        $("#scroller").mobiscroll({ preset: 'time', theme: 'bootstrap', showLabel: false, display: 'bottom' })
+        $("#scroller").mobiscroll({ preset: 'time', theme: 'bootstrap', showLabel: false, display: 'bottom' });
+        $('#DaysOfWeek').mobiscroll().select({
+                theme: 'bootstrap',
+                display: 'bottom',
+                showLabel: false,
+                rows: 7, 
+                mode: 'scroller',
+                onSelect: function (valueText, inst) {
+                    var test = $('#DaysOfWeek').mobiscroll('getValues');
+                    $('[id *= "DaysOfWeek"][type=checkbox]').attr('checked', false);
+                    for (var i = 0; i < test.length; i++){
+                        var checkBoxes = $('input[value=' + test[i] + ']').siblings('input[type=checkbox]');
+                        checkBoxes.attr('checked', true);
+                    }
+                    
+                }
+            });
+
+            $('#show').click(function () {
+                $('#DaysOfWeek').mobiscroll('show');
+                return false;
+            });
+
+            $('#clear').click(function () {
+                $('#DaysOfWeek').val([]).change();
+                return false;
+            });
+
     });
 </script>
 <link href="~/Content/mobiscroll.scroller-2.10.1.css" rel="stylesheet" />
