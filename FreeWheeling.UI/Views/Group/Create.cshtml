@@ -54,7 +54,7 @@
     <div>Time</div>
         <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
         <div>
-            @Html.TextBoxFor(model => model.Hour)
+            @Html.TextBoxFor(model => model.Hour, new { id="scroller" })
             @Html.ValidationMessageFor(model => model.Hour)
         </div>
     
@@ -98,6 +98,16 @@
 
     @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/mobiscroll-2.10.1.full.min.js"></script>
+<script src="~/Scripts/mobiscroll.scroller-2.10.1.js"></script>
+<script src="~/Scripts/mobiscroll.scroller.android-2.10.1.js"></script>
+<script src="~/Scripts/mobiscroll.scroller.ios-2.10.1.js"></script>
+<script src="~/Scripts/mobiscroll.scroller.android-ics-2.10.1.js"></script>
+<script src="~/Scripts/mobiscroll.scroller.ios7-2.10.1.js"></script>
+<script src="~/Scripts/mobiscroll.scroller.jqm-2.10.1.js"></script>
+<script src="~/Scripts/mobiscroll.scroller.wp-2.10.1.js"></script>
+<script src="~/Scripts/mobiscroll.select-2.10.1.js"></script>
+<script src="~/Scripts/mobiscroll.datetime-2.10.1.js"></script>
 <script type="text/javascript">
     jQuery(document).ready(function () {
         HideProgress();
@@ -112,7 +122,17 @@
 
         }
     });
-
+    $(function () {
+        $("#scroller").mobiscroll({ preset: 'time', theme: 'bootstrap', showLabel: false, display: 'bottom' })
+    });
 </script>
-
+<link href="~/Content/mobiscroll.scroller-2.10.1.css" rel="stylesheet" />
+<link href="~/Content/mobiscroll.scroller.android-2.10.1.css" rel="stylesheet" />
+<link href="~/Content/mobiscroll.scroller.android-ics-2.10.1.css" rel="stylesheet" />
+<link href="~/Content/mobiscroll.scroller.ios-2.10.1.css" rel="stylesheet" />
+<link href="~/Content/mobiscroll.scroller.ios7-2.10.1.css" rel="stylesheet" />
+<link href="~/Content/mobiscroll.scroller.jqm-2.10.1.css" rel="stylesheet" />
+<link href="~/Content/mobiscroll.scroller.sense-ui-2.10.1.css" rel="stylesheet" />
+<link href="~/Content/mobiscroll.scroller.wp-2.10.1.css" rel="stylesheet" />
+<link href="~/Content/mobiscroll-2.10.1.full.min.css" rel="stylesheet" />
 }
