@@ -10,12 +10,15 @@
         <section id="loginForm">
             <div class="col-md-4">
                 <section id="socialLoginForm">
-                    @Html.Partial("_ExternalLoginsListPartial", new FreeWheeling.UI.Models.ExternalLoginViewModel() { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
+                    @Html.Partial("_ExternalLoginsListPartial", 
+                    new FreeWheeling.UI.Models.ExternalLoginViewModel() { Action = "ExternalLogin",
+                        ReturnUrl = ViewBag.ReturnUrl })
                 </section>
             </div>
             <div style="clear:both"></div>
             <hr class="full-line" />
-            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, 
+                new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
                 
@@ -47,7 +50,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <a href="#" style="padding:15px;"><u><b>forgot password</b></u></a>
+                       <b>@Html.ActionLink("forgot password?", "LostPassword")</b>
                     </div>
                     <p></p>
                     <div class="col-md-6">

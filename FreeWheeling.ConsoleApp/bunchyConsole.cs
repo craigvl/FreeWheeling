@@ -20,7 +20,6 @@ namespace FreeWheeling.ConsoleApp
             _CycleRepository = new CycleRepository();
             DeleteOldRidesAndCreateNew();
             PopulateHomePageRide();
-            //Console.ReadLine();
         }
 
         private static void PopulateHomePageRide()

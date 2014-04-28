@@ -188,6 +188,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
     </Reference>
+    <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.AspNet.Identity.Core">
@@ -502,6 +505,7 @@
     <Content Include="Views\Emails\SendUsersPrivateBunchInviteEmail.cshtml" />
     <Content Include="Views\Emails\SendUsersPrivateAdHocBunchInviteEmail.cshtml" />
     <Content Include="Views\Account\LostPassword.cshtml" />
+    <Content Include="Views\Emails\SendUserReset.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
