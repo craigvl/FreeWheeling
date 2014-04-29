@@ -12,9 +12,7 @@ using FreeWheeling.UI.Models;
 using FreeWheeling.UI.DataContexts;
 using System.Web.Security;
 using FreeWheeling.UI.Infrastructure;
-using WebMatrix.WebData;
 using Postal;
-
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -56,7 +54,7 @@ namespace FreeWheeling.UI.Controllers
                     if (foundUserName != "New User")
                     {
                         // Generae password token that will be used in the email link to authenticate user
-                        var token = WebSecurity.GeneratePasswordResetToken(foundUserName);
+                        var token = "Token here";
                         // Generate the html link sent via email
 
                         dynamic emailToUser = new Email("SendUserReset");
