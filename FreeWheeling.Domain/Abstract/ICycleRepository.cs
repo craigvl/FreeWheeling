@@ -72,7 +72,7 @@ namespace FreeWheeling.Domain.Abstract
 
         //Get Private
         List<Group> GetPrivateGroupsByUserID(string UserId, Location _Location);
-        List<Ad_HocRide> GetPrivateAdHocRideByUserID(string UserId, Location _Location);
+        List<Ad_HocRide> GetPrivateAdHocRideByUserID(string UserId, Location _Location, TimeZoneInfo TimeZone);
         
         //Add
         void AddMember(string UserId, Group _Group);

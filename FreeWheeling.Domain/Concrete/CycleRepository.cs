@@ -222,15 +222,17 @@ namespace FreeWheeling.Domain.Concrete
                 && g.Location.id == _Location.id).Distinct().ToList();
         }
 
-        public List<Ad_HocRide> GetPrivateAdHocRideByUserID(string UserId, Location _Location)
+        public List<Ad_HocRide> GetPrivateAdHocRideByUserID(string UserId, Location _Location, TimeZoneInfo TimeZone)
         {
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZone);
+            LocalNow = LocalNow.AddHours(-2);
             List<int> UsersPrivateRandomRides = context.PrivateRandomUsers.Where(u => u.UserId == UserId)
                 .Select(g => g.RideId)
                 .ToList();
             UsersPrivateRandomRides.AddRange(context.Ad_HocRide.Where(u => u.IsPrivate == true
                 && u.CreatedBy == UserId).Select(t => t.id).ToList());
             return context.Ad_HocRide.Where(g => UsersPrivateRandomRides.Contains(g.id) 
-                && g.Location.id == _Location.id).Distinct().ToList();
+                && g.Location.id == _Location.id && g.RideDate >= LocalNow).Distinct().ToList();
         }
 
         public List<Comment> GetTop2CommentsForRide(int Rideid)

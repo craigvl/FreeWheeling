@@ -100,7 +100,7 @@ namespace FreeWheeling.UI.Controllers
             _AdHocRidesModel._Ad_HocRide = repository.GetAdHocRides(repository.GetLocations()
                 .Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone).OrderBy(c => c.RideDate).ToList();
             _AdHocRidesModel.PrivateRandomBunches = repository.GetPrivateAdHocRideByUserID(currentUser.Id,
-                _Location);
+                _Location, TZone);
             return View(_AdHocRidesModel);
         }
 
