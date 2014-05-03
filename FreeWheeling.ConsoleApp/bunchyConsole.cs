@@ -61,8 +61,6 @@ namespace FreeWheeling.ConsoleApp
                 foreach (ListOfRides item in _ListOfRides)
                 {
                     _HomePageRide.Add(new HomePageRide{ Rideid = item.RideId, Userid = item.userId});
-
-                   // Console.WriteLine(item.RideId + ", " + item.RideDate + ", " + item.userId);                 
                 }
 
                 _CycleRepository.PopulateUserHomePageRides(_HomePageRide);

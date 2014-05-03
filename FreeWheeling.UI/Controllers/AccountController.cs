@@ -19,6 +19,8 @@ namespace FreeWheeling.UI.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+
+        private IdentityDb idb = new IdentityDb(); 
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new IdentityDb())))
         {
@@ -100,6 +102,11 @@ namespace FreeWheeling.UI.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if (Request.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }

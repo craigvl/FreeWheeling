@@ -82,6 +82,16 @@ namespace FreeWheeling.UI.Models
 
             foreach (Group item in _GroupModel._Groups)
             {
+                int RideCount = item.Rides.Count();
+
+                //If Ride count does not equal rides greater than now then there are old ride so 
+                //call delete rides and populate new from latest ride date, note this should have been done by console app
+                if (item.Rides.Where(t => t.RideDate >= LocalNow).Count() != RideCount) 
+                {
+                    repository.DeleteOldRides(item.id,TZone);
+                    repository.PopulateRideDatesFromDate(item,item.Rides.OrderByDescending(g => g.RideDate).Select(h => h.RideDate).FirstOrDefault(), TZone);
+                }
+
                 item.Rides = item.Rides.Where(t => t.RideDate >= LocalNow).ToList();
                 Ride NextRide = repository.GetClosestNextRide(item, TZone);
 
