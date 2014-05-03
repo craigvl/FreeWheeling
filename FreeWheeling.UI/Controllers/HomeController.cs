@@ -44,7 +44,7 @@ namespace FreeWheeling.UI.Controllers
             HomeIndexModel _HomeIndexModel = new HomeIndexModel();
             _HomeIndexModel.Locations = repository.GetLocations().ToList();
             Member _CurrentMember = repository.GetMemberByUserID(currentUser.Id);
-
+            
             if (currentUser.LocationID != null)
             {
                     //Check that user ID is a current location ID
