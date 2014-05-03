@@ -28,16 +28,7 @@
 }
 <p></p>
 
-@if (@Model.FromFavPage)
-{
-
-    @Html.ActionLink("Back <---", "Mybunches", "Group", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
-
-}
-else
-{
     @Html.ActionLink("Back <---", "Index", "Group", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
-}
 
 <hr />
 
@@ -157,8 +148,7 @@ else
         new
         {
             RideId = @Model.Ride.id,
-            Groupid = @Model.Group.id,
-            FromFavPage = @Model.FromFavPage
+            Groupid = @Model.Group.id
         },
         new { @class = "btn btn-success", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @Model.Ride.id.ToString()) })
                     <span id="@("CommentCountSpan" + @Model.Ride.id)">
@@ -190,7 +180,6 @@ else
                 {
                     groupid = @Model.Group.id,
                     rideid = @Model.Ride.id,
-                    FromFavPage = @Model.FromFavPage,
                     ParentRideID = @Model.Ride.id
                 }, new AjaxOptions
         {
@@ -213,7 +202,7 @@ else
             <h4><span class="label label-success">You in?</span></h4>
 
             @Ajax.ActionLink("I'm In!", "Attend",
-            new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id },
+            new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Group.id, ParentRideID = @Model.Ride.id },
                  new AjaxOptions
                  {
                      HttpMethod = "POST",
@@ -228,7 +217,7 @@ else
                  })
 
             @Ajax.ActionLink("I'm Out!", "Attend",
-            new { RideId = @Model.Ride.id, commitment = "Out", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id },
+            new { RideId = @Model.Ride.id, commitment = "Out", Groupid = @Model.Group.id, ParentRideID = @Model.Ride.id },
                  new AjaxOptions
                  {
                      HttpMethod = "POST",
@@ -243,7 +232,7 @@ else
                       })
 
             @Ajax.ActionLink("On My Way!", "Attend",
-                 new { RideId = @Model.Ride.id, commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id },
+                 new { RideId = @Model.Ride.id, commitment = "OnWay", Groupid = @Model.Group.id, ParentRideID = @Model.Ride.id },
                  new AjaxOptions
                  {
                      HttpMethod = "POST",
@@ -414,7 +403,7 @@ else
         }
     </div>
         @Html.ActionLink(string.Concat("See all Comments (", @Model.NextCommentCount, ")"), "SeeAllComments", "Ride",
-                       new { RideId = @Model.NextRide.id, Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, PreviousID = @Model.Ride.id},
+                       new { RideId = @Model.NextRide.id, Groupid = @Model.Group.id, PreviousID = @Model.Ride.id},
                           new { @class = "btn btn-success", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @Model.NextRide.id.ToString()) })
 
     }
@@ -427,7 +416,6 @@ else
                 {
                     groupid = @Model.Group.id,
                     rideid = @Model.NextRide.id,
-                    FromFavPage = @Model.FromFavPage,
                     ParentRideID = @Model.Ride.id
                 }, new AjaxOptions
         {
@@ -450,7 +438,7 @@ else
 <h4><span class="label label-success">You in?</span></h4>
 
 @Ajax.ActionLink("I'm In!", "Attend",
-            new { RideId = @Model.NextRide.id, commitment = "In", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id },
+            new { RideId = @Model.NextRide.id, commitment = "In", Groupid = @Model.Group.id, ParentRideID = @Model.Ride.id },
                  new AjaxOptions
                  {
                      HttpMethod = "POST",
@@ -465,7 +453,7 @@ else
                  })
 
 @Ajax.ActionLink("I'm Out!", "Attend",
-            new { RideId = @Model.NextRide.id, commitment = "Out", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id },
+            new { RideId = @Model.NextRide.id, commitment = "Out", Groupid = @Model.Group.id, ParentRideID = @Model.Ride.id },
                  new AjaxOptions
                  {
                      HttpMethod = "POST",
@@ -480,7 +468,7 @@ else
                       })
 
 @Ajax.ActionLink("On My Way!", "Attend",
-                 new { RideId = @Model.NextRide.id, commitment = "OnWay", Groupid = @Model.Group.id, FromFavPage = @Model.FromFavPage, ParentRideID = @Model.Ride.id },
+                 new { RideId = @Model.NextRide.id, commitment = "OnWay", Groupid = @Model.Group.id, ParentRideID = @Model.Ride.id },
                  new AjaxOptions
                  {
                      HttpMethod = "POST",

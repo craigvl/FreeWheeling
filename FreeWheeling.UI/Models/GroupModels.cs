@@ -23,7 +23,6 @@ namespace FreeWheeling.UI.Models
         public string title;
         public List<int> _OwnerGroupList;
         public List<Group> PrivateBunches { get; set; }
-        public bool OnFavPage;
     }
 
     public class GroupModelHelper
@@ -36,38 +35,19 @@ namespace FreeWheeling.UI.Models
             repository = repoParam;
         }
 
-        public GroupModel PopulateGroupModel(string UserId, Location _Location, string searchString, string Email,
-            Boolean FavouritePage = false)
+        public GroupModel PopulateGroupModel(string UserId, Location _Location, string searchString, string Email)
         {
             GroupModel _GroupModel = new GroupModel();
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                if (!FavouritePage)
-                {
                     _GroupModel._Groups = repository.GetGroupsByLocationWithSearch(_Location.id, searchString).ToList();
                     _GroupModel.title = "All bunches";
-                }
-                else
-                {
-                    _GroupModel._Groups = repository.GetFavouriteGroupsByLocationWithSearch(_Location.id, searchString, UserId).ToList();
-                    _GroupModel.OnFavPage = true;
-                    _GroupModel.title = "Favourite bunches";
-                }
-            }
+                           }
             else
             {
-                if (!FavouritePage)
-                {
                     _GroupModel._Groups = repository.GetGroupsByLocation(_Location.id).ToList();
                     _GroupModel.title = "All bunches";
-                }
-                else
-                {
-                    _GroupModel._Groups = repository.GetFavouriteGroupsByLocation(_Location.id, UserId).ToList();
-                    _GroupModel.OnFavPage = true;
-                    _GroupModel.title = "Favourite bunches";
-                }
             }
 
             _GroupModel.PrivateBunches = repository.GetPrivateGroupsByUserID(UserId,

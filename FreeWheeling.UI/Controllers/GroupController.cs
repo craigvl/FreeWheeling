@@ -404,14 +404,7 @@ namespace FreeWheeling.UI.Controllers
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
             repository.RemoveMember(currentUser.Id, group);
             repository.Save();
-
-            if(title == "Favourite bunches")
-            {
-                return RedirectToAction("Mybunches", "Group");
-            }
-            else{
-                return RedirectToAction("Index", "Group");
-            }
+            return RedirectToAction("Index", "Group");
         }
 
         //// This is to add group to fav list
@@ -423,16 +416,6 @@ namespace FreeWheeling.UI.Controllers
             repository.AddMember(currentUser.Id, group);
             repository.Save();
             return RedirectToAction("Index", "Group");
-        }
-
-        public ViewResult Mybunches(string searchString)
-        {
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
-            GroupModel _GroupModel = new GroupModel();
-            GroupModelHelper _GroupHelper = new GroupModelHelper(repository);
-            _GroupModel = _GroupHelper.PopulateGroupModel(currentUser.Id, _Location, currentUser.Email, searchString, true);
-            return View("Index",_GroupModel);
         }
 
         public ActionResult InviteOthersToPrivateBunch(int GroupId)

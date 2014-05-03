@@ -10,7 +10,7 @@
     {
         <table class="table content-box">
             <tr>
-                <th><span style="position: relative; top: -3px;"><a href="Ride/ViewSingleRide?RideId=@Model.HomePageRide.id&FromFavPage=False">Your next bunch</a></span></th>
+                <th><span style="position: relative; top: -3px;"><a href="Ride/ViewSingleRide?RideId=@Model.HomePageRide.id">Your next bunch</a></span></th>
             </tr>
             <tr>
                 <td>
@@ -38,7 +38,7 @@
             @foreach (Group bunch in Model.FavouriteBunches)
             {
                 <tr>
-                    <td><a href="/Ride?groupid=@bunch.id&FromFavPage=True"><div>@bunch.name<div class=" pull-right glyphicon glyphicon-zoom-in"></div></div></a></td>
+                    <td><a href="/Ride?groupid=@bunch.id"><div>@bunch.name<div class=" pull-right glyphicon glyphicon-zoom-in"></div></div></a></td>
                 </tr>
             }
 

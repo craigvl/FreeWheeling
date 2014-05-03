@@ -28,7 +28,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [Compress]
-        public ActionResult Index(int groupid = -1, int rideid = -1, int InviteId = -1, bool FromFavPage = false)
+        public ActionResult Index(int groupid = -1, int rideid = -1, int InviteId = -1)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             if (InviteId != -1)
@@ -54,7 +54,7 @@ namespace FreeWheeling.UI.Controllers
             var t = Request.QueryString["groupId"];
             if (groupid != -1 || rideid != -1)
             {
-                RideModel = _RideHelper.PopulateRideModel(rideid, groupid, currentUser.Id, true, FromFavPage);
+                RideModel = _RideHelper.PopulateRideModel(rideid, groupid, currentUser.Id, true);
             }
             else
             {
@@ -517,7 +517,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddComment(int groupid, int rideid, string CommentString, bool FromFavPage, int ParentRideID)
+        public JsonResult AddComment(int groupid, int rideid, string CommentString, int ParentRideID)
         {          
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
@@ -527,7 +527,7 @@ namespace FreeWheeling.UI.Controllers
                 repository.Save();
                 RideModelIndex RideModel = new RideModelIndex();
                 RideModelHelper _RideHelper = new RideModelHelper(repository);
-                RideModel = _RideHelper.PopulateRideModel(ParentRideID, groupid, currentUser.Id, false, FromFavPage);
+                RideModel = _RideHelper.PopulateRideModel(ParentRideID, groupid, currentUser.Id, false);
                 int commentCount = repository.GetCommentCountForRide(rideid);
 
                 Task E = new Task(() =>
@@ -573,7 +573,7 @@ namespace FreeWheeling.UI.Controllers
             }
         }
 
-        public JsonResult Attend(int RideId, string Commitment, int Groupid, bool FromFavPage, int ParentRideID)
+        public JsonResult Attend(int RideId, string Commitment, int Groupid, int ParentRideID)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Ride _Ride = new Ride();
@@ -590,7 +590,7 @@ namespace FreeWheeling.UI.Controllers
             repository.Save();
             RideModelIndex RideModel = new RideModelIndex();
             RideModelHelper _RideHelper = new RideModelHelper(repository);
-            RideModel = _RideHelper.PopulateRideModel(ParentRideID, Groupid, currentUser.Id, false, FromFavPage);
+            RideModel = _RideHelper.PopulateRideModel(ParentRideID, Groupid, currentUser.Id, false);
             string KeenCount = repository.GetKeenCountForRide(RideId).ToString();
             
             Task E = new Task(() =>
@@ -631,7 +631,7 @@ namespace FreeWheeling.UI.Controllers
                 }, JsonRequestBehavior.AllowGet);  
         }
 
-        public JsonResult AttendSingleRide(int RideId, string Commitment, int Groupid, bool FromFavPage, int ParentRideID)
+        public JsonResult AttendSingleRide(int RideId, string Commitment, int Groupid, int ParentRideID)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Ride _Ride = new Ride();
