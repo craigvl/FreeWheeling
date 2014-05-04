@@ -118,7 +118,7 @@ namespace FreeWheeling.UI.Controllers
                 var user = await UserManager.FindAsync(model.UserName, model.Password);
                 if (user != null)
                 {
-                    await SignInAsync(user, model.RememberMe);
+                    await SignInAsync(user, true);
 
                     //Create cookie if select remember me to expire in a year.
                     int timeout = model.RememberMe ? 525600 : 30; // Timeout in minutes, 525600 = 365 days.
@@ -169,7 +169,7 @@ namespace FreeWheeling.UI.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInAsync(user, isPersistent: false);
+                    await SignInAsync(user, isPersistent: true);
                     return RedirectToAction("Index", "Home", new { ReturnUrl = returnUrl });
                 }
                 else
@@ -293,7 +293,7 @@ namespace FreeWheeling.UI.Controllers
             var user = await UserManager.FindAsync(loginInfo.Login);
             if (user != null)
             {
-                await SignInAsync(user, isPersistent: false);
+                await SignInAsync(user, isPersistent: true);
                 return RedirectToLocal(returnUrl);
             }
             else
@@ -364,7 +364,7 @@ namespace FreeWheeling.UI.Controllers
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
-                        await SignInAsync(user, isPersistent: false);
+                        await SignInAsync(user, isPersistent: true);
                         return RedirectToLocal(returnUrl);
                     }
                 }
@@ -429,6 +429,7 @@ namespace FreeWheeling.UI.Controllers
 
         private async Task SignInAsync(ApplicationUser user, bool isPersistent)
         {
+            isPersistent = true;
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
             var identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
             AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
