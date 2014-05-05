@@ -102,6 +102,10 @@ namespace FreeWheeling.UI.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if (returnUrl == null)
+            {
+                returnUrl = "/Home/Index/";
+            }
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -382,7 +386,7 @@ namespace FreeWheeling.UI.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
-            return RedirectToAction("Index", "Home", new {returnUrl = string.Empty });
+            return RedirectToAction("Login", "Account", new {returnUrl = "/Home/Index" });
         }
 
         //

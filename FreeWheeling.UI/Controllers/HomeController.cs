@@ -43,8 +43,15 @@ namespace FreeWheeling.UI.Controllers
             CultureHelper _CultureHelper = new CultureHelper(repository);           
             HomeIndexModel _HomeIndexModel = new HomeIndexModel();
             _HomeIndexModel.Locations = repository.GetLocations().ToList();
-            Member _CurrentMember = repository.GetMemberByUserID(currentUser.Id);
-            
+            if (currentUser != null)
+            {
+                Member _CurrentMember = repository.GetMemberByUserID(currentUser.Id);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+                       
             if (currentUser.LocationID != null)
             {
                     //Check that user ID is a current location ID
