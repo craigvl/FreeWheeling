@@ -43,6 +43,14 @@ namespace FreeWheeling.UI.Controllers
             RideModelIndex RideModel = new RideModelIndex();
             Group _Group = repository.GetGroupByID(groupid);
 
+            if (_Group == null)
+            {
+                GroupModel GroupModel = new GroupModel();
+                GroupModel._Groups = repository.GetGroups().ToList();
+                GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
+                return RedirectToAction("index", "group", GroupModel);
+            }
+
             //Just in case location ID has not been set, set to same as ride.
             if (currentUser.LocationID == null)
             {
