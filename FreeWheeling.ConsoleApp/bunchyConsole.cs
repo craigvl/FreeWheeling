@@ -28,7 +28,7 @@ namespace FreeWheeling.ConsoleApp
           List<ListOfRides> _ListOfRides = new List<ListOfRides>();
           CultureHelper _CultureHelper = new CultureHelper(_CycleRepository);
 
-          foreach (Member item in _CycleRepository.GetMembersWithGroups().ToList())
+          foreach (Member item in _CycleRepository.GetMembersWithGroupsIncludePrivate().ToList())
                 {
                     Group _Group = _CycleRepository.GetGroupByID(item.Group.id);
                     Location _Location = _CycleRepository.GetLocations().Where(l => l.id == _Group.Location.id).FirstOrDefault();

@@ -62,6 +62,7 @@ namespace FreeWheeling.Domain.Abstract
 
         //Get .. Members
         IEnumerable<Member> GetMembersWithGroups();
+        IEnumerable<Member> GetMembersWithGroupsIncludePrivate();
         Member GetMemberByUserID(string id);
         
         //Get .. UserExpand

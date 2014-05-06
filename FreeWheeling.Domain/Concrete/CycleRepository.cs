@@ -101,6 +101,11 @@ namespace FreeWheeling.Domain.Concrete
             return context.Members.Include("Group").Where(g => g.Group.IsPrivate == false);
         }
 
+        public IEnumerable<Member> GetMembersWithGroupsIncludePrivate()
+        {
+            return context.Members.Include("Group");
+        }
+
         public Group GetGroupByID(int id)
         {
             Group group = context.Groups
