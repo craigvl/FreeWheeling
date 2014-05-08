@@ -1,0 +1,49 @@
+﻿@model FreeWheeling.UI.Models.RideModelIndex
+<h4><span class="label label-success">You in?</span></h4>
+
+@Ajax.ActionLink("I'm In!", "Attend",
+            new { RideId = @Model.NextRide.id, commitment = "In", Groupid = @Model.Group.id, ParentRideID = @Model.Ride.id },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "KeenCompleteNext",
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "btn btn-primary",
+                     onclick = "ShowProgress();",
+                     @id = "InNext"
+                 })
+
+@Ajax.ActionLink("I'm Out!", "Attend",
+            new { RideId = @Model.NextRide.id, commitment = "Out", Groupid = @Model.Group.id, ParentRideID = @Model.Ride.id },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "KeenCompleteNext",
+                     OnBegin = "ShowProgress"
+                 },
+                      new
+                      {
+                          @class = "btn btn-danger",
+                          onclick = "ShowProgress();",
+                          @id = "OutNext"
+                      })
+
+@Ajax.ActionLink("On My Way!", "Attend",
+                 new { RideId = @Model.NextRide.id, commitment = "OnWay", Groupid = @Model.Group.id, ParentRideID = @Model.Ride.id },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "KeenCompleteNext",
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "btn btn-success",
+                     onclick = "ShowProgress();",
+                     @id = "OnWayNext"
+                 })
+
+<p></p>

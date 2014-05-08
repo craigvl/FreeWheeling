@@ -374,6 +374,7 @@
     <None Include="Properties\PublishProfiles\bunchy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\custom.js" />
+    <Content Include="Scripts\DoubleBunchRide.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-dateFormat.js" />
@@ -555,6 +556,12 @@
     <Content Include="Views\Emails\SendUsersPrivateAdHocBunchInviteEmail.cshtml" />
     <Content Include="Views\Account\LostPassword.cshtml" />
     <Content Include="Views\Emails\SendUserReset.cshtml" />
+    <Content Include="Views\Ride\_RidersKeen.cshtml" />
+    <Content Include="Views\Ride\_FirstComments.cshtml" />
+    <Content Include="Views\Ride\_KeenActionFirst.cshtml" />
+    <Content Include="Views\Ride\_RidersKeenSecond.cshtml" />
+    <Content Include="Views\Ride\_SecondComments.cshtml" />
+    <Content Include="Views\Ride\_KeenActionSecond.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

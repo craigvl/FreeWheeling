@@ -1,0 +1,49 @@
+﻿@model FreeWheeling.UI.Models.RideModelIndex
+@using FreeWheeling.Domain.Entities; 
+
+<h4>
+    <a id="CommentCount" class="@Model.FirstCommentChevronClass" data-toggle="collapse" href="#collapseCommentFirst"></a>
+    <a class="label label-success" data-toggle="collapse" href="#collapseCommentFirst">Comments</a>
+    <a id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</a>
+
+    @Html.ActionLink(string.Concat("View all (", @Model.CommentCount, ")"), "SeeAllComments", "Ride",
+        new
+        {
+            RideId = @Model.Ride.id,
+            Groupid = @Model.Group.id
+        },
+        new { @class = "btn btn-success", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @Model.Ride.id.ToString()) })
+    <span id="@("CommentCountSpan" + @Model.Ride.id)"></span>
+</h4>
+<div id="collapseCommentFirst" class="@Model.FirstCommentPanelClass">
+    <div id="@("collapseCommentPanel" + @Model.Ride.id)">
+        @foreach (Comment item in Model.Comments)
+        {
+        @item.userName <text>: </text>
+        @item.CommentText
+        @:<p></p>
+        }
+</div>
+</div>
+<div>
+    @using (Ajax.BeginForm("AddComment", "Ride", new
+                {
+                    groupid = @Model.Group.id,
+                    rideid = @Model.Ride.id,
+                    ParentRideID = @Model.Ride.id
+                }, new AjaxOptions
+        {
+            HttpMethod = "Post",
+            OnSuccess = "CommentComplete",
+            OnBegin = "ShowProgress"
+        }))
+    {
+        <div class="input-group">
+            @Html.TextBox("CommentString", null, new { @class = "form-control-C", id = "CommentStringFirst" })
+            <span class="input-group-addon-C">
+                <button class="btn btn-success" id="@("submit_First")" type="submit">Add comment</button>
+            </span>
+        </div>
+    }
+
+</div>

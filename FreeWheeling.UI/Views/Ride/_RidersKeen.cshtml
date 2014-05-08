@@ -1,0 +1,28 @@
+﻿@using FreeWheeling.Domain.Entities; 
+@foreach (Rider item in @Model.Riders)
+        {
+            {
+                switch (item.PercentKeen)
+                {
+                    case "Out":
+<text>
+    <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" style="text-decoration:line-through;" class="label label-danger">@item.Name is Out</span></p>
+
+</text>
+                            break;  // Always break each case
+                        case "OnWay":
+<text>
+    <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
+
+</text>
+                            break;  // Always break each case
+                        case "In":
+<text>
+    <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" class="label label-success">@item.Name is in!</span></p>
+</text>
+                            break;
+                    }
+                }
+
+<p></p>
+            }

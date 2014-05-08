@@ -128,12 +128,76 @@ namespace FreeWheeling.UI.Models
             
             if (_UserExpands != null)
             {
-                RideModel.FirstKeen = _UserExpands.FirstKeen;
                 RideModel.FirstBunch = _UserExpands.FirstBunch;
+                if (RideModel.FirstBunch)
+                {
+                    RideModel.FirstBunchChevronClass = "glyphicon glyphicon-chevron-down";
+                    RideModel.FirstBunchPanelClass = "panel-collapse collapse in";
+                }
+                else
+                {
+                    RideModel.FirstBunchChevronClass = "glyphicon glyphicon-chevron-up";
+                    RideModel.FirstBunchPanelClass = "panel-collapse collapse";
+                }
+               
+                RideModel.FirstKeen = _UserExpands.FirstKeen;
+                if (RideModel.FirstKeen)
+                {
+                    RideModel.FirstKeenChevronClass = "glyphicon glyphicon-chevron-down";
+                    RideModel.FirstKeenPanelClass = "panel-collapse collapse in";
+                }
+                else
+                {
+                    RideModel.FirstKeenChevronClass = "glyphicon glyphicon-chevron-up";
+                    RideModel.FirstKeenPanelClass = "panel-collapse collapse";
+                }
+
                 RideModel.FirstComment = _UserExpands.FirstComment;
+                if (RideModel.FirstComment)
+                {
+                    RideModel.FirstCommentChevronClass = "glyphicon glyphicon-chevron-down";
+                    RideModel.FirstCommentPanelClass = "panel-collapse collapse in";
+                }
+                else
+                {
+                    RideModel.FirstCommentChevronClass = "glyphicon glyphicon-chevron-up";
+                    RideModel.FirstCommentPanelClass = "panel-collapse collapse";
+                }
+
                 RideModel.SecondBunch = _UserExpands.SecondBunch;
+                if (RideModel.SecondBunch)
+                {
+                    RideModel.SecondBunchChevronClass = "glyphicon glyphicon-chevron-down";
+                    RideModel.SecondBunchPanelClass = "panel-collapse collapse in";
+                }
+                else
+                {
+                    RideModel.SecondBunchChevronClass = "glyphicon glyphicon-chevron-up";
+                    RideModel.SecondBunchPanelClass = "panel-collapse collapse";
+                }
                 RideModel.SecondKeen = _UserExpands.SecondKeen;
+                if (RideModel.SecondKeen)
+                {
+                    RideModel.SecondKeenChevronClass = "glyphicon glyphicon-chevron-down";
+                    RideModel.SecondKeenPanelClass = "panel-collapse collapse in";
+                }
+                else
+                {
+                    RideModel.SecondKeenChevronClass = "glyphicon glyphicon-chevron-up";
+                    RideModel.SecondKeenPanelClass = "panel-collapse collapse";
+                }
+
                 RideModel.SecondComment = _UserExpands.SecondComment;
+                if (RideModel.SecondComment)
+                {
+                    RideModel.SecondCommentChevronClass = "glyphicon glyphicon-chevron-down";
+                    RideModel.SecondCommentPanelClass = "panel-collapse collapse in";
+                }
+                else
+                {
+                    RideModel.SecondCommentChevronClass = "glyphicon glyphicon-chevron-up";
+                    RideModel.SecondCommentPanelClass = "panel-collapse collapse";
+                }
             }
 
             if (RideModel.Group.MapUrl != null)
@@ -163,11 +227,23 @@ namespace FreeWheeling.UI.Models
 
         //Expand items
         public Boolean FirstBunch { get; set; }
+        public String  FirstBunchChevronClass { get; set; }
+        public String  FirstBunchPanelClass { get; set; }
         public Boolean FirstKeen { get; set; }
+        public String  FirstKeenChevronClass { get; set; }
+        public String  FirstKeenPanelClass { get; set; }
         public Boolean FirstComment { get; set; }
+        public String  FirstCommentChevronClass { get; set; }
+        public String  FirstCommentPanelClass { get; set; }
         public Boolean SecondBunch { get; set; }
+        public String  SecondBunchChevronClass { get; set; }
+        public String  SecondBunchPanelClass { get; set; }
         public Boolean SecondKeen { get; set; }
+        public String  SecondKeenChevronClass { get; set; }
+        public String  SecondKeenPanelClass { get; set; }
         public Boolean SecondComment { get; set; }
+        public String  SecondCommentChevronClass { get; set; }
+        public String  SecondCommentPanelClass { get; set; }
 
         //Next ride
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
