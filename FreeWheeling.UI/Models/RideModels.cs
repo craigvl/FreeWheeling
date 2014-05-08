@@ -74,6 +74,12 @@ namespace FreeWheeling.UI.Models
 
         public RideModelIndex PopulateRideModel(int RideId, int GroupId, string UserId, bool NeedPreviousRide)
         {
+            string ChevronClassDown = "glyphicon glyphicon-chevron-down";
+            string ChevronClassUp = "glyphicon glyphicon-chevron-up";
+
+            string PanelClassDown = "panel-collapse collapse in";
+            string PanelClassUp = "panel-collapse collapse";
+
             Ride _Ride = new Ride();
             Group _Group = new Group();
             _Group = repository.GetGroupByID(GroupId);
@@ -131,72 +137,72 @@ namespace FreeWheeling.UI.Models
                 RideModel.FirstBunch = _UserExpands.FirstBunch;
                 if (RideModel.FirstBunch)
                 {
-                    RideModel.FirstBunchChevronClass = "glyphicon glyphicon-chevron-down";
-                    RideModel.FirstBunchPanelClass = "panel-collapse collapse in";
+                    RideModel.FirstBunchChevronClass = ChevronClassDown;
+                    RideModel.FirstBunchPanelClass = PanelClassDown;
                 }
                 else
                 {
-                    RideModel.FirstBunchChevronClass = "glyphicon glyphicon-chevron-up";
-                    RideModel.FirstBunchPanelClass = "panel-collapse collapse";
+                    RideModel.FirstBunchChevronClass = ChevronClassUp;
+                    RideModel.FirstBunchPanelClass = PanelClassUp;
                 }
                
                 RideModel.FirstKeen = _UserExpands.FirstKeen;
                 if (RideModel.FirstKeen)
                 {
-                    RideModel.FirstKeenChevronClass = "glyphicon glyphicon-chevron-down";
-                    RideModel.FirstKeenPanelClass = "panel-collapse collapse in";
+                    RideModel.FirstKeenChevronClass = ChevronClassDown;
+                    RideModel.FirstKeenPanelClass = PanelClassDown;
                 }
                 else
                 {
-                    RideModel.FirstKeenChevronClass = "glyphicon glyphicon-chevron-up";
-                    RideModel.FirstKeenPanelClass = "panel-collapse collapse";
+                    RideModel.FirstKeenChevronClass = ChevronClassUp;
+                    RideModel.FirstKeenPanelClass = PanelClassUp;
                 }
 
                 RideModel.FirstComment = _UserExpands.FirstComment;
                 if (RideModel.FirstComment)
                 {
-                    RideModel.FirstCommentChevronClass = "glyphicon glyphicon-chevron-down";
-                    RideModel.FirstCommentPanelClass = "panel-collapse collapse in";
+                    RideModel.FirstCommentChevronClass = ChevronClassDown;
+                    RideModel.FirstCommentPanelClass = PanelClassDown;
                 }
                 else
                 {
-                    RideModel.FirstCommentChevronClass = "glyphicon glyphicon-chevron-up";
-                    RideModel.FirstCommentPanelClass = "panel-collapse collapse";
+                    RideModel.FirstCommentChevronClass = ChevronClassUp;
+                    RideModel.FirstCommentPanelClass = PanelClassUp;
                 }
 
                 RideModel.SecondBunch = _UserExpands.SecondBunch;
                 if (RideModel.SecondBunch)
                 {
-                    RideModel.SecondBunchChevronClass = "glyphicon glyphicon-chevron-down";
-                    RideModel.SecondBunchPanelClass = "panel-collapse collapse in";
+                    RideModel.SecondBunchChevronClass = ChevronClassDown;
+                    RideModel.SecondBunchPanelClass = PanelClassDown;
                 }
                 else
                 {
-                    RideModel.SecondBunchChevronClass = "glyphicon glyphicon-chevron-up";
-                    RideModel.SecondBunchPanelClass = "panel-collapse collapse";
+                    RideModel.SecondBunchChevronClass = ChevronClassUp;
+                    RideModel.SecondBunchPanelClass = PanelClassUp;
                 }
                 RideModel.SecondKeen = _UserExpands.SecondKeen;
                 if (RideModel.SecondKeen)
                 {
-                    RideModel.SecondKeenChevronClass = "glyphicon glyphicon-chevron-down";
-                    RideModel.SecondKeenPanelClass = "panel-collapse collapse in";
+                    RideModel.SecondKeenChevronClass = ChevronClassDown;
+                    RideModel.SecondKeenPanelClass = PanelClassDown;
                 }
                 else
                 {
-                    RideModel.SecondKeenChevronClass = "glyphicon glyphicon-chevron-up";
-                    RideModel.SecondKeenPanelClass = "panel-collapse collapse";
+                    RideModel.SecondKeenChevronClass = ChevronClassUp;
+                    RideModel.SecondKeenPanelClass = PanelClassUp;
                 }
 
                 RideModel.SecondComment = _UserExpands.SecondComment;
                 if (RideModel.SecondComment)
                 {
-                    RideModel.SecondCommentChevronClass = "glyphicon glyphicon-chevron-down";
-                    RideModel.SecondCommentPanelClass = "panel-collapse collapse in";
+                    RideModel.SecondCommentChevronClass = ChevronClassDown;
+                    RideModel.SecondCommentPanelClass = PanelClassDown;
                 }
                 else
                 {
-                    RideModel.SecondCommentChevronClass = "glyphicon glyphicon-chevron-up";
-                    RideModel.SecondCommentPanelClass = "panel-collapse collapse";
+                    RideModel.SecondCommentChevronClass = ChevronClassUp;
+                    RideModel.SecondCommentPanelClass = PanelClassUp;
                 }
             }
 

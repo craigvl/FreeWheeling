@@ -27,7 +27,6 @@ function KeenCompleteFirst(data) {
     if (data.message == 'In') {
         $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
         var keenuser = "#keen_" + data.username + data.rideid;
-        alert(keenuser);
         if ($("#keen_" + data.username + data.rideid).length) {
             $(keenuser).html(data.username + " is in!");
             $(keenuser).attr('class', 'label label-success');
