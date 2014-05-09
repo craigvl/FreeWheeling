@@ -33,14 +33,8 @@
         @Html.ValidationMessageFor(model => model.LocationsId)
         <p></p>
     </div>
-    <span id="show" class="btn btn-default">Set Days</span>
-    <select name="Category" id="DaysOfWeek" multiple>
-        @for (int i = 0; i < Model.DaysOfWeek.Count; i++)
-        {
-            <option value="@Model.DaysOfWeek[i].Name">@Model.DaysOfWeek[i].Name</option>
-        }
-    </select>
-        <div class="hidden">
+    <div>   Days Of Week</div>
+        <div>
             @for (int i = 0; i < Model.DaysOfWeek.Count; i++)
             {
                 <div>
@@ -103,16 +97,7 @@
 
     @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/mobiscroll-2.10.1.full.min.js"></script>
-<script src="~/Scripts/mobiscroll.scroller-2.10.1.js"></script>
-<script src="~/Scripts/mobiscroll.scroller.android-2.10.1.js"></script>
-<script src="~/Scripts/mobiscroll.scroller.ios-2.10.1.js"></script>
-<script src="~/Scripts/mobiscroll.scroller.android-ics-2.10.1.js"></script>
-<script src="~/Scripts/mobiscroll.scroller.ios7-2.10.1.js"></script>
-<script src="~/Scripts/mobiscroll.scroller.jqm-2.10.1.js"></script>
-<script src="~/Scripts/mobiscroll.scroller.wp-2.10.1.js"></script>
-<script src="~/Scripts/mobiscroll.select-2.10.1.js"></script>
-<script src="~/Scripts/mobiscroll.datetime-2.10.1.js"></script>
+
 <script type="text/javascript">
     jQuery(document).ready(function () {
         HideProgress();
@@ -127,44 +112,6 @@
 
         }
     });
-    $(function () {
-        $("#scroller").mobiscroll({ preset: 'time', theme: 'bootstrap', showLabel: false, display: 'bottom' });
-        $('#DaysOfWeek').mobiscroll().select({
-                theme: 'bootstrap',
-                display: 'bottom',
-                showLabel: false,
-                rows: 7, 
-                mode: 'scroller',
-                onSelect: function (valueText, inst) {
-                    var test = $('#DaysOfWeek').mobiscroll('getValues');
-                    $('[id *= "DaysOfWeek"][type=checkbox]').attr('checked', false);
-                    for (var i = 0; i < test.length; i++){
-                        var checkBoxes = $('input[value=' + test[i] + ']').siblings('input[type=checkbox]');
-                        checkBoxes.attr('checked', true);
-                    }
-                    
-                }
-            });
-
-            $('#show').click(function () {
-                $('#DaysOfWeek').mobiscroll('show');
-                return false;
-            });
-
-            $('#clear').click(function () {
-                $('#DaysOfWeek').val([]).change();
-                return false;
-            });
-
-    });
+   
 </script>
-<link href="~/Content/mobiscroll.scroller-2.10.1.css" rel="stylesheet" />
-<link href="~/Content/mobiscroll.scroller.android-2.10.1.css" rel="stylesheet" />
-<link href="~/Content/mobiscroll.scroller.android-ics-2.10.1.css" rel="stylesheet" />
-<link href="~/Content/mobiscroll.scroller.ios-2.10.1.css" rel="stylesheet" />
-<link href="~/Content/mobiscroll.scroller.ios7-2.10.1.css" rel="stylesheet" />
-<link href="~/Content/mobiscroll.scroller.jqm-2.10.1.css" rel="stylesheet" />
-<link href="~/Content/mobiscroll.scroller.sense-ui-2.10.1.css" rel="stylesheet" />
-<link href="~/Content/mobiscroll.scroller.wp-2.10.1.css" rel="stylesheet" />
-<link href="~/Content/mobiscroll-2.10.1.full.min.css" rel="stylesheet" />
 }

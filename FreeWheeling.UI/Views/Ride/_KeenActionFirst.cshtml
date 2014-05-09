@@ -1,6 +1,4 @@
 ﻿@model FreeWheeling.UI.Models.RideModelIndex
-<h4><span class="label label-success">You in?</span></h4>
-
 @Ajax.ActionLink("I'm In!", "Attend",
             new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Group.id, ParentRideID = @Model.Ride.id },
                  new AjaxOptions
