@@ -24,8 +24,6 @@
 }
 <p></p>
 @Html.ActionLink("Back <---", "Index", "Group", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
-<hr />
-<p>
 <div class='panel-group'>
     <div class='panel panel-primary'>
         <div class="panel-heading ">
@@ -38,7 +36,7 @@
                 <div class='panel panel-warning'>
                     <div class="panel-heading ">
                         <a class="@Model.FirstKeenChevronClass" id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst"></a>
-                        <a id="KeenCount1" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success">Keen</a>
+                        <a data-toggle="collapse" href="#collapseKeenFirst" class="label label-success">Keen</a>
                         <a id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</a>
                     </div>
                     <div id="collapseKeenFirst" class="@Model.FirstKeenPanelClass">
@@ -52,7 +50,7 @@
                     </div>
                 </div>
                 <div class='panel panel-info'>
-                    <div class="panel-heading ">
+                    <div class="panel-heading" id="CommentCollapseArea">
                         <a id="CommentCount" class="@Model.FirstCommentChevronClass" data-toggle="collapse" href="#collapseCommentFirst"></a>
                         <a class="label label-success" data-toggle="collapse" href="#collapseCommentFirst">Comments</a>
                         <a id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</a>
@@ -72,108 +70,53 @@
     </div>
 </div> 
 
+@*-------------------------------------------------Start of Next Ride -------------------------------------------------------------*@
 
-        <div class='panel-group'>
-            <div class='panel panel-primary'>
-                <div class="panel-heading">
-                    <a class="@Model.FirstBunchChevronClass" id="FirstDetails" data-toggle="collapse" href="#collapseFirst"></a>
-                    <a class="label label-primary" data-toggle="collapse" href="#collapseFirst">
-                        @Model.Ride.RideDate.ToLongDateString() @Html.Raw(",") @Model.Ride.RideDate.ToShortTimeString()
-                    </a>
-                </div>
-                <div class="panel-body">
-                    <div>
-                        <!--First Div for First Ride-->
-
-                        <div class='panel-group'>
-                            <div class='panel panel-primary'>
-                                <div class="panel-heading">
-                                    <div id="collapseFirst" class="@Model.FirstBunchPanelClass">
-                                        <a class="@Model.FirstKeenChevronClass" id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst"></a>
-                                        <a id="KeenCount1" data-toggle="collapse" href="#collapseKeenFirst" class="label label-success">Keen</a>
-                                        <a id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</a>
-
-                                    </div>
-                                    <div class="panel-body">
-                                        <div id="collapseKeenFirst" class="@Model.FirstKeenPanelClass">
-                                            <div id="@("keendiv_" + @Model.Ride.id)">
-                                                @Html.Partial("_RidersKeen")
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div id="CommentCollapseArea">
-                                    @if (@Model.Comments != null)
-                                    {
-                                        @Html.Partial("_FirstComments")
-                                    }
-                                </div>
-                                <hr />
-                                @Html.Partial("_KeenActionFirst")
-                                <div id="Invite_Users_First">
-
-                                    @Html.ActionLink("Invite Users", "InviteOthersToBunch", "Ride",
-        new
-        {
-            RideId = @Model.Ride.id
-        },
-        new { @class = "btn btn-success", onclick = "ShowProgress();", id = "InviteFirst" })
-
-                                </div>
-                            </div>
-                        </div>
-                    </div> @*div for end of first collapse*@
-                </div>
-            </div>
-        </div>
-        @*-------------------------------------------------Start of Next Ride -------------------------------------------------------------*@
-
-        <hr />
-
-<p>
-    <div>
-        <!--First Div for Second Ride-->
-        <h4>
+<div class='panel-group'>
+    <div class='panel panel-primary'>
+        <div class="panel-heading ">
             <a class="@Model.SecondBunchChevronClass" id="SecondDetails" data-toggle="collapse" href="#collapseSecond"></a>
             <a class="label label-primary" data-toggle="collapse" href="#collapseSecond">
                 @Model.NextRide.RideDate.ToLongDateString() @Html.Raw(",") @Model.NextRide.RideDate.ToShortTimeString()
             </a>
-        </h4>
-        <hr />
+        </div>
         <div id="collapseSecond" class="@Model.SecondBunchPanelClass">
-            <h4>
-                <a class="@Model.SecondBunchChevronClass" id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond"></a>
-                <a id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond" class="label label-success">Keen</a>
-                <a id="@("KeenCountSpan"+@Model.NextRide.id)">(@Model.NextKeenCount.ToString())</a>
-            </h4>
-            <div id="collapseKeenSecond" class="@Model.SecondKeenPanelClass">
-                <div id="@("keendiv_" + @Model.NextRide.id)">
-                    @Html.Partial("_RidersKeenSecond")
+            <div class='panel panel-warning'>
+                <div class="panel-heading ">
+                    <a class="@Model.SecondKeenChevronClass" id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond"></a>
+                    <a data-toggle="collapse" href="#collapseKeenSecond" class="label label-success">Keen</a>
+                    <a id="@("KeenCountSpan" + @Model.NextRide.id)">(@Model.KeenCount.ToString())</a>
+                </div>
+                <div id="collapseKeenSecond" class="@Model.SecondKeenPanelClass">
+                    <div class="panel-body panelBody">
+                        <div id="@("keendiv_" + @Model.NextRide.id)">
+                            @Html.Partial("_RidersKeenSecond")
+                        </div>
+                        <hr />
+                        @Html.Partial("_KeenActionSecond")
+                    </div>
                 </div>
             </div>
-            <hr />
-            <div id="SecondCommentCollapseArea">
-                @if (@Model.NextComments != null)
-                {
-                    @Html.Partial("_SecondComments")
-                }
-            </div>
-            @Html.Partial("_KeenActionSecond")
-
-            <div id="Invite_Users_Second">
-
-                @Html.ActionLink("Invite Users", "InviteOthersToBunch", "Ride",
-        new
-        {
-            RideId = @Model.NextRide.id,
-            PreviousID = @Model.Ride.id
-        },
-        new { @class = "btn btn-success", onclick = "ShowProgress();", id = "InviteFirst" })
-
+            <div class='panel panel-info'>
+                <div class="panel-heading" id="SecondCommentCollapseArea">
+                    <a id="CommentCountSecond" class="@Model.SecondCommentChevronClass" data-toggle="collapse" href="#collapseCommentSecond"></a>
+                    <a class="label label-success" data-toggle="collapse" href="#collapseCommentSecond">Comments</a>
+                    <a id="@("CommentCountSpan" + @Model.NextRide.id)">(@Model.NextCommentCount)</a>
+                </div>
+                <div id="collapseCommentSecond" class="@Model.SecondCommentPanelClass">
+                    <div id="CommentCollapseArea">
+                        <div class="panel-body panelBody">
+                            @if (@Model.Comments != null)
+                            {
+                                @Html.Partial("_SecondComments")
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>@*div for end of second collapse*@
+    </div>
+</div>
 
     <div class="loading" style="display:none;" align="center">
         Loading. Please wait.<br />

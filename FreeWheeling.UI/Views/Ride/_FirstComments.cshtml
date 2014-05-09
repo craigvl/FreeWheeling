@@ -1,6 +1,5 @@
 ﻿@model FreeWheeling.UI.Models.RideModelIndex
 @using FreeWheeling.Domain.Entities; 
-
     <div id="@("collapseCommentPanel" + @Model.Ride.id)">
         @foreach (Comment item in Model.Comments)
         {
@@ -31,5 +30,4 @@
             <span id="@("CommentCountSpan" + @Model.Ride.id)"></span>
         </div>
     }
-
 </div>

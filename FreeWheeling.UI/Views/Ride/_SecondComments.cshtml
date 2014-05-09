@@ -1,29 +1,12 @@
 ﻿@model FreeWheeling.UI.Models.RideModelIndex
 @using FreeWheeling.Domain.Entities; 
-
-<h4>
-    <a id="CommentCountSecond" class="@Model.SecondCommentChevronClass" data-toggle="collapse" href="#collapseCommentSecond"></a>
-    <a class="label label-success" data-toggle="collapse" href="#collapseCommentSecond">Comments</a>
-    <a id="@("CommentCountSpan" + @Model.NextRide.id)">(@Model.NextCommentCount)</a>
-
-    @Html.ActionLink(string.Concat("View all (", @Model.NextCommentCount, ")"), "SeeAllComments", "Ride",
-        new
-        {
-            RideId = @Model.NextRide.id,
-            Groupid = @Model.Group.id
-        },
-        new { @class = "btn btn-success", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @Model.NextRide.id.ToString()) })
-    <span id="@("CommentCountSpan" + @Model.NextRide.id)"></span>
-</h4>
-<div id="collapseCommentFirst" class="@Model.FirstCommentPanelClass">
-    <div id="collapseCommentSecond" class="@Model.SecondCommentPanelClass">
-        @foreach (Comment item in Model.NextComments)
-        {
-            @item.userName <text>: </text>
-            @item.CommentText
-            @:<p></p>
+    <div id="@("collapseCommentPanel" + @Model.NextRide.id)">
+    @foreach (Comment item in Model.NextComments)
+    {
+        @item.userName <text>: </text>
+        @item.CommentText
+        @:<p></p>
         }
-    </div>
 </div>
 <div>
     @using (Ajax.BeginForm("AddComment", "Ride", new
@@ -43,7 +26,8 @@
             <span class="input-group-addon-C">
                 <button class="btn btn-success" id="@("submit_Second")" type="submit">Add comment</button>
             </span>
+            @Html.ActionLink(string.Concat("View all (", @Model.NextCommentCount, ")"), "SeeAllComments", "Ride", new { RideId = @Model.NextRide.id, Groupid = @Model.Group.id }, new { @class = "btn btn-success", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @Model.NextRide.id.ToString()) })
+            <span id="@("CommentCountSpan" + @Model.NextRide.id)"></span>
         </div>
     }
-
 </div>
