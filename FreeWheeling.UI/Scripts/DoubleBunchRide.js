@@ -64,15 +64,15 @@ function KeenCompleteFirst(data) {
         var keenuser = "#keen_" + data.username + data.rideid;
         $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
         if ($("#keen_" + data.username + data.rideid).length) {
-            $(keenuser).html(data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
+            $(keenuser).html(data.username + ' <span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
             $(keenuser).attr('class', 'label label-success');
             $(keenuser).css("text-decoration", "none");
         }
         else {
             $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success" style"text-decoration: none;">' + data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
         }
-        jQuery("abbr.timeago").timeago();
 
+        jQuery("abbr.timeago").timeago();
         $("#OutFirst").show();
         $("#OnWayFirst").hide();
         $("#InFirst").hide();
@@ -221,7 +221,7 @@ jQuery(document).ready(function () {
 
    
     channel.bind('You-In', function (data) {
-        //alert(data.message);
+        alert(data.message);
         if (data.message == 'In') {
             $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
             var keenuser = "#keen_" + data.username + data.rideid;
@@ -238,18 +238,30 @@ jQuery(document).ready(function () {
         if (data.message == 'Out') {
             var keenuser = "#keen_" + data.username + data.rideid;
             $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-            $(keenuser).html(data.username + " is Out!");
-            $(keenuser).attr('class', 'label label-danger');
-            $(keenuser).css("text-decoration","line-through");
+            var keenuser = "#keen_" + data.username + data.rideid;
+            if ($("#keen_" + data.username + data.rideid).length) {
+                $(keenuser).html(data.username + " is Out!");
+                $(keenuser).attr('class', 'label label-danger');
+                $(keenuser).css("text-decoration","line-through");
+            }
+            else {
+                $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-danger">' + data.username + ' is out!</span>');
+            }
         }
                 
         if (data.message == 'OnWay') {
             var keenuser = "#keen_" + data.username + data.rideid;
             $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-            $(keenuser).html(data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
-            $(keenuser).attr('class', 'label label-success');
-            $(keenuser).css("text-decoration", "none");
-            jQuery("abbr.timeago").timeago();
+            var keenuser = "#keen_" + data.username + data.rideid;
+            if ($("#keen_" + data.username + data.rideid).length) {
+                $(keenuser).html(data.username + ' <span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
+                $(keenuser).attr('class', 'label label-success');
+                $(keenuser).css("text-decoration", "none");
+                jQuery("abbr.timeago").timeago();
+            }
+            else {
+                $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success" style"text-decoration: none;">' + data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
+            }
         }
 
     });
