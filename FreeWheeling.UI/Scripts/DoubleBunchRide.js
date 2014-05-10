@@ -24,62 +24,8 @@ function KeenCompleteFirst(data) {
     };
     client.getTable("Keen").insert(item);
 
-    if (data.message == 'In') {
-        $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-        var keenuser = "#keen_" + data.username + data.rideid;
-        if ($("#keen_" + data.username + data.rideid).length) {
-            $(keenuser).html(data.username + " is in!");
-            $(keenuser).attr('class', 'label label-success');
-            $(keenuser).css('text-decoration', 'none');
-        }
-        else {
-            $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success">' + data.username + ' is in!</span>');
-        }
-
-        $("#OutFirst").show();
-        $("#OnWayFirst").show();
-        $("#InFirst").hide();
-
-    }
-
-    if (data.message == 'Out') {
-        var keenuser = "#keen_" + data.username + data.rideid;
-        $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-        if ($("#keen_" + data.username + data.rideid).length) {
-            $(keenuser).html(data.username + " is Out!");
-            $(keenuser).attr('class', 'label label-danger');
-            $(keenuser).css("text-decoration", "line-through");
-        }
-        else {
-            $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-danger">' + data.username + ' is out!</span>');
-        }
-
-
-        $("#OutFirst").hide();
-        $("#OnWayFirst").hide();
-        $("#InFirst").show();
-    }
-
-    if (data.message == 'OnWay') {
-        var keenuser = "#keen_" + data.username + data.rideid;
-        $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-        if ($("#keen_" + data.username + data.rideid).length) {
-            $(keenuser).html(data.username + ' <span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
-            $(keenuser).attr('class', 'label label-success');
-            $(keenuser).css("text-decoration", "none");
-        }
-        else {
-            $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success" style"text-decoration: none;">' + data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
-        }
-
-        jQuery("abbr.timeago").timeago();
-        $("#OutFirst").show();
-        $("#OnWayFirst").hide();
-        $("#InFirst").hide();
-    }
-
+    UpdateKeenActions(data.message, data.rideid, data.keencount, data.username, data.leavetime);
 }
-
 
 function KeenCompleteNext(data) {
     HideProgress();
@@ -101,59 +47,7 @@ function KeenCompleteNext(data) {
     };
     client.getTable("Keen").insert(item);
 
-    if (data.message == 'In') {
-        $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-        var keenuser = "#keen_" + data.username + data.rideid;
-        if ($("#keen_" + data.username + data.rideid).length) {
-            $(keenuser).html(data.username + " is in!");
-            $(keenuser).attr('class', 'label label-success');
-            $(keenuser).css('text-decoration', 'none');
-        }
-        else {
-            $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success">' + data.username + ' is in!</span>');
-        }
-
-        $("#OutNext").show();
-        $("#OnWayNext").show();
-        $("#InNext").hide();
-
-    }
-
-    if (data.message == 'Out') {
-        var keenuser = "#keen_" + data.username + data.rideid;
-        $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-        if ($("#keen_" + data.username + data.rideid).length) {
-            $(keenuser).html(data.username + " is Out!");
-            $(keenuser).attr('class', 'label label-danger');
-            $(keenuser).css("text-decoration", "line-through");
-        }
-        else {
-            $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-danger">' + data.username + ' is out!</span>');
-        }
-
-        $("#OutNext").hide();
-        $("#OnWayNext").hide();
-        $("#InNext").show();
-    }
-
-    if (data.message == 'OnWay') {
-        var keenuser = "#keen_" + data.username + data.rideid;
-        $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-        if ($("#keen_" + data.username + data.rideid).length) {
-            $(keenuser).html(data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
-            $(keenuser).attr('class', 'label label-success');
-            $(keenuser).css("text-decoration", "none");
-        }
-        else {
-            $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success" style"text-decoration: none;">' + data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
-        }
-        jQuery("abbr.timeago").timeago();
-
-        $("#OutNext").show();
-        $("#OnWayNext").hide();
-        $("#InNext").hide();
-    }
-
+    UpdateKeenActions(data.message, data.rideid, data.keencount, data.username, data.leavetime);
 }
 
 function CommentComplete(data) {
@@ -218,52 +112,9 @@ jQuery(document).ready(function () {
     pusher.connection.bind('connected', function () {
         socketId = pusher.connection.socket_id;
     });
-
-   
+  
     channel.bind('You-In', function (data) {
-        alert(data.message);
-        if (data.message == 'In') {
-            $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-            var keenuser = "#keen_" + data.username + data.rideid;
-            if ($("#keen_" + data.username + data.rideid).length) {
-                $(keenuser).html(data.username + " is in!");
-                $(keenuser).attr('class', 'label label-success');
-                $(keenuser).css('text-decoration', 'none');
-            }
-            else {                     
-                $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success">'+ data.username + ' is in!</span>');
-            }                    
-        }
-                
-        if (data.message == 'Out') {
-            var keenuser = "#keen_" + data.username + data.rideid;
-            $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-            var keenuser = "#keen_" + data.username + data.rideid;
-            if ($("#keen_" + data.username + data.rideid).length) {
-                $(keenuser).html(data.username + " is Out!");
-                $(keenuser).attr('class', 'label label-danger');
-                $(keenuser).css("text-decoration","line-through");
-            }
-            else {
-                $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-danger">' + data.username + ' is out!</span>');
-            }
-        }
-                
-        if (data.message == 'OnWay') {
-            var keenuser = "#keen_" + data.username + data.rideid;
-            $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-            var keenuser = "#keen_" + data.username + data.rideid;
-            if ($("#keen_" + data.username + data.rideid).length) {
-                $(keenuser).html(data.username + ' <span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
-                $(keenuser).attr('class', 'label label-success');
-                $(keenuser).css("text-decoration", "none");
-                jQuery("abbr.timeago").timeago();
-            }
-            else {
-                $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success" style"text-decoration: none;">' + data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
-            }
-        }
-
+        UpdateKeenActionsPusher(data.message, data.rideid, data.keencount, data.username, data.leavetime);
     });
             
     //End Pusher
