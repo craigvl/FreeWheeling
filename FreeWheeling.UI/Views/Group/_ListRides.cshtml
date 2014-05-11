@@ -1,0 +1,128 @@
+﻿@model FreeWheeling.UI.Models.GroupModel
+@using FreeWheeling.Domain.Entities;
+
+     @foreach (Group item in Model._Groups)
+                {
+                   <tr>
+    <td>
+            @{
+            bool isMember = Model.CurrentGroupMembership.Contains(item.id);
+            int RiderCount = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(g => g.NumberofRiders).FirstOrDefault();
+            DateTime NextRideDate = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(g => g.Date).FirstOrDefault();
+            bool isCreator = Model._OwnerGroupList.Contains(item.id);
+            }
+                    @if (isMember)
+                    {
+    if (item.Rides.Count > 0 )
+                        {
+                            <table style="width:100%">
+                                <tr style="width:100%">
+                                    <td style="width:100%">
+                                        <div style="width:10%;float:left;">
+                                            @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id },
+                                            new { @class = "", onclick = "ShowProgress();" })
+                                        </div>
+                                        <div style="width:10%;float:left;">
+                                            @Html.ActionLink(" ", "Index", "Ride", new { groupid = item.id },
+                                            new { @class = "glyphicon glyphicon-search", onclick = "ShowProgress();" })
+                                        </div>
+                                        <div style="width: 10%; float: right;">
+                                            @Ajax.ActionLink(" ", // <-- Text to display
+                                            "GetGroupDetails", // <-- Action Method Name
+                                            new { id = item.id },
+                                            new AjaxOptions
+                                                {
+                                                    UpdateTargetId = "GroupInfo" + item.id.ToString(), // <-- DOM element ID to update
+                                                    InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+                                                    HttpMethod = "POST",
+                                                    OnSuccess = "HideInfoLink(" + item.id.ToString() + ")"
+                                                }, new { id = "infoButton" + item.id.ToString(), @class = "glyphicon glyphicon-info-sign" })
+                                        </div>
+
+                                        <div style="width: 10%; float: right;">
+                                           @Html.ActionLink(" ", "RemoveFromFavouriteList", "Group",
+                                                            new { id = item.id, title = @Model.title },
+                                                  new { @class = "glyphicon glyphicon-star-empty", onclick = "ShowProgress();" })
+                                        </div>
+
+                                        @if (isCreator)
+                                        {
+                                            <div style="width: 10%; float: right;">
+                                                @Html.ActionLink(" ", "EditGroup", "Group", new { groupId = item.id },
+                                                 new { @class = "glyphicon glyphicon-pencil", onclick = "ShowProgress();" })
+                                            </div>
+                                            <div style="width: 10%; float: right;">
+                                                @Html.ActionLink(" ", "InviteOthersToPrivateBunch", "Group", new { groupId = item.id },
+                                                      new { @class = "glyphicon glyphicon-user", onclick = "ShowProgress();" })
+                                            </div>
+                                        }
+                                    </td>
+                                </tr>
+                            </table>
+                        }
+                         else
+                         {
+                            @Html.Label(item.name)
+                            <span class="label label-danger">No Rides</span>
+                         }
+                    }
+                    else
+                    {
+                        if (item.Rides.Count > 0)
+                        {
+                            <table style="width:100%">
+                                <tr style="width:100%">
+                                    <td style="width:100%">
+                                        <div style="width:10%;float:left;">
+                                            @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id },
+                                            new { @class = "", onclick = "ShowProgress();" })
+                                        </div>
+                                        <div style="width:10%;float:left;">
+                                            @Html.ActionLink(" ", "Index", "Ride", new { groupid = item.id },
+                                            new { @class = "glyphicon glyphicon-search", onclick = "ShowProgress();" })
+                                        </div>
+                                        <div style="width: 10%; float: left;">                                          
+                                        </div>
+                                        <div style="width: 10%; float: right;">
+                                            @Ajax.ActionLink(" ", // <-- Text to display
+                                            "GetGroupDetails", // <-- Action Method Name
+                                            new { id = item.id },
+                                            new AjaxOptions
+                                                {
+                                                    UpdateTargetId = "GroupInfo" + item.id.ToString(), // <-- DOM element ID to update
+                                                    InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+                                                    HttpMethod = "POST",
+                                                    OnSuccess = "HideInfoLink(" + item.id.ToString() + ")"
+                                                }, new { id = "infoButton" + item.id.ToString(), @class = "glyphicon glyphicon-info-sign" })
+                                        </div>
+
+                                        <div style="width: 10%; float: right;">
+                                            @Html.ActionLink(" ", "Join", "Group", new { id = item.id, title = @Model.title },
+                                            new { @class = "glyphicon glyphicon-star", onclick = "ShowProgress();" })
+                                        </div>
+
+                                        @if (isCreator)
+                                        {
+                                            <div style="width: 10%; float: right;">
+                                            @Html.ActionLink(" ", "EditGroup", "Group", new { groupId = item.id },
+                                                 new { @class = "glyphicon glyphicon-pencil", onclick = "ShowProgress();" })
+                                            </div>
+                                            <div style="width: 10%; float: right;">
+                                            @Html.ActionLink(" ", "InviteOthersToPrivateBunch", "Group", new { groupId = item.id },
+                                                      new { @class = "glyphicon glyphicon-user", onclick = "ShowProgress();" })
+                                            </div>
+                                        }
+                                    </td>
+                                </tr>
+                            </table>
+                        }
+                    else
+        {
+    @Html.Label(item.name)
+    <span class="label label-danger">No Rides</span>
+        } 
+    }                  
+<div class="Ginfo" id="@("GroupInfo" + @item.id)"></div>@*This is the div that gets replaced with group info*@
+        </td>
+</tr>                               
+}
