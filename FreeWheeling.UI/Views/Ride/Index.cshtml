@@ -12,9 +12,15 @@
 @Html.Hidden("CommentCountNext", @Model.NextCommentCount)
 @Html.Hidden("KeenCount", @Model.KeenCount)
 @Html.Hidden("KeenCountNext", @Model.NextKeenCount)
-<h2>
-    @Model.Group.name
-</h2>
+
+<div class="row">
+    <div class="pull-left col-md-1">
+        @Html.ActionLink(" ", "Index", "Home", null, new { @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
+    </div> 
+    <div class="pull-left col-md-1">
+        @Model.Group.name
+    </div>
+    </div>
 @if (@Model.IsOwner)
 {
 }
@@ -23,7 +29,6 @@
     @Html.Raw(@Model.MapUrl)
 }
 <p></p>
-@Html.ActionLink("Back <---", "Index", "Group", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
 <div class='panel-group'>
     <div class='panel panel-primary'>
         <div class="panel-heading ">

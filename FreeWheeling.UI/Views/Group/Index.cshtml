@@ -7,24 +7,30 @@
 
 @Html.ValidationSummary()
   
-        <p class="text-left">
-
             @using (Html.BeginForm())
-            {
-            <p>
-               @Html.TextBox("SearchString")
-                <input onclick="ShowProgress();" type="submit" value="Search" />
-            </p>
-            }
+{
+     <p></p>
+    <div class="container-fluid">
+        <div class="pull-left">
+            @Html.ActionLink(" ", "Index", "Home", null, new { @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
+        </div>
+        <div class="pull-right" style="padding-left:10px">
+            <input onclick="ShowProgress();" type="submit" class="pull-right btn btn-default" value="Go" />
+        </div>
+        <div class="pull-right">
+            @Html.TextBox("SearchString", null, new { @class = "pull-right form-control", @placeholder = "Search" })
+        </div>
 
-            @Html.ActionLink("<--", "Index", "Home", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
-            
-            <p></p>
+    </div>
+
+}
+           
+    <p></p>
     <table class="table content-box">
     <tr>
-        <th>
-            <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;">
-                <span class="btn col-md- btn-default">@Model.UserLocation </span>
+        <th >
+            <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                <span class="btn btn-default btn-block">@Model.UserLocation </span>
             </div>
         </th>
     </tr>
@@ -46,8 +52,6 @@
      null, new { @class = "btn btn-default", onclick = "ShowProgress();" })
     }
 </table>
-
-
 
 <div class="loading" style="display:none;" align="center">
     Loading. Please wait.<br />

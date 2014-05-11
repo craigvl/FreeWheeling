@@ -18,21 +18,28 @@
         using (Html.BeginForm(action, "Account", new { ReturnUrl = returnUrl }))
         {
             @Html.AntiForgeryToken()
-            <div id="socialLoginList">
+    <div id="socialLoginList">
+       
+            <div class="row">
                 @foreach (AuthenticationDescription p in loginProviders)
                 {
-                    <div class="col-xs-6">
-                        @if (p.AuthenticationType == "Google")
+
+                    if (p.AuthenticationType == "Google")
                         {
+                        <div class="col-xs-6">
                             <button type="submit" class="btn btn-block btn-social btn-google-plus" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType<i class="fa fa-google-plus"></i></button>
+                        </div>
                         }
-                        @if (p.AuthenticationType == "Facebook")
+                    if (p.AuthenticationType == "Facebook")
                         {
-                          <button type="submit" class="btn btn-block btn-social btn-facebook" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType<i class="fa fa-facebook" ></i></button>
-                        }
-                    </div>
+                        <div class="col-xs-6">
+                            <button type="submit" class="btn btn-block btn-social btn-facebook" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType<i class="fa fa-facebook"></i></button>
+                        </div>
+                        }            
                 }
             </div>
+            </div>
+       
         }
     }
 }
