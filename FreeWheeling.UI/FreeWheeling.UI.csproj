@@ -563,6 +563,7 @@
     <Content Include="Views\Ride\_SecondComments.cshtml" />
     <Content Include="Views\Ride\_KeenActionSecond.cshtml" />
     <Content Include="Views\Group\_ListPrivateRides.cshtml" />
+    <Content Include="Views\Group\_ListRides.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
