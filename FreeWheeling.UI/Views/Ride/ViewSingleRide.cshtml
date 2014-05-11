@@ -180,13 +180,7 @@
             };
             client.getTable("Item").insert(item);
 
-            $("#collapseCommentPanel" + data.rideid).prepend("<p>" + data.username + " : " + data.message + "</p>");
-            $("#CommentCountSpan" + data.rideid).html("(" + data.commentcount + ")");
-            $("#CommentCountSpanSeeAll" + data.rideid).html("View All (" + data.commentcount + ")");
-
-            //Clear comment textbox after submit for both rides.
-            $("form #CommentStringFirst").val("");
-            $("form #CommentStringSecond").val("");
+            UpdateCommentFields(data.message, data.rideid, data.username, data.commentcount);
         }
 
         function KeenCompleteFirst(data) {
@@ -209,58 +203,7 @@
             };
             client.getTable("Keen").insert(item);
 
-            if (data.message == 'In') {
-                $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-                var keenuser = "#keen_" + data.username + data.rideid;
-                if ($("#keen_" + data.username + data.rideid).length) {
-                    $(keenuser).html(data.username + " is in!");
-                    $(keenuser).attr('class', 'label label-success');
-                    $(keenuser).css('text-decoration', 'none');
-                }
-                else {
-                    $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success">' + data.username + ' is in!</span>');
-                }
-
-                $("#OutFirst").show();
-                $("#OnWayFirst").show();
-                $("#InFirst").hide();
-
-            }
-
-            if (data.message == 'Out') {
-                var keenuser = "#keen_" + data.username + data.rideid;
-                $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-                if ($("#keen_" + data.username + data.rideid).length) {
-                    $(keenuser).html(data.username + " is Out!");
-                    $(keenuser).attr('class', 'label label-danger');
-                    $(keenuser).css("text-decoration", "line-through");
-                }
-                else {
-                    $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-danger">' + data.username + ' is out!</span>');
-                }
-
-                $("#OutFirst").hide();
-                $("#OnWayFirst").hide();
-                $("#InFirst").show();
-            }
-
-            if (data.message == 'OnWay') {
-                var keenuser = "#keen_" + data.username + data.rideid;
-                $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-                if ($("#keen_" + data.username + data.rideid).length) {
-                    $(keenuser).html(data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
-                    $(keenuser).attr('class', 'label label-success');
-                    $(keenuser).css("text-decoration", "none");
-                }
-                else {
-                    $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success" style"text-decoration: none;">' + data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
-                }
-                jQuery("abbr.timeago").timeago();
-
-                $("#OutFirst").show();
-                $("#OnWayFirst").hide();
-                $("#InFirst").hide();
-            }
+            UpdateKeenActions(data.message, data.rideid, data.keencount, data.username, data.leavetime);
         }
 
         jQuery(document).ready(function () {
@@ -275,10 +218,7 @@
             var keenCount = jQuery('#KeenCount').val();
 
             channel.bind('New-Comments', function (data) {
-                //alert('hello from pusher');
-                $("#collapseCommentPanel" + data.rideid).prepend("<p>" + data.username + " : " + data.message + "</p>");
-                $("#CommentCountSpan" + data.rideid).html("(" + data.commentcount + ")");
-                $("#CommentCountSpanSeeAll" + data.rideid).html("View All (" + data.commentcount + ")");
+                UpdateCommentFieldsPusher(data.message, data.rideid, data.username, data.commentcount);
             });
 
             pusher.connection.bind('connected', function () {
@@ -287,46 +227,7 @@
 
             channel.bind('You-In', function (data) {
                 //alert(data.message);
-                if (data.message == 'In') {
-                    $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-                    var keenuser = "#keen_" + data.username + data.rideid;
-                    if ($("#keen_" + data.username + data.rideid).length) {
-                        $(keenuser).html(data.username + " is in!");
-                        $(keenuser).attr('class', 'label label-success');
-                        $(keenuser).css('text-decoration', 'none');
-                    }
-                    else {
-                        $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success">' + data.username + ' is in!</span>');
-                    }
-                }
-
-                if (data.message == 'Out') {
-                    var keenuser = "#keen_" + data.username + data.rideid;
-                    if ($("#keen_" + data.username + data.rideid).length) {
-                        $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-                        $(keenuser).html(data.username + " is Out!");
-                        $(keenuser).attr('class', 'label label-danger');
-                        $(keenuser).css("text-decoration", "line-through");
-                    }
-                    else {
-                        $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-danger">' + data.username + ' is out!</span>');
-                    }
-                }
-
-                if (data.message == 'OnWay') {
-                    var keenuser = "#keen_" + data.username + data.rideid;
-                    $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-                    if ($("#keen_" + data.username + data.rideid).length) {
-                        $(keenuser).html(data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
-                        $(keenuser).attr('class', 'label label-success');
-                        $(keenuser).css("text-decoration", "none");
-                        jQuery("abbr.timeago").timeago();
-                    }
-                    else {
-                        $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success" style"text-decoration: none;">' + data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
-                        jQuery("abbr.timeago").timeago();
-                    }
-                }
+                UpdateKeenActionsPusher(data.message, data.rideid, data.keencount, data.username, data.leavetime);
             });
 
             //End Pusher

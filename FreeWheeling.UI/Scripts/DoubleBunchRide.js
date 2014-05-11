@@ -23,7 +23,6 @@ function KeenCompleteFirst(data) {
         socket_id: socketId
     };
     client.getTable("Keen").insert(item);
-
     UpdateKeenActions(data.message, data.rideid, data.keencount, data.username, data.leavetime);
 }
 
@@ -47,13 +46,12 @@ function KeenCompleteNext(data) {
     };
     client.getTable("Keen").insert(item);
 
-    UpdateKeenActions(data.message, data.rideid, data.keencount, data.username, data.leavetime);
+    UpdateKeenActions(data.message, data.rideid, data.keencount, data.username, data.leavetime,"next");
 }
 
 function CommentComplete(data) {
     HideProgress();
     //Azure Mobile Storage
-
     //Comments
 
     var client = new WindowsAzure.MobileServiceClient(
@@ -70,15 +68,7 @@ function CommentComplete(data) {
         socket_id: socketId
     };
     client.getTable("Item").insert(item);
-
-    $("#collapseCommentPanel" + data.rideid).prepend("<p>" + data.username + " : " + data.message + "</p>");
-    $("#CommentCountSpan" + data.rideid).html("(" + data.commentcount + ")");
-    $("#CommentCountSpanSeeAll" + data.rideid).html("View All (" + data.commentcount + ")");
-
-    //Clear comment textbox after submit for both rides.
-    $("form #CommentStringFirst").val("");
-    $("form #CommentStringSecond").val("");
-                     
+    UpdateCommentFields(data.message, data.rideid, data.username, data.commentcount);          
 }
 
 //IDs for collapse user remember
@@ -103,10 +93,7 @@ jQuery(document).ready(function () {
     var keenCountNext = jQuery('#KeenCountNext').val();
 
     channel.bind('New-Comments', function (data) {
-        //alert('hello from pusher');
-        $("#collapseCommentPanel" + data.rideid).prepend("<p>" + data.username + " : " + data.message + "</p>");
-        $("#CommentCountSpan" + data.rideid).html("(" + data.commentcount + ")");
-        $("#CommentCountSpanSeeAll" + data.rideid).html("View All (" + data.commentcount + ")");
+        UpdateCommentFieldsPusher(data.message, data.rideid, data.username, data.commentcount);
     });
 
     pusher.connection.bind('connected', function () {
@@ -122,7 +109,6 @@ jQuery(document).ready(function () {
     jQuery("abbr.timeago").timeago();
            
     //End Azure
-
     //Collapse user save
 
     jQuery('#collapseKeenFirst').on('hidden.bs.collapse', function (event) {
@@ -133,7 +119,6 @@ jQuery(document).ready(function () {
             'id': 2,
             'collapsed': false
         };
-
         extendDataService.save(data);
     });
 
@@ -145,9 +130,7 @@ jQuery(document).ready(function () {
             'id': 2,
             'collapsed': true
         };
-
         extendDataService.save(data);
-
     });
 
     jQuery('#collapseCommentFirst').on('hidden.bs.collapse', function (event) {
@@ -158,9 +141,7 @@ jQuery(document).ready(function () {
             'id': 3,
             'collapsed': false
         };
-
         extendDataService.save(data);
-
     });
 
     jQuery('#collapseCommentFirst').on('shown.bs.collapse', function (event) {
@@ -171,9 +152,7 @@ jQuery(document).ready(function () {
             'id': 3,
             'collapsed': true
         };
-
         extendDataService.save(data);
-
     });
 
     jQuery('#collapseFirst').on('hidden.bs.collapse', function (event) {
@@ -184,9 +163,7 @@ jQuery(document).ready(function () {
             'id': 1,
             'collapsed': false
         };
-
         extendDataService.save(data);
-
     });
 
     jQuery('#collapseFirst').on('shown.bs.collapse', function (event) {
@@ -197,9 +174,7 @@ jQuery(document).ready(function () {
             'id': 1,
             'collapsed': true
         };
-
         extendDataService.save(data);
-
     });
 
     /////////////Second Collapse functions
@@ -212,7 +187,6 @@ jQuery(document).ready(function () {
             'id': 5,
             'collapsed': false
         };
-
         extendDataService.save(data);
     });
 
@@ -224,9 +198,7 @@ jQuery(document).ready(function () {
             'id': 5,
             'collapsed': true
         };
-
         extendDataService.save(data);
-
     });
 
     jQuery('#collapseCommentSecond').on('hidden.bs.collapse', function (event) {
@@ -237,10 +209,7 @@ jQuery(document).ready(function () {
             'id': 6,
             'collapsed': false
         };
-
         extendDataService.save(data);
-
-
     });
 
     jQuery('#collapseCommentSecond').on('shown.bs.collapse', function (event) {
@@ -251,9 +220,7 @@ jQuery(document).ready(function () {
             'id': 6,
             'collapsed': true
         };
-
         extendDataService.save(data);
-
     });
 
     jQuery('#collapseSecond').on('hidden.bs.collapse', function (event) {
@@ -264,9 +231,7 @@ jQuery(document).ready(function () {
             'id': 4,
             'collapsed': false
         };
-
         extendDataService.save(data);
-
     });
 
     jQuery('#collapseSecond').on('shown.bs.collapse', function (event) {
@@ -277,11 +242,7 @@ jQuery(document).ready(function () {
             'id': 4,
             'collapsed': true
         };
-
         extendDataService.save(data);
-
     });
-
     //End Collapse user save 
-
 });

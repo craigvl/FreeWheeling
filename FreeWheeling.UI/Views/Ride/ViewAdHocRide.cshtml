@@ -31,7 +31,6 @@
 
 }
 <hr />
-
 <h4><span class="label label-success">Keen<span id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</span></span></h4>
 <div id="@("keendiv_" + @Model.Ride.id)">
     @{
@@ -67,7 +66,6 @@
     }
     </div>
     <br />
-
     <div>
         <hr />
         @if (@Model.Comments != null)
@@ -88,9 +86,7 @@
         }
     </div>
 </div>
-
 <div>
-
     @using (Ajax.BeginForm("AddAdHocComment", "Ride", new
                 {
                     adhocrideid = @Model.Ride.id
@@ -110,10 +106,7 @@
     }
 
 </div>
-
 <hr />
-
-
 <h4><span class="label label-success">You in?</span></h4>
 
 @Ajax.ActionLink("I'm In!", "AttendAdHocRider",
@@ -128,7 +121,7 @@
                  {
                      @class = "btn btn-primary",
                      onclick = "ShowProgress();",
-                     @id = "InNext"
+                     @id = "InFirst"
                  })
 
 @Ajax.ActionLink("I'm Out!", "AttendAdHocRider",
@@ -143,7 +136,7 @@
                       {
                           @class = "btn btn-danger",
                           onclick = "ShowProgress();",
-                          @id = "OutNext"
+                          @id = "OutFirst"
                       })
 
 @Ajax.ActionLink("On My Way!", "AttendAdHocRider",
@@ -158,20 +151,18 @@
                  {
                      @class = "btn btn-success",
                      onclick = "ShowProgress();",
-                     @id = "OnWayNext"
+                     @id = "OnWayFirst"
                  })
 
 <p></p>
 
 <div id="Invite_Users_First">
-
     @Html.ActionLink("Invite Users", "InviteOthersToAdHocBunch", "Ride",
         new
         {
             adhocrideid = @Model.Ride.id
         },
         new { @class = "btn btn-success", onclick = "ShowProgress();", id = "InviteFirst" })
-
 </div>
 
 <div class="loading" style="display:none;" align="center">
@@ -186,12 +177,10 @@
     @Scripts.Render("~/bundles/azuremobile")
     @Scripts.Render("~/bundles/pusher")
     <script>
-
         var socketId = null;
 
         function KeenComplete(data) {
             HideProgress();
-
             //Keen
             var client = new WindowsAzure.MobileServiceClient(
                      "http://bunchydev.azure-mobile.net/",
@@ -207,72 +196,13 @@
                 socket_id: socketId
             };
             client.getTable("Keenadhoc").insert(item);
-
-            $("form #submit_AdHocComment").val("");
-       
-                //alert(data.message);
-                if (data.message == 'In') {
-                    $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-                    var keenuser = "#keen_" + data.username + data.rideid;
-                    if ($("#keen_" + data.username + data.rideid).length) {
-                        $(keenuser).html(data.username + " is in!");
-                        $(keenuser).attr('class', 'label label-success');
-                        $(keenuser).css('text-decoration', 'none');
-                    }
-                    else {
-
-                        $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success">' + data.username + ' is in!</span>');
-
-                    }
-
-                    $("#OutNext").show();
-                    $("#OnWayNext").show();
-                    $("#InNext").hide();
-
-                }
-
-                if (data.message == 'Out') {
-                    var keenuser = "#keen_" + data.username + data.rideid;
-                    $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-                    if ($("#keen_" + data.username + data.rideid).length) {
-                        $(keenuser).html(data.username + " is Out!");
-                        $(keenuser).attr('class', 'label label-danger');
-                        $(keenuser).css("text-decoration", "line-through");
-                    }
-                    else {
-                        $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-danger">' + data.username + ' is out!</span>');
-                    }
-
-                    $("#OutNext").hide();
-                    $("#OnWayNext").hide();
-                    $("#InNext").show();
-                    
-                }
-
-                if (data.message == 'OnWay') {
-                    var keenuser = "#keen_" + data.username + data.rideid;
-                    $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-                    if ($("#keen_" + data.username + data.rideid).length) {
-                        $(keenuser).html(data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
-                        $(keenuser).attr('class', 'label label-success');
-                        $(keenuser).css("text-decoration", "none");
-                    }
-                    else {
-                        $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success" style"text-decoration: none;">' + data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
-                    }
-                    jQuery("abbr.timeago").timeago();
-
-                    $("#OutNext").show();
-                    $("#OnWayNext").hide();
-                    $("#InNext").hide();
-                }
+            $("form #submit_AdHocComment").val("");     
+            UpdateKeenActions(data.message, data.rideid, data.keencount, data.username, data.leavetime);
         }
 
         function CommentComplete(data) {
             HideProgress();
-
             //Azure Mobile Storage
-
             //Comments
 
             var client = new WindowsAzure.MobileServiceClient(
@@ -287,17 +217,9 @@
                 commentcount: data.commentcount,
                 socket_id: socketId
             };
-            client.getTable("ItemAdHoc").insert(item);
-
-            $("#collapseCommentPanel" + data.rideid).prepend("<p>" + data.username + " : " + data.message + "</p>");
-            $("#CommentCountSpan" + data.rideid).html("(" + data.commentcount + ")");
-            $("#CommentCountSpanSeeAll" + data.rideid).html("View All (" + data.commentcount + ")");
-
-            //Clear comment textbox after submit for both rides.
-            $("form #CommentStringFirst").val("");
-
+            client.getTable("ItemAdHoc").insert(item);               
+            UpdateCommentFields(data.message, data.rideid, data.username, data.commentcount);
         }
-
 
         jQuery(document).ready(function () {
             HideProgress();
@@ -309,9 +231,7 @@
             var keenCount = jQuery('#KeenCount').val();
 
             channel.bind('New-CommentsAdHoc', function (data) {
-                $("#collapseCommentPanel" + data.rideid).prepend("<p>" + data.username + " : " + data.message + "</p>");
-                $("#CommentCountSpan" + data.rideid).html("(" + data.commentcount + ")");
-                $("#CommentCountSpanSeeAll" + data.rideid).html("View All (" + data.commentcount + ")");
+                UpdateCommentFieldsPusher(data.message, data.rideid, data.username, data.commentcount);
             });
 
             pusher.connection.bind('connected', function () {
@@ -319,49 +239,7 @@
             });
 
             channel.bind('You-InAdHoc', function (data) {
-                //alert(data.message);
-                if (data.message == 'In') {
-                    $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-                    var keenuser = "#keen_" + data.username + data.rideid;
-                    if ($("#keen_" + data.username + data.rideid).length) {
-                        $(keenuser).html(data.username + " is in!");
-                        $(keenuser).attr('class', 'label label-success');
-                        $(keenuser).css('text-decoration', 'none');
-                    }
-                    else {
-                        $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success">' + data.username + ' is in!</span>');
-                    }
-
-                }
-
-                if (data.message == 'Out') {
-                    var keenuser = "#keen_" + data.username + data.rideid;
-                    if ($("#keen_" + data.username + data.rideid).length) {
-                        $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-                        $(keenuser).html(data.username + " is Out!");
-                        $(keenuser).attr('class', 'label label-danger');
-                        $(keenuser).css("text-decoration", "line-through");
-                    }
-                    else {
-                        $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-danger">' + data.username + ' is out!</span>');
-                    }
-                }
-
-                if (data.message == 'OnWay') {
-                    var keenuser = "#keen_" + data.username + data.rideid;
-                    $("#KeenCountSpan" + data.rideid).html("(" + data.keencount + ")");
-                    if ($("#keen_" + data.username + data.rideid).length) {
-                        $(keenuser).html(data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
-                        $(keenuser).attr('class', 'label label-success');
-                        $(keenuser).css("text-decoration", "none");
-                        jQuery("abbr.timeago").timeago();
-                    }
-                    else {
-                        $("#keendiv_" + data.rideid).prepend('<p><span id=keen_' + data.username + data.rideid + ' class="label label-success" style"text-decoration: none;">' + data.username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(data.leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
-                        jQuery("abbr.timeago").timeago();
-                    }
-                }
-
+                UpdateKeenActionsPusher(data.message, data.rideid, data.keencount, data.username, data.leavetime);
             });
 
             jQuery("abbr.timeago").timeago();

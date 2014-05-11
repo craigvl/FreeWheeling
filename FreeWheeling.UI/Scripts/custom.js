@@ -62,8 +62,10 @@ jQuery("abbr.timeago").timeago();
 
 }
 
-function UpdateKeenActions(message, rideid, keencount, username, leavetime)
+function UpdateKeenActions(message, rideid, keencount, username, leavetime, position)
 {
+    position = position || "first";
+
     if (message == 'In') {
         $("#KeenCountSpan" + rideid).html("(" + keencount + ")");
         var keenuser = "#keen_" + username + rideid;
@@ -75,9 +77,17 @@ function UpdateKeenActions(message, rideid, keencount, username, leavetime)
         else {
             $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="label label-success">' + username + ' is in!</span>');
         }
-        $("#OutNext").show();
-        $("#OnWayNext").show();
-        $("#InNext").hide();
+
+        if (position == "next") {
+            $("#OutNext").show();
+            $("#OnWayNext").show();
+            $("#InNext").hide();
+        }
+        else {
+            $("#OutFirst").show();
+            $("#OnWayFirst").show();
+            $("#InFirst").hide();
+        }    
     }
 
     if (message == 'Out') {
@@ -91,9 +101,16 @@ function UpdateKeenActions(message, rideid, keencount, username, leavetime)
         else {
             $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="label label-danger">' + username + ' is out!</span>');
         }
-        $("#OutNext").hide();
-        $("#OnWayNext").hide();
-        $("#InNext").show();
+        if (position == "next") {
+            $("#OutNext").hide();
+            $("#OnWayNext").hide();
+            $("#InNext").show();
+        }
+        else {
+            $("#OutFirst").hide();
+            $("#OnWayFirst").hide();
+            $("#InFirst").show();
+        }
     }
 
     if (message == 'OnWay') {
@@ -109,8 +126,32 @@ function UpdateKeenActions(message, rideid, keencount, username, leavetime)
         }
         jQuery("abbr.timeago").timeago();
 
-        $("#OutNext").show();
-        $("#OnWayNext").hide();
-        $("#InNext").hide();
+        if (position == "next") {
+            $("#OutNext").show();
+            $("#OnWayNext").hide();
+            $("#InNext").hide();
+        }
+        else {
+            $("#OutFirst").show();
+            $("#OnWayFirst").hide();
+            $("#InFirst").hide();
+        }
     }
+}
+
+function UpdateCommentFields(message, rideid, username, commentcount) {
+    $("#collapseCommentPanel" + rideid).prepend("<p>" + username + " : " + message + "</p>");
+    $("#CommentCountSpan" + rideid).html("(" + commentcount + ")");
+    $("#CommentCountSpanSeeAll" + rideid).html("View All (" + commentcount + ")");
+
+    //Clear comment textbox after submit for both rides.
+    $("form #CommentStringFirst").val("");
+    $("form #CommentStringSecond").val("");
+}
+
+function UpdateCommentFieldsPusher(message, rideid, username, commentcount) {
+    //alert('hello from pusher');
+    $("#collapseCommentPanel" + rideid).prepend("<p>" + username + " : " + message + "</p>");
+    $("#CommentCountSpan" + rideid).html("(" + commentcount + ")");
+    $("#CommentCountSpanSeeAll" + rideid).html("View All (" + commentcount + ")");
 }
