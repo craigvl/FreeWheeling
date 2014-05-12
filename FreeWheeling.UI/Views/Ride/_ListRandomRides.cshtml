@@ -1,0 +1,18 @@
+﻿@using FreeWheeling.Domain.Entities;
+<table style="width:100%">
+    @foreach (Ad_HocRide item in @Model._Ad_HocRide)
+    {
+        <tr style="width:100%">
+            <td style="width:100%">
+                <div style="width:30%;float:left;">@item.Name</div>
+                <div style="width:30%;float:left;">
+                    @item.RideDate.ToLongDateString() @Html.Raw(", ") @item.RideDate.ToShortTimeString()
+                </div>
+                <div style="width:30%;float:left;">
+                    @Html.ActionLink(string.Concat("View bunch Details"), "ViewAdHocRide", "Ride", new { adhocrideid = item.id },
+                    new { @class = "btn btn-success", onclick = "ShowProgress();" })
+                </div>
+            </td>
+        </tr>
+    }
+</table>

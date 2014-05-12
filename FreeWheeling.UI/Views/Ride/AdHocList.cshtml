@@ -12,44 +12,45 @@
 </div>
 
 <table class="table content-box">
-    <tr>
-        @if (@Model.PrivateRandomBunches.Count > 0)
-        {
-            foreach (Ad_HocRide item in @Model.PrivateRandomBunches)
-            {
-                <td>@item.Name</td>
-                <td>@item.RideDate.ToLongDateString() @Html.Raw(", ") @item.RideDate.ToShortTimeString()</td>
-                <td>
-                    @Html.ActionLink(string.Concat("View bunch Details"), "ViewAdHocRide", "Ride", new { adhocrideid = item.id },
-                    new { @class = "btn btn-success", onclick = "ShowProgress();" })
-                </td>
-            }
-        }
+    <tr style="width:100%">
+        <th style="width:100%">
+            <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                <span class="btn btn-default btn-block">Random Bunches</span>
+            </div>
+        </th>
     </tr>
     <tr>
-        @if (@Model._Ad_HocRide.Count > 0)
-        {
-            foreach (Ad_HocRide item in @Model.PrivateRandomBunches)
+        <td style="width:100%">
+            @if (@Model.PrivateRandomBunches.Count > 0)
             {
-                <td>@item.Name</td>
-                <td>@item.RideDate.ToLongDateString() @Html.Raw(", ") @item.RideDate.ToShortTimeString()</td>
-                <td>
-                    @Html.ActionLink(string.Concat("View bunch Details"), "ViewAdHocRide", "Ride", new { adhocrideid = item.id },
-                    new { @class = "btn btn-success", onclick = "ShowProgress();" })
-                </td>
+                @Html.Partial("_ListPrivateRandomRides")
             }
-        }
+        </td>
+     </tr>
+    <tr>
+        <td>
+            @if (@Model._Ad_HocRide.Count > 0)
+            {
+                @Html.Partial("_ListRandomRides")
+            }
+        </td>
     </tr>
     <tr>
-        @if (@Model._Ad_HocRide.Count + @Model.PrivateRandomBunches.Count <= 0)
-        {
-            <td>
-                <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-                    @Html.ActionLink("No Ad Hoc bunches yet, please create some!", "CreateAdHoc", "Group", null,
-                 new { @class = "btn btn-default btn-block", onclick = "ShowProgress();" })                  
-                </div>
-            </td>
-        }
+        <td>
+            @if (@Model._Ad_HocRide.Count + @Model.PrivateRandomBunches.Count <= 0)
+            {
+                <table style="width:100%">
+                    <tr style="width:100%">
+                        <td style="width:100%">
+                            <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                                @Html.ActionLink("No Ad Hoc bunches yet, please create some!", "CreateAdHoc", "Group", null,
+                                new { @class = "btn btn-default btn-block", onclick = "ShowProgress();" })
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            }
+        </td>
     </tr>
 </table>
 @section scripts{
