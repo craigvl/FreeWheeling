@@ -74,8 +74,8 @@ namespace FreeWheeling.UI.Models
 
         public RideModelIndex PopulateRideModel(int RideId, int GroupId, string UserId, bool NeedPreviousRide)
         {
-            string ChevronClassDown = "glyphicon glyphicon-chevron-down";
-            string ChevronClassUp = "glyphicon glyphicon-chevron-up";
+            string ChevronClassDown = "glyphicon glyphicon glyphicon-minus";
+            string ChevronClassUp = "glyphicon glyphicon glyphicon-plus";
 
             string PanelClassDown = "panel-collapse collapse in";
             string PanelClassUp = "panel-collapse collapse";

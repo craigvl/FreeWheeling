@@ -1,7 +1,7 @@
 ﻿var socketId = null;
 
 function toggleChevron(e) {
-    $(e).toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
+    $(e).toggleClass('glyphicon-minus glyphicon-plus');
 }
 
 function KeenCompleteFirst(data) {
