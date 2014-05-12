@@ -73,10 +73,16 @@
                         }
                          else
                          {
-                            @Html.Label(item.name)
-                            <span class="label label-danger">No Rides</span>
+                         <table style="width:100%">
+                            <tr style="width:100%">
+                               <td style="width:100%">
+                                    @Html.Label(item.name)
+                                    <span class="label label-danger">No Rides</span>
+                               </td>
+                           </tr>
+                         </table>
                          }                 
 <div class="Ginfo" id="@("GroupInfo" + @item.id)"></div>@*This is the div that gets replaced with group info*@
-        </td>
-        </tr>
+</td>
+</tr>
 }

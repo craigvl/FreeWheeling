@@ -7,7 +7,7 @@
 
 @Html.ValidationSummary()
   
-            @using (Html.BeginForm())
+@using (Html.BeginForm())
 {
      <p></p>
     <div class="container-fluid">
@@ -20,11 +20,9 @@
         <div class="pull-right">
             @Html.TextBox("SearchString", null, new { @class = "pull-right form-control", @placeholder = "Search" })
         </div>
-
     </div>
 
-}
-           
+}         
     <p></p>
     <table class="table content-box">
     <tr>
@@ -40,17 +38,23 @@
             @Html.Partial("_ListPrivateRides")
         }
     </tr>
-
-    @if (@Model._Groups.Count > 0)
-    {
-        @Html.Partial("_ListRides")
-    }
-
-    @if (@Model._Groups.Count + @Model.PrivateBunches.Count <= 0)
-    {
-        @Html.ActionLink("No bunches yet, please create some!", "Create", "Group",
-     null, new { @class = "btn btn-default", onclick = "ShowProgress();" })
-    }
+        <tr>
+            @if (@Model._Groups.Count > 0)
+            {
+                @Html.Partial("_ListRides")
+            }
+        </tr>
+        <tr>
+            @if (@Model._Groups.Count + @Model.PrivateBunches.Count <= 0)
+{
+    <td>
+        <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+            @Html.ActionLink("No bunches yet, please create some!", "Create", "Group",
+                  null, new { @class = "btn btn-default btn-block", onclick = "ShowProgress();" })
+            </div>
+</td>
+}
+        </tr>
 </table>
 
 <div class="loading" style="display:none;" align="center">
