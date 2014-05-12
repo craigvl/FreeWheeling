@@ -3,8 +3,6 @@
     ViewBag.Title = "Invite Others to Bunch";
 }
    
-
-
 @if (@Model.PreviousID != -1)
 {
     @Html.ActionLink("<-- Back to Bunch", "Index", "Ride", new { RideId = @Model.PreviousID }, new { @class = "btn btn-info", onclick = "ShowProgress();" })
@@ -36,13 +34,6 @@ else
     <p></p>
     <input onclick="ShowProgress();" data-bind="click: save" id="btnSubmit" type="submit" value="Invite Others" />
 </div> 
-
-<div class="loading" style="display:none;" align="center">
-    Loading. Please wait.<br />
-    <br />
-    <img src="~/Content/Images/loader.gif" alt="" />
-</div>
-
 @section Scripts {
 
     @Scripts.Render("~/bundles/knockout")

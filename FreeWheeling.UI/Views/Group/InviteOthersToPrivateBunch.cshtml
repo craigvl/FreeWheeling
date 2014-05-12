@@ -19,18 +19,14 @@
     <p></p>
 
     <button data-bind="click: addUser">Invite a User/s</button>
+    <p></p>
+    @Html.ActionLink("Skip", "Index", "Home", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
 </div>
 
 <div>
     <p></p>
     <input onclick="ShowProgress();" data-bind="click: save" id="btnSubmit" type="submit" value="Invite" />
 </div> 
-
-<div class="loading" style="display:none;" align="center">
-    Loading. Please wait.<br />
-    <br />
-    <img src="~/Content/Images/loader.gif" alt="" />
-</div>
 
 @section Scripts {
 

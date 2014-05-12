@@ -21,7 +21,6 @@
             @Html.TextBox("SearchString", null, new { @class = "pull-right form-control", @placeholder = "Search" })
         </div>
     </div>
-
 }         
     <p></p>
     <table class="table content-box">
@@ -46,22 +45,16 @@
         </tr>
         <tr>
             @if (@Model._Groups.Count + @Model.PrivateBunches.Count <= 0)
-{
-    <td>
-        <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-            @Html.ActionLink("No bunches yet, please create some!", "Create", "Group",
-                  null, new { @class = "btn btn-default btn-block", onclick = "ShowProgress();" })
-            </div>
-</td>
-}
+            {
+        <td>
+                <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                @Html.ActionLink("No bunches yet, please create some!", "Create", "Group",
+                null, new { @class = "btn btn-default btn-block", onclick = "ShowProgress();" })
+                </div>
+        </td>
+            }
         </tr>
 </table>
-
-<div class="loading" style="display:none;" align="center">
-    Loading. Please wait.<br />
-    <br />
-    <img src="~/Content/Images/loader.gif" alt="" />
-</div>
 
 @section scripts{
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")

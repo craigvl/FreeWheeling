@@ -10,8 +10,7 @@
 <div>
     <h4>Delete Ad Hoc Ride</h4>
     <hr />
-    <dl class="dl-horizontal">
-        
+    <dl class="dl-horizontal">       
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -21,13 +20,6 @@
         </dd>
 
     </dl>
-
-    <div class="loading" style="display:none;" align="center">
-        Loading. Please wait.<br />
-        <br />
-        <img src="~/Content/Images/loader.gif" alt="" />
-    </div>
-
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
 

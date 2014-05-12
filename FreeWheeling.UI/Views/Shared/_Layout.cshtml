@@ -28,8 +28,7 @@
 					<li>@Html.ActionLink("Home", "Index", "Home")</li>
 					<li>@Html.ActionLink("bunches", "Index", "Group")</li>
 					<li>@Html.ActionLink("Ad Hoc bunches", "AdHocList", "Ride")</li>
-				</ul>
-               
+				</ul>              
             </div>
             <div class="user collapse">
                 @Html.Partial("_LoginPartial")
@@ -38,6 +37,11 @@
     </div>
     <div class="container body-content">
         @RenderBody()
+        <div class="loading" style="display:none;" align="center">
+            Loading. Please wait.<br />
+            <br />
+            <img src="~/Content/Images/loader.gif" alt="" />
+        </div>
         <footer></footer>
     </div>
     @Scripts.Render("~/bundles/jquery")

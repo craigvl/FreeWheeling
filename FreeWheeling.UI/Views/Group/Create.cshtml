@@ -88,13 +88,6 @@
         </div>
     
 }
-
-<div class="loading" style="display:none;" align="center">
-    Loading. Please wait.<br />
-    <br />
-    <img src="~/Content/Images/loader.gif" alt="" />
-</div>
-
     @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
@@ -102,7 +95,6 @@
     jQuery(document).ready(function () {
         HideProgress();
     });
-
 
     $("form").submit(function () {
         if (!$(this).valid()) {

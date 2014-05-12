@@ -179,6 +179,7 @@ border-color: #e5e5e5;
     .content-box a{
         color:#333333;
     }
+
     .btn-login{
     color: #fff;
     background-color: #333333;
@@ -195,7 +196,7 @@ border-color: #e5e5e5;
         font-size:1.6em;
     }
     .user{
-          max-height: 340px;
+      max-height: 340px;
       padding-right: 15px;
       padding-left: 15px;
       overflow-x: visible;
