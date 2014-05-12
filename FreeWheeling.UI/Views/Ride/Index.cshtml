@@ -90,7 +90,7 @@
                 <div class="panel-heading ">
                     <a class="@Model.SecondKeenChevronClass" id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond"></a>
                     <a data-toggle="collapse" href="#collapseKeenSecond" class="label label-success">Keen</a>
-                    <a id="@("KeenCountSpan" + @Model.NextRide.id)">(@Model.KeenCount.ToString())</a>
+                    <a id="@("KeenCountSpan" + @Model.NextRide.id)">(@Model.NextKeenCount.ToString())</a>
                 </div>
                 <div id="collapseKeenSecond" class="@Model.SecondKeenPanelClass">
                     <div class="panel-body panelBody">
@@ -122,13 +122,11 @@
         </div>
     </div>
 </div>
-
     <div class="loading" style="display:none;" align="center">
         Loading. Please wait.<br />
         <br />
         <img src="~/Content/Images/loader.gif" alt="" />
     </div>
-
     @section scripts{
         @Scripts.Render("~/Scripts/jquery.timeago.js")
         @Scripts.Render("~/bundles/jqueryval")
