@@ -24,9 +24,9 @@
         <div class="input-group">
             @Html.TextBox("CommentString", null, new { @class = "form-control-C", id = "CommentStringFirst" })
             <span class="input-group-addon-C">
-                <button class="btn btn-success" id="@("submit_First")" type="submit">Add comment</button>
+                <button class="btn btn-default" id="@("submit_First")" type="submit">Add comment</button>
             </span>
-            @Html.ActionLink(string.Concat("View all (", @Model.CommentCount, ")"), "SeeAllComments", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id }, new { @class = "btn btn-success", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @Model.Ride.id.ToString()) })
+            @Html.ActionLink(string.Concat("View all (", @Model.CommentCount, ")"), "SeeAllComments", "Ride", new { RideId = @Model.Ride.id, Groupid = @Model.Group.id }, new { @class = "btn btn-default", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @Model.Ride.id.ToString()) })
             <span id="@("CommentCountSpan" + @Model.Ride.id)"></span>
         </div>
     }

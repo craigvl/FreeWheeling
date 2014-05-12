@@ -14,11 +14,12 @@
 @Html.Hidden("KeenCountNext", @Model.NextKeenCount)
 
 <div class="row">
-    <div class="pull-left col-md-1">
-        @Html.ActionLink(" ", "Index", "Home", null, new { @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
-    </div> 
-    <div class="pull-left col-md-1">
-        @Model.Group.name
+    <div  class="pull-left col-md-1">
+        @Html.ActionLink(" ", "Index", "Group", null, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
+    </div>
+    <hr />
+    <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+        <span class="btn btn-default btn-block">@Model.Group.name</span>
     </div>
     </div>
 @if (@Model.IsOwner)
@@ -30,94 +31,147 @@
 }
 @* Based on http://jsfiddle.net/WNbLU/ *@
 <p></p>
-<div class='panel-group'>
-    <div class='panel panel-primary'>
-        <div class="panel-heading ">
-                <a class="@Model.FirstBunchChevronClass" id="FirstDetails" data-toggle="collapse" href="#collapseFirst"></a>
-                <a class="label label-primary" data-toggle="collapse" href="#collapseFirst">
-                    @Model.Ride.RideDate.ToLongDateString() @Html.Raw(",") @Model.Ride.RideDate.ToShortTimeString()
-                </a>
-            </div>
-            <div id="collapseFirst" class="@Model.FirstBunchPanelClass">
-                <div class='panel panel-warning'>
-                    <div class="panel-heading ">
-                        <a class="@Model.FirstKeenChevronClass" id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst"></a>
-                        <a data-toggle="collapse" href="#collapseKeenFirst" class="label label-success">Keen</a>
-                        <a id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</a>
-                    </div>
-                    <div id="collapseKeenFirst" class="@Model.FirstKeenPanelClass">
-                        <div class="panel-body panelBody">
-                            <div id="@("keendiv_" + @Model.Ride.id)">
-                                @Html.Partial("_RidersKeen")
-                            </div>
-                            <hr />
-                           @Html.Partial("_KeenActionFirst")
-                         </div>
+<div class="row">
+    <div class='panel-group'>
+        <div class='panel panel-default'>
+            <div class="row">
+                <div class="panel-heading">
+                    <div class="col-xs-12 col-md-12 col-sm-12" style="">
+                        <div>
+                            <a class="col-xs-8 col-md-11 col-sm-10" data-toggle=" collapse" href="#collapseFirst">
+                                @Model.Ride.RideDate.ToLongDateString() @Html.Raw(",") @Model.Ride.RideDate.ToShortTimeString()
+                            </a>
+                        </div>
+                        <div>
+                            <a class="@Model.FirstBunchChevronClass col-xs-1 col-md-1 col-sm-1" id=" firstdetails" data-toggle="collapse" href="#collapseFirst"></a>
+                        </div>
                     </div>
                 </div>
-                <div class='panel panel-info'>
-                    <div class="panel-heading" id="CommentCollapseArea">
-                        <a id="CommentCount" class="@Model.FirstCommentChevronClass" data-toggle="collapse" href="#collapseCommentFirst"></a>
-                        <a class="label label-success" data-toggle="collapse" href="#collapseCommentFirst">Comments</a>
-                        <a id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</a>
+                </div>
+                <div id="collapseFirst" class="@Model.FirstBunchPanelClass">                  
+                    <div class='panel panel-default'>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-12 col-sm-12" style="">
+                                <div class="panel-heading" style="background-color: #FFF; color: #333333;">
+                                    <div class="col-xs-8 col-md-11 col-sm-10">
+                                        <a style="background-color: #FFF; color: #333333;" data-toggle="collapse" href="#collapseKeenFirst" class="">Keen</a>
+                                        <a style="background-color: #FFF; color: #333333;" id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</a>
+                                    </div>
+                                    <div class="col-xs-1 col-md-1 col-sm-1">
+                                        <a style="background-color: #FFF; color: #333333;" class="@Model.FirstKeenChevronClass" id="KeenCount" data-toggle="collapse" href="#collapseKeenFirst"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="collapseKeenFirst" class="@Model.FirstKeenPanelClass">
+                            <div class="panel-body panelBody">
+                                <div id="@("keendiv_" + @Model.Ride.id)">
+                                    @Html.Partial("_RidersKeen")
+                                </div>
+                                <hr />
+                                @Html.Partial("_KeenActionFirst")
+                            </div>
+                        </div>
                     </div>
-                    <div id="collapseCommentFirst" class="@Model.FirstCommentPanelClass">
+                        <div class='panel panel-default'>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-12 col-sm-12" style="">
+                                    <div class="panel-heading" id="CommentCollapseArea" style="background-color: #FFF; color: #333333;">
+                                        <div class="col-xs-8 col-md-11 col-sm-10">
+                                            <a style="background-color: #FFF; color: #333333;" data-toggle="collapse" href="#collapseCommentFirst">Comments</a>
+                                            <a style="background-color: #FFF; color: #333333;" id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</a>
+                                        </div>
+                                        <div class="col-xs-1 col-md-1 col-sm-1">
+                                            <a style="background-color: #FFF; color: #333333;" id="CommentCount" class="@Model.FirstCommentChevronClass" data-toggle="collapse" href="#collapseCommentFirst"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                <div id="collapseCommentFirst" class="@Model.FirstCommentPanelClass">
+                                    <div id="CommentCollapseArea">
+                                        <div class="panel-body panelBody">
+                                            @if (@Model.Comments != null)
+                                            {
+                                                @Html.Partial("_FirstComments")
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+    @*-------------------------------------------------Start of Next Ride -------------------------------------------------------------*@
+
+    <div class="row">
+    <div class='panel-group'>
+        <div class='panel panel-default'>
+            <div class="row">
+                <div class="panel-heading">
+                    <div class="col-xs-12 col-md-12 col-sm-12" style="">
+                        <div>
+                            <a class="col-xs-8 col-md-11 col-sm-10" data-toggle=" collapse" href="#collapseSecond">
+                                @Model.NextRide.RideDate.ToLongDateString() @Html.Raw(",") @Model.NextRide.RideDate.ToShortTimeString()
+                            </a>
+                        </div>
+                        <div>
+                            <a class="@Model.SecondBunchChevronClass col-xs-1 col-md-1 col-sm-1" id="SecondDetails" data-toggle="collapse" href="#collapseSecond"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="collapseSecond" class="@Model.SecondBunchPanelClass">
+                <div class='panel panel-default'>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12 col-sm-12" style="">
+                            <div class="panel-heading" style="background-color: #FFF; color: #333333;">
+                                <div class="col-xs-8 col-md-11 col-sm-10">
+                                    <a style="background-color: #FFF; color: #333333;" data-toggle="collapse" href="#collapseKeenSecond" class="">Keen</a>
+                                    <a style="background-color: #FFF; color: #333333;" id="@("KeenCountSpan"+@Model.NextRide.id)">(@Model.NextKeenCount.ToString())</a>
+                                </div>
+                                <div class="col-xs-1 col-md-1 col-sm-1">
+                                    <a style="background-color: #FFF; color: #333333;" class="@Model.SecondKeenChevronClass" id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="collapseKeenSecond" class="@Model.SecondKeenPanelClass">
+                        <div class="panel-body panelBody">
+                            <div id="@("keendiv_" + @Model.NextRide.id)">
+                                @Html.Partial("_RidersKeenSecond")
+                            </div>
+                            <hr />
+                            @Html.Partial("_KeenActionSecond")
+                        </div>
+                    </div>
+                </div>
+                <div class='panel panel-default'>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12 col-sm-12" style="">
+                            <div class="panel-heading" id="SecondCommentCollapseArea" style="background-color: #FFF; color: #333333;">
+                                <div class="col-xs-8 col-md-11 col-sm-10">
+                                    <a style="background-color: #FFF; color: #333333;" data-toggle="collapse" href="#collapseCommentSecond">Comments</a>
+                                    <a style="background-color: #FFF; color: #333333;" id="@("CommentCountSpan" + @Model.NextRide.id)">(@Model.NextCommentCount)</a>
+                                </div>
+                                <div class="col-xs-1 col-md-1 col-sm-1">
+                                    <a style="background-color: #FFF; color: #333333;" id="CommentCountSecond" class="@Model.SecondCommentChevronClass" data-toggle="collapse" href="#collapseCommentSecond"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="collapseCommentSecond" class="@Model.SecondCommentPanelClass">
                         <div id="CommentCollapseArea">
                             <div class="panel-body panelBody">
                                 @if (@Model.Comments != null)
                                 {
-                                    @Html.Partial("_FirstComments")
+                                    @Html.Partial("_SecondComments")
                                 }
                             </div>
                         </div>
-                   </div>
-             </div>
-        </div>
-    </div>
-</div> 
-
-@*-------------------------------------------------Start of Next Ride -------------------------------------------------------------*@
-
-<div class='panel-group'>
-    <div class='panel panel-primary'>
-        <div class="panel-heading ">
-            <a class="@Model.SecondBunchChevronClass" id="SecondDetails" data-toggle="collapse" href="#collapseSecond"></a>
-            <a class="label label-primary" data-toggle="collapse" href="#collapseSecond">
-                @Model.NextRide.RideDate.ToLongDateString() @Html.Raw(",") @Model.NextRide.RideDate.ToShortTimeString()
-            </a>
-        </div>
-        <div id="collapseSecond" class="@Model.SecondBunchPanelClass">
-            <div class='panel panel-warning'>
-                <div class="panel-heading ">
-                    <a class="@Model.SecondKeenChevronClass" id="KeenCountSecond" data-toggle="collapse" href="#collapseKeenSecond"></a>
-                    <a data-toggle="collapse" href="#collapseKeenSecond" class="label label-success">Keen</a>
-                    <a id="@("KeenCountSpan" + @Model.NextRide.id)">(@Model.NextKeenCount.ToString())</a>
-                </div>
-                <div id="collapseKeenSecond" class="@Model.SecondKeenPanelClass">
-                    <div class="panel-body panelBody">
-                        <div id="@("keendiv_" + @Model.NextRide.id)">
-                            @Html.Partial("_RidersKeenSecond")
-                        </div>
-                        <hr />
-                        @Html.Partial("_KeenActionSecond")
                     </div>
-                </div>
-            </div>
-            <div class='panel panel-info'>
-                <div class="panel-heading" id="SecondCommentCollapseArea">
-                    <a id="CommentCountSecond" class="@Model.SecondCommentChevronClass" data-toggle="collapse" href="#collapseCommentSecond"></a>
-                    <a class="label label-success" data-toggle="collapse" href="#collapseCommentSecond">Comments</a>
-                    <a id="@("CommentCountSpan" + @Model.NextRide.id)">(@Model.NextCommentCount)</a>
-                </div>
-                <div id="collapseCommentSecond" class="@Model.SecondCommentPanelClass">
-                    <div id="CommentCollapseArea">
-                        <div class="panel-body panelBody">
-                            @if (@Model.Comments != null)
-                            {
-                                @Html.Partial("_SecondComments")
-                            }
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>

@@ -238,6 +238,28 @@ border-color: #e5e5e5;
         margin-right:-15px;
     }
 
+.panel-default > .panel-heading {
+    color: #333;
+    background-color: #333333;
+    border-color: #ddd;
+}
+        .panel-default > .panel-heading a{
+        color: #FFF;
+        background-color:#333333;
+        border-color: #ddd;
+}
+
+        .panel-group .panel-heading {
+border-bottom: 0;
+color: #FFF;
+        background-color:#333333;
+        height:40px;
+}
+
+         .panel-group .panel-heading a{
+color: #FFF;
+}
+
 
 
 @media all and (max-width: 767px) {
