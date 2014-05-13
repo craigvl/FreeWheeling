@@ -26,7 +26,7 @@
 
     string riderskeenpartial = "_RidersKeen";
     string keenactionpartial = "_KeenActions";
-    string commentpartial = "_FirstComments";
+    string commentpartial = "_Comments";
     
     int rideid = Model.Ride.id;
     int keencount = Model.KeenCount;
@@ -48,7 +48,6 @@
         keenpannelclass = Model.SecondKeenPanelClass;
         commentpannelclass = Model.SecondCommentPanelClass;
 
-        commentcollapsearea = "SecondCommentCollapseArea";
         commentcountid = "CommentCountSecond";
         keencountid = "KeenCountSecond";
         
@@ -56,16 +55,12 @@
         keenpanelid = "collapseKeenSecond";
         commentpanelid = "collapseCommentSecond";
 
-        commentpartial = "_SecondComments";
-
         rideid = Model.NextRide.id;
         keencount = Model.NextKeenCount;
         commentcount = Model.NextCommentCount;        
         ridedate =  Model.NextRide.RideDate;
-
     }
 }
-
 <div class="row">
     <div class='panel-group'>
         <div class='panel panel-default'>
@@ -123,11 +118,11 @@
                         </div>
                     </div>
                     <div id="@commentpanelid" class="@commentpannelclass">
-                        <div id="CommentCollapseArea">
+                        <div id="@commentcollapsearea">
                             <div class="panel-body panelBody">
                                 @if (@Model.Comments != null)
                                 {
-                                    @Html.Partial(@commentpartial)
+                                    @Html.Partial(@commentpartial, Model, new ViewDataDictionary { { "position", @position } })
                                 }
                             </div>
                         </div>

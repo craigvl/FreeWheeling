@@ -565,6 +565,7 @@
     <Content Include="Views\Ride\_ListRandomRides.cshtml" />
     <Content Include="Views\Ride\_RidePanel.cshtml" />
     <Content Include="Views\Ride\_KeenActions.cshtml" />
+    <Content Include="Views\Ride\_Comments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

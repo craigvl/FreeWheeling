@@ -1,0 +1,49 @@
+﻿@model FreeWheeling.UI.Models.RideModelIndex
+@{
+    int position = Convert.ToInt32(ViewData["position"]);
+    int rideid = Model.Ride.id;
+    int commentcount = Model.CommentCount;
+    string submitid = "submit_First";
+    string commenttextid = "CommentStringFirst";
+    int parentid = Model.Ride.id;
+
+    if (position == 2)
+    {
+        rideid = Model.NextRide.id;
+        commentcount = Model.NextCommentCount;
+        commenttextid = "CommentStringSecond";
+        submitid = "submit_Second";
+    }
+}
+@using FreeWheeling.Domain.Entities;
+<div id="@("collapseCommentPanel" + @rideid)">
+    @foreach (Comment item in Model.Comments)
+        {
+        @item.userName <text>: </text>
+        @item.CommentText
+        @:<p></p>
+        }
+</div>
+<div>
+    @using (Ajax.BeginForm("AddComment", "Ride", new
+                {
+                    groupid = @Model.Group.id,
+                    rideid = @rideid,
+                    ParentRideID = @parentid
+                }, new AjaxOptions
+        {
+            HttpMethod = "Post",
+            OnSuccess = "CommentComplete",
+            OnBegin = "ShowProgress"
+        }))
+    {
+    <div class="input-group">
+        @Html.TextBox("CommentString", null, new { @class = "form-control-C", id = @commenttextid })
+        <span class="input-group-addon-C">
+            <button class="btn btn-default" id="@submitid" type="submit">Add comment</button>
+        </span>
+        @Html.ActionLink(string.Concat("View all (", @commentcount, ")"), "SeeAllComments", "Ride", new { RideId = @rideid, Groupid = @Model.Group.id }, new { @class = "btn btn-default", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @rideid.ToString()) })
+        <span id="@("CommentCountSpan" + @rideid)"></span>
+    </div>
+    }
+</div>
