@@ -558,15 +558,13 @@
     <Content Include="Views\Emails\SendUserReset.cshtml" />
     <Content Include="Views\Ride\_RidersKeen.cshtml" />
     <Content Include="Views\Ride\_FirstComments.cshtml" />
-    <Content Include="Views\Ride\_KeenActionFirst.cshtml" />
-    <Content Include="Views\Ride\_RidersKeenSecond.cshtml" />
     <Content Include="Views\Ride\_SecondComments.cshtml" />
-    <Content Include="Views\Ride\_KeenActionSecond.cshtml" />
     <Content Include="Views\Group\_ListPrivateRides.cshtml" />
     <Content Include="Views\Group\_ListRides.cshtml" />
     <Content Include="Views\Ride\_ListPrivateRandomRides.cshtml" />
     <Content Include="Views\Ride\_ListRandomRides.cshtml" />
     <Content Include="Views\Ride\_RidePanel.cshtml" />
+    <Content Include="Views\Ride\_KeenActions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,47 +1,71 @@
 ﻿@model FreeWheeling.UI.Models.RideModelIndex
+@{
+    int position = Convert.ToInt32(ViewData["position"]);
+    
+    int rideid = Model.Ride.id;
+    int parentid = Model.Ride.id;
+    string onsuccesskeen = "KeenCompleteFirst";
+
+
+    string inid = "InFirst";
+    string outid = "OutFirst";
+    string onwayid = "OnWayFirst";
+    
+    if (position == 2)
+    {
+        rideid = Model.NextRide.id;
+        onsuccesskeen = "KeenCompleteNext";
+        
+        inid = "InNext";
+        outid = "OutNext";
+        onwayid = "OnWayNext";
+    }
+
+
+}
 @Ajax.ActionLink("I'm In!", "Attend",
-            new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Group.id, ParentRideID = @Model.Ride.id },
+            new { RideId = @rideid, commitment = "In", Groupid = @Model.Group.id, ParentRideID = @parentid },
                  new AjaxOptions
                  {
                      HttpMethod = "POST",
-                     OnSuccess = "KeenCompleteFirst",
+                     OnSuccess = @onsuccesskeen,
                      OnBegin = "ShowProgress"
                  },
                  new
                  {
                      @class = "btn btn-primary",
                      onclick = "ShowProgress();",
-                     @id = "InFirst"
+                     @id = @inid
                  })
 
 @Ajax.ActionLink("I'm Out!", "Attend",
-            new { RideId = @Model.Ride.id, commitment = "Out", Groupid = @Model.Group.id, ParentRideID = @Model.Ride.id },
+            new { RideId = @rideid, commitment = "Out", Groupid = @Model.Group.id, ParentRideID = @parentid },
                  new AjaxOptions
                  {
                      HttpMethod = "POST",
-                     OnSuccess = "KeenCompleteFirst",
+                     OnSuccess = onsuccesskeen,
                      OnBegin = "ShowProgress"
                  },
                       new
                       {
                           @class = "btn btn-danger",
                           onclick = "ShowProgress();",
-                          @id = "OutFirst"
+                          @id = @outid
                       })
 
 @Ajax.ActionLink("On My Way!", "Attend",
-                 new { RideId = @Model.Ride.id, commitment = "OnWay", Groupid = @Model.Group.id, ParentRideID = @Model.Ride.id },
+                 new { RideId = @rideid, commitment = "OnWay", Groupid = @Model.Group.id, ParentRideID = @parentid },
                  new AjaxOptions
                  {
                      HttpMethod = "POST",
-                     OnSuccess = "KeenCompleteFirst",
+                     OnSuccess = onsuccesskeen,
                      OnBegin = "ShowProgress"
                  },
                  new
                  {
                      @class = "btn btn-success",
                      onclick = "ShowProgress();",
-                     @id = "OnWayFirst"
+                     @id = onwayid
                  })
 
 <p></p>
