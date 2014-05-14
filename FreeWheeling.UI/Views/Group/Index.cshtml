@@ -24,13 +24,13 @@
 }         
     <p></p>
     <table class="table content-box">
-    <tr>
-        <th >
-            <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-                <span class="btn btn-default btn-block">@Model.UserLocation </span>
-            </div>
-        </th>
-    </tr>
+        <tr style="width:100%">
+            <th style="width:100%">
+                <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                    <span class="btn btn-default btn-block">@Model.UserLocation</span>
+                </div>
+            </th>
+        </tr>
     <tr>
         @if (@Model.PrivateBunches.Count > 0)
         {

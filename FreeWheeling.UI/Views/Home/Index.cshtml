@@ -3,18 +3,24 @@
 @{
     ViewBag.Title = "Home Page";
 }
-
+<hr />
 @if (Model.LocationsId != 0)
 {
     if (Model.HomePageRide != null)
     {
         <table class="table content-box">
-            <tr>
-                <th><span style="position: relative; top: -3px;"><a href="Ride/ViewSingleRide?RideId=@Model.HomePageRide.id">Your next bunch</a></span></th>
+            <tr style="width:100%">
+                <th style="width:100%"><span style="position: relative; top: -3px;"><a href="/Ride/ViewSingleRide?RideId=@Model.HomePageRide.id">Your next bunch: @Model.HomePageRide.Group.name</a></span></th>
+                <th></th>
             </tr>
             <tr>
                 <td>
-                    @Model.HomePageRide.RideDate.ToLongDateString() , @Model.HomePageRide.RideDate.ToShortTimeString()
+                    <a href="/Ride/ViewSingleRide?RideId=@Model.HomePageRide.id">@Model.HomePageRide.RideDate.ToLongDateString() , @Model.HomePageRide.RideDate.ToShortTimeString()</a>
+                </td>
+                <td>
+                    @Html.ActionLink(string.Concat(" "), "ViewSingleRide", "Ride", new { RideId = @Model.HomePageRide.id },
+             new { @class = "glyphicon glyphicon-search", onclick = "ShowProgress();" })
+
                 </td>
             </tr>
         </table>

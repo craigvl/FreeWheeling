@@ -27,7 +27,7 @@ namespace FreeWheeling.UI.Controllers
             repository = repoParam;
         }
 
-        //[Compress]
+        [Compress]
         public ActionResult Index(int groupid = -1, int rideid = -1, int InviteId = -1)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
@@ -154,7 +154,7 @@ namespace FreeWheeling.UI.Controllers
             return View(_adHocViewModel);
         }
 
-        [Compress]
+        //[Compress]
         public ActionResult ViewSingleRide(int RideId)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());

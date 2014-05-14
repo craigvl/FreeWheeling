@@ -12,94 +12,104 @@
 @Html.Hidden("KeenCount", @Model.KeenCount)
 @Html.Hidden("PusherChannel", @Model.PusherChannel)
 
-@Html.ActionLink("Back <---", "Index", "Home", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
+@Html.ActionLink(" ", "Index", "Group", null, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
 
 @if (@Model.MapUrl != null)
 {
     @Html.Raw(@Model.MapUrl)
 }
 <p></p>
-<h2>@Model.Ride.Group.name</h2>
-<h3>@Model.Ride.RideDate.ToLongDateString()</h3>
-<h3>Start Location: @Model.Ride.Group.StartLocation</h3>
-<h3>Start Time: @Model.RideDate.ToShortTimeString()</h3>
+<h4>@Model.Ride.Group.name</h4>
+<h4>@Model.Ride.RideDate.ToLongDateString()</h4>
+<h4>Start Location: @Model.Ride.Group.StartLocation</h4>
+<h4>Start Time: @Model.RideDate.ToShortTimeString()</h4>
 <hr />
-
-<h4><span class="label label-success">Keen<span id="@("KeenCountSpan"+@Model.Ride.id)">(@Model.KeenCount.ToString())</span></span></h4>
-<div id="@("keendiv_" + @Model.Ride.id)">
-    @{
-        foreach (Rider item in @Model.Riders)
-        {
-            {
-                switch (item.PercentKeen)
-                {
-                    case "Out":
-                        <text>
-                            <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" style="text-decoration:line-through;" class="label label-danger">@item.Name is Out</span></p>
-                        </text>
-                        break;  // Always break each case
-                    case "OnWay":
-                    <text>
-                        <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" class="label label-success">@item.Name is on the way! Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
-                    </text>
-                        break;  // Always break each case
-                    case "In":
-                    <text>
-                        <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" class="label label-success">@item.Name is in!</span></p>
-                    </text>
-                        break;
-                }
-            }
-            <p></p>
-        }
-    }
+<div class="row">
+    <div class="col-xs-8 col-md-11 col-sm-10">
+        <a style="background-color: #FFF; color: #333333;" data-toggle="collapse" href="" class="">Keen</a>
+        <a style="background-color: #FFF; color: #333333;" id="@("KeenCountSpan" + @Model.Ride.id)">(@Model.KeenCount.ToString())</a>
+    </div>
 </div>
-<br />
-<div>
-    <hr />
-    @if (@Model.Comments != null)
-    {
-        <h4>
-            <span class="label label-success">Comments <span id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</span></span>
-        </h4>
-        @:<div id="@("collapseCommentPanel" + @Model.Ride.id)">
-        foreach (Comment item in Model.Comments)
-        {
-            @item.userName <text>: </text>
-            @item.CommentText
-            @:<p></p>
+<div class="row">
+    <div class="col-xs-8 col-md-11 col-sm-10" id="@("keendiv_" + @Model.Ride.id)">
+        @{
+            foreach (Rider item in @Model.Riders)
+            {
+                {
+                    switch (item.PercentKeen)
+                    {
+                        case "Out":
+                        <text>
+                           <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" style="" class="">@item.Name<span style="padding-left:5px;" class="glyphicon glyphicon-thumbs-down"></span></span></p>
+                        </text>
+                            break;  // Always break each case
+                        case "OnWay":
+                        <text>
+                            <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" class="">@item.Name Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
+                        </text>
+                            break;  // Always break each case
+                        case "In":
+                        <text>
+                            <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" class="">@item.Name <span style="padding-left:5px;" class="glyphicon glyphicon-thumbs-up"></span></span></p>
+                        </text>
+                        break;
+                    }
+                }
+  
+            }
         }
-
-         @Html.ActionLink(string.Concat("View all (", @Model.CommentCount, ")"), "SeeAllComments", "Ride",
+    </div>
+</div>
+    <div>   
+        @if (@Model.Comments != null)
+        {
+            <div class="row">
+                <div class="col-xs-8 col-md-11 col-sm-10">
+                    Comments
+                    <a style="background-color: #FFF; color: #333333;" id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</a>
+                </div>
+           </div> 
+              @:<div id="@("collapseCommentPanel" + @Model.Ride.id)">    
+            foreach (Comment item in Model.Comments)
+            {
+                <div class="row">
+                    <div class="col-xs-8 col-md-11 col-sm-10">
+                         @item.userName 
+                         @item.CommentText
+                    </div>  
+                </div>      
+            }
+        @Html.ActionLink(string.Concat("View all (", @Model.CommentCount, ")"), "SeeAllComments", "Ride",
         new
         {
             RideId = @Model.Ride.id,
             Groupid = @Model.Ride.Group.id
         },
-        new { @class = "btn btn-success", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @Model.Ride.id.ToString()) })
-    }
-</div>
-</div>
+        new { @class = "btn btn-default", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @Model.Ride.id.ToString()) })
+
+        } 
+        </div> 
+    </div>
 <div>
     @using (Ajax.BeginForm("AddComment", "Ride", new
-                {
+            {
                     groupid = @Model.Ride.Group.id,
                     rideid = @Model.Ride.id,
                     ParentRideID = @Model.PusherChannel
                 }, new AjaxOptions
-        {
-            HttpMethod = "Post",
-            OnSuccess = "CommentComplete",
-            OnBegin = "ShowProgress"
-        }))
-    {
-        <div class="input-group">
-            @Html.TextBox("CommentString", null, new { @class = "form-control-C", id = "CommentStringFirst" })
-            <span class="input-group-addon-C">
-                <button class="btn btn-success" id="@("submit_First")" type="submit">Add comment</button>
-            </span>
-        </div>
-    }
+                {
+                HttpMethod = "Post",
+                 OnSuccess = "CommentComplete",
+                OnBegin = "ShowProgress"
+                }))
+            {
+                <div class="input-group">
+                    @Html.TextBox("CommentString", null, new { @class = "form-control-C", id = "CommentStringFirst" })
+                    <span class="input-group-addon-C">
+                    <button class="btn btn-default" id="@("submit_First")" type="submit">Add comment</button>
+                    </span>
+                </div>
+            }
 </div>
 <hr />
 <h4><span class="label label-success">You in?</span></h4>
