@@ -557,8 +557,6 @@
     <Content Include="Views\Account\LostPassword.cshtml" />
     <Content Include="Views\Emails\SendUserReset.cshtml" />
     <Content Include="Views\Ride\_RidersKeen.cshtml" />
-    <Content Include="Views\Ride\_FirstComments.cshtml" />
-    <Content Include="Views\Ride\_SecondComments.cshtml" />
     <Content Include="Views\Group\_ListPrivateRides.cshtml" />
     <Content Include="Views\Group\_ListRides.cshtml" />
     <Content Include="Views\Ride\_ListPrivateRandomRides.cshtml" />

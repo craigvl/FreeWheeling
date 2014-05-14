@@ -37,8 +37,9 @@
             OnBegin = "ShowProgress"
         }))
     {
-    <div class="input-group">
-        @Html.TextBox("CommentString", null, new { @class = "form-control-C", id = @commenttextid })
+    <div class="form-group">
+        @Html.TextBox("CommentString", null, new { @class = "form-control", id = @commenttextid, placeholder = "Enter comment" })
+        <p></p>
         <span class="input-group-addon-C">
             <button class="btn btn-default" id="@submitid" type="submit">Add comment</button>
         </span>

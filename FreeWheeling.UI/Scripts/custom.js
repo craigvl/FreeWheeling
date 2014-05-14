@@ -20,12 +20,12 @@ function UpdateKeenActionsPusher(message, rideid, keencount, username, leavetime
         $("#KeenCountSpan" + rideid).html("(" + keencount + ")");
         var keenuser = "#keen_" + username + rideid;
         if ($("#keen_" + username + rideid).length) {
-            $(keenuser).html(username + " is in!");
-            $(keenuser).attr('class', 'label label-success');
+            $(keenuser).html(username + " <span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-up'></span>");
+            $(keenuser).attr('class', '');
             $(keenuser).css('text-decoration', 'none');
         }
         else {                     
-            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="label label-success">'+ username + ' is in!</span>');
+            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="">' + username + " <span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-up'></span>  </span>");
         }                    
     }
                 
@@ -34,12 +34,12 @@ function UpdateKeenActionsPusher(message, rideid, keencount, username, leavetime
         $("#KeenCountSpan" + rideid).html("(" + keencount + ")");
         var keenuser = "#keen_" + username + rideid;
         if ($("#keen_" + username + rideid).length) {
-            $(keenuser).html(username + " is Out!");
-            $(keenuser).attr('class', 'label label-danger');
-            $(keenuser).css("text-decoration","line-through");
+            $(keenuser).html(username + "<span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-down'></span>");
+            $(keenuser).attr('class', '');
+            $(keenuser).css("text-decoration", "");
         }
         else {
-            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="label label-danger">' + username + ' is out!</span>');
+            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="">' + username + " <span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-down'></span>  </span>");
         }
     }
                 
@@ -48,13 +48,14 @@ function UpdateKeenActionsPusher(message, rideid, keencount, username, leavetime
         $("#KeenCountSpan" + rideid).html("(" + keencount + ")");
         var keenuser = "#keen_" + username + rideid;
         if ($("#keen_" + username + rideid).length) {
-            $(keenuser).html(username + ' <span class="label label-success">Left  <abbr class="timeago" title="' + moment(leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
-            $(keenuser).attr('class', 'label label-success');
+            $(keenuser).html(username + '<span class=""> Left  <abbr class="timeago" title="' + moment(leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
+            $(keenuser).attr('class', '');
             $(keenuser).css("text-decoration", "none");
             jQuery("abbr.timeago").timeago();
         }
         else {
-            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="label label-success" style"text-decoration: none;">' + username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
+            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="" style"text-decoration: none;">' + username + '<span class=""> Left  <abbr class="timeago" title="' + moment(leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
+
         }
     }
             
@@ -70,12 +71,12 @@ function UpdateKeenActions(message, rideid, keencount, username, leavetime, posi
         $("#KeenCountSpan" + rideid).html("(" + keencount + ")");
         var keenuser = "#keen_" + username + rideid;
         if ($("#keen_" + username + rideid).length) {
-            $(keenuser).html(username + " is in!");
-            $(keenuser).attr('class', 'label label-success');
-            $(keenuser).css('text-decoration', 'none');
+            $(keenuser).html(username + " <span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-up'></span>");
+            $(keenuser).attr('class', '');
+            $(keenuser).css('text-decoration', 'none');          
         }
         else {
-            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="label label-success">' + username + ' is in!</span>');
+            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="">' + username + " <span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-up'></span>  </span>");
         }
 
         if (position == "next") {
@@ -94,12 +95,12 @@ function UpdateKeenActions(message, rideid, keencount, username, leavetime, posi
         var keenuser = "#keen_" + username + rideid;
         $("#KeenCountSpan" + rideid).html("(" + keencount + ")");
         if ($("#keen_" + username + rideid).length) {
-            $(keenuser).html(username + " is Out!");
-            $(keenuser).attr('class', 'label label-danger');
-            $(keenuser).css("text-decoration", "line-through");
+            $(keenuser).html(username + "<span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-down'></span>");
+            $(keenuser).attr('class', '');
+            $(keenuser).css("text-decoration", "");
         }
         else {
-            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="label label-danger">' + username + ' is out!</span>');
+            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="">' + username + " <span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-down'></span>  </span>");
         }
         if (position == "next") {
             $("#OutNext").hide();
@@ -117,12 +118,12 @@ function UpdateKeenActions(message, rideid, keencount, username, leavetime, posi
         var keenuser = "#keen_" + username + rideid;
         $("#KeenCountSpan" + rideid).html("(" + keencount + ")");
         if ($("#keen_" + username + rideid).length) {
-            $(keenuser).html(username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
-            $(keenuser).attr('class', 'label label-success');
+            $(keenuser).html(username + ' <span class=""> Left  <abbr class="timeago" title="' + moment(leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
+            $(keenuser).attr('class', '');
             $(keenuser).css("text-decoration", "none");
         }
         else {
-            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="label label-success" style"text-decoration: none;">' + username + '<span class="label label-success">Left  <abbr class="timeago" title="' + moment(leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
+            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="" style"text-decoration: none;">' + username + '<span class=""> is on the way! Left  <abbr class="timeago" title="' + moment(leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
         }
         jQuery("abbr.timeago").timeago();
 
