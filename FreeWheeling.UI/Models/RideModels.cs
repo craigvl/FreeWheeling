@@ -20,43 +20,43 @@ namespace FreeWheeling.UI.Models
             repository = repoParam;
         }
 
-        public AdHocViewModel PopulateAdHocModel(int adhocrideid, string UserId)
+        public SingleRideAndRandomRideViewModel PopulateAdHocModel(int adhocrideid, string UserId)
         {
             Ad_HocRide Ah = repository.GetAdHocRideByID(adhocrideid);
-            AdHocViewModel adHocViewModel = new AdHocViewModel { Ride = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime };
-            adHocViewModel.CommentCount = repository.GetCommentCountForAdHocRide(adhocrideid);
-            adHocViewModel.IsOwner = repository.IsAdHocCreator(adhocrideid, UserId);
+            SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel { RandomRide = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime };
+            _SingleRideRandomRideViewModel.CommentCount = repository.GetCommentCountForAdHocRide(adhocrideid);
+            _SingleRideRandomRideViewModel.IsOwner = repository.IsAdHocCreator(adhocrideid, UserId);
 
-            if (adHocViewModel.MapUrl != null)
+            if (_SingleRideRandomRideViewModel.MapUrl != null)
             {
-                adHocViewModel.MapUrl =
+                _SingleRideRandomRideViewModel.MapUrl =
                 string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", Ah.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
                 //https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D108681
             }
             CultureHelper _CultureHelper = new CultureHelper(repository);
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(Ah.Location.id);
-            adHocViewModel.Riders = repository.GetRidersForAdHocRide(adhocrideid, TZone);
-            adHocViewModel.KeenCount = repository.GetKeenCountForAdHocRide(Ah.id);
-            adHocViewModel.Comments = repository.GetTop2CommentsForAdHocRide(adhocrideid);
+            _SingleRideRandomRideViewModel.RandomRiders = repository.GetRidersForAdHocRide(adhocrideid, TZone);
+            _SingleRideRandomRideViewModel.KeenCount = repository.GetKeenCountForAdHocRide(Ah.id);
+            _SingleRideRandomRideViewModel.RandomComments = repository.GetTop2CommentsForAdHocRide(adhocrideid);
 
-            return adHocViewModel;
+            return _SingleRideRandomRideViewModel;
         }
 
-        public SingleRideViewModel PopulateSingleRideModel(int RideId, string UserId)
+        public SingleRideAndRandomRideViewModel PopulateSingleRideModel(int RideId, string UserId)
         {
             Ride _Ride = repository.GetRideByIDIncludeGroup(RideId);
-            SingleRideViewModel _SingleRideViewModel = new SingleRideViewModel
+            SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel
             {
                 Ride = _Ride,
                 RideDate = _Ride.RideDate,
                 RideTime = _Ride.RideTime
             };
-            _SingleRideViewModel.CommentCount = repository.GetCommentCountForRide(RideId);
-            _SingleRideViewModel.IsOwner = repository.IsGroupCreator(_Ride.Group.id,UserId);
+            _SingleRideRandomRideViewModel.CommentCount = repository.GetCommentCountForRide(RideId);
+            _SingleRideRandomRideViewModel.IsOwner = repository.IsGroupCreator(_Ride.Group.id, UserId);
 
-            if (_SingleRideViewModel.MapUrl != null)
+            if (_SingleRideRandomRideViewModel.MapUrl != null)
             {
-                _SingleRideViewModel.MapUrl =
+                _SingleRideRandomRideViewModel.MapUrl =
                 string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", _Ride.Group.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
                 //https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D108681
             }
@@ -64,12 +64,12 @@ namespace FreeWheeling.UI.Models
             Group _Group = repository.GetGroupByID(_Ride.Group.id);
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Group.Location.id);
             Ride ClosestRide = repository.GetClosestNextRide(_Ride.Group, TZone);
-            _SingleRideViewModel.PusherChannel = ClosestRide.id;
-            _SingleRideViewModel.Riders = repository.GetRidersForRide(RideId, TZone);
-            _SingleRideViewModel.KeenCount = repository.GetKeenCountForRide(RideId);
-            _SingleRideViewModel.Comments = repository.GetTop2CommentsForRide(RideId);
+            _SingleRideRandomRideViewModel.PusherChannel = ClosestRide.id;
+            _SingleRideRandomRideViewModel.Riders = repository.GetRidersForRide(RideId, TZone);
+            _SingleRideRandomRideViewModel.KeenCount = repository.GetKeenCountForRide(RideId);
+            _SingleRideRandomRideViewModel.Comments = repository.GetTop2CommentsForRide(RideId);
 
-            return _SingleRideViewModel;
+            return _SingleRideRandomRideViewModel;
         }
 
         public RideModelIndex PopulateRideModel(int RideId, int GroupId, string UserId, bool NeedPreviousRide)
@@ -281,29 +281,17 @@ namespace FreeWheeling.UI.Models
         public Ride PreviousRide { get; set; }
     }
 
-    public class AdHocViewModel
+    public class SingleRideAndRandomRideViewModel
     {
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime RideDate { get; set; }
         public string RideTime { get; set; }
-        public Ad_HocRide Ride { get; set; }
-        public List<AdHocRider> Riders { get; set; }
-        public List<Route> Routes { get; set; }
-        public List<AdHocComment> Comments { get; set; }
-        public int CommentCount { get; set; }
-        public Boolean IsOwner { get; set; }
-        public string MapUrl { get; set; }
-        public int KeenCount { get; set; }
-    }
-
-    public class SingleRideViewModel
-    {
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime RideDate { get; set; }
-        public string RideTime { get; set; }
+        public Ad_HocRide RandomRide { get; set; }
         public Ride Ride { get; set; }
+        public List<AdHocRider> RandomRiders { get; set; }
         public List<Rider> Riders { get; set; }
         public List<Route> Routes { get; set; }
+        public List<AdHocComment> RandomComments { get; set; }
         public List<Comment> Comments { get; set; }
         public int CommentCount { get; set; }
         public Boolean IsOwner { get; set; }

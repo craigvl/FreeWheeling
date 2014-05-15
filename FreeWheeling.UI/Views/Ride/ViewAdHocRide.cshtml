@@ -1,4 +1,4 @@
-﻿@model FreeWheeling.UI.Models.AdHocViewModel
+﻿@model FreeWheeling.UI.Models.SingleRideAndRandomRideViewModel
 @using FreeWheeling.Domain.Entities
 @using Microsoft.AspNet.Identity;
 
@@ -6,7 +6,7 @@
     ViewBag.Title = "View Ad Hoc bunch";
 }
 
-@Html.Hidden("RideIdHidden", @Model.Ride.id)
+@Html.Hidden("RideIdHidden", @Model.RandomRide.id)
 @Html.Hidden("RideUserNameHidden", User.Identity.GetUserName())
 @Html.Hidden("CommentCount", @Model.CommentCount)
 @Html.Hidden("KeenCount", @Model.KeenCount)
@@ -20,60 +20,38 @@
 @Html.ActionLink(" ", "Index", "Group", null, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
 
 
-<h4>@Model.Ride.Name</h4>
-<h4>@Model.Ride.RideDate.ToLongDateString()</h4>
-<h4>Start Location: @Model.Ride.StartLocation</h4>
+<h4>@Model.RandomRide.Name</h4>
+<h4>@Model.RandomRide.RideDate.ToLongDateString()</h4>
+<h4>Start Location: @Model.RandomRide.StartLocation</h4>
 <h4>Start Time: @Model.RideDate.ToShortTimeString()</h4>
-<h4>Description: @Model.Ride.Description</h4>
+<h4>Description: @Model.RandomRide.Description</h4>
 @if (@Model.IsOwner)
 {
-    @Html.ActionLink(" ", "EditAdHocRide", "Ride", new { adhocrideid = @Model.Ride.id }, new { @class = "glyphicon glyphicon-pencil", onclick = "ShowProgress();" })
+    @Html.ActionLink(" ", "EditAdHocRide", "Ride", new { adhocrideid = @Model.RandomRide.id }, new { @class = "glyphicon glyphicon-pencil", onclick = "ShowProgress();" })
 }
 <hr />
 <div class="row">
     <div class="col-xs-8 col-md-11 col-sm-10">
         <a style="background-color: #FFF; color: #333333;" data-toggle="collapse" href="" class="">Keen</a>
-        <a style="background-color: #FFF; color: #333333;" id="@("KeenCountSpan" + @Model.Ride.id)">(@Model.KeenCount.ToString())</a>
+        <a style="background-color: #FFF; color: #333333;" id="@("KeenCountSpan" + @Model.RandomRide.id)">(@Model.KeenCount.ToString())</a>
     </div>
 </div>
-<div id="@("keendiv_" + @Model.Ride.id)">
-    @{
-        foreach (AdHocRider item in @Model.Riders)
-        {
-            {
-                switch (item.PercentKeen)
-                    {
-                        case "Out":
-                        <text>
-                           <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" style="" class="">@item.Name<span style="padding-left:5px;" class="glyphicon glyphicon-thumbs-down"></span></span></p>
-                        </text>
-                            break;  // Always break each case
-                        case "OnWay":
-                        <text>
-                            <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" class="">@item.Name Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
-                        </text>
-                            break;  // Always break each case
-                        case "In":
-                        <text>
-                            <p><span id="@("keen_" + @item.Name + @Model.Ride.id)" class="">@item.Name <span style="padding-left:5px;" class="glyphicon glyphicon-thumbs-up"></span></span></p>
-                        </text>
-                        break;
-                    }
-            }
-        }
-    }
-    </div>
+<div id="@("keendiv_" + @Model.RandomRide.id)">
+@{
+   @Html.Partial("_RidersKeenRandomAndSingle", Model, new ViewDataDictionary { { "type", "random" } })
+}
+</div>
 <div>
-    @if (@Model.Comments != null)
+    @if (@Model.RandomComments != null)
     {
         <div class="row">
             <div class="col-xs-8 col-md-11 col-sm-10">
                 Comments
-                <a style="background-color: #FFF; color: #333333;" id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount)</a>
+                <a style="background-color: #FFF; color: #333333;" id="@("CommentCountSpan" + @Model.RandomRide.id)">(@Model.CommentCount)</a>
             </div>
         </div>
-        @:<div id="@("collapseCommentPanel" + @Model.Ride.id)">
-            foreach (AdHocComment item in Model.Comments)
+    @:<div id="@("collapseCommentPanel" + @Model.RandomRide.id)">
+            foreach (AdHocComment item in Model.RandomComments)
             {
                 <div class="row">
                     <div class="col-xs-8 col-md-11 col-sm-10">
@@ -85,9 +63,9 @@
             @Html.ActionLink(string.Concat("View all (", @Model.CommentCount, ")"), "SeeAllAdHocComments", "Ride",
         new
         {
-            adhocrideid = @Model.Ride.id
+            adhocrideid = @Model.RandomRide.id
         },
-        new { @class = "btn btn-default", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @Model.Ride.id.ToString()) })
+         new { @class = "btn btn-default", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @Model.RandomRide.id.ToString()) })
 
     }
 </div>
@@ -96,7 +74,7 @@
 <div>
     @using (Ajax.BeginForm("AddAdHocComment", "Ride", new
                 {
-                    adhocrideid = @Model.Ride.id
+                    adhocrideid = @Model.RandomRide.id
                 }, new AjaxOptions
         {
             HttpMethod = "Post",
@@ -117,7 +95,7 @@
 <h4><span class="label label-success">You in?</span></h4>
 
 @Ajax.ActionLink("I'm In!", "AttendAdHocRider",
-                    new { adhocrideid = @Model.Ride.id, commitment = "In" },
+                        new { adhocrideid = @Model.RandomRide.id, commitment = "In" },
                  new AjaxOptions
                  {
                      HttpMethod = "POST",
@@ -132,7 +110,7 @@
                  })
 
 @Ajax.ActionLink("I'm Out!", "AttendAdHocRider",
-                    new { adhocrideid = @Model.Ride.id, commitment = "Out" },
+                        new { adhocrideid = @Model.RandomRide.id, commitment = "Out" },
                  new AjaxOptions
                  {
                      HttpMethod = "POST",
@@ -147,7 +125,7 @@
                       })
 
 @Ajax.ActionLink("On My Way!", "AttendAdHocRider",
-                         new { adhocrideid = @Model.Ride.id, commitment = "OnWay" },
+                             new { adhocrideid = @Model.RandomRide.id, commitment = "OnWay" },
                  new AjaxOptions
                  {
                      HttpMethod = "POST",
@@ -167,7 +145,7 @@
     @Html.ActionLink("Invite Users", "InviteOthersToAdHocBunch", "Ride",
         new
         {
-            adhocrideid = @Model.Ride.id
+            adhocrideid = @Model.RandomRide.id
         },
         new { @class = "btn btn-success", onclick = "ShowProgress();", id = "InviteFirst" })
 </div>
