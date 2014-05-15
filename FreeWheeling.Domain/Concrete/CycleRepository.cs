@@ -277,7 +277,7 @@ namespace FreeWheeling.Domain.Concrete
             {
                 R.LeaveTime = TimeZoneInfo.ConvertTimeFromUtc(R.LeaveTime, TimeZone);
             }
-            return Riders;
+            return Riders.OrderBy(i => i.PercentKeen).ToList();
         }
 
         public List<Rider> GetRidersForRideDontIncludeCurrentUser(int id, TimeZoneInfo TimeZone, string CurrentUserId)
