@@ -18,8 +18,8 @@
         randomriders = Model.RandomRiders;
         rideid = Model.RandomRide.id;
     }    
-}
-@if (type == "single")
+
+if (type == "single")
 {
     foreach (Rider item in @riders)
         {
@@ -43,10 +43,9 @@
                     break;
                 }
             }
-        <p></p>
     }
 }
-@if (type == "random")
+if (type == "random")
 {
     foreach (AdHocRider item in @randomriders)
     {
@@ -72,4 +71,5 @@
         }
         <p></p>
     }
+}
 }

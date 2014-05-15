@@ -1,7 +1,10 @@
 ﻿@model FreeWheeling.UI.Models.SingleRideAndRandomRideViewModel
 @using FreeWheeling.Domain.Entities
 @using Microsoft.AspNet.Identity;
-
+@* ///////////////////////////////NOTE//////////////////////////////////
+      If you change this file then you should also change the ViewAdHocRide.cshtml to match, Thanks!
+    Note: IsOwner is not required for this view.
+////////////////////////////////////////////////////////////////////////////////////////////////// *@
 @{
     ViewBag.Title = "View Single Ride";
 }
@@ -19,17 +22,30 @@
     @Html.Raw(@Model.MapUrl)
 }
 <p></p>
-<h4>@Model.Ride.Group.name</h4>
-<h4>@Model.Ride.RideDate.ToLongDateString()</h4>
+<table class="table content-box">
+    <tr style="width:100%">
+        <th style="width:100%">
+            <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                <span class="btn btn-default btn-block">
+                   @Model.Ride.Group.name : @Model.Ride.RideDate.ToLongDateString()                 
+                </span>
+            </div>
+        </th>
+    </tr>
+</table>
 <h4>Start Location: @Model.Ride.Group.StartLocation</h4>
 <h4>Start Time: @Model.RideDate.ToShortTimeString()</h4>
-<hr />
-<div class="row">
-    <div class="col-xs-8 col-md-11 col-sm-10">
-        <a style="background-color: #FFF; color: #333333;" data-toggle="collapse" href="" class="">Keen</a>
-        <a style="background-color: #FFF; color: #333333;" id="@("KeenCountSpan" + @Model.Ride.id)">(@Model.KeenCount.ToString())</a>
-    </div>
-</div>
+
+<table class="table content-box">
+    <tr style="width:100%">
+        <th style="width:100%">
+            <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                <span class="btn btn-default btn-block">Keen (@Model.KeenCount.ToString())</span>
+            </div>
+        </th>
+    </tr>
+</table>
+
 <div class="row">
     <div class="col-xs-8 col-md-11 col-sm-10" id="@("keendiv_" + @Model.Ride.id)">
         @{
@@ -37,58 +53,32 @@
         }
     </div>
 </div>
+<table class="table content-box">
+    <tr style="width:100%">
+        <th style="width:100%">
+            <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                <span class="btn btn-default btn-block">Comments <span id="@("CommentCountSpan" + @Model.Ride.id)"></span></span>
+            </div>
+        </th>
+    </tr>
+</table>
     <div>   
         @if (@Model.Comments != null)
         {
             @Html.Partial("_CommentsRandomAndSingle", Model, new ViewDataDictionary { { "type", "single" } })
         }
 </div>
-<hr />
-<h4><span class="label label-success">You in?</span></h4>
+<table class="table content-box">
+    <tr style="width:100%">
+        <th style="width:100%">
+            <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                <span class="btn btn-default btn-block">You in?</span>
+            </div>
+        </th>
+    </tr>
+</table>
 
-@Ajax.ActionLink("I'm In!", "AttendSingleRide",
-                new { RideId = @Model.Ride.id, commitment = "In", Groupid = @Model.Ride.Group.id, ParentRideID = @Model.PusherChannel },
-                 new AjaxOptions
-                 {
-                     HttpMethod = "POST",
-                     OnSuccess = "KeenCompleteFirst",
-                     OnBegin = "ShowProgress"
-                 },
-                 new
-                 {
-                     @class = "btn btn-primary",
-                     onclick = "ShowProgress();",
-                     @id = "InFirst"
-                 })
-
-@Ajax.ActionLink("I'm Out!", "AttendSingleRide",
-                    new { RideId = @Model.Ride.id, commitment = "Out", Groupid = @Model.Ride.Group.id, ParentRideID = @Model.PusherChannel },
-                 new AjaxOptions
-                 {
-                     HttpMethod = "POST",
-                     OnSuccess = "KeenCompleteFirst",
-                     OnBegin = "ShowProgress"
-                 },
-                      new
-                      {
-                          @class = "btn btn-danger",
-                          onclick = "ShowProgress();",
-                          @id = "OutFirst"
-                      })
-@Ajax.ActionLink("On My Way!", "AttendSingleRide",
-                     new { RideId = @Model.Ride.id, commitment = "OnWay", Groupid = @Model.Ride.Group.id, ParentRideID = @Model.PusherChannel },
-                 new AjaxOptions
-                 {
-                     HttpMethod = "POST",
-                     OnSuccess = "KeenCompleteFirst",
-                     OnBegin = "ShowProgress"
-                 },
-                 new
-                 {
-                     @class = "btn btn-success",
-                     onclick = "ShowProgress();",
-                     @id = "OnWayFirst"
-                 })
+@Html.Partial("_KeenActionsRandomAndSingle", Model, new ViewDataDictionary { { "type", "single" } })
 <p></p>
 @section scripts{
     @Scripts.Render("~/Scripts/jquery.timeago.js")

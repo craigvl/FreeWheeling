@@ -1,7 +1,9 @@
 ﻿@model FreeWheeling.UI.Models.SingleRideAndRandomRideViewModel
 @using FreeWheeling.Domain.Entities
 @using Microsoft.AspNet.Identity;
-
+@* ///////////////////////////////NOTE//////////////////////////////////
+    If you change this file then you should also change the ViewSingleRide.cshtml to match, Thanks!
+////////////////////////////////////////////////////////////////////////////////////////////////// *@
 @{
     ViewBag.Title = "View Ad Hoc bunch";
 }
@@ -11,217 +13,161 @@
 @Html.Hidden("CommentCount", @Model.CommentCount)
 @Html.Hidden("KeenCount", @Model.KeenCount)
 
+@Html.ActionLink(" ", "Index", "Group", null, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
+
 @if (@Model.MapUrl != null)
 {
     @Html.Raw(@Model.MapUrl)
 }
 <p></p>
-
-@Html.ActionLink(" ", "Index", "Group", null, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
-
-
-<h4>@Model.RandomRide.Name</h4>
-<h4>@Model.RandomRide.RideDate.ToLongDateString()</h4>
+<table class="table content-box">
+    <tr style="width:100%">
+        <th style="width:100%">
+            <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                <span class="btn btn-default btn-block">
+                    @Model.RandomRide.Name : @Model.RandomRide.RideDate.ToLongDateString()
+                    <span style="background-color:white;">
+                        @if (@Model.IsOwner)
+                        {
+                            @Html.ActionLink(" ", "EditAdHocRide", "Ride", new { adhocrideid = @Model.RandomRide.id }, new { @class = "glyphicon glyphicon-pencil", onclick = "ShowProgress();" })
+                        }
+                    </span>
+                </span>
+            </div>
+        </th>
+    </tr>
+</table>
 <h4>Start Location: @Model.RandomRide.StartLocation</h4>
 <h4>Start Time: @Model.RideDate.ToShortTimeString()</h4>
 <h4>Description: @Model.RandomRide.Description</h4>
-@if (@Model.IsOwner)
-{
-    @Html.ActionLink(" ", "EditAdHocRide", "Ride", new { adhocrideid = @Model.RandomRide.id }, new { @class = "glyphicon glyphicon-pencil", onclick = "ShowProgress();" })
-}
-<hr />
-<div class="row">
-    <div class="col-xs-8 col-md-11 col-sm-10">
-        <a style="background-color: #FFF; color: #333333;" data-toggle="collapse" href="" class="">Keen</a>
-        <a style="background-color: #FFF; color: #333333;" id="@("KeenCountSpan" + @Model.RandomRide.id)">(@Model.KeenCount.ToString())</a>
-    </div>
-</div>
-<div id="@("keendiv_" + @Model.RandomRide.id)">
-@{
-   @Html.Partial("_RidersKeenRandomAndSingle", Model, new ViewDataDictionary { { "type", "random" } })
-}
-</div>
-<div>
-    @if (@Model.RandomComments != null)
-    {
-        <div class="row">
-            <div class="col-xs-8 col-md-11 col-sm-10">
-                Comments
-                <a style="background-color: #FFF; color: #333333;" id="@("CommentCountSpan" + @Model.RandomRide.id)">(@Model.CommentCount)</a>
+
+<table class="table content-box">
+    <tr style="width:100%">
+        <th style="width:100%">
+
+            <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                <span class="btn btn-default btn-block">Keen (@Model.KeenCount.ToString())</span>
+               
             </div>
-        </div>
-    @:<div id="@("collapseCommentPanel" + @Model.RandomRide.id)">
-            foreach (AdHocComment item in Model.RandomComments)
-            {
-                <div class="row">
-                    <div class="col-xs-8 col-md-11 col-sm-10">
-                        @item.userName
-                        @item.CommentText
-                    </div>
-                </div>
+        </th>
+    </tr>
+    </table>
+    <div class="row">
+        <div class="col-xs-8 col-md-11 col-sm-10" id="@("keendiv_" + @Model.RandomRide.id)">
+            @{
+                @Html.Partial("_RidersKeenRandomAndSingle", Model, new ViewDataDictionary { { "type", "random" } })
             }
-            @Html.ActionLink(string.Concat("View all (", @Model.CommentCount, ")"), "SeeAllAdHocComments", "Ride",
-        new
-        {
-            adhocrideid = @Model.RandomRide.id
-        },
-         new { @class = "btn btn-default", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @Model.RandomRide.id.ToString()) })
-
-    }
-</div>
-</div>
-
-<div>
-    @using (Ajax.BeginForm("AddAdHocComment", "Ride", new
-                {
-                    adhocrideid = @Model.RandomRide.id
-                }, new AjaxOptions
-        {
-            HttpMethod = "Post",
-            OnSuccess = "CommentComplete",
-            OnBegin = "ShowProgress"
-        }))
-    {
-        <div class="input-group">
-            @Html.TextBox("CommentString", null, new { @class = "form-control", id = "CommentStringFirst" })
-            <span >
-                <button class="btn btn-default" id="@("submit_First")" type="submit">Add comment</button>
-            </span>
         </div>
-    }
+    </div>
+<table class="table content-box">
+    <tr style="width:100%">
+        <th style="width:100%">
+            <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                <span class="btn btn-default btn-block">Comments <span id="@("CommentCountSpan" + @Model.RandomRide.id)"></span></span>
+            </div>
+        </th>
+    </tr>
+</table>
+    <div>
+        @if (@Model.RandomComments != null)
+        {
+            @Html.Partial("_CommentsRandomAndSingle", Model, new ViewDataDictionary { { "type", "random" } })
+        }
+    </div>
 
-</div>
-<hr />
-<h4><span class="label label-success">You in?</span></h4>
+    <table class="table content-box">
+    <tr style="width:100%">
+        <th style="width:100%">
+            <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                <span class="btn btn-default btn-block">You in?</span>
+            </div>
+        </th>
+    </tr>
+</table>
 
-@Ajax.ActionLink("I'm In!", "AttendAdHocRider",
-                        new { adhocrideid = @Model.RandomRide.id, commitment = "In" },
-                 new AjaxOptions
-                 {
-                     HttpMethod = "POST",
-                     OnSuccess = "KeenComplete",
-                     OnBegin = "ShowProgress"
-                 },
-                 new
-                 {
-                     @class = "btn btn-primary",
-                     onclick = "ShowProgress();",
-                     @id = "InFirst"
-                 })
-
-@Ajax.ActionLink("I'm Out!", "AttendAdHocRider",
-                        new { adhocrideid = @Model.RandomRide.id, commitment = "Out" },
-                 new AjaxOptions
-                 {
-                     HttpMethod = "POST",
-                     OnSuccess = "KeenComplete",
-                     OnBegin = "ShowProgress"
-                 },
-                      new
-                      {
-                          @class = "btn btn-danger",
-                          onclick = "ShowProgress();",
-                          @id = "OutFirst"
-                      })
-
-@Ajax.ActionLink("On My Way!", "AttendAdHocRider",
-                             new { adhocrideid = @Model.RandomRide.id, commitment = "OnWay" },
-                 new AjaxOptions
-                 {
-                     HttpMethod = "POST",
-                     OnSuccess = "KeenComplete",
-                     OnBegin = "ShowProgress"
-                 },
-                 new
-                 {
-                     @class = "btn btn-success",
-                     onclick = "ShowProgress();",
-                     @id = "OnWayFirst"
-                 })
-
-<p></p>
-
-<div id="Invite_Users_First">
-    @Html.ActionLink("Invite Users", "InviteOthersToAdHocBunch", "Ride",
+    @Html.Partial("_KeenActionsRandomAndSingle", Model, new ViewDataDictionary { { "type", "random" } })
+    <p></p>
+    <div id="Invite_Users_First">
+        @Html.ActionLink("Invite Users", "InviteOthersToAdHocBunch", "Ride",
         new
         {
             adhocrideid = @Model.RandomRide.id
         },
         new { @class = "btn btn-success", onclick = "ShowProgress();", id = "InviteFirst" })
-</div>
-@section scripts{
-    @Scripts.Render("~/Scripts/jquery.timeago.js")
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/azuremobile")
-    @Scripts.Render("~/bundles/pusher")
-    <script>
-        var socketId = null;
+    </div>
+    @section scripts{
+        @Scripts.Render("~/Scripts/jquery.timeago.js")
+        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/azuremobile")
+        @Scripts.Render("~/bundles/pusher")
+        <script>
+            var socketId = null;
 
-        function KeenComplete(data) {
-            HideProgress();
-            //Keen
-            var client = new WindowsAzure.MobileServiceClient(
-                     "http://bunchydev.azure-mobile.net/",
-                     "HIdMfCPoYsHPanowdOvYsYOnmbZbsq45"
-                      );
+            function KeenCompleteFirst(data) {
+                HideProgress();
+                //Keen
+                var client = new WindowsAzure.MobileServiceClient(
+                         "http://bunchydev.azure-mobile.net/",
+                         "HIdMfCPoYsHPanowdOvYsYOnmbZbsq45"
+                          );
 
-            var item = {
-                text: data.message,
-                bunchid: data.rideid,
-                username: data.username,
-                keencount: data.keencount,
-                leavetime: data.leavetime,
-                socket_id: socketId
-            };
-            client.getTable("Keenadhoc").insert(item);
-            $("form #submit_AdHocComment").val("");     
-            UpdateKeenActions(data.message, data.rideid, data.keencount, data.username, data.leavetime);
-        }
+                var item = {
+                    text: data.message,
+                    bunchid: data.rideid,
+                    username: data.username,
+                    keencount: data.keencount,
+                    leavetime: data.leavetime,
+                    socket_id: socketId
+                };
+                client.getTable("Keenadhoc").insert(item);
+                $("form #submit_AdHocComment").val("");
+                UpdateKeenActions(data.message, data.rideid, data.keencount, data.username, data.leavetime);
+            }
 
-        function CommentComplete(data) {
-            HideProgress();
-            //Azure Mobile Storage
-            //Comments
+            function CommentComplete(data) {
+                HideProgress();
+                //Azure Mobile Storage
+                //Comments
 
-            var client = new WindowsAzure.MobileServiceClient(
-                      "http://bunchydev.azure-mobile.net/",
-                      "HIdMfCPoYsHPanowdOvYsYOnmbZbsq45"
-                       );
+                var client = new WindowsAzure.MobileServiceClient(
+                          "http://bunchydev.azure-mobile.net/",
+                          "HIdMfCPoYsHPanowdOvYsYOnmbZbsq45"
+                           );
 
-            var item = {
-                text: data.message,
-                bunchid: data.rideid,
-                username: data.username,
-                commentcount: data.commentcount,
-                socket_id: socketId
-            };
-            client.getTable("ItemAdHoc").insert(item);               
-            UpdateCommentFields(data.message, data.rideid, data.username, data.commentcount);
-        }
+                var item = {
+                    text: data.message,
+                    bunchid: data.rideid,
+                    username: data.username,
+                    commentcount: data.commentcount,
+                    socket_id: socketId
+                };
+                client.getTable("ItemAdHoc").insert(item);
+                UpdateCommentFields(data.message, data.rideid, data.username, data.commentcount);
+            }
 
-        jQuery(document).ready(function () {
-            HideProgress();
-            var rideId = jQuery('#RideIdHidden').val();
-            var pusher = new Pusher('dba777635636cbc16582');
-            var channel = pusher.subscribe('BunchyRide' + rideId);
-            var userName = jQuery('#RideUserNameHidden').val();
-            var commentCount = jQuery('#CommentCount').val();
-            var keenCount = jQuery('#KeenCount').val();
+            jQuery(document).ready(function () {
+                HideProgress();
+                var rideId = jQuery('#RideIdHidden').val();
+                var pusher = new Pusher('dba777635636cbc16582');
+                var channel = pusher.subscribe('BunchyRide' + rideId);
+                var userName = jQuery('#RideUserNameHidden').val();
+                var commentCount = jQuery('#CommentCount').val();
+                var keenCount = jQuery('#KeenCount').val();
 
-            channel.bind('New-CommentsAdHoc', function (data) {
-                UpdateCommentFieldsPusher(data.message, data.rideid, data.username, data.commentcount);
+                channel.bind('New-CommentsAdHoc', function (data) {
+                    UpdateCommentFieldsPusher(data.message, data.rideid, data.username, data.commentcount);
+                });
+
+                pusher.connection.bind('connected', function () {
+                    socketId = pusher.connection.socket_id;
+                });
+
+                channel.bind('You-InAdHoc', function (data) {
+                    UpdateKeenActionsPusher(data.message, data.rideid, data.keencount, data.username, data.leavetime);
+                });
+
+                jQuery("abbr.timeago").timeago();
             });
 
-            pusher.connection.bind('connected', function () {
-                socketId = pusher.connection.socket_id;
-            });
-
-            channel.bind('You-InAdHoc', function (data) {
-                UpdateKeenActionsPusher(data.message, data.rideid, data.keencount, data.username, data.leavetime);
-            });
-
-            jQuery("abbr.timeago").timeago();
-        });
-
-    </script>
-}
+        </script>
+    }
