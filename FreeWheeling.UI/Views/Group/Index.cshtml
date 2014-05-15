@@ -10,10 +10,8 @@
 @using (Html.BeginForm())
 {
      <p></p>
+     @Html.ActionLink(" ", "Index", "Home", null, new { @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
     <div class="container-fluid">
-        <div class="pull-left">
-            @Html.ActionLink(" ", "Index", "Home", null, new { @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
-        </div>
         <div class="pull-right" style="padding-left:10px">
             <input onclick="ShowProgress();" type="submit" class="pull-right btn btn-default" value="Go" />
         </div>
