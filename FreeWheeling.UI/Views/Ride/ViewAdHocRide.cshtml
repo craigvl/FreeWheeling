@@ -13,45 +13,40 @@
 @Html.Hidden("CommentCount", @Model.CommentCount)
 @Html.Hidden("KeenCount", @Model.KeenCount)
 <p></p>
-@Html.ActionLink(" ", "AdHocList", "Ride", null, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
-
+<div class="row" style="padding-left:10px;padding-right:10px;">
+    <span>
+        @Html.ActionLink(" ", "AdHocList", "Ride", null, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
+    </span>
+    <span class="pull-right">
+        @if (@Model.IsOwner)
+        {
+            @Html.ActionLink(" ", "EditAdHocRide", "Ride", new { adhocrideid = @Model.RandomRide.id }, new {  @style = "background-color: #FFF; color: #333333;", @class = "pull-rigth glyphicon glyphicon-pencil", onclick = "ShowProgress();" })
+        }
+    </span>
 @if (@Model.MapUrl != null)
 {
     @Html.Raw(@Model.MapUrl)
 }
+</div>
 <p></p>
-<table class="table content-box">
-    <tr style="width:100%">
-        <th style="width:100%">
-            <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-                <span class="btn btn-default btn-block">
-                    @Model.RandomRide.Name : @Model.RandomRide.RideDate.ToLongDateString()
-                    <span style="background-color:white;">
-                        @if (@Model.IsOwner)
-                        {
-                            @Html.ActionLink(" ", "EditAdHocRide", "Ride", new { adhocrideid = @Model.RandomRide.id }, new { @class = "glyphicon glyphicon-pencil", onclick = "ShowProgress();" })
-                        }
-                    </span>
+<div class="row">
+        <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+           <span class="btn btn-default btn-block">
+               @Model.RandomRide.Name : @Model.RandomRide.RideDate.ToLongDateString() : @Model.RideDate.ToShortTimeString()
+               <span style="background-color:white;">
                 </span>
-            </div>
-        </th>
-    </tr>
-</table>
+             </span>
+       </div>
+ </div>
 <h4>Start Location: @Model.RandomRide.StartLocation</h4>
-<h4>Start Time: @Model.RideDate.ToShortTimeString()</h4>
 <h4>Description: @Model.RandomRide.Description</h4>
 
-<table class="table content-box">
-    <tr style="width:100%">
-        <th style="width:100%">
+<div class="row">
+    <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+        <span style="background-color: #C0C0BA; color: #333333; " class="btn btn-default btn-block">Keen (@Model.KeenCount.ToString())</span>
+    </div>
+</div>
 
-            <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-                <span class="btn btn-default btn-block">Keen (@Model.KeenCount.ToString())</span>
-               
-            </div>
-        </th>
-    </tr>
-    </table>
     <div class="row">
         <div class="col-xs-8 col-md-11 col-sm-10" id="@("keendiv_" + @Model.RandomRide.id)">
             @{
@@ -59,31 +54,26 @@
             }
         </div>
     </div>
-<table class="table content-box">
-    <tr style="width:100%">
-        <th style="width:100%">
-            <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-                <span class="btn btn-default btn-block">Comments <span id="@("CommentCountSpan" + @Model.RandomRide.id)"></span></span>
-            </div>
-        </th>
-    </tr>
-</table>
+
+
+<div class="row">
+    <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+        <span style="background-color: #C0C0BA; color: #333333; " class="btn btn-default btn-block">Comments <span id="@("CommentCountSpan" + @Model.RandomRide.id)"></span></span>
+    </div>
+</div>
+
     <div>
         @if (@Model.RandomComments != null)
         {
             @Html.Partial("_CommentsRandomAndSingle", Model, new ViewDataDictionary { { "type", "random" } })
         }
     </div>
+<div class="row">
+    <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+        <span style="background-color: #C0C0BA; color: #333333; " class="btn btn-default btn-block">You in?</span>
+    </div>
+</div>
 
-    <table class="table content-box">
-    <tr style="width:100%">
-        <th style="width:100%">
-            <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-                <span class="btn btn-default btn-block">You in?</span>
-            </div>
-        </th>
-    </tr>
-</table>
 
     @Html.Partial("_KeenActionsRandomAndSingle", Model, new ViewDataDictionary { { "type", "random" } })
     <p></p>

@@ -123,6 +123,20 @@ border-color: #e5e5e5;
 }
 
 /*Bootstrap style for autocomplete*/
+
+/*Hides text that tells user to use arrow keys*/
+.ui-helper-hidden-accessible {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+
 .ui-autocomplete {
     position: absolute;
     top: 100%;

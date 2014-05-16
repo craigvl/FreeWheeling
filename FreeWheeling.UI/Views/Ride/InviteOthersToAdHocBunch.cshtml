@@ -6,9 +6,16 @@
 <p></p>
 
 @Html.ActionLink(" ", "ViewAdHocRide", "Ride", new { adhocrideid = @Model.adhocrideid }, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
-<h4>Invite Others To Ad Hoc Bunch @Model.Name</h4>
-<h4>Date: @Model.RideDate</h4>
-
+<p></p>
+<div class="row">
+    <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+        <span class="btn btn-default btn-block">
+            Invite Others : @Model.Name :
+            Date: @Model.RideDate
+        </span>
+ </div>
+</div>
+<p></p>
 <div id="templated">
     @Html.HiddenFor(model => model.adhocrideid, new { @id = "RideIdHidden" })
     <table>
@@ -16,16 +23,20 @@
     </table>
     <script type="text/html" id="userRowTemplate">
         <tr>
-            <td>User name: <input id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" /></td>
+            <td>Enter User name or a valid email address <p></p> <input class="form-control" id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" />
+            <p></p>
+            Hit Select a user again to invite another user!
+            <p></p>
+            </td>
         </tr>
     </script>
     <p></p>
-    <button data-bind="click: addUser">Invite a User/s</button>
+    <button class="btn" data-bind="click: addUser">Select a user</button>
 </div>
 
 <div>
     <p></p>
-    <input onclick="ShowProgress();" data-bind="click: save" id="btnSubmit" type="submit" value="Invite Others" />
+    <input class="btn" onclick="ShowProgress();" data-bind="click: save" id="btnSubmit" type="submit" value="Send Invites" />
 </div>
 @section Scripts {
 
@@ -50,11 +61,9 @@
             var self = this;
             self.usersLines = ko.observableArray([]);
 
-
             self.addUser = function () {
 
                 self.usersLines.push(new UserModel);
-
             };
 
             self.save = function () {
@@ -100,9 +109,7 @@
                 source: '@Url.Action("GetNames","Group")'
             });
 
-
-            ko.applyBindings(RideModel);
-
+            ko.applyBindings(new RideModel());
         })
 
     </script>

@@ -380,7 +380,7 @@ namespace FreeWheeling.Domain.Concrete
                 AdHoc.LeaveTime = TimeZoneInfo.ConvertTimeFromUtc(AdHoc.LeaveTime, TimeZone);
             }
 
-            return AList;
+            return AList.OrderBy(i => i.PercentKeen).ToList();
         }
 
         public List<AdHocRider> GetRidersForAdHocRideDontIncludeCurrentUser(int AdHocRideid, TimeZoneInfo TimeZone, string CurrentUserId)

@@ -4,6 +4,7 @@
     
     int rideid = Model.Ride.id;
     int parentid = Model.Ride.id;
+    int groupid = Model.Group.id;
     string onsuccesskeen = "KeenCompleteFirst";
 
 
@@ -69,3 +70,13 @@
                  })
 
 <p></p>
+
+<div id="Invite_Users">
+    @Html.ActionLink("Invite Users", "InviteOthersToBunch", "Ride",
+        new
+        {
+            RideId = @rideid,
+            PreviousID = @groupid
+        },
+        new { @class = "btn btn-success", onclick = "ShowProgress();", id = "InviteFirst" })
+</div>
