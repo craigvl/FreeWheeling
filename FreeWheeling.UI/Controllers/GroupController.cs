@@ -404,6 +404,18 @@ namespace FreeWheeling.UI.Controllers
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
             repository.RemoveMember(currentUser.Id, group);
             repository.Save();
+
+            Task T = new Task(() =>
+               {
+                   Ride _Ride = repository.GetHomePageRideByUserID(currentUser.Id);
+                   if (_Ride.Group.id == id)
+                   {
+                       repository.DeleteHomePageRide(currentUser.Id);
+                   }
+               });
+
+            T.Start();
+
             return RedirectToAction("Index", "Group");
         }
 

@@ -92,6 +92,7 @@ namespace FreeWheeling.Domain.Abstract
         void DeleteGroup(int GroupId);
         void DeleteOldRides(int GroupId, TimeZoneInfo TimeZone);
         void DeleteAdHocRide(int AdHocId);
+        void DeleteHomePageRide(string UserId);
         
         //Update
         void UpdateGroup(Group _Group);

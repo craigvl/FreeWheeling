@@ -353,7 +353,7 @@ namespace FreeWheeling.Domain.Concrete
             HomePageRide _HomePageRide = context.HomePageRide.Where(i => i.Userid == UserId).FirstOrDefault();
             if (_HomePageRide != null)
             {
-                return context.Rides.Where(r => r.id == _HomePageRide.Rideid).FirstOrDefault();
+                return context.Rides.Include("Group").Where(r => r.id == _HomePageRide.Rideid).FirstOrDefault();
             }
             else
             {
@@ -949,6 +949,14 @@ namespace FreeWheeling.Domain.Concrete
             context.SaveChanges();
         }
 
+        public void DeleteHomePageRide(string UserId)
+        {
+            HomePageRide CurrentHomePageRide = context.HomePageRide.Where(u => u.Userid == UserId).FirstOrDefault();
+            context.HomePageRide.Remove(CurrentHomePageRide);
+            context.Entry(CurrentHomePageRide).State = System.Data.Entity.EntityState.Deleted;
+            context.SaveChanges();
+        }
+
         public void DeleteAdHocRide(int AdHocId)
         {
             Ad_HocRide CurrentAdHocRide = context.Ad_HocRide.Where(g => g.id == AdHocId).FirstOrDefault();
@@ -1004,7 +1012,5 @@ namespace FreeWheeling.Domain.Concrete
         {
             context.SaveChanges();
         }
-
-
     }
 }

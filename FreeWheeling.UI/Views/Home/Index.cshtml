@@ -7,7 +7,7 @@
 @if (Model.LocationsId != 0)
 {
     if (Model.HomePageRide != null)
-    {
+    {   
         <table class="table content-box">
             <tr style="width:100%">
                 <th style="width:100%"><span style="position: relative; top: -3px;"><a href="/Ride/ViewSingleRide?RideId=@Model.HomePageRide.id">Your next bunch: @Model.HomePageRide.Group.name</a></span></th>
