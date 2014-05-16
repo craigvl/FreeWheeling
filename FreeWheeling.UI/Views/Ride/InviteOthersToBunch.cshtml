@@ -2,14 +2,14 @@
 @{
     ViewBag.Title = "Invite Others to Bunch";
 }
-   
+<p></p>   
 @if (@Model.PreviousID != -1)
 {
-    @Html.ActionLink("<-- Back to Bunch", "Index", "Ride", new { RideId = @Model.PreviousID }, new { @class = "btn btn-info", onclick = "ShowProgress();" })
+    @Html.ActionLink(" ", "Index", "Ride", new { RideId = @Model.PreviousID }, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
 }
 else
 {
-    @Html.ActionLink("Back <---", "Index", "Ride", new { rideid = @Model.RideId }, new { @class = "btn btn-info", onclick = "ShowProgress();" })
+    @Html.ActionLink(" ", "Index", "Ride", new { rideid = @Model.RideId }, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
 }
 
     <h4>Invite Others To Bunch @Model.Name</h4>
