@@ -6,8 +6,12 @@
 
 <link href="~/Content/datepicker.css" rel="stylesheet" />
 @Styles.Render("~/Content/jqueryui")
-
-@Html.ActionLink("Back Home <---", "Index", "Home", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
+<p></p>
+<div class="container-fluid">
+    <div class="pull-left">
+        @Html.ActionLink(" ", "Index", "Home", null, new { @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
+    </div>
+</div>
 
 <h2>Create a random bunch</h2>
 

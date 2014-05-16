@@ -4,13 +4,13 @@
 @{
     ViewBag.Title = "Add Hoc bunches";
 }
-
+<p></p>
 <div class="container-fluid">
     <div class="pull-left">
         @Html.ActionLink(" ", "Index", "Home", null, new { @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
     </div>
 </div>
-
+<p></p>
 <table class="table content-box">
     <tr style="width:100%">
         <th style="width:100%">
@@ -42,7 +42,7 @@
                 <table style="width:100%">
                     <tr style="width:100%">
                         <td style="width:100%">
-                            <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                            <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
                                 @Html.ActionLink("No Ad Hoc bunches yet, please create some!", "CreateAdHoc", "Group", null,
                                 new { @class = "btn btn-default btn-block", onclick = "ShowProgress();" })
                             </div>

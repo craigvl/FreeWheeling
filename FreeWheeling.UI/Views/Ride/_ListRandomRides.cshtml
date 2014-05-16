@@ -7,7 +7,10 @@
     {
         <tr style="width:100%">
             <td>
-                <div class="col-xs-2 col-md-4 col-sm-6">@item.Name</div>
+                <div class="col-xs-2 col-md-4 col-sm-6">
+                    @Html.ActionLink(@item.Name, "ViewAdHocRide", "Ride", new { adhocrideid = item.id },
+             new { @class = "", onclick = "ShowProgress();" })
+            </div>
                 <div class="col-xs-8 col-md-6 col-sm-6">
                     @item.RideDate.ToLongDateString() @Html.Raw(",") @item.RideDate.ToShortTimeString()
                 </div>

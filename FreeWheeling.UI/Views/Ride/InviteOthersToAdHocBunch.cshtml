@@ -2,7 +2,10 @@
 @{
     ViewBag.Title = "Edit Ad Hoc bunch";
 }
-@Html.ActionLink("Back <---", "ViewAdHocRide", "Ride", new { adhocrideid = @Model.adhocrideid }, new { @class = "btn btn-info", onclick = "ShowProgress();" })
+
+<p></p>
+
+@Html.ActionLink(" ", "ViewAdHocRide", "Ride", new { adhocrideid = @Model.adhocrideid }, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
 <h4>Invite Others To Ad Hoc Bunch @Model.Name</h4>
 <h4>Date: @Model.RideDate</h4>
 

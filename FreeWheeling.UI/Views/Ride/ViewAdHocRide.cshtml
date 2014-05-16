@@ -12,8 +12,8 @@
 @Html.Hidden("RideUserNameHidden", User.Identity.GetUserName())
 @Html.Hidden("CommentCount", @Model.CommentCount)
 @Html.Hidden("KeenCount", @Model.KeenCount)
-
-@Html.ActionLink(" ", "Index", "Group", null, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
+<p></p>
+@Html.ActionLink(" ", "AdHocList", "Ride", null, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
 
 @if (@Model.MapUrl != null)
 {
