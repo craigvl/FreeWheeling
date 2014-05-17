@@ -7,15 +7,15 @@
     {
         <tr style="width:100%">
             <td>
-                <div class="col-xs-4 col-md-5 col-sm-5 col-lg-4">
+                <div class="col-xs-3 col-md-4 col-sm-5 col-lg-4">
                     @Html.ActionLink(@item.Name, "ViewAdHocRide", "Ride", new { adhocrideid = item.id },
              new { @class = "", onclick = "ShowProgress();" })
                 </div>
-                <div class="col-xs-7 col-md-6 col-sm-6 col-lg-6">
+                <div class="col-md-4 col-sm-6 col-lg-4 col-xs-7">
                     @Html.ActionLink(string.Concat(@item.RideDate.DayOfWeek.ToString(), ",", @item.RideDate.ToShortTimeString()), "ViewAdHocRide", "Ride", new { adhocrideid = item.id },
              new { @class = "", onclick = "ShowProgress();" })
                 </div>
-                <div class="col-xs-1 col-md-1 col-sm-1 col-lg-1">
+                <div class="col-xs-2 col-md-1 col-sm-1 col-lg-4">
                     @Html.ActionLink(string.Concat(" "), "ViewAdHocRide", "Ride", new { adhocrideid = item.id },
              new { @class = "glyphicon glyphicon-search", onclick = "ShowProgress();" })
                 </div>
