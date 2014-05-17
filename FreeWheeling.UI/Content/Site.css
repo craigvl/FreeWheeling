@@ -253,28 +253,53 @@ border-color: #e5e5e5;
     }
 
 .panel-default > .panel-heading {
-    color: #333;
-    background-color: #333333;
+    color: #333333;
+    background-color: #EFEFE7;
     border-color: #ddd;
 }
-        .panel-default > .panel-heading a{
-        color: #FFF;
-        background-color:#333333;
-        border-color: #ddd;
+.panel-default > .panel-heading a{
+    color: #333333;
+    background-color:#EFEFE7;
+    border-color: #ddd;
 }
 
-        .panel-group .panel-heading {
-border-bottom: 0;
-color: #FFF;
-        background-color:#333333;
-        height:40px;
+.panel-group .panel-heading {
+    border-bottom: 0;
+    color: #333333;
+    background-color:#EFEFE7;
+    height:40px;
 }
 
-         .panel-group .panel-heading a{
-color: #FFF;
+.panel-group .panel-heading a{
+    color: #333333;
+    background-color:#EFEFE7;
 }
 
+.SecondaryHeadingMain {
+    color: #333333;
+    background-color:#D7D7D0 !important;
+}
 
+.SecondaryHeading{
+    color: #333333;
+    background-color:#EFEFE7;
+}
+
+.btn-primary {
+    background-color:#0068ac;
+    border-color: #0068ac;
+}
+
+.btn-danger {
+    background-color:#f15c22;
+    border-color: #f15c22;
+}
+
+.btn-success {
+    background-color:#008752;
+    border-color: #008752;
+
+}
 
 @media all and (max-width: 767px) {
     .nav-height{
