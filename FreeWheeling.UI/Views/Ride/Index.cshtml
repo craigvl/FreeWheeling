@@ -27,7 +27,18 @@
 }
 @if (@Model.MapUrl != null)
 {
-    @Html.Raw(@Model.MapUrl)
+    <div class="row">
+        <div class='panel-group'>
+            <div class='panel panel-default'>
+                <div class="SecondaryHeadingMain panel-heading">
+                    Map
+                </div>
+                <div class='panel'>
+                    @Html.Raw(@Model.MapUrl)
+                </div>
+            </div>
+        </div>
+    </div>
 }
 <p></p>
 @Html.Partial("_RidePanel", Model, new ViewDataDictionary { { "position", "1" } })
