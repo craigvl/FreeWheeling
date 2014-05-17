@@ -6,7 +6,7 @@
     @foreach (Ad_HocRide item in @Model._Ad_HocRide)
     {
         <tr style="width:100%;">
-            <td style="width:100%;">
+            <td>
                 <div class="col-xs-3 col-md-4 col-sm-5 col-lg-4">
                     @Html.ActionLink(@item.Name, "ViewAdHocRide", "Ride", new { adhocrideid = item.id },
              new { @class = "", onclick = "ShowProgress();" })
