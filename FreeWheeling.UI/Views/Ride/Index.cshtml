@@ -30,17 +30,21 @@
     <div class="row">
         <div class='panel-group'>
             <div class='panel panel-default'>
-                <div class="SecondaryHeadingMain panel-heading">
-                    Map
-                </div>
-                <div class='panel'>
+                <div class="SecondaryHeading panel-heading">
+                    <div class="col-xs-10 col-md-11 col-sm-10">
+                        Map
+                        </div>
+                        <div class="col-xs-1 col-md-1 col-sm-1">
+                            <a class="glyphicon glyphicon glyphicon-plus" id="MapPanel" data-toggle="collapse" href="#CollapseMap"></a>
+                        </div>
+                    </div>
+                <div class='panel-collapse collapse out' id="CollapseMap">
                     @Html.Raw(@Model.MapUrl)
                 </div>
             </div>
         </div>
     </div>
 }
-<p></p>
 @Html.Partial("_RidePanel", Model, new ViewDataDictionary { { "position", "1" } })
 @Html.Partial("_RidePanel", Model, new ViewDataDictionary { { "position", "2" } })
 @section scripts{

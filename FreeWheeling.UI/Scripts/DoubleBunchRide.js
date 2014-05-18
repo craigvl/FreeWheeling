@@ -111,6 +111,16 @@ jQuery(document).ready(function () {
     //End Azure
     //Collapse user save
 
+    jQuery('#CollapseMap').on('hidden.bs.collapse', function (event) {
+        event.stopPropagation();
+        toggleChevron('#MapPanel');
+    });
+
+    jQuery('#CollapseMap').on('shown.bs.collapse', function (event) {
+        event.stopPropagation();
+        toggleChevron('#MapPanel');
+    });
+
     jQuery('#collapseKeenFirst').on('hidden.bs.collapse', function (event) {
         event.stopPropagation();
         toggleChevron('#collapseFirst #KeenCount');
