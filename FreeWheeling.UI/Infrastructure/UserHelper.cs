@@ -91,6 +91,14 @@ namespace FreeWheeling.UI.Infrastructure
             }
         }
 
+        public void SendFeedBack(string Name, string Message)
+        {
+            dynamic emailToUser = new Email("SendFeedback");
+            emailToUser.Name = Name;
+            emailToUser.Message = Message;
+            emailToUser.Send();
+        }
+
         public void SendUsersPrivateAdHocBunchInviteEmail(
            List<PrivateRandomUsers> _PrivateRandomUsers,
            int RideId,

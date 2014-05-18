@@ -9,6 +9,7 @@ using FreeWheeling.UI.Models;
 using Microsoft.AspNet.Identity;
 using FreeWheeling.Domain.Entities;
 using FreeWheeling.UI.Infrastructure;
+using System.Threading.Tasks;
 
 
 namespace FreeWheeling.UI.Controllers
@@ -22,6 +23,35 @@ namespace FreeWheeling.UI.Controllers
         public HomeController(ICycleRepository repoParam)
         {
             repository = repoParam;
+        }
+
+        public ActionResult Feedback()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult Feedback(FeedBackModel _FeedBackModel)
+        {
+            if (_FeedBackModel.SumValue == 7)
+            {
+                var result = new { Success = "True", Message = "Feed Back Sent, Thanks!" };
+                Task T = new Task(() =>
+                {
+                    UserHelper _UserHelp = new UserHelper();
+                    _UserHelp.SendFeedBack(_FeedBackModel.Name, _FeedBackModel.Message);
+                });
+
+                T.Start();
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var result = new { Success = "False", Message = "Please enter the correct sum" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            
         }
 
         private ActionResult RedirectToLocal(string returnUrl)
