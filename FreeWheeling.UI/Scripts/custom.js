@@ -156,3 +156,19 @@ function UpdateCommentFieldsPusher(message, rideid, username, commentcount) {
     $("#CommentCountSpan" + rideid).html("(" + commentcount + ")");
     $("#CommentCountSpanSeeAll" + rideid).html("View All (" + commentcount + ")");
 }
+
+function toggleChevron(e) {
+    $(e).toggleClass('glyphicon-minus glyphicon-plus');
+}
+
+function MapCollapse() {
+    jQuery('#CollapseMap').on('hidden.bs.collapse', function (event) {
+        event.stopPropagation();
+        toggleChevron('#MapPanel');
+    });
+
+    jQuery('#CollapseMap').on('shown.bs.collapse', function (event) {
+        event.stopPropagation();
+        toggleChevron('#MapPanel');
+    });
+}

@@ -23,10 +23,6 @@
             @Html.ActionLink(" ", "EditAdHocRide", "Ride", new { adhocrideid = @Model.RandomRide.id }, new {  @style = "background-color: #FFF; color: #333333;", @class = "pull-rigth glyphicon glyphicon-pencil", onclick = "ShowProgress();" })
         }
     </span>
-@if (@Model.MapUrl != null)
-{
-    @Html.Raw(@Model.MapUrl)
-}
 </div>
 <p></p>
 <div class="row">
@@ -38,10 +34,31 @@
              </span>
        </div>
  </div>
+@if (@Model.MapUrl != null)
+{
+    <div class="row">
+        <div class='panel-group'>
+            <div class='panel panel-default'>
+                <div class="SecondaryHeading panel-heading">
+                    <div class="col-xs-10 col-md-11 col-sm-10">
+                        Map
+                    </div>
+                    <div class="col-xs-1 col-md-1 col-sm-1">
+                        <a class="glyphicon glyphicon glyphicon-plus" id="MapPanel" data-toggle="collapse" href="#CollapseMap"></a>
+                    </div>
+                </div>
+                <div class='panel-collapse collapse out' id="CollapseMap">
+                    @Html.Raw(@Model.MapUrl)
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 Start Location: @Model.RandomRide.StartLocation
 <p></p>
 Description: @Model.RandomRide.Description
-
+<p></p>
 <div class="row">
     <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
         <span class="SecondaryHeading btn btn-block">Keen (@Model.KeenCount.ToString())</span>
@@ -158,6 +175,8 @@ Description: @Model.RandomRide.Description
                 });
 
                 jQuery("abbr.timeago").timeago();
+
+                MapCollapse();
             });
 
         </script>

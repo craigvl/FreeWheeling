@@ -23,7 +23,7 @@ namespace FreeWheeling.UI.Models
         public SingleRideAndRandomRideViewModel PopulateAdHocModel(int adhocrideid, string UserId)
         {
             Ad_HocRide Ah = repository.GetAdHocRideByID(adhocrideid);
-            SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel { RandomRide = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime };
+            SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel { RandomRide = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime, MapUrl = Ah.MapUrl };
             _SingleRideRandomRideViewModel.CommentCount = repository.GetCommentCountForAdHocRide(adhocrideid);
             _SingleRideRandomRideViewModel.IsOwner = repository.IsAdHocCreator(adhocrideid, UserId);
 
@@ -49,7 +49,8 @@ namespace FreeWheeling.UI.Models
             {
                 Ride = _Ride,
                 RideDate = _Ride.RideDate,
-                RideTime = _Ride.RideTime
+                RideTime = _Ride.RideTime,
+                MapUrl = _Ride.Group.MapUrl
             };
             _SingleRideRandomRideViewModel.CommentCount = repository.GetCommentCountForRide(RideId);
             _SingleRideRandomRideViewModel.IsOwner = repository.IsGroupCreator(_Ride.Group.id, UserId);

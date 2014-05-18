@@ -1,9 +1,5 @@
 ﻿var socketId = null;
 
-function toggleChevron(e) {
-    $(e).toggleClass('glyphicon-minus glyphicon-plus');
-}
-
 function KeenCompleteFirst(data) {
     HideProgress();
     //alert(data.message);

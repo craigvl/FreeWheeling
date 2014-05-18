@@ -19,10 +19,6 @@
 
 @Html.ActionLink(" ", "Index", "Group", null, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
 
-@if (@Model.MapUrl != null)
-{
-    @Html.Raw(@Model.MapUrl)
-}
 <p></p>
 <div class="row">
     <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
@@ -31,6 +27,26 @@
         </span>
     </div>
 </div>
+@if (@Model.MapUrl != null)
+{
+    <div class="row">
+        <div class='panel-group'>
+            <div class='panel panel-default'>
+                <div class="SecondaryHeading panel-heading">
+                    <div class="col-xs-10 col-md-11 col-sm-10">
+                        Map
+                    </div>
+                    <div class="col-xs-1 col-md-1 col-sm-1">
+                        <a class="glyphicon glyphicon glyphicon-plus" id="MapPanel" data-toggle="collapse" href="#CollapseMap"></a>
+                    </div>
+                </div>
+                <div class='panel-collapse collapse out' id="CollapseMap">
+                    @Html.Raw(@Model.MapUrl)
+                </div>
+            </div>
+        </div>
+    </div>
+}
     Start Location: @Model.Ride.Group.StartLocation
 <p></p>
 <div class="row">
