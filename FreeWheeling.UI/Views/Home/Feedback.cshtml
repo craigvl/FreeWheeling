@@ -9,43 +9,53 @@
     InsertionMode = InsertionMode.Replace,
     HttpMethod = "POST",
         OnSuccess = "updateSuccess",
-        OnFailure = "updateFailure"
-    }, new { @id = "submitFeedBack" }))
+    OnFailure = "updateFailure"
+}, new { target = "_self" }))
 {
- 
-<div class="container">
+
+<p></p>     
+@Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
+<p></p>      
+      
     <div class="row">
+        <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+            <span class="btn btn-default btn-block"> Feedbck </span>
+        </div>
             <div class="col-lg-12">
-                <div class="form-group">
+                <div>
                     <label for="InputName">Your Name</label>
-                    <div class="input-group">
-                        @Html.TextBoxFor(j => j.Name, new {@class="form-control", placeholder = "Enter Name" })
+                    <div >
+                        @Html.TextBoxFor(j => j.Name, new { @class = "form-control", placeholder = "Enter Name" })
                     </div>
                 </div>
+                <p></p>
                 @*<div class="form-group">
                     <label for="InputEmail">Your Email</label>
                     <div class="input-group">
                         @Html.TextBoxFor(j => j.Email, new { @class = "form-control", placeholder = "Enter Email" })
                     </div>
                 </div>*@
-                <div class="form-group">
+                <div>
                     <label for="InputMessage">Message</label>
-                    <div class="input-group">
+                    <div >
                         @Html.TextAreaFor(i => i.Message, new { @class = "form-control", placeholder = "Enter Message", rows = "5" })
                     </div>
                 </div>
-                <div class="form-group">
+                <p></p>
+                <div>
                     <label for="InputReal">What is 4+3?</label>
-                    <div class="input-group">
+                    <div>
                         @Html.TextBoxFor(j => j.SumValue, new { @class = "form-control", placeholder = "" })
                         @Html.ValidationMessageFor(model => model.SumValue)
                     </div>
                 </div>
-                <input onclick="ShowProgress();" type="submit" name="submit" id="submit" value="Submit" class="btn btn-info pull-right">
+                <p></p>
+                <div>
+                    <input onclick="ShowProgress();" type="submit" name="submit" id="submit" value="Submit" class="btn btn-default btn-block pull-right">
+                </div>
             </div>
-        <hr class="featurette-divider hidden-lg">
     </div>
-</div>
+
 }
 @section scripts{
 @Scripts.Render("~/bundles/jqueryval")
@@ -66,10 +76,18 @@
 
     function updateSuccess(data) {
         alert(data.Message);
-        window.location.href = '/';
+        
+        if (data.Success == true) {
+            HideProgress();
+            window.location.href = '/';
+        }
+        else {
+            HideProgress();
+            return false;
+        }
     }
     function updateFailure(data) {
-        alert(data.Message);
+        alert("Something wen't wrong!");
         HideProgress();
     }
 </script>
