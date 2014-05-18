@@ -58,7 +58,11 @@ border-radius: .25em;
 
 .navbar-toggle{
     float:left;
+    /*The below padding seems to stop the header bar wrapping*/
     padding-top: 27px;
+    padding-bottom:0px;
+    padding-left:0px;
+    padding-right:0px;
 }
 
 .navbar-toggle .icon-bar + .icon-bar {
