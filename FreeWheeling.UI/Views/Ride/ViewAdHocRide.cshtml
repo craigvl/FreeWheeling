@@ -28,7 +28,7 @@
 <div class="row">
         <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
            <span class="btn btn-default btn-block">
-               @Model.RandomRide.Name : @Model.RandomRide.RideDate.ToLongDateString() : @Model.RideDate.ToShortTimeString()
+               @Model.RandomRide.Name
                <span style="background-color:white;">
                 </span>
              </span>
@@ -54,7 +54,9 @@
         </div>
     </div>
 }
-
+<p></p>
+When: @Model.RandomRide.RideDate.ToLongDateString() @@ @Model.RideDate.ToShortTimeString()
+<p></p>
 Start Location: @Model.RandomRide.StartLocation
 <p></p>
 Description: @Model.RandomRide.Description

@@ -23,7 +23,7 @@
 <div class="row">
     <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
         <span class="btn btn-default btn-block">
-            @Model.Ride.Group.name : @Model.Ride.RideDate.ToLongDateString() : @Model.RideDate.ToShortTimeString()
+          @Model.Ride.Group.name
         </span>
     </div>
 </div>
@@ -47,7 +47,12 @@
         </div>
     </div>
 }
-    Start Location: @Model.Ride.Group.StartLocation
+<p></p>
+When: @Model.Ride.RideDate.ToLongDateString() @@ @Model.Ride.RideDate.ToShortTimeString()
+<p></p>
+Start Location: @Model.Ride.Group.StartLocation
+<p></p>
+Description: @Model.Ride.Group.Description
 <p></p>
 <div class="row">
     <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">

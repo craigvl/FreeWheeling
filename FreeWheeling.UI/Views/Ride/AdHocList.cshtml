@@ -16,41 +16,30 @@
                 <span class="btn btn-default btn-block">Random Bunches</span>
             </div>
        </div>
-<table class="table content-box">
-    <tr>
-        <td style="width:100%">
-            @if (@Model.PrivateRandomBunches.Count > 0)
-            {
-                @Html.Partial("_ListPrivateRandomRides")
-            }
-        </td>
-    </tr>
-    <tr>
-        <td>
-            @if (@Model._Ad_HocRide.Count > 0)
-            {
-                @Html.Partial("_ListRandomRides")
-            }
-        </td>
-    </tr>
-    <tr>
-        <td>
-            @if (@Model._Ad_HocRide.Count + @Model.PrivateRandomBunches.Count <= 0)
-            {
-                <table style="width:100%">
-                    <tr style="width:100%">
-                        <td style="width:100%">
-                            <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-                                @Html.ActionLink("No Ad Hoc bunches yet, please create some!", "CreateAdHoc", "Group", null,
+
+@if (@Model._Ad_HocRide.Count > 0)
+{
+    @Html.Partial("_ListRandomRides")
+}
+
+@if (@Model.PrivateRandomBunches.Count > 0)
+{
+    @Html.Partial("_ListPrivateRandomRides")
+}
+
+@if (@Model._Ad_HocRide.Count + @Model.PrivateRandomBunches.Count <= 0)
+{
+    <table style="width:100%">
+        <tr style="width:100%">
+            <td style="width:100%">
+                <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                    @Html.ActionLink("No Ad Hoc bunches yet, please create some!", "CreateAdHoc", "Group", null,
                                 new { @class = "btn btn-default btn-block", onclick = "ShowProgress();" })
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            }
-        </td>
-    </tr>
-</table>
+                </div>
+            </td>
+        </tr>
+    </table>
+}
 @section scripts{
     <script>
         jQuery(document).ready(function () {
