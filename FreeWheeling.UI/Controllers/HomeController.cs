@@ -36,7 +36,7 @@ namespace FreeWheeling.UI.Controllers
         {
             if (_FeedBackModel.SumValue == 7)
             {
-                var result = new { Success = true, Message = "Feed Back Sent, Thanks!" };
+                var result = new { Success = true, Message = "Feedback Sent, Thanks!" };
                 Task T = new Task(() =>
                 {
                     UserHelper _UserHelp = new UserHelper();
