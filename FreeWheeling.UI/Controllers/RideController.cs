@@ -112,7 +112,7 @@ namespace FreeWheeling.UI.Controllers
             return View(_AdHocRidesModel);
         }
 
-        [Compress]
+        //[Compress]
         public ActionResult ViewAdHocRide(int adhocrideid = -1, int InviteRandomId = -1)
         {    
             if(adhocrideid == -1)

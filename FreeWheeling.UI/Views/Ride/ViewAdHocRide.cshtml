@@ -63,7 +63,7 @@ Description: @Model.RandomRide.Description
 <p></p>
 <div class="row">
     <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-        <span class="SecondaryHeading btn btn-block">Keen (@Model.KeenCount.ToString())</span>
+        <span class="SecondaryHeading btn btn-block">Keen <span id="@("KeenCountSpan" + @Model.RandomRide.id)">(@Model.KeenCount.ToString())</span></span>
     </div>
 </div>
 
@@ -78,7 +78,7 @@ Description: @Model.RandomRide.Description
 
 <div class="row">
     <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-        <span class="SecondaryHeading btn btn-block">Comments <span id="@("CommentCountSpan" + @Model.RandomRide.id)"></span></span>
+        <span class="SecondaryHeading btn btn-block">Comments <a id="@("CommentCountSpan" + @Model.RandomRide.id)"></a></span>
     </div>
 </div>
 
