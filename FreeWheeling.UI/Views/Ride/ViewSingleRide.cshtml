@@ -69,7 +69,7 @@ Description: @Model.Ride.Group.Description
     </div>
 <div class="row">
     <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-        <span class="SecondaryHeading btn btn-block">Comments <span id="@("CommentCountSpan" + @Model.Ride.id)"></span></span>
+        <span class="SecondaryHeading btn btn-block">Comments <span id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount.ToString())</span></span>
     </div>
 </div>
     <div>
