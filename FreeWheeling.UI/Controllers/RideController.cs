@@ -112,7 +112,7 @@ namespace FreeWheeling.UI.Controllers
             return View(_AdHocRidesModel);
         }
 
-        //[Compress]
+        [Compress]
         public ActionResult ViewAdHocRide(int adhocrideid = -1, int InviteRandomId = -1)
         {    
             if(adhocrideid == -1)
@@ -140,28 +140,45 @@ namespace FreeWheeling.UI.Controllers
                 idb.SaveChanges();
             }
 
-            if (_Ad_HocRide.IsPrivate)
+            if (_Ad_HocRide == null)
             {
-                if (!repository.IsInvitedToPrivateRandomBunch(adhocrideid, currentUser.Id))
-                {
-                    return RedirectToAction("index", "Home");
-                }
+                return RedirectToAction("AdHocList", "ride");
             }
-
-            SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel();
-            RideModelHelper _AdHocHelper = new RideModelHelper(repository);
-            _SingleRideRandomRideViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
-            return View(_SingleRideRandomRideViewModel);
+            else
+            {
+                if (_Ad_HocRide.IsPrivate)
+                {
+                    if (!repository.IsInvitedToPrivateRandomBunch(adhocrideid, currentUser.Id))
+                    {
+                        return RedirectToAction("index", "Home");
+                    }
+                }
+                SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel();
+                RideModelHelper _AdHocHelper = new RideModelHelper(repository);
+                _SingleRideRandomRideViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
+                return View(_SingleRideRandomRideViewModel);
+            }
         }
 
-        //[Compress]
+        [Compress]
         public ActionResult ViewSingleRide(int RideId)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel();
-            RideModelHelper _AdHocHelper = new RideModelHelper(repository);
-            _SingleRideRandomRideViewModel = _AdHocHelper.PopulateSingleRideModel(RideId, currentUser.Id);
-            return View(_SingleRideRandomRideViewModel);
+            Ride _Ride = repository.GetRideByIDIncludeGroup(RideId);
+            if (_Ride == null)
+            {
+                GroupModel GroupModel = new GroupModel();
+                GroupModel._Groups = repository.GetGroups().ToList();
+                GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
+                return RedirectToAction("index", "group", GroupModel);
+            }
+            else
+            {
+                SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel();
+                RideModelHelper _AdHocHelper = new RideModelHelper(repository);
+                _SingleRideRandomRideViewModel = _AdHocHelper.PopulateSingleRideModel(RideId, currentUser.Id);
+                return View(_SingleRideRandomRideViewModel);
+            }
         }
 
         public ActionResult SeeAllComments(int RideId, int GroupId, int PreviousID = -1)
