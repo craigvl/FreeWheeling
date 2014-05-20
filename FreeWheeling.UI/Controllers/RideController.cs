@@ -40,7 +40,7 @@ namespace FreeWheeling.UI.Controllers
                 }            
             }
 
-            RideModelIndex RideModel = new RideModelIndex { FromHome = fromhome };
+            RideModelIndex RideModel = new RideModelIndex();
             Group _Group = repository.GetGroupByID(groupid);
 
             if (_Group == null)
@@ -82,6 +82,8 @@ namespace FreeWheeling.UI.Controllers
                 GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
                 return RedirectToAction("index", "group", GroupModel);
             }
+
+            RideModel.FromHome = fromhome;
 
             if (RideModel.Group.IsPrivate)
             {
@@ -174,9 +176,10 @@ namespace FreeWheeling.UI.Controllers
             }
             else
             {
-                SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel { FromHome = fromhome };
+                SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel();
                 RideModelHelper _AdHocHelper = new RideModelHelper(repository);
                 _SingleRideRandomRideViewModel = _AdHocHelper.PopulateSingleRideModel(RideId, currentUser.Id);
+                _SingleRideRandomRideViewModel.FromHome = fromhome;
                 return View(_SingleRideRandomRideViewModel);
             }
         }
