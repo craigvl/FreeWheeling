@@ -231,6 +231,7 @@ namespace FreeWheeling.UI.Models
         public int KeenCount { get; set; }
         public Boolean IsOwner { get; set; }
         public string MapUrl { get; set; }
+        public string FromHome { get; set; }
 
         //Expand items
         public Boolean FirstBunch { get; set; }
@@ -299,6 +300,7 @@ namespace FreeWheeling.UI.Models
         public string MapUrl { get; set; }
         public int KeenCount { get; set; }
         public int PusherChannel { get; set; }
+        public string FromHome { get; set; }
     }
 
     public class AdHocRideCommentModel

@@ -28,7 +28,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [Compress]
-        public ActionResult Index(int groupid = -1, int rideid = -1, int InviteId = -1)
+        public ActionResult Index(int groupid = -1, int rideid = -1, int InviteId = -1, string fromhome = "false")
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             if (InviteId != -1)
@@ -40,7 +40,7 @@ namespace FreeWheeling.UI.Controllers
                 }            
             }
 
-            RideModelIndex RideModel = new RideModelIndex();
+            RideModelIndex RideModel = new RideModelIndex { FromHome = fromhome };
             Group _Group = repository.GetGroupByID(groupid);
 
             if (_Group == null)
@@ -161,7 +161,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [Compress]
-        public ActionResult ViewSingleRide(int RideId)
+        public ActionResult ViewSingleRide(int RideId, string fromhome = "false")
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Ride _Ride = repository.GetRideByIDIncludeGroup(RideId);
@@ -174,7 +174,7 @@ namespace FreeWheeling.UI.Controllers
             }
             else
             {
-                SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel();
+                SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel { FromHome = fromhome };
                 RideModelHelper _AdHocHelper = new RideModelHelper(repository);
                 _SingleRideRandomRideViewModel = _AdHocHelper.PopulateSingleRideModel(RideId, currentUser.Id);
                 return View(_SingleRideRandomRideViewModel);

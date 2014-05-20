@@ -10,15 +10,15 @@
     {   
         <table class="table content-box">
             <tr style="width:100%">
-                <th style="width:100%"><span style="position: relative; top: -3px;"><a href="/Ride/ViewSingleRide?RideId=@Model.HomePageRide.id">Your next bunch: @Model.HomePageRide.Group.name</a></span></th>
+                <th style="width:100%"><span style="position: relative; top: -3px;"><a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true">Your next bunch: @Model.HomePageRide.Group.name</a></span></th>
                 <th></th>
             </tr>
             <tr>
                 <td>
-                    <a href="/Ride/ViewSingleRide?RideId=@Model.HomePageRide.id">@Model.HomePageRide.RideDate.ToLongDateString() , @Model.HomePageRide.RideDate.ToShortTimeString()</a>
+                    <a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true">@Model.HomePageRide.RideDate.ToLongDateString() , @Model.HomePageRide.RideDate.ToShortTimeString()</a>
                 </td>
                 <td>
-                    @Html.ActionLink(string.Concat(" "), "ViewSingleRide", "Ride", new { RideId = @Model.HomePageRide.id },
+                    @Html.ActionLink(string.Concat(" "), "ViewSingleRide", "Ride", new { RideId = @Model.HomePageRide.id, fromhome = "true" },
              new { @class = "glyphicon glyphicon-search", onclick = "ShowProgress();" })
 
                 </td>
@@ -44,7 +44,7 @@
             @foreach (Group bunch in Model.FavouriteBunches)
             {
                 <tr>
-                    <td><a href="/Ride?groupid=@bunch.id"><div>@bunch.name<div class=" pull-right glyphicon glyphicon-zoom-in"></div></div></a></td>
+                    <td><a href="/Ride?groupid=@(bunch.id)&fromhome=true"><div>@bunch.name<div class=" pull-right glyphicon glyphicon-zoom-in"></div></div></a></td>
                 </tr>
             }
 
