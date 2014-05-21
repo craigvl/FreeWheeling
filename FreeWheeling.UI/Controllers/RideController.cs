@@ -387,9 +387,15 @@ namespace FreeWheeling.UI.Controllers
             }
         }
 
-        public ActionResult EditAdHocRide(int adhocrideid)
+        public ActionResult EditAdHocRide(int adhocrideid = -1)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
+
+            if (adhocrideid == -1)
+            {
+                return RedirectToAction("AdHocList", "Ride");
+            }
+
 
             if (!repository.IsAdHocCreator(adhocrideid,currentUser.Id))
             {
