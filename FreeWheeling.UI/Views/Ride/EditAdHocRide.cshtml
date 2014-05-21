@@ -1,6 +1,6 @@
 ﻿@model FreeWheeling.UI.Models.EditAdHocRideModel
 @{
-    ViewBag.Title = "Edit Ad Hoc bunch";
+    ViewBag.Title = "Edit Random bunch";
 }
 
 <link href="~/Content/datepicker.css" rel="stylesheet" />
@@ -14,15 +14,26 @@
 @Html.ActionLink("Delete", "DeleteAdHocRide", "Ride",
 new { adhocrideid = @Model.adhocrideid }, new { @class = "btn btn-default", onclick = "ShowProgress();" })
 
-<h2>Edit Ad Hoc bunch</h2>
+<p></p>
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-    @Html.EditorFor(model => model.Name)
-    
-     <p></p>
-        @Html.DropDownListFor(
+
+     <div class="row">
+
+        <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+            <span class="btn btn-default btn-block"> Edit Random bunch </span>
+        </div>
+        
+         <div class="col-lg-12">
+             <div><span class="RequiredField">*&nbsp;</span>bunch Name:</div>
+             <div>
+                 @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+             </div>
+             <div><span class="RequiredField">*&nbsp;</span>Location:</div>
+             @Html.DropDownListFor(
              x => x.LocationsId,
     new SelectList(
         Model.Locations.ToList().Select(
@@ -32,53 +43,54 @@ new { adhocrideid = @Model.adhocrideid }, new { @class = "btn btn-default", oncl
                  "Text", Model.LocationsId
     ),  new { @class = "form-control" }
 
-    )       
-        <div><span class="RequiredField">*&nbsp;</span>Date</div>
-          
-        <div>
-            @Html.TextBoxFor(model => model.DateString,null, new { id = "MyDate", @class = ""})
-        </div>
-    
-        <div class="span5" id="MyDateDiv"><div></div></div>
-           
-        <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
-        <div>
-            @Html.TextBoxFor(model => model.RideHour)
-            @Html.ValidationMessageFor(model => model.RideHour)
-        </div>
-    
-        <div><span class="RequiredField">*&nbsp;</span>Minute</div>
-        <div>
-            @Html.TextBoxFor(model => model.RideMinute)
-            @Html.ValidationMessageFor(model => model.RideMinute)
-        </div>
-    <p></p>
-           <div>Private</div>
-            <div>@Html.CheckBoxFor(model => model.IsPrivate)</div>
-           
-        <div><span class="RequiredField">*&nbsp;</span>Start Location</div>
-        
-        <div> 
-            @Html.TextBoxFor(model => model.StartLocation)
-            @Html.ValidationMessageFor(model => model.StartLocation)
-        </div>
-    
-    <div><span class="RequiredField">*&nbsp;</span>Description</div>
-        
-        <div> 
-            @Html.TextAreaFor(model => model.Description)
-        </div>
-    
-    <div><span class="RequiredField">*&nbsp;</span>veloroute Route Number</div>
-        
-        <div> 
-            @Html.TextBoxFor(model => model.MapUrl)
-        </div>
-    <div>
-            <p></p>
-        <input onclick="ShowProgress();" id="btnSubmit" type="submit" value="Update" />
-        </div>
-    
+    )
+             <div><span class="RequiredField">*&nbsp;</span>Date</div>
+
+             <div>
+                 @Html.TextBoxFor(model => model.DateString, null, new { id = "MyDate", @class = "form-control" })
+             </div>
+
+             <div class="span5" id="MyDateDiv"><div></div></div>
+
+             <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
+             <div>
+                 @Html.TextBoxFor(model => model.RideHour, new { @class = "form-control" })
+                 @Html.ValidationMessageFor(model => model.RideHour)
+             </div>
+
+             <div><span class="RequiredField">*&nbsp;</span>Minute</div>
+             <div>
+                 @Html.TextBoxFor(model => model.RideMinute, new { @class = "form-control" })
+                 @Html.ValidationMessageFor(model => model.RideMinute)
+             </div>
+             <p></p>
+             <div>Private</div>
+             <div>@Html.CheckBoxFor(model => model.IsPrivate, new { @class = "form-control" })</div>
+
+             <div><span class="RequiredField">*&nbsp;</span>Start Location</div>
+
+             <div>
+                 @Html.TextBoxFor(model => model.StartLocation, new { @class = "form-control" })
+                 @Html.ValidationMessageFor(model => model.StartLocation)
+             </div>
+
+             <div><span class="RequiredField">*&nbsp;</span>Description</div>
+
+             <div>
+                 @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+             </div>
+
+             <div><span class="RequiredField">*&nbsp;</span>veloroute Route Number</div>
+
+             <div>
+                 @Html.TextBoxFor(model => model.MapUrl, new { @class = "form-control" })
+             </div>
+             <div>
+                 <p></p>
+                 <input onclick="ShowProgress();" id="btnSubmit" type="submit" value="Update" />
+             </div>
+             </div>
+         </div>
 }
 @section Scripts {
 

@@ -7,21 +7,26 @@
 
 @Html.ActionLink("Delete", "DeleteGroup", "Group", new { GroupId = @Model.GroupId }, new { @class = "btn btn-default", onclick = "ShowProgress();" })
 
-
-<h2>Edit bunch</h2>
+<p></p>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    <div><span class="RequiredField">*&nbsp;</span>bunch Name:</div>
-    <div>
-        @Html.TextBoxFor(model => model.Name)
-    </div>
-    <div>
-        <p></p>
-        @Html.DropDownListFor(
+    <div class="row">
+
+        <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+            <span class="btn btn-default btn-block"> Edit bunch </span>
+        </div>
+        <div class="col-lg-12">
+            <div ><span class="RequiredField">*&nbsp;</span>bunch Name:</div>
+            <div >
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+            </div>
+            <div>
+                <div><span class="RequiredField">*&nbsp;</span>Location:</div>
+                @Html.DropDownListFor(
              x => x.LocationsId,
     new SelectList(
         Model.Locations.ToList().Select(
@@ -31,54 +36,55 @@
                  "Text", Model.LocationsId
     ), "-- Group Location --", new { @class = "form-control" }
 )
-        <p></p>
-    </div>
-
-    <div>Days Of Week</div>
-    <div>
-        @for (int i = 0; i < Model.DaysOfWeek.Count; i++)
-        {
-            <div>
-                @Html.HiddenFor(x => x.DaysOfWeek[i].Name)
-                @Html.CheckBoxFor(x => x.DaysOfWeek[i].Checked, new { @disabled = "disabled" })
-                @Html.LabelFor(x => x.DaysOfWeek[i].Checked, Model.DaysOfWeek[i].Name)
+                <p></p>
             </div>
+
+            <div>Days Of Week</div>
+            <div>
+                @for (int i = 0; i < Model.DaysOfWeek.Count; i++)
+        {
+                    <div>
+                        @Html.HiddenFor(x => x.DaysOfWeek[i].Name)
+                        @Html.CheckBoxFor(x => x.DaysOfWeek[i].Checked, new { @disabled = "disabled" })
+                        @Html.LabelFor(x => x.DaysOfWeek[i].Checked, Model.DaysOfWeek[i].Name)
+                    </div>
         }
-    </div>
-    <hr />
-    <div>Private</div>
-    <div>@Html.CheckBoxFor(model => model.IsPrivate)</div>
-    <div>Time</div>
-    <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
-    <div>
-        @Html.TextBoxFor(model => model.Hour)
-        @Html.ValidationMessageFor(model => model.Hour)
-    </div>
+            </div>
+            <hr />
+            <div>Private</div>
+            <div>@Html.CheckBoxFor(model => model.IsPrivate)</div>
+            <div>Time</div>
+            <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
+            <div>
+                @Html.TextBoxFor(model => model.Hour, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Hour)
+            </div>
 
-    <div><span class="RequiredField">*&nbsp;</span>Minute</div>
-    <div>
-        @Html.TextBoxFor(model => model.Minute)
-        @Html.ValidationMessageFor(model => model.Minute)
-    </div>
+            <div><span class="RequiredField">*&nbsp;</span>Minute</div>
+            <div>
+                @Html.TextBoxFor(model => model.Minute, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Minute)
+            </div>
 
-    <div><span class="RequiredField">*&nbsp;</span>Start Location</div>
+            <div><span class="RequiredField">*&nbsp;</span>Start Location</div>
 
-    <div>
-        @Html.TextBoxFor(model => model.StartLocation)
-        @Html.ValidationMessageFor(model => model.StartLocation)
-    </div>
-    
-    <div><span class="RequiredField">*&nbsp;</span>Map (Enter <a href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</div>
-        
-        <div> 
-            @Html.TextBoxFor(model => model.MapUrl)
+            <div>
+                @Html.TextBoxFor(model => model.StartLocation, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.StartLocation)
+            </div>
+
+            <div><span class="RequiredField">*&nbsp;</span>Map (Enter <a href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</div>
+
+            <div>
+                @Html.TextBoxFor(model => model.MapUrl, new { @class = "form-control" })
+            </div>
+
+            <div>
+                <p></p>
+                <input onclick="ShowProgress();" id="btnSubmit" type="submit" value="Update" />
+            </div>
+            </div>
         </div>
-
-    <div>
-        <p></p>
-        <input onclick="ShowProgress();" id="btnSubmit" type="submit" value="Update" />
-    </div>
-
 }
 
 @section Scripts {
