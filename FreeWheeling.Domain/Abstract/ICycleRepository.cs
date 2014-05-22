@@ -117,6 +117,7 @@ namespace FreeWheeling.Domain.Abstract
         Group PopulateRideDates(Group _Group, TimeZoneInfo _TimeZoneInfo);
         void PopulateRideDatesFromDate(Group _Group, DateTime _DateTime, TimeZoneInfo _TimeZoneInfo);
         void PopulateUserHomePageRides(List<HomePageRide> _HomePageRides);
+        void PopulateInitialExpandValues(string UserId);
 
         void Save();
       

@@ -1008,9 +1008,23 @@ namespace FreeWheeling.Domain.Concrete
             }
         }
 
+        public void PopulateInitialExpandValues(string UserId)
+        {
+            UserExpand UserExpands = new UserExpand { FirstBunch = true,
+                                                      FirstKeen = true,
+                                                      FirstComment = true,
+                                                      SecondBunch = true,
+                                                      SecondComment = true,
+                                                      SecondKeen = true,
+                                                      userId = UserId};
+            context.UserExpands.Add(UserExpands);
+            context.Entry(UserExpands).State = System.Data.Entity.EntityState.Added;
+            context.SaveChanges();
+        }
+
         public void Save()
         {
             context.SaveChanges();
-        }
+        }       
     }
 }
