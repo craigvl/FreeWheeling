@@ -2,11 +2,8 @@
 @{
     ViewBag.Title = "Edit bunch";
 }
-
+<p></p>
 @Html.ActionLink(" ", "Index", "Group", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
-
-@Html.ActionLink("Delete", "DeleteGroup", "Group", new { GroupId = @Model.GroupId }, new { @class = "btn btn-default", onclick = "ShowProgress();" })
-
 <p></p>
 
 @using (Html.BeginForm())
@@ -20,12 +17,13 @@
             <span class="btn btn-default btn-block"> Edit bunch </span>
         </div>
         <div class="col-lg-12">
-            <div ><span class="RequiredField">*&nbsp;</span>bunch Name:</div>
+            <div ><span class="RequiredField">*&nbsp;</span><b>bunch Name:</b></div>
             <div >
                 @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
             </div>
             <div>
-                <div><span class="RequiredField">*&nbsp;</span>Location:</div>
+                <p></p>
+                <div><span class="RequiredField">*&nbsp;</span><b>Location:</b></div>
                 @Html.DropDownListFor(
              x => x.LocationsId,
     new SelectList(
@@ -39,7 +37,7 @@
                 <p></p>
             </div>
 
-            <div>Days Of Week</div>
+            <div><b>Days Of Week</b></div>
             <div>
                 @for (int i = 0; i < Model.DaysOfWeek.Count; i++)
         {
@@ -51,29 +49,31 @@
         }
             </div>
             <hr />
-            <div>Private</div>
+            <div><b>Private</b></div>
             <div>@Html.CheckBoxFor(model => model.IsPrivate)</div>
-            <div>Time</div>
-            <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
+            <hr />
+            <div><b>Time</b></div>
+            <hr />
+            <div><span class="RequiredField">*&nbsp;</span><b>Hour (24 Hour)</b></div>
             <div>
                 @Html.TextBoxFor(model => model.Hour, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Hour)
             </div>
-
-            <div><span class="RequiredField">*&nbsp;</span>Minute</div>
+            <p></p>
+            <div><span class="RequiredField">*&nbsp;</span><b>Minute</b></div>
             <div>
                 @Html.TextBoxFor(model => model.Minute, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Minute)
             </div>
-
-            <div><span class="RequiredField">*&nbsp;</span>Start Location</div>
+            <p></p>
+            <div><span class="RequiredField">*&nbsp;</span><b>Start Location</b></div>
 
             <div>
                 @Html.TextBoxFor(model => model.StartLocation, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.StartLocation)
             </div>
-
-            <div><span class="RequiredField">*&nbsp;</span>Map (Enter <a href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</div>
+            <p></p>
+            <div><span class="RequiredField">*&nbsp;</span><b>Map</b> (Enter <a href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</div>
 
             <div>
                 @Html.TextBoxFor(model => model.MapUrl, new { @class = "form-control" })
@@ -81,12 +81,13 @@
 
             <div>
                 <p></p>
-                <input onclick="ShowProgress();" id="btnSubmit" type="submit" value="Update" />
+                <input onclick="ShowProgress();" id="btnSubmit" class="btn btn-default" type="submit" value="Update" />
+                @Html.ActionLink("Delete", "DeleteGroup", "Group", new { GroupId = @Model.GroupId }, new { @class = "btn btn-default", onclick = "ShowProgress();" })
             </div>
             </div>
         </div>
 }
-
+<p></p>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
  

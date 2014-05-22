@@ -9,10 +9,9 @@
 {
 }
 
-@Html.ActionLink(" ", "ViewAdHocRide", "Ride", new { adhocrideid = @Model.adhocrideid }, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
+<p></p>
 
-@Html.ActionLink("Delete", "DeleteAdHocRide", "Ride",
-new { adhocrideid = @Model.adhocrideid }, new { @class = "btn btn-default", onclick = "ShowProgress();" })
+@Html.ActionLink(" ", "ViewAdHocRide", "Ride", new { adhocrideid = @Model.adhocrideid }, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
 
 <p></p>
 
@@ -28,11 +27,12 @@ new { adhocrideid = @Model.adhocrideid }, new { @class = "btn btn-default", oncl
         </div>
         
          <div class="col-lg-12">
-             <div><span class="RequiredField">*&nbsp;</span>bunch Name:</div>
+             <div><span class="RequiredField">*&nbsp;</span><b>bunch Name:</b></div>
              <div>
                  @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
              </div>
-             <div><span class="RequiredField">*&nbsp;</span>Location:</div>
+             <p></p>
+             <div><span class="RequiredField">*&nbsp;</span><b>Location:</b></div>
              @Html.DropDownListFor(
              x => x.LocationsId,
     new SelectList(
@@ -44,50 +44,53 @@ new { adhocrideid = @Model.adhocrideid }, new { @class = "btn btn-default", oncl
     ),  new { @class = "form-control" }
 
     )
-             <div><span class="RequiredField">*&nbsp;</span>Date</div>
+             <p></p>
+             <div><span class="RequiredField">*&nbsp;</span><b>Date</b></div>
 
              <div>
                  @Html.TextBoxFor(model => model.DateString, null, new { id = "MyDate", @class = "form-control" })
              </div>
 
              <div class="span5" id="MyDateDiv"><div></div></div>
-
-             <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
+             <p></p>
+             <div><span class="RequiredField">*&nbsp;</span><b>Hour (24 Hour)</b></div>
              <div>
                  @Html.TextBoxFor(model => model.RideHour, new { @class = "form-control" })
                  @Html.ValidationMessageFor(model => model.RideHour)
              </div>
-
-             <div><span class="RequiredField">*&nbsp;</span>Minute</div>
+             <p></p>
+             <div><span class="RequiredField">*&nbsp;</span><b>Minute</b></div>
              <div>
                  @Html.TextBoxFor(model => model.RideMinute, new { @class = "form-control" })
                  @Html.ValidationMessageFor(model => model.RideMinute)
              </div>
              <p></p>
-             <div>Private</div>
+             <div><b>Private</b></div>
              <div>@Html.CheckBoxFor(model => model.IsPrivate, new { @class = "form-control" })</div>
-
-             <div><span class="RequiredField">*&nbsp;</span>Start Location</div>
+             <p></p>
+             <div><span class="RequiredField">*&nbsp;</span><b>Start Location</b></div>
 
              <div>
                  @Html.TextBoxFor(model => model.StartLocation, new { @class = "form-control" })
                  @Html.ValidationMessageFor(model => model.StartLocation)
              </div>
-
-             <div><span class="RequiredField">*&nbsp;</span>Description</div>
+             <p></p>
+             <div><span class="RequiredField">*&nbsp;</span><b>Description</b></div>
 
              <div>
                  @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
              </div>
-
-             <div><span class="RequiredField">*&nbsp;</span>veloroute Route Number</div>
+             <p></p>
+             <div><span class="RequiredField">*&nbsp;</span><b>veloroute Route Number</b></div>
 
              <div>
                  @Html.TextBoxFor(model => model.MapUrl, new { @class = "form-control" })
              </div>
              <div>
                  <p></p>
-                 <input onclick="ShowProgress();" id="btnSubmit" type="submit" value="Update" />
+                 <input onclick="ShowProgress();" class="btn btn-default" id="btnSubmit" type="submit" value="Update" />
+                 @Html.ActionLink("Delete", "DeleteAdHocRide", "Ride",
+                 new { adhocrideid = @Model.adhocrideid }, new { @class = "btn btn-default", onclick = "ShowProgress();" })
              </div>
              </div>
          </div>

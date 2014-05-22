@@ -24,9 +24,9 @@
                 
                 <div class="content-box">
                     <br />
-                    <h4 style="padding-left:15px;">
-                        <b><u>@Html.ActionLink("Create Account", "Register", new { ReturnUrl = ViewBag.ReturnUrl })</u></b> or sign in below.
-                    </h4>
+                    <div style="padding-left:15px;">
+                        <u>@Html.ActionLink("Create Account", "Register", new { ReturnUrl = ViewBag.ReturnUrl })</u> or sign in below.
+                    </div>
                     <br />
                     @Html.ValidationSummary(true)
 

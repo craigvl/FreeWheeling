@@ -26,13 +26,14 @@
         <span class="btn btn-default btn-block">@Model.UserLocation</span>
     </div>
 </div>
+<div class="row">
     <table class="table content-box">
-    <tr>
-        @if (@Model.PrivateBunches.Count > 0)
-        {
-            @Html.Partial("_ListPrivateRides")
-        }
-    </tr>
+        <tr>
+            @if (@Model.PrivateBunches.Count > 0)
+            {
+                @Html.Partial("_ListPrivateRides")
+            }
+        </tr>
         <tr>
             @if (@Model._Groups.Count > 0)
             {
@@ -42,16 +43,16 @@
         <tr>
             @if (@Model._Groups.Count + @Model.PrivateBunches.Count <= 0)
             {
-        <td>
-                <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-                @Html.ActionLink("No bunches yet, please create some!", "Create", "Group",
+                <td>
+                    <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                        @Html.ActionLink("No bunches yet, please create some!", "Create", "Group",
                 null, new { @class = "btn btn-default btn-block", onclick = "ShowProgress();" })
-                </div>
-        </td>
+                    </div>
+                </td>
             }
         </tr>
-</table>
-
+    </table>
+</div>
 @section scripts{
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
 <script>
