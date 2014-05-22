@@ -3,23 +3,24 @@
 @{
     ViewBag.Title = "Create a bunch";
 }
-
-@Html.ActionLink(" ", "Index", "Home", null, new { @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
-
-<h2>Create a new bunch</h2>
+<p></p>
+@Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
+<p></p>
+<b>Create a new bunch</b>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-    
-    <div><span class="RequiredField">*&nbsp;</span>bunch Name:</div>
+    <p></p>
+    <div><span class="RequiredField">*&nbsp;</span><b>bunch Name:</b></div>
         <div>
             @Html.TextBoxFor(model => model.Name)
             @Html.ValidationMessageFor(model => model.Name)
         </div>
     <div>
         <p></p>
+        <div><span class="RequiredField">*&nbsp;</span><b>location:</b></div>
         @Html.DropDownListFor(
              x => x.LocationsId,
     new SelectList(
@@ -33,7 +34,8 @@
         @Html.ValidationMessageFor(model => model.LocationsId)
         <p></p>
     </div>
-    <div>   Days Of Week</div>
+    <div><b>Days Of Week</b></div>
+    <p></p>
         <div>
             @for (int i = 0; i < Model.DaysOfWeek.Count; i++)
             {
@@ -46,37 +48,39 @@
         </div>
         <hr />
     <div>
-        Private:
+        <b>Private:</b>
         @Html.CheckBoxFor(f  => f.IsPrivate)
     </div>
     <p></p>
-    <div>Time</div>
-        <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
+    <hr />
+    <div><b>Time</b></div>
+    <hr />
+        <div><span class="RequiredField">*&nbsp;</span><b>Hour (24 Hour)</b></div>
         <div>
             @Html.TextBoxFor(model => model.Hour, new { id="scroller" })
             @Html.ValidationMessageFor(model => model.Hour)
         </div>
-    
-        <div><span class="RequiredField">*&nbsp;</span>Minute</div>
+        <p></p>
+        <div><span class="RequiredField">*&nbsp;</span><b>Minute</b></div>
         <div>
             @Html.TextBoxFor(model => model.Minute)
             @Html.ValidationMessageFor(model => model.Minute) 
         </div>
-           
-        <div><span class="RequiredField">*&nbsp;</span>Start Location</div>
+           <p></p>
+        <div><span class="RequiredField">*&nbsp;</span><b>Start Location</b></div>
         
         <div> 
             @Html.TextBoxFor(model => model.StartLocation)
             @Html.ValidationMessageFor(model => model.StartLocation)
         </div>
-    
-    <div>Description</div>
+    <p></p>
+    <div><b>Description</b></div>
         
         <div> 
             @Html.TextAreaFor(model => model.Description)
         </div>
     
-   <div>Map (Enter <a target="_blank" href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</div>
+   <div><b>Map</b> (Enter <a target="_blank" href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</div>
         
         <div> 
             @Html.TextBoxFor(model => model.MapUrl)
@@ -84,9 +88,10 @@
     
         <div>
             <p></p>
-            <input onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create" />
+            <input class="btn btn-default" onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create" />
+            
         </div>
-    
+    <p></p>
 }
     @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
