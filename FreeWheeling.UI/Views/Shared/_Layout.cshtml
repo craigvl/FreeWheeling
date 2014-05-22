@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
     <title>@ViewBag.Title - bunchy</title>
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/custom")
@@ -15,22 +15,11 @@
         <div class="container">
             <div class="navbar-header">
                 <a href="/Home/Index"><img class="nav-height" src="~/Content/Images/logo_with_name.png" /></a>
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+
                 <button type="button" class="navbar-toggle pull-right" data-toggle="collapse" data-target=".user">
                     <div class="glyphicon glyphicon-user"></div></button>
             </div>
-            <div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav">
-					<li>@Html.ActionLink("Home", "Index", "Home")</li>
-					<li>@Html.ActionLink("bunches", "Index", "Group")</li>
-					<li>@Html.ActionLink("Favourites", "Mybunches", "Group")</li>
-					<li>@Html.ActionLink("Ad Hoc bunches", "AdHocList", "Ride")</li>
-				</ul>
-            </div>
+                      
             <div class="user collapse">
                 @Html.Partial("_LoginPartial")
             </div>
@@ -38,6 +27,9 @@
     </div>
     <div class="container body-content">
         @RenderBody()
+        <div class="loading" style="display:none;" align="center">
+            <img src="~/Content/Images/loader.gif" alt="" />
+        </div>
         <footer></footer>
     </div>
     @Scripts.Render("~/bundles/jquery")

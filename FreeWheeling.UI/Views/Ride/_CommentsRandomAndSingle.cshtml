@@ -1,0 +1,99 @@
+﻿@model FreeWheeling.UI.Models.SingleRideAndRandomRideViewModel
+@using FreeWheeling.Domain.Entities;
+
+@{
+    string type = ViewData["type"].ToString();
+    int rideid;
+    int groupid;
+    int commentcount = Model.CommentCount;
+    string submitid = "submit_First";
+    string commenttextid = "CommentStringFirst";
+    int parentid;
+    List<Comment> commentssingle = Model.Comments;
+    List<AdHocComment> commentsrandom = Model.RandomComments;
+
+    if (type == "random")
+    {
+        groupid = -1;
+        rideid = Model.RandomRide.id;
+        parentid = -1;
+    }
+    else
+    {
+        rideid = Model.Ride.id;
+        groupid = Model.Ride.Group.id;
+        parentid = Model.Ride.id;
+    } 
+
+<div id="@("collapseCommentPanel" + @rideid)">
+    @if (type == "single")
+    {
+        foreach (Comment item in @commentssingle)
+        {
+           @item.userName <text>: </text>
+           @item.CommentText
+           @:<p></p>
+        }
+     }
+    @if (type == "random")
+    {
+      foreach (AdHocComment item in @commentsrandom)
+      {
+            @item.userName <text>: </text>
+            @item.CommentText
+            @:<p></p>
+      }  
+    }
+</div>
+<div>
+
+@if (type == "single"){
+    using (Ajax.BeginForm("AddComment", "Ride", new
+                {
+                    groupid = @groupid,
+                    rideid = @rideid,
+                    ParentRideID = @parentid
+                }, new AjaxOptions
+                {
+                    HttpMethod = "Post",
+                    OnSuccess = "CommentComplete",
+                    OnBegin = "ShowProgress"
+                }))
+                {
+                    <div class="form-group">
+                    @Html.TextBox("CommentString", null, new { @class = "form-control", id = @commenttextid, placeholder = "Enter comment" })
+                    <p></p>
+                    <span class="input-group-addon-C">
+                    <button class="btn btn-default btn-sm" id="@submitid" type="submit">Add comment</button>
+                    </span>
+                    @Html.ActionLink(string.Concat("View all (", @commentcount, ")"), "SeeAllComments", "Ride", new { RideId = @rideid, Groupid = @groupid }, new { @class = "btn btn-default btn-sm", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @rideid.ToString()) })
+                    <span id="@("CommentCountSpan" + @rideid)"></span>
+                    </div>
+                }
+}
+
+@if (type == "random")
+{
+    using (Ajax.BeginForm("AddAdHocComment", "Ride", new
+                {
+                    adhocrideid = @rideid,
+                }, new AjaxOptions
+                {
+                    HttpMethod = "Post",
+                    OnSuccess = "CommentComplete",
+                    OnBegin = "ShowProgress"
+                }))
+                {
+                    <div class="form-group">
+                    @Html.TextBox("CommentString", null, new { @class = "form-control", id = @commenttextid, placeholder = "Enter comment" })
+                    <p></p>
+                    <span class="input-group-addon-C">
+                    <button class="btn btn-default btn-sm" id="@submitid" type="submit">Add comment</button>
+                    </span>
+                    @Html.ActionLink(string.Concat("View all (", @commentcount, ")"), "SeeAllAdHocComments", "Ride", new { adhocrideid = @rideid }, new { @class = "btn btn-default btn-sm", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @rideid.ToString()) })
+                    
+                    </div>
+                }
+}    
+</div>
+}   

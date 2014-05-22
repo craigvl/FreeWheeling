@@ -1,0 +1,75 @@
+﻿@model FreeWheeling.UI.Models.SingleRideAndRandomRideViewModel
+@using FreeWheeling.Domain.Entities; 
+@{
+    string type = ViewData["type"].ToString();
+    
+    int rideid = 8;
+    List<Rider> riders = new List<Rider>();
+    List<AdHocRider> randomriders = new List<AdHocRider>();    
+    
+    if (type == "single")
+    {
+        riders = Model.Riders;
+        rideid = Model.Ride.id;
+    }
+    
+    if (type == "random")
+    {
+        randomriders = Model.RandomRiders;
+        rideid = Model.RandomRide.id;
+    }    
+
+if (type == "single")
+{
+    foreach (Rider item in @riders)
+        {
+            {
+                switch (item.PercentKeen)
+                {
+                    case "Out":
+                    <text>
+                    <p><span id="@("keen_" + @item.Name + @rideid)" style="text-decoration:line-through" class="">@item.Name<span style="padding-left:5px;" class="glyphicon glyphicon-thumbs-down"></span></span></p>
+                    </text>
+                    break;
+                    case "OnWay":
+                    <text>
+                    <p><span id="@("keen_" + @item.Name + @rideid)" class="">@item.Name Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
+                    </text>
+                    break;
+                    case "In":
+                    <text>
+                    <p><span id="@("keen_" + @item.Name + @rideid)" class="">@item.Name <span style="padding-left:5px;" class="glyphicon glyphicon-thumbs-up"></span></span></p>
+                    </text>
+                    break;
+                }
+            }
+    }
+}
+if (type == "random")
+{
+    foreach (AdHocRider item in @randomriders)
+    {
+        {
+            switch (item.PercentKeen)
+            {
+                case "Out":
+                <text>
+                <p><span id="@("keen_" + @item.Name + @rideid)" style="text-decoration:line-through" class="">@item.Name<span style="padding-left:5px;" class="glyphicon glyphicon-thumbs-down"></span></span></p>
+                </text>
+                break;
+                case "OnWay":
+                <text>
+                <p><span id="@("keen_" + @item.Name + @rideid)" class="">@item.Name Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
+                </text>
+                break;
+                case "In":
+                <text>
+                <p><span id="@("keen_" + @item.Name + @rideid)" class="">@item.Name <span style="padding-left:5px;" class="glyphicon glyphicon-thumbs-up"></span></span></p>
+                </text>
+                break;
+            }
+        }
+        <p></p>
+    }
+}
+}

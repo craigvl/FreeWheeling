@@ -6,6 +6,7 @@ namespace FreeWheeling.UI.Models
     {
         [Required]
         [Display(Name = "User name")]
+        [RegularExpression(@"^[a-zA-Z0-9]*$", ErrorMessage = "Please only use Numbers and Letters for user name")]
         public string UserName { get; set; }
     }
 
@@ -56,6 +57,7 @@ namespace FreeWheeling.UI.Models
     {
         [Required]
         [Display(Name = "User name")]
+        [RegularExpression(@"^[a-zA-Z0-9]*$", ErrorMessage = "Please only use Numbers and Letters for user name")]
         public string UserName { get; set; }
 
         [Required]

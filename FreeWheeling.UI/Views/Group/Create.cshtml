@@ -4,7 +4,7 @@
     ViewBag.Title = "Create a bunch";
 }
 
-@Html.ActionLink("Back Home <---", "Index", "Home", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
+@Html.ActionLink(" ", "Index", "Home", null, new { @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
 
 <h2>Create a new bunch</h2>
 
@@ -33,7 +33,6 @@
         @Html.ValidationMessageFor(model => model.LocationsId)
         <p></p>
     </div>
-    
     <div>   Days Of Week</div>
         <div>
             @for (int i = 0; i < Model.DaysOfWeek.Count; i++)
@@ -54,7 +53,7 @@
     <div>Time</div>
         <div><span class="RequiredField">*&nbsp;</span>Hour (24 Hour)</div>
         <div>
-            @Html.TextBoxFor(model => model.Hour)
+            @Html.TextBoxFor(model => model.Hour, new { id="scroller" })
             @Html.ValidationMessageFor(model => model.Hour)
         </div>
     
@@ -77,7 +76,7 @@
             @Html.TextAreaFor(model => model.Description)
         </div>
     
-   <div>Map (Enter <a href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</div>
+   <div>Map (Enter <a target="_blank" href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</div>
         
         <div> 
             @Html.TextBoxFor(model => model.MapUrl)
@@ -89,20 +88,13 @@
         </div>
     
 }
-
-<div class="loading" style="display:none;" align="center">
-    Loading. Please wait.<br />
-    <br />
-    <img src="~/Content/Images/loader.gif" alt="" />
-</div>
-
     @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
 <script type="text/javascript">
     jQuery(document).ready(function () {
         HideProgress();
     });
-
 
     $("form").submit(function () {
         if (!$(this).valid()) {
@@ -112,7 +104,6 @@
 
         }
     });
-
+   
 </script>
-
 }

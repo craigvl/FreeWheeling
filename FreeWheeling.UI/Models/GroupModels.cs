@@ -23,7 +23,6 @@ namespace FreeWheeling.UI.Models
         public string title;
         public List<int> _OwnerGroupList;
         public List<Group> PrivateBunches { get; set; }
-        public bool OnFavPage;
     }
 
     public class GroupModelHelper
@@ -36,38 +35,19 @@ namespace FreeWheeling.UI.Models
             repository = repoParam;
         }
 
-        public GroupModel PopulateGroupModel(string UserId, Location _Location, string searchString, string Email,
-            Boolean FavouritePage = false)
+        public GroupModel PopulateGroupModel(string UserId, Location _Location, string searchString, string Email)
         {
             GroupModel _GroupModel = new GroupModel();
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                if (!FavouritePage)
-                {
                     _GroupModel._Groups = repository.GetGroupsByLocationWithSearch(_Location.id, searchString).ToList();
                     _GroupModel.title = "All bunches";
-                }
-                else
-                {
-                    _GroupModel._Groups = repository.GetFavouriteGroupsByLocationWithSearch(_Location.id, searchString, UserId).ToList();
-                    _GroupModel.OnFavPage = true;
-                    _GroupModel.title = "Favourite bunches";
-                }
-            }
+                           }
             else
             {
-                if (!FavouritePage)
-                {
                     _GroupModel._Groups = repository.GetGroupsByLocation(_Location.id).ToList();
                     _GroupModel.title = "All bunches";
-                }
-                else
-                {
-                    _GroupModel._Groups = repository.GetFavouriteGroupsByLocation(_Location.id, UserId).ToList();
-                    _GroupModel.OnFavPage = true;
-                    _GroupModel.title = "Favourite bunches";
-                }
             }
 
             _GroupModel.PrivateBunches = repository.GetPrivateGroupsByUserID(UserId,
@@ -82,6 +62,16 @@ namespace FreeWheeling.UI.Models
 
             foreach (Group item in _GroupModel._Groups)
             {
+                int RideCount = item.Rides.Count();
+
+                //If Ride count does not equal rides greater than now then there are old ride so 
+                //call delete rides and populate new from latest ride date, note this should have been done by console app
+                if (item.Rides.Where(t => t.RideDate >= LocalNow).Count() != RideCount) 
+                {
+                    repository.DeleteOldRides(item.id,TZone);
+                    repository.PopulateRideDatesFromDate(item,item.Rides.OrderByDescending(g => g.RideDate).Select(h => h.RideDate).FirstOrDefault(), TZone);
+                }
+
                 item.Rides = item.Rides.Where(t => t.RideDate >= LocalNow).ToList();
                 Ride NextRide = repository.GetClosestNextRide(item, TZone);
 
@@ -110,16 +100,57 @@ namespace FreeWheeling.UI.Models
                 }
             }
 
-            _GroupModel._Groups.OrderByDescending(g => g.IsPrivate);
-            _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(UserId);
-
+            //Same as above but for Private bunches.
+            //TODO: think about combining functions.
             foreach (Group item in _GroupModel.PrivateBunches)
             {
+                int RideCount = item.Rides.Count();
+
+                //If Ride count does not equal rides greater than now then there are old ride so 
+                //call delete rides and populate new from latest ride date, note this should have been done by console app
+                if (item.Rides.Where(t => t.RideDate >= LocalNow).Count() != RideCount)
+                {
+                    repository.DeleteOldRides(item.id, TZone);
+                    repository.PopulateRideDatesFromDate(item, item.Rides.OrderByDescending(g => g.RideDate).Select(h => h.RideDate).FirstOrDefault(), TZone);
+                }
+
+                item.Rides = item.Rides.Where(t => t.RideDate >= LocalNow).ToList();
+                Ride NextRide = repository.GetClosestNextRide(item, TZone);
+
+                if (NextRide != null)
+                {
+                    _GroupModel._NextRideDetails.Add(new NextRideDetails
+                    {
+                        Date = NextRide.RideDate,
+                        GroupId = item.id,
+                        NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count()
+                    });
+                }
+                else
+                {
+                    if (item.RideDays != null)
+                    {
+                        repository.PopulateRideDates(item, TZone);
+                        repository.Save();
+                        NextRide = repository.GetClosestNextRide(item, TZone);
+                        _GroupModel._NextRideDetails.Add(new NextRideDetails
+                        {
+                            Date = NextRide.RideDate,
+                            GroupId = item.id,
+                            NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count()
+                        });
+                    }
+                }
+
                 if (repository.IsGroupCreator(item.id, UserId))
                 {
                     _GroupModel._OwnerGroupList.Add(item.id);
                 }
             }
+
+            //Show private first.
+            _GroupModel._Groups.OrderByDescending(g => g.IsPrivate);
+            _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(UserId);
 
             return _GroupModel;
         }

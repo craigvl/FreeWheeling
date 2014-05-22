@@ -2,20 +2,19 @@
 @{
     ViewBag.Title = "Invite Others to Bunch";
 }
-   
-
-
-@if (@Model.PreviousID != -1)
-{
-    @Html.ActionLink("<-- Back to Bunch", "Index", "Ride", new { RideId = @Model.PreviousID }, new { @class = "btn btn-info", onclick = "ShowProgress();" })
-}
-else
-{
-    @Html.ActionLink("Back <---", "Index", "Ride", new { rideid = @Model.RideId }, new { @class = "btn btn-info", onclick = "ShowProgress();" })
-}
-
-    <h4>Invite Others To Bunch @Model.Name</h4>
-    <h4>Date: @Model.RideDate</h4>
+<p></p> 
+    @* I have used PreviousID here from the _KeenActions.cshtml file should at some date update to read better *@  
+    @Html.ActionLink(" ", "Index", "Ride", new { groupid = @Model.PreviousID }, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
+<p></p>
+ <div class="row">
+    <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+        <span class="btn btn-default btn-block">
+            Invite Others : @Model.Name :
+            Date: @Model.RideDate
+        </span>
+    </div>
+</div>
+<p></p>
 <div id="templated">
     @Html.HiddenFor(model => model.RideId, new { @id = "RideIdHidden"})
     <table>
@@ -24,25 +23,24 @@ else
 
     <script type="text/html" id="userRowTemplate">
         <tr>
-            <td>User name: <input id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" /></td>
+            <td>
+                Enter User name or a valid email address <p></p> <input class="form-control" id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" />
+                <p></p>
+                Hit Select a user again to invite another user!
+                <p></p>
+            </td>
         </tr>
     </script>
     <p></p>
 
-    <button data-bind="click: addUser">Invite a User/s</button>
+    <button class="btn" data-bind="click: addUser">Select a user</button>
+
 </div>
 
 <div>
     <p></p>
-    <input onclick="ShowProgress();" data-bind="click: save" id="btnSubmit" type="submit" value="Invite Others" />
+    <input class="btn" onclick="ShowProgress();" data-bind="click: save" id="btnSubmit" type="submit" value="Send Invites" />
 </div> 
-
-<div class="loading" style="display:none;" align="center">
-    Loading. Please wait.<br />
-    <br />
-    <img src="~/Content/Images/loader.gif" alt="" />
-</div>
-
 @section Scripts {
 
     @Scripts.Render("~/bundles/knockout")

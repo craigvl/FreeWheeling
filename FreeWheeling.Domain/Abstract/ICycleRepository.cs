@@ -12,6 +12,7 @@ namespace FreeWheeling.Domain.Abstract
 
         //Get .. Group
         IEnumerable<Group> GetGroups();
+        IEnumerable<Group> GetGroupsIncludePrivate();
         IEnumerable<Group> GetGroupsByLocation(int? LocationID);
         IEnumerable<Group> GetGroupsByLocationWithSearch(int? LocationID, string SearchString);
         IEnumerable<Group> GetFavouriteGroupsByLocation(int? LocationID, string CurrentUserId);
@@ -61,6 +62,7 @@ namespace FreeWheeling.Domain.Abstract
 
         //Get .. Members
         IEnumerable<Member> GetMembersWithGroups();
+        IEnumerable<Member> GetMembersWithGroupsIncludePrivate();
         Member GetMemberByUserID(string id);
         
         //Get .. UserExpand
@@ -71,7 +73,7 @@ namespace FreeWheeling.Domain.Abstract
 
         //Get Private
         List<Group> GetPrivateGroupsByUserID(string UserId, Location _Location);
-        List<Ad_HocRide> GetPrivateAdHocRideByUserID(string UserId, Location _Location);
+        List<Ad_HocRide> GetPrivateAdHocRideByUserID(string UserId, Location _Location, TimeZoneInfo TimeZone);
         
         //Add
         void AddMember(string UserId, Group _Group);
@@ -90,6 +92,7 @@ namespace FreeWheeling.Domain.Abstract
         void DeleteGroup(int GroupId);
         void DeleteOldRides(int GroupId, TimeZoneInfo TimeZone);
         void DeleteAdHocRide(int AdHocId);
+        void DeleteHomePageRide(string UserId);
         
         //Update
         void UpdateGroup(Group _Group);

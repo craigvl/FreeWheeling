@@ -28,7 +28,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [Compress]
-        public ActionResult Index(int groupid = -1, int rideid = -1, int InviteId = -1, bool FromFavPage = false)
+        public ActionResult Index(int groupid = -1, int rideid = -1, int InviteId = -1, string fromhome = "false")
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             if (InviteId != -1)
@@ -43,6 +43,14 @@ namespace FreeWheeling.UI.Controllers
             RideModelIndex RideModel = new RideModelIndex();
             Group _Group = repository.GetGroupByID(groupid);
 
+            if (_Group == null)
+            {
+                GroupModel GroupModel = new GroupModel();
+                GroupModel._Groups = repository.GetGroups().ToList();
+                GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
+                return RedirectToAction("index", "group", GroupModel);
+            }
+
             //Just in case location ID has not been set, set to same as ride.
             if (currentUser.LocationID == null)
             {
@@ -54,7 +62,7 @@ namespace FreeWheeling.UI.Controllers
             var t = Request.QueryString["groupId"];
             if (groupid != -1 || rideid != -1)
             {
-                RideModel = _RideHelper.PopulateRideModel(rideid, groupid, currentUser.Id, true, FromFavPage);
+                RideModel = _RideHelper.PopulateRideModel(rideid, groupid, currentUser.Id, true);
             }
             else
             {
@@ -74,6 +82,8 @@ namespace FreeWheeling.UI.Controllers
                 GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
                 return RedirectToAction("index", "group", GroupModel);
             }
+
+            RideModel.FromHome = fromhome;
 
             if (RideModel.Group.IsPrivate)
             {
@@ -100,7 +110,7 @@ namespace FreeWheeling.UI.Controllers
             _AdHocRidesModel._Ad_HocRide = repository.GetAdHocRides(repository.GetLocations()
                 .Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone).OrderBy(c => c.RideDate).ToList();
             _AdHocRidesModel.PrivateRandomBunches = repository.GetPrivateAdHocRideByUserID(currentUser.Id,
-                _Location);
+                _Location, TZone);
             return View(_AdHocRidesModel);
         }
 
@@ -132,28 +142,46 @@ namespace FreeWheeling.UI.Controllers
                 idb.SaveChanges();
             }
 
-            if (_Ad_HocRide.IsPrivate)
+            if (_Ad_HocRide == null)
             {
-                if (!repository.IsInvitedToPrivateRandomBunch(adhocrideid, currentUser.Id))
-                {
-                    return RedirectToAction("index", "Home");
-                }
+                return RedirectToAction("AdHocList", "ride");
             }
-
-            AdHocViewModel _adHocViewModel = new AdHocViewModel();
-            RideModelHelper _AdHocHelper = new RideModelHelper(repository);
-            _adHocViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
-            return View(_adHocViewModel);
+            else
+            {
+                if (_Ad_HocRide.IsPrivate)
+                {
+                    if (!repository.IsInvitedToPrivateRandomBunch(adhocrideid, currentUser.Id))
+                    {
+                        return RedirectToAction("index", "Home");
+                    }
+                }
+                SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel();
+                RideModelHelper _AdHocHelper = new RideModelHelper(repository);
+                _SingleRideRandomRideViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
+                return View(_SingleRideRandomRideViewModel);
+            }
         }
 
         [Compress]
-        public ActionResult ViewSingleRide(int RideId)
+        public ActionResult ViewSingleRide(int RideId, string fromhome = "false")
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            SingleRideViewModel _SingleRideViewModel = new SingleRideViewModel();
-            RideModelHelper _AdHocHelper = new RideModelHelper(repository);
-            _SingleRideViewModel = _AdHocHelper.PopulateSingleRideModel(RideId, currentUser.Id);
-            return View(_SingleRideViewModel);
+            Ride _Ride = repository.GetRideByIDIncludeGroup(RideId);
+            if (_Ride == null)
+            {
+                GroupModel GroupModel = new GroupModel();
+                GroupModel._Groups = repository.GetGroups().ToList();
+                GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
+                return RedirectToAction("index", "group", GroupModel);
+            }
+            else
+            {
+                SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel();
+                RideModelHelper _AdHocHelper = new RideModelHelper(repository);
+                _SingleRideRandomRideViewModel = _AdHocHelper.PopulateSingleRideModel(RideId, currentUser.Id);
+                _SingleRideRandomRideViewModel.FromHome = fromhome;
+                return View(_SingleRideRandomRideViewModel);
+            }
         }
 
         public ActionResult SeeAllComments(int RideId, int GroupId, int PreviousID = -1)
@@ -359,9 +387,15 @@ namespace FreeWheeling.UI.Controllers
             }
         }
 
-        public ActionResult EditAdHocRide(int adhocrideid)
+        public ActionResult EditAdHocRide(int adhocrideid = -1)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
+
+            if (adhocrideid == -1)
+            {
+                return RedirectToAction("AdHocList", "Ride");
+            }
+
 
             if (!repository.IsAdHocCreator(adhocrideid,currentUser.Id))
             {
@@ -445,10 +479,10 @@ namespace FreeWheeling.UI.Controllers
 
                 repository.UpdateAdHocRide(adhoc);
                 repository.Save();
-                AdHocViewModel _adHocViewModel = new AdHocViewModel();
+                SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel();
                 RideModelHelper _AdHocHelper = new RideModelHelper(repository);
-                _adHocViewModel = _AdHocHelper.PopulateAdHocModel(_EditAdHocRideModel.adhocrideid, currentUser.Id);
-                return View("ViewAdHocRide", _adHocViewModel);
+                _SingleRideRandomRideViewModel = _AdHocHelper.PopulateAdHocModel(_EditAdHocRideModel.adhocrideid, currentUser.Id);
+                return View("ViewAdHocRide", _SingleRideRandomRideViewModel);
             }
         }
 
@@ -469,9 +503,9 @@ namespace FreeWheeling.UI.Controllers
             {
                 repository.AddAdHocRideComment(CommentString, adhocrideid, currentUser.UserName, currentUser.Id);
                 repository.Save();
-                AdHocViewModel _adHocViewModel = new AdHocViewModel();
+                SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel();
                 RideModelHelper _AdHocHelper = new RideModelHelper(repository);
-                _adHocViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
+                _SingleRideRandomRideViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
                 int commentCount = repository.GetCommentCountForAdHocRide(adhocrideid);
 
                Task E = new Task(() =>
@@ -517,7 +551,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddComment(int groupid, int rideid, string CommentString, bool FromFavPage, int ParentRideID)
+        public JsonResult AddComment(int groupid, int rideid, string CommentString, int ParentRideID)
         {          
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
@@ -527,7 +561,7 @@ namespace FreeWheeling.UI.Controllers
                 repository.Save();
                 RideModelIndex RideModel = new RideModelIndex();
                 RideModelHelper _RideHelper = new RideModelHelper(repository);
-                RideModel = _RideHelper.PopulateRideModel(ParentRideID, groupid, currentUser.Id, false, FromFavPage);
+                RideModel = _RideHelper.PopulateRideModel(ParentRideID, groupid, currentUser.Id, false);
                 int commentCount = repository.GetCommentCountForRide(rideid);
 
                 Task E = new Task(() =>
@@ -573,7 +607,7 @@ namespace FreeWheeling.UI.Controllers
             }
         }
 
-        public JsonResult Attend(int RideId, string Commitment, int Groupid, bool FromFavPage, int ParentRideID)
+        public JsonResult Attend(int RideId, string Commitment, int Groupid, int ParentRideID)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Ride _Ride = new Ride();
@@ -590,7 +624,7 @@ namespace FreeWheeling.UI.Controllers
             repository.Save();
             RideModelIndex RideModel = new RideModelIndex();
             RideModelHelper _RideHelper = new RideModelHelper(repository);
-            RideModel = _RideHelper.PopulateRideModel(ParentRideID, Groupid, currentUser.Id, false, FromFavPage);
+            RideModel = _RideHelper.PopulateRideModel(ParentRideID, Groupid, currentUser.Id, false);
             string KeenCount = repository.GetKeenCountForRide(RideId).ToString();
             
             Task E = new Task(() =>
@@ -631,7 +665,7 @@ namespace FreeWheeling.UI.Controllers
                 }, JsonRequestBehavior.AllowGet);  
         }
 
-        public JsonResult AttendSingleRide(int RideId, string Commitment, int Groupid, bool FromFavPage, int ParentRideID)
+        public JsonResult AttendSingleRide(int RideId, string Commitment, int Groupid, int ParentRideID)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Ride _Ride = new Ride();
@@ -650,9 +684,9 @@ namespace FreeWheeling.UI.Controllers
 
             repository.AddRider(_Rider, _Group);
             repository.Save();
-            SingleRideViewModel RideModel = new SingleRideViewModel();
+            SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel();
             RideModelHelper _RideHelper = new RideModelHelper(repository);
-            RideModel = _RideHelper.PopulateSingleRideModel(RideId,currentUser.Id);
+            _SingleRideRandomRideViewModel = _RideHelper.PopulateSingleRideModel(RideId, currentUser.Id);
             string KeenCount = repository.GetKeenCountForRide(RideId).ToString();
 
             Task E = new Task(() =>
@@ -701,9 +735,9 @@ namespace FreeWheeling.UI.Controllers
             AdHocRider _Rider = new AdHocRider { userId = currentUser.Id, Name = currentUser.UserName, AdHocRide = _Ride, LeaveTime = DateTime.UtcNow, PercentKeen = Commitment };
             repository.AddAdHocRider(_Rider, _Ride);
             repository.Save();
-            AdHocViewModel _adHocViewModel = new AdHocViewModel();
+            SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel();
             RideModelHelper _AdHocHelper = new RideModelHelper(repository);
-            _adHocViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
+            _SingleRideRandomRideViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
             string KeenCount = repository.GetKeenCountForAdHocRide(adhocrideid).ToString();
 
             Task E = new Task(() =>

@@ -3,18 +3,25 @@
 @{
     ViewBag.Title = "Index";
 }
+<p></p>
+@Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
+<p></p>
+<div class="row">
+    <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+        <span class="btn btn-default btn-block">Settings</span>
+    </div>
+</div>
 
-@Html.ActionLink("Back <---", "Index", "Home", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
-
-<h2>Settings</h2>
-
-<h2>Change Location</h2>
-
-@using (Ajax.BeginForm("Index",
+<p></p>
+<div class="row>">
+    <b>Change Location</b>
+    <p></p>
+    <div>
+    @using (Ajax.BeginForm("Index",
     new AjaxOptions { HttpMethod = "POST", OnSuccess = "OnSuccess", OnFailure = "OnFailure" }))
     {
-    @Html.ValidationMessageFor(c => c.LocationsId,"Please select a Location")
-    @Html.DropDownListFor(
+        @Html.ValidationMessageFor(c => c.LocationsId, "Please select a Location")
+        @Html.DropDownListFor(
              x => x.LocationsId,
     new SelectList(
         Model.Locations.ToList().Select(
@@ -24,49 +31,45 @@
                  "Text", Model.LocationsId
     ), "-- Set a Location --", new { @class = "form-control" }
 )
-    <p></p>
-<h2>Email Settings</h2>
-    @:Receive email updates: 
-    @Html.CheckBoxFor(x => x.ReceiveEmails)
-        
-    <p></p>
-    <input onclick="ShowProgress();" type="submit" value="Save" class="btn btn-primary" />
-
-}
-
-<div class="loading" style="display:none;" align="center">
-    Loading. Please wait.<br />
-    <br />
-    <img src="~/Content/Images/loader.gif" alt="" />
+        @:</div>
+        <p></p>
+    <div>
+       <b> Email Settings</b>
+        <p></p>
+        Receive email updates:
+        @Html.CheckBoxFor(x => x.ReceiveEmails)
+    </div>
+        <p></p>    
+        <input onclick="ShowProgress();" type="submit" value="Save" class="btn btn-default" />  
+    }
 </div>
+    @section scripts{
+        @Scripts.Render("~/bundles/jqueryval")
 
-@section scripts{
-@Scripts.Render("~/bundles/jqueryval")
-  
-    <script>
+        <script>
 
-        jQuery(document).ready(function () {
-            HideProgress();
-        });
-
-        function OnSuccess(data) {
-            alert(data.message);
-            HideProgress();
-        }
-
-        function OnFailure(data) {
-            alert(data.message);
-        }
-
-        $("form").submit(function () {
-            if (!$(this).valid()) {
+            jQuery(document).ready(function () {
                 HideProgress();
-                return false;
-            }
-            else {
-                return true;
-            }
-        });
+            });
 
-    </script>
-}
+            function OnSuccess(data) {
+                alert(data.message);
+                HideProgress();
+            }
+
+            function OnFailure(data) {
+                alert(data.message);
+            }
+
+            $("form").submit(function () {
+                if (!$(this).valid()) {
+                    HideProgress();
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            });
+
+        </script>
+    }

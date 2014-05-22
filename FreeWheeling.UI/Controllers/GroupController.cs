@@ -405,13 +405,18 @@ namespace FreeWheeling.UI.Controllers
             repository.RemoveMember(currentUser.Id, group);
             repository.Save();
 
-            if(title == "Favourite bunches")
-            {
-                return RedirectToAction("Mybunches", "Group");
-            }
-            else{
-                return RedirectToAction("Index", "Group");
-            }
+            Task T = new Task(() =>
+               {
+                   Ride _Ride = repository.GetHomePageRideByUserID(currentUser.Id);
+                   if (_Ride.Group.id == id)
+                   {
+                       repository.DeleteHomePageRide(currentUser.Id);
+                   }
+               });
+
+            T.Start();
+
+            return RedirectToAction("Index", "Group");
         }
 
         //// This is to add group to fav list
@@ -423,16 +428,6 @@ namespace FreeWheeling.UI.Controllers
             repository.AddMember(currentUser.Id, group);
             repository.Save();
             return RedirectToAction("Index", "Group");
-        }
-
-        public ViewResult Mybunches(string searchString)
-        {
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
-            GroupModel _GroupModel = new GroupModel();
-            GroupModelHelper _GroupHelper = new GroupModelHelper(repository);
-            _GroupModel = _GroupHelper.PopulateGroupModel(currentUser.Id, _Location, currentUser.Email, searchString, true);
-            return View("Index",_GroupModel);
         }
 
         public ActionResult InviteOthersToPrivateBunch(int GroupId)

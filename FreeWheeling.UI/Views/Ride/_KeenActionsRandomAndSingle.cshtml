@@ -1,0 +1,135 @@
+﻿@model FreeWheeling.UI.Models.SingleRideAndRandomRideViewModel
+@{
+    string type = ViewData["type"].ToString();
+
+    int rideid;
+    int parentid;
+    int groupid;
+    string onsuccesskeen = "KeenCompleteFirst";
+
+    string inid = "InFirst";
+    string outid = "OutFirst";
+    string onwayid = "OnWayFirst";
+   
+    if (type == "random")
+    {
+        groupid = -1;
+        rideid = Model.RandomRide.id;
+        parentid = -1;
+    }
+    else
+    {
+        rideid = Model.Ride.id;
+        groupid = Model.Ride.Group.id;
+        parentid = Model.Ride.id;
+    } 
+
+    }
+
+@if (type == "single")
+{
+    @:<span>
+        @Ajax.ActionLink(" ", "Attend",
+            new { RideId = @rideid, commitment = "In", Groupid = @groupid, ParentRideID = @parentid },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = @onsuccesskeen,
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "btn glyphicon glyphicon-ok-sign btn-lg",
+                     style = "color:#333333",
+                     onclick = "ShowProgress();",
+                     @id = @inid
+                 })
+    @:</span>
+    @:<span>
+        @Ajax.ActionLink(" ", "Attend",
+                    new { RideId = @rideid, commitment = "Out", Groupid = @groupid, ParentRideID = @parentid },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = onsuccesskeen,
+                     OnBegin = "ShowProgress"
+                 },
+                      new
+                      {
+                          @class = "btn glyphicon glyphicon-remove-sign btn-lg",
+                          style = "color:#333333",
+                          onclick = "ShowProgress();",
+                          @id = @outid
+                      })
+    @:</span>
+    @:<span>
+        @Ajax.ActionLink("On My Way!", "Attend",
+                         new { RideId = @rideid, commitment = "OnWay", Groupid = @groupid, ParentRideID = @parentid },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = onsuccesskeen,
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "btn btn-default btn-sm",
+                     onclick = "ShowProgress();",
+                     @id = onwayid
+                 })
+
+        }
+    </span>
+@if (type == "random")
+{
+    @:<span>
+        @Ajax.ActionLink(" ", "AttendAdHocRider",
+                            new { adhocrideid = @rideid, commitment = "In" },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "KeenCompleteFirst",
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "btn glyphicon glyphicon-ok-sign btn-lg",
+                     style = "color:#333333",
+                     onclick = "ShowProgress();",
+                     @id = "InFirst"
+                 })
+    @:</span>
+    @:<span>
+        @Ajax.ActionLink(" ", "AttendAdHocRider",
+                            new { adhocrideid = @rideid, commitment = "Out" },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "KeenCompleteFirst",
+                     OnBegin = "ShowProgress"
+                 },
+                      new
+                      {
+                          @class = "btn glyphicon glyphicon-remove-sign btn-lg",
+                          style = "color:#333333",
+                          onclick = "ShowProgress();",
+                          @id = "OutFirst"
+                      })
+    @:</span>
+    @:<span>
+        @Ajax.ActionLink("On My Way!", "AttendAdHocRider",
+                                 new { adhocrideid = @rideid, commitment = "OnWay" },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "KeenCompleteFirst",
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "btn btn-default btn-sm",
+                     onclick = "ShowProgress();",
+                     @id = "OnWayFirst"
+                 })
+    @:</span>
+}

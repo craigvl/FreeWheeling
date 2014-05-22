@@ -23,6 +23,15 @@ namespace FreeWheeling.Domain.Concrete
                 .ToList(); 
         }
 
+        public IEnumerable<Group> GetGroupsIncludePrivate()
+        {
+            return context.Groups.Include("Members")
+                .Include("Rides")
+                .Include("Location")
+                .Include("RideDays")
+                .ToList();
+        }
+
         public IEnumerable<Rider> GetRiders()
         {
             return context.Riders;
@@ -90,6 +99,11 @@ namespace FreeWheeling.Domain.Concrete
         public IEnumerable<Member> GetMembersWithGroups()
         {
             return context.Members.Include("Group").Where(g => g.Group.IsPrivate == false);
+        }
+
+        public IEnumerable<Member> GetMembersWithGroupsIncludePrivate()
+        {
+            return context.Members.Include("Group");
         }
 
         public Group GetGroupByID(int id)
@@ -213,15 +227,17 @@ namespace FreeWheeling.Domain.Concrete
                 && g.Location.id == _Location.id).Distinct().ToList();
         }
 
-        public List<Ad_HocRide> GetPrivateAdHocRideByUserID(string UserId, Location _Location)
+        public List<Ad_HocRide> GetPrivateAdHocRideByUserID(string UserId, Location _Location, TimeZoneInfo TimeZone)
         {
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZone);
+            LocalNow = LocalNow.AddHours(-2);
             List<int> UsersPrivateRandomRides = context.PrivateRandomUsers.Where(u => u.UserId == UserId)
                 .Select(g => g.RideId)
                 .ToList();
             UsersPrivateRandomRides.AddRange(context.Ad_HocRide.Where(u => u.IsPrivate == true
                 && u.CreatedBy == UserId).Select(t => t.id).ToList());
             return context.Ad_HocRide.Where(g => UsersPrivateRandomRides.Contains(g.id) 
-                && g.Location.id == _Location.id).Distinct().ToList();
+                && g.Location.id == _Location.id && g.RideDate >= LocalNow).Distinct().ToList();
         }
 
         public List<Comment> GetTop2CommentsForRide(int Rideid)
@@ -261,7 +277,7 @@ namespace FreeWheeling.Domain.Concrete
             {
                 R.LeaveTime = TimeZoneInfo.ConvertTimeFromUtc(R.LeaveTime, TimeZone);
             }
-            return Riders;
+            return Riders.OrderBy(i => i.PercentKeen).ToList();
         }
 
         public List<Rider> GetRidersForRideDontIncludeCurrentUser(int id, TimeZoneInfo TimeZone, string CurrentUserId)
@@ -337,7 +353,7 @@ namespace FreeWheeling.Domain.Concrete
             HomePageRide _HomePageRide = context.HomePageRide.Where(i => i.Userid == UserId).FirstOrDefault();
             if (_HomePageRide != null)
             {
-                return context.Rides.Where(r => r.id == _HomePageRide.Rideid).FirstOrDefault();
+                return context.Rides.Include("Group").Where(r => r.id == _HomePageRide.Rideid).FirstOrDefault();
             }
             else
             {
@@ -364,7 +380,7 @@ namespace FreeWheeling.Domain.Concrete
                 AdHoc.LeaveTime = TimeZoneInfo.ConvertTimeFromUtc(AdHoc.LeaveTime, TimeZone);
             }
 
-            return AList;
+            return AList.OrderBy(i => i.PercentKeen).ToList();
         }
 
         public List<AdHocRider> GetRidersForAdHocRideDontIncludeCurrentUser(int AdHocRideid, TimeZoneInfo TimeZone, string CurrentUserId)
@@ -452,6 +468,7 @@ namespace FreeWheeling.Domain.Concrete
                 Member NewMember = new Member { userId = UserId, Group = _Group };
                 context.Members.Add(NewMember);
                 context.Entry(NewMember).State = System.Data.Entity.EntityState.Added;
+                context.SaveChanges();
             }      
         }
 
@@ -468,13 +485,15 @@ namespace FreeWheeling.Domain.Concrete
                     CurrentRiders.PercentKeen = _Rider.PercentKeen;
                     CurrentRiders.LeaveTime = _Rider.LeaveTime;
                     CurrentRiders.Name = _Rider.Name;
-                    context.Entry(CurrentRiders).State = System.Data.Entity.EntityState.Modified; 
+                    context.Entry(CurrentRiders).State = System.Data.Entity.EntityState.Modified;
+                    context.SaveChanges(); 
                 }
                 else
                 {
                     Rider NewRider = new Rider { userId = _Rider.userId, PercentKeen = _Rider.PercentKeen, Ride = _Rider.Ride, Name = _Rider.Name, LeaveTime = _Rider.LeaveTime };
                     context.Riders.Add(NewRider);
                     context.Entry(NewRider).State = System.Data.Entity.EntityState.Added;
+                    context.SaveChanges();
                 }
             }
             else
@@ -482,6 +501,7 @@ namespace FreeWheeling.Domain.Concrete
                 Rider NewRider = new Rider { userId = _Rider.userId, PercentKeen = _Rider.PercentKeen, Ride = _Rider.Ride, Name = _Rider.Name, LeaveTime = _Rider.LeaveTime };
                 context.Riders.Add(NewRider);
                 context.Entry(NewRider).State = System.Data.Entity.EntityState.Added;
+                context.SaveChanges();
             }
         }
 
@@ -498,12 +518,14 @@ namespace FreeWheeling.Domain.Concrete
 
             context.Comment.Add(_comment);
             context.Entry(_comment).State = System.Data.Entity.EntityState.Added;
+            context.SaveChanges();
         }
 
         public void AddGroup(Group _Group)
         {
             context.Groups.Add(_Group);
             context.Entry(_Group).State = System.Data.Entity.EntityState.Added;
+            context.SaveChanges();
         }
 
         public void AddPrivateAdHocInvite(List<PrivateRandomUsers> _PrivateRandomUsers)
@@ -512,6 +534,7 @@ namespace FreeWheeling.Domain.Concrete
             {
                 context.PrivateRandomUsers.Add(item);
                 context.Entry(item).State = System.Data.Entity.EntityState.Added;
+                context.SaveChanges();
             }
         }
 
@@ -521,6 +544,7 @@ namespace FreeWheeling.Domain.Concrete
             {
                 context.PrivateGroupUsers.Add(item);
                 context.Entry(item).State = System.Data.Entity.EntityState.Added;
+                context.SaveChanges();
             }
         }
 
@@ -528,12 +552,14 @@ namespace FreeWheeling.Domain.Concrete
         {
             context.UserExpands.Add(_UserExpand);
             context.Entry(_UserExpand).State = System.Data.Entity.EntityState.Added;
+            context.SaveChanges();
         }
 
         public void AddAdHocRide(Ad_HocRide _AdHocRide)
         {
             context.Ad_HocRide.Add(_AdHocRide);
             context.Entry(_AdHocRide).State = System.Data.Entity.EntityState.Added;
+            context.SaveChanges();
         }
 
         public void AddAdHocRider(AdHocRider _Rider, Ad_HocRide _Ride)
@@ -556,6 +582,7 @@ namespace FreeWheeling.Domain.Concrete
                     AdHocRider NewRider = new AdHocRider { userId = _Rider.userId, PercentKeen = _Rider.PercentKeen, AdHocRide = _Ride, Name = _Rider.Name, LeaveTime = _Rider.LeaveTime };
                     context.AdHocRider.Add(NewRider);
                     context.Entry(NewRider).State = System.Data.Entity.EntityState.Added;
+                    context.SaveChanges();
                 }
             }
             else
@@ -563,6 +590,7 @@ namespace FreeWheeling.Domain.Concrete
                 AdHocRider NewRider = new AdHocRider { userId = _Rider.userId, PercentKeen = _Rider.PercentKeen, AdHocRide = _Ride, Name = _Rider.Name, LeaveTime = _Rider.LeaveTime };
                 context.AdHocRider.Add(NewRider);
                 context.Entry(NewRider).State = System.Data.Entity.EntityState.Added;
+                context.SaveChanges();
             }
         }
 
@@ -579,6 +607,7 @@ namespace FreeWheeling.Domain.Concrete
 
             context.AdHocComment.Add(_comment);
             context.Entry(_comment).State = System.Data.Entity.EntityState.Added;
+            context.SaveChanges();
         }
 
         public void PopulateRideDatesFromDate(Group _Group, DateTime _DateTime, TimeZoneInfo _TimeZoneInfo)
@@ -838,6 +867,7 @@ namespace FreeWheeling.Domain.Concrete
             CurrentGroup.MapUrl = _Group.MapUrl;
             CurrentGroup.IsPrivate = _Group.IsPrivate;
             context.Entry(CurrentGroup).State = System.Data.Entity.EntityState.Modified;
+            context.SaveChanges();
         }
 
         public void UpdateAdHocRide(Ad_HocRide _AdHocRide)
@@ -858,6 +888,7 @@ namespace FreeWheeling.Domain.Concrete
             CurrentAdHocRide.Description = _AdHocRide.Description;
             CurrentAdHocRide.IsPrivate = _AdHocRide.IsPrivate;
             context.Entry(CurrentAdHocRide).State = System.Data.Entity.EntityState.Modified;
+            context.SaveChanges();
         }
 
         public void UpdateUserExpand(UserExpand _UserExpand)
@@ -870,6 +901,7 @@ namespace FreeWheeling.Domain.Concrete
             CurrentUserExpand.SecondKeen = _UserExpand.SecondKeen;
             CurrentUserExpand.SecondComment = _UserExpand.SecondComment;
             context.Entry(CurrentUserExpand).State = System.Data.Entity.EntityState.Modified;
+            context.SaveChanges();
         }
 
         public void UpdateRideTimes(Group _Group, TimeZoneInfo TimeZone)
@@ -882,6 +914,7 @@ namespace FreeWheeling.Domain.Concrete
                 _Ride.RideTime = _Group.RideTime;
             }
             context.Entry(CurrentGroup).State = System.Data.Entity.EntityState.Modified;
+            context.SaveChanges();
         }
 
         public void UpdateInvitePrivateUser(string UserId, string UserEmail, int id)
@@ -890,6 +923,7 @@ namespace FreeWheeling.Domain.Concrete
             _CurrentPrivateGroupUser.UserId = UserId;
             _CurrentPrivateGroupUser.Email = UserEmail;
             context.Entry(_CurrentPrivateGroupUser).State = System.Data.Entity.EntityState.Modified;
+            context.SaveChanges();
         }
 
         public void UpdateInviteRandomPrivateUser(string UserId, string UserEmail, int id)
@@ -898,6 +932,7 @@ namespace FreeWheeling.Domain.Concrete
             _CurrentPrivateRandomUser.UserId = UserId;
             _CurrentPrivateRandomUser.Email = UserEmail;
             context.Entry(_CurrentPrivateRandomUser).State = System.Data.Entity.EntityState.Modified;
+            context.SaveChanges();
         }
 
         public void DeleteGroup(int GroupId)
@@ -911,6 +946,15 @@ namespace FreeWheeling.Domain.Concrete
 
             context.Groups.Remove(CurrentGroup);
             context.Entry(CurrentGroup).State = System.Data.Entity.EntityState.Deleted;
+            context.SaveChanges();
+        }
+
+        public void DeleteHomePageRide(string UserId)
+        {
+            HomePageRide CurrentHomePageRide = context.HomePageRide.Where(u => u.Userid == UserId).FirstOrDefault();
+            context.HomePageRide.Remove(CurrentHomePageRide);
+            context.Entry(CurrentHomePageRide).State = System.Data.Entity.EntityState.Deleted;
+            context.SaveChanges();
         }
 
         public void DeleteAdHocRide(int AdHocId)
@@ -918,6 +962,7 @@ namespace FreeWheeling.Domain.Concrete
             Ad_HocRide CurrentAdHocRide = context.Ad_HocRide.Where(g => g.id == AdHocId).FirstOrDefault();
             context.Ad_HocRide.Remove(CurrentAdHocRide);
             context.Entry(CurrentAdHocRide).State = System.Data.Entity.EntityState.Deleted;
+            context.SaveChanges();
         }
 
         public void DeleteOldRides(int GroupId, TimeZoneInfo TimeZone)
@@ -934,6 +979,7 @@ namespace FreeWheeling.Domain.Concrete
                         foreach (Rider _Rider in _Ride.Riders.ToList())
                         {
                             context.Entry(_Rider).State = System.Data.Entity.EntityState.Deleted;
+                            context.SaveChanges();
                         } 
                     }
                     context.Entry(_Ride).State = System.Data.Entity.EntityState.Deleted;
@@ -947,6 +993,7 @@ namespace FreeWheeling.Domain.Concrete
             Member CurrentMember = context.Members.Where(g => g.Group.id == _Group.id && g.userId == UserId).FirstOrDefault();
             context.Members.Remove(CurrentMember);
             context.Entry(CurrentMember).State = System.Data.Entity.EntityState.Deleted;
+            context.SaveChanges();
         }
 
         public void PopulateUserHomePageRides(List<HomePageRide> _HomePageRides)
@@ -965,7 +1012,5 @@ namespace FreeWheeling.Domain.Concrete
         {
             context.SaveChanges();
         }
-
-
     }
 }

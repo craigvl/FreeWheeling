@@ -32,11 +32,11 @@
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -51,69 +51,9 @@
     <Compile Include="Abstract\ICycleRepository.cs" />
     <Compile Include="Concrete\CycleRepository.cs" />
     <Compile Include="DataContexts\CycleDb.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201312270039557_Initial_Create.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201312270039557_Initial_Create.Designer.cs">
-      <DependentUpon>201312270039557_Initial_Create.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201401042048412_Update_To_LocalTime.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201401042048412_Update_To_LocalTime.Designer.cs">
-      <DependentUpon>201401042048412_Update_To_LocalTime.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201401070146189_Add_Ride_Hour_Minute.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201401070146189_Add_Ride_Hour_Minute.Designer.cs">
-      <DependentUpon>201401070146189_Add_Ride_Hour_Minute.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201401112337110_Added_CreatedBy_And_TimeStampUpdate_To_LocalTime.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201401112337110_Added_CreatedBy_And_TimeStampUpdate_To_LocalTime.Designer.cs">
-      <DependentUpon>201401112337110_Added_CreatedBy_And_TimeStampUpdate_To_LocalTime.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201401120022387_another.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201401120022387_another.Designer.cs">
-      <DependentUpon>201401120022387_another.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201401132132349_AddedModifiedTimeStamp.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201401132132349_AddedModifiedTimeStamp.Designer.cs">
-      <DependentUpon>201401132132349_AddedModifiedTimeStamp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201401162304132_Add_Description.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201401162304132_Add_Description.Designer.cs">
-      <DependentUpon>201401162304132_Add_Description.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201401181047151_Add_MapUrl.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201401181047151_Add_MapUrl.Designer.cs">
-      <DependentUpon>201401181047151_Add_MapUrl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201401191114336_riderequired.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201401191114336_riderequired.Designer.cs">
-      <DependentUpon>201401191114336_riderequired.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201401191119289_grouprequired.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201401191119289_grouprequired.Designer.cs">
-      <DependentUpon>201401191119289_grouprequired.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201402030103074_User_Expand.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201402030103074_User_Expand.Designer.cs">
-      <DependentUpon>201402030103074_User_Expand.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201402050305171_Userid_Change.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201402050305171_Userid_Change.Designer.cs">
-      <DependentUpon>201402050305171_Userid_Change.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201403080618303_Added_UserId_To_Comments.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201403080618303_Added_UserId_To_Comments.Designer.cs">
-      <DependentUpon>201403080618303_Added_UserId_To_Comments.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201404060424133_Add_HomePageRide.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201404060424133_Add_HomePageRide.Designer.cs">
-      <DependentUpon>201404060424133_Add_HomePageRide.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201404110654018_Add_isprivate.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201404110654018_Add_isprivate.Designer.cs">
-      <DependentUpon>201404110654018_Add_isprivate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataContexts\CycleMigrations\201404110816447_Add_PrivateUserInviteTables.cs" />
-    <Compile Include="DataContexts\CycleMigrations\201404110816447_Add_PrivateUserInviteTables.Designer.cs">
-      <DependentUpon>201404110816447_Add_PrivateUserInviteTables.cs</DependentUpon>
+    <Compile Include="DataContexts\CycleMigrations\201405031402174_init.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201405031402174_init.Designer.cs">
+      <DependentUpon>201405031402174_init.cs</DependentUpon>
     </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\AdHocComment.cs" />
@@ -138,53 +78,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201312270039557_Initial_Create.resx">
-      <DependentUpon>201312270039557_Initial_Create.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201401042048412_Update_To_LocalTime.resx">
-      <DependentUpon>201401042048412_Update_To_LocalTime.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201401070146189_Add_Ride_Hour_Minute.resx">
-      <DependentUpon>201401070146189_Add_Ride_Hour_Minute.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201401112337110_Added_CreatedBy_And_TimeStampUpdate_To_LocalTime.resx">
-      <DependentUpon>201401112337110_Added_CreatedBy_And_TimeStampUpdate_To_LocalTime.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201401120022387_another.resx">
-      <DependentUpon>201401120022387_another.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201401132132349_AddedModifiedTimeStamp.resx">
-      <DependentUpon>201401132132349_AddedModifiedTimeStamp.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201401162304132_Add_Description.resx">
-      <DependentUpon>201401162304132_Add_Description.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201401181047151_Add_MapUrl.resx">
-      <DependentUpon>201401181047151_Add_MapUrl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201401191114336_riderequired.resx">
-      <DependentUpon>201401191114336_riderequired.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201401191119289_grouprequired.resx">
-      <DependentUpon>201401191119289_grouprequired.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201402030103074_User_Expand.resx">
-      <DependentUpon>201402030103074_User_Expand.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201402050305171_Userid_Change.resx">
-      <DependentUpon>201402050305171_Userid_Change.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201403080618303_Added_UserId_To_Comments.resx">
-      <DependentUpon>201403080618303_Added_UserId_To_Comments.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201404060424133_Add_HomePageRide.resx">
-      <DependentUpon>201404060424133_Add_HomePageRide.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201404110654018_Add_isprivate.resx">
-      <DependentUpon>201404110654018_Add_isprivate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataContexts\CycleMigrations\201404110816447_Add_PrivateUserInviteTables.resx">
-      <DependentUpon>201404110816447_Add_PrivateUserInviteTables.cs</DependentUpon>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201405031402174_init.resx">
+      <DependentUpon>201405031402174_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

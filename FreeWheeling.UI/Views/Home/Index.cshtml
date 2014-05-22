@@ -3,42 +3,48 @@
 @{
     ViewBag.Title = "Home Page";
 }
-
+<hr />
 @if (Model.LocationsId != 0)
 {
     if (Model.HomePageRide != null)
-    {
+    {   
         <table class="table content-box">
-            <tr>
-                <th><span style="position: relative; top: -3px;"><a href="Ride/ViewSingleRide?RideId=@Model.HomePageRide.id&FromFavPage=False">Your next bunch</a></span></th>
+            <tr style="width:100%">
+                <th style="width:100%"><span style="position: relative; top: -3px;"><a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true">your next bunch: @Model.HomePageRide.Group.name</a></span></th>
+                <th></th>
             </tr>
             <tr>
                 <td>
-                    @Model.HomePageRide.RideDate.ToLongDateString() , @Model.HomePageRide.RideDate.ToShortTimeString()
+                    <a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true">@Model.HomePageRide.RideDate.ToLongDateString() , @Model.HomePageRide.RideDate.ToShortTimeString()</a>
+                </td>
+                <td>
+                    @Html.ActionLink(string.Concat(" "), "ViewSingleRide", "Ride", new { RideId = @Model.HomePageRide.id, fromhome = "true" },
+             new { @class = "glyphicon glyphicon-search", onclick = "ShowProgress();" })
+
                 </td>
             </tr>
         </table>
     }
-     <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;">
-		@Html.ActionLink("Bunches", "Index", "Group", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
-		@Html.ActionLink(" ", "Create", "Group", new { }, new { @class = "btn btn-default col-xs-3 glyphicon glyphicon-plus", style = "top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })
+     <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;">
+		@Html.ActionLink("bunches", "Index", "Group", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
+		@Html.ActionLink(" ", "Create", "Group", new { }, new { @class = "btn btn-default col-xs-3 glyphicon glyphicon-plus", style = "text-align:center;top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })
 	</div>
-    
-    <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:15px;">
-		@Html.ActionLink("Random bunches (" + @Model.UpCommingAd_HocCount + ")", "AdHocList", "Ride", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
-		@Html.ActionLink(" ", "CreateAdHoc", "Group", new { }, new { @class = "btn btn-default col-xs-3 glyphicon glyphicon-plus", style = "top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })
-	</div>
+
+    <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:15px;">
+        @Html.ActionLink("random bunches (" + @Model.UpCommingAd_HocCount + ")", "AdHocList", "Ride", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
+        @Html.ActionLink(" ", "CreateAdHoc", "Group", new { }, new { @class = "btn btn-default col-xs-3 glyphicon glyphicon-plus", style = "text-align:center;top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })
+    </div>
 
     if (Model.FavouriteBunches != null)
     {
         <table class="table content-box">
             <tr>
-                <th><span style="font-size:1.5em" class="glyphicon glyphicon-star">&nbsp;</span><span style="position: relative; top: -3px;">FAVOURITES</span></th>
+                <th><span style="" class="glyphicon glyphicon-star"></span><span style="position: relative; top: -1px;"> favourites</span></th>
             </tr>
             @foreach (Group bunch in Model.FavouriteBunches)
             {
                 <tr>
-                    <td><a href="/Ride?groupid=@bunch.id&FromFavPage=True"><div>@bunch.name<div class=" pull-right glyphicon glyphicon-zoom-in"></div></div></a></td>
+                    <td><a href="/Ride?groupid=@(bunch.id)&fromhome=true"><div>@bunch.name<div class=" pull-right glyphicon glyphicon-search"></div></div></a></td>
                 </tr>
             }
 

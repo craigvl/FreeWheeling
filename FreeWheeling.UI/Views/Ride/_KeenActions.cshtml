@@ -1,0 +1,84 @@
+﻿@model FreeWheeling.UI.Models.RideModelIndex
+@{
+    int position = Convert.ToInt32(ViewData["position"]);
+    
+    int rideid = Model.Ride.id;
+    int parentid = Model.Ride.id;
+    int groupid = Model.Group.id;
+    string onsuccesskeen = "KeenCompleteFirst";
+
+
+    string inid = "InFirst";
+    string outid = "OutFirst";
+    string onwayid = "OnWayFirst";
+    
+    if (position == 2)
+    {
+        rideid = Model.NextRide.id;
+        onsuccesskeen = "KeenCompleteNext";
+        
+        inid = "InNext";
+        outid = "OutNext";
+        onwayid = "OnWayNext";
+    }
+
+
+}
+@Ajax.ActionLink(" ", "Attend",
+            new { RideId = @rideid, commitment = "In", Groupid = @Model.Group.id, ParentRideID = @parentid },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = @onsuccesskeen,
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "btn glyphicon glyphicon-ok-sign btn-lg",
+                     style = "color:#333333",
+                     onclick = "ShowProgress();",
+                     @id = @inid
+                 })
+
+@Ajax.ActionLink(" ", "Attend",
+            new { RideId = @rideid, commitment = "Out", Groupid = @Model.Group.id, ParentRideID = @parentid },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = onsuccesskeen,
+                     OnBegin = "ShowProgress"
+                 },
+                      new
+                      {
+                          @class = "btn glyphicon glyphicon-remove-sign btn-lg",
+                          style = "color:#333333",
+                          onclick = "ShowProgress();",
+                          @id = @outid
+                      })
+
+@Ajax.ActionLink("on my way!", "Attend",
+                 new { RideId = @rideid, commitment = "OnWay", Groupid = @Model.Group.id, ParentRideID = @parentid },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = onsuccesskeen,
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "btn btn-default btn-sm",
+                     onclick = "ShowProgress();",
+                     @id = onwayid
+                 })
+
+<p></p>
+
+<div id="Invite_Users">
+    @Html.ActionLink("invite others", "InviteOthersToBunch", "Ride",
+        new
+        {
+            RideId = @rideid,
+            PreviousID = @groupid
+        },
+        new { @class = "btn btn-default btn-sm", onclick = "ShowProgress();", id = "InviteFirst" })
+</div>

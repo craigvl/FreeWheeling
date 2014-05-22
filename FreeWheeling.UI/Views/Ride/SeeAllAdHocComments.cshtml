@@ -5,7 +5,7 @@
     ViewBag.Title = "See All Ad Hoc Comments";
 }
 
-@Html.ActionLink("<-- Back to Ad Hoc Bunch", "ViewAdHocRide", "Ride", new { adhocrideid = @Model.adhocrideid }, new { @class = "btn btn-default", onclick = "ShowProgress();" })
+@Html.ActionLink(" ", "ViewAdHocRide", "Ride", new { adhocrideid = @Model.adhocrideid }, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
 
 <h2>All Comments</h2>
 
@@ -14,12 +14,6 @@
   @item.userName @Html.Raw(":")  @item.CommentText
     <p></p>
 }
-
-<div class="loading" style="display:none;" align="center">
-    Loading. Please wait.<br />
-    <br />
-    <img src="~/Content/Images/loader.gif" alt="" />
-</div>
 @section scripts{
     <script>
         jQuery(document).ready(function () {

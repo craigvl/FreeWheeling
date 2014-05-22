@@ -6,24 +6,27 @@
 @Styles.Render("~/Content/awesome")
 @Styles.Render("~/Content/csssocial")
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
         <section id="loginForm">
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <section id="socialLoginForm">
-                    @Html.Partial("_ExternalLoginsListPartial", new FreeWheeling.UI.Models.ExternalLoginViewModel() { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
+                    @Html.Partial("_ExternalLoginsListPartial", 
+                    new FreeWheeling.UI.Models.ExternalLoginViewModel() { Action = "ExternalLogin",
+                        ReturnUrl = ViewBag.ReturnUrl })
                 </section>
             </div>
             <div style="clear:both"></div>
             <hr class="full-line" />
-            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, 
+                new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
                 
                 <div class="content-box">
                     <br />
-                    <h4 style="padding-left:15px;">
-                        <b><u>@Html.ActionLink("Create Account", "Register", new { ReturnUrl = ViewBag.ReturnUrl })</u></b> or sign in below.
-                    </h4>
+                    <div style="padding-left:15px;">
+                        <u>@Html.ActionLink("Create Account", "Register", new { ReturnUrl = ViewBag.ReturnUrl })</u> or sign in below.
+                    </div>
                     <br />
                     @Html.ValidationSummary(true)
 
@@ -46,18 +49,18 @@
                             @Html.ValidationMessageFor(m => m.Password)
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <a href="#" style="padding:15px;"><u><b>forgot password</b></u></a>
-                    </div>
+                    @*<div class="col-md-6">
+                       <b>@Html.ActionLink("forgot password?", "LostPassword")</b>
+                    </div>*@
                     <p></p>
-                    <div class="col-md-6">
+                    @*<div class="col-md-6">
                         <label style="padding:15px;"><u><b>remember me @Html.CheckBoxFor(m => m.RememberMe)</b></u></label>
                         <div class="checkbox">                           
                         </div>
-                    </div>
+                    </div>*@
                     <p></p>
                     <div class="form-group col-md-12">
-                        <div class="col-md-offset-2 col-md-10">
+                        <div class="col-md-offset-0 col-md-12">
                             <input onclick="ShowProgress();" type="submit" value="Log in" class="btn btn-default" />
                         </div>
                     </div>
@@ -67,19 +70,11 @@
             }
         </section>
     </div>
-
-    <div class="loading" align="center">
-        Loading. Please wait.<br />
-        <br />
-        <img src="~/Content/Images/loader.gif" alt="" />
-    </div>
-
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
 <script type="text/javascript">
-
     $("form").submit(function () {
         if (!$(this).valid()) {
             HideProgress();
@@ -88,7 +83,5 @@
 
         }
     });
-
-
 </script>
 }

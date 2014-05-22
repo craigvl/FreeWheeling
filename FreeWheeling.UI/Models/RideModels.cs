@@ -20,43 +20,44 @@ namespace FreeWheeling.UI.Models
             repository = repoParam;
         }
 
-        public AdHocViewModel PopulateAdHocModel(int adhocrideid, string UserId)
+        public SingleRideAndRandomRideViewModel PopulateAdHocModel(int adhocrideid, string UserId)
         {
             Ad_HocRide Ah = repository.GetAdHocRideByID(adhocrideid);
-            AdHocViewModel adHocViewModel = new AdHocViewModel { Ride = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime };
-            adHocViewModel.CommentCount = repository.GetCommentCountForAdHocRide(adhocrideid);
-            adHocViewModel.IsOwner = repository.IsAdHocCreator(adhocrideid, UserId);
+            SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel { RandomRide = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime, MapUrl = Ah.MapUrl };
+            _SingleRideRandomRideViewModel.CommentCount = repository.GetCommentCountForAdHocRide(adhocrideid);
+            _SingleRideRandomRideViewModel.IsOwner = repository.IsAdHocCreator(adhocrideid, UserId);
 
-            if (adHocViewModel.MapUrl != null)
+            if (_SingleRideRandomRideViewModel.MapUrl != null)
             {
-                adHocViewModel.MapUrl =
+                _SingleRideRandomRideViewModel.MapUrl =
                 string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", Ah.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
                 //https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D108681
             }
             CultureHelper _CultureHelper = new CultureHelper(repository);
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(Ah.Location.id);
-            adHocViewModel.Riders = repository.GetRidersForAdHocRide(adhocrideid, TZone);
-            adHocViewModel.KeenCount = repository.GetKeenCountForAdHocRide(Ah.id);
-            adHocViewModel.Comments = repository.GetTop2CommentsForAdHocRide(adhocrideid);
+            _SingleRideRandomRideViewModel.RandomRiders = repository.GetRidersForAdHocRide(adhocrideid, TZone);
+            _SingleRideRandomRideViewModel.KeenCount = repository.GetKeenCountForAdHocRide(Ah.id);
+            _SingleRideRandomRideViewModel.RandomComments = repository.GetTop2CommentsForAdHocRide(adhocrideid);
 
-            return adHocViewModel;
+            return _SingleRideRandomRideViewModel;
         }
 
-        public SingleRideViewModel PopulateSingleRideModel(int RideId, string UserId)
+        public SingleRideAndRandomRideViewModel PopulateSingleRideModel(int RideId, string UserId)
         {
             Ride _Ride = repository.GetRideByIDIncludeGroup(RideId);
-            SingleRideViewModel _SingleRideViewModel = new SingleRideViewModel
+            SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel
             {
                 Ride = _Ride,
                 RideDate = _Ride.RideDate,
-                RideTime = _Ride.RideTime
+                RideTime = _Ride.RideTime,
+                MapUrl = _Ride.Group.MapUrl
             };
-            _SingleRideViewModel.CommentCount = repository.GetCommentCountForRide(RideId);
-            _SingleRideViewModel.IsOwner = repository.IsGroupCreator(_Ride.Group.id,UserId);
+            _SingleRideRandomRideViewModel.CommentCount = repository.GetCommentCountForRide(RideId);
+            _SingleRideRandomRideViewModel.IsOwner = repository.IsGroupCreator(_Ride.Group.id, UserId);
 
-            if (_SingleRideViewModel.MapUrl != null)
+            if (_SingleRideRandomRideViewModel.MapUrl != null)
             {
-                _SingleRideViewModel.MapUrl =
+                _SingleRideRandomRideViewModel.MapUrl =
                 string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", _Ride.Group.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
                 //https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D108681
             }
@@ -64,16 +65,22 @@ namespace FreeWheeling.UI.Models
             Group _Group = repository.GetGroupByID(_Ride.Group.id);
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Group.Location.id);
             Ride ClosestRide = repository.GetClosestNextRide(_Ride.Group, TZone);
-            _SingleRideViewModel.PusherChannel = ClosestRide.id;
-            _SingleRideViewModel.Riders = repository.GetRidersForRide(RideId, TZone);
-            _SingleRideViewModel.KeenCount = repository.GetKeenCountForRide(RideId);
-            _SingleRideViewModel.Comments = repository.GetTop2CommentsForRide(RideId);
+            _SingleRideRandomRideViewModel.PusherChannel = ClosestRide.id;
+            _SingleRideRandomRideViewModel.Riders = repository.GetRidersForRide(RideId, TZone);
+            _SingleRideRandomRideViewModel.KeenCount = repository.GetKeenCountForRide(RideId);
+            _SingleRideRandomRideViewModel.Comments = repository.GetTop2CommentsForRide(RideId);
 
-            return _SingleRideViewModel;
+            return _SingleRideRandomRideViewModel;
         }
 
-        public RideModelIndex PopulateRideModel(int RideId, int GroupId, string UserId, bool NeedPreviousRide, bool FromFavPage)
+        public RideModelIndex PopulateRideModel(int RideId, int GroupId, string UserId, bool NeedPreviousRide)
         {
+            string ChevronClassDown = "glyphicon glyphicon glyphicon-minus";
+            string ChevronClassUp = "glyphicon glyphicon glyphicon-plus";
+
+            string PanelClassDown = "panel-collapse collapse in";
+            string PanelClassUp = "panel-collapse collapse";
+
             Ride _Ride = new Ride();
             Group _Group = new Group();
             _Group = repository.GetGroupByID(GroupId);
@@ -106,7 +113,6 @@ namespace FreeWheeling.UI.Models
             RideModel.CommentCount = repository.GetCommentCountForRide(RideModel.Ride.id);
             RideModel.KeenCount = repository.GetKeenCountForRide(RideModel.Ride.id);
             RideModel.IsOwner = repository.IsGroupCreator(_Group.id, UserId);
-            RideModel.FromFavPage = FromFavPage;
             RideModel.InFirst = repository.IsIn(RideModel.Ride.id,UserId);
             RideModel.OutFirst = repository.IsOut(RideModel.Ride.id, UserId);
             RideModel.OnWayFirst = repository.IsOnWay(RideModel.Ride.id, UserId);
@@ -129,12 +135,76 @@ namespace FreeWheeling.UI.Models
             
             if (_UserExpands != null)
             {
-                RideModel.FirstKeen = _UserExpands.FirstKeen;
                 RideModel.FirstBunch = _UserExpands.FirstBunch;
+                if (RideModel.FirstBunch)
+                {
+                    RideModel.FirstBunchChevronClass = ChevronClassDown;
+                    RideModel.FirstBunchPanelClass = PanelClassDown;
+                }
+                else
+                {
+                    RideModel.FirstBunchChevronClass = ChevronClassUp;
+                    RideModel.FirstBunchPanelClass = PanelClassUp;
+                }
+               
+                RideModel.FirstKeen = _UserExpands.FirstKeen;
+                if (RideModel.FirstKeen)
+                {
+                    RideModel.FirstKeenChevronClass = ChevronClassDown;
+                    RideModel.FirstKeenPanelClass = PanelClassDown;
+                }
+                else
+                {
+                    RideModel.FirstKeenChevronClass = ChevronClassUp;
+                    RideModel.FirstKeenPanelClass = PanelClassUp;
+                }
+
                 RideModel.FirstComment = _UserExpands.FirstComment;
+                if (RideModel.FirstComment)
+                {
+                    RideModel.FirstCommentChevronClass = ChevronClassDown;
+                    RideModel.FirstCommentPanelClass = PanelClassDown;
+                }
+                else
+                {
+                    RideModel.FirstCommentChevronClass = ChevronClassUp;
+                    RideModel.FirstCommentPanelClass = PanelClassUp;
+                }
+
                 RideModel.SecondBunch = _UserExpands.SecondBunch;
+                if (RideModel.SecondBunch)
+                {
+                    RideModel.SecondBunchChevronClass = ChevronClassDown;
+                    RideModel.SecondBunchPanelClass = PanelClassDown;
+                }
+                else
+                {
+                    RideModel.SecondBunchChevronClass = ChevronClassUp;
+                    RideModel.SecondBunchPanelClass = PanelClassUp;
+                }
                 RideModel.SecondKeen = _UserExpands.SecondKeen;
+                if (RideModel.SecondKeen)
+                {
+                    RideModel.SecondKeenChevronClass = ChevronClassDown;
+                    RideModel.SecondKeenPanelClass = PanelClassDown;
+                }
+                else
+                {
+                    RideModel.SecondKeenChevronClass = ChevronClassUp;
+                    RideModel.SecondKeenPanelClass = PanelClassUp;
+                }
+
                 RideModel.SecondComment = _UserExpands.SecondComment;
+                if (RideModel.SecondComment)
+                {
+                    RideModel.SecondCommentChevronClass = ChevronClassDown;
+                    RideModel.SecondCommentPanelClass = PanelClassDown;
+                }
+                else
+                {
+                    RideModel.SecondCommentChevronClass = ChevronClassUp;
+                    RideModel.SecondCommentPanelClass = PanelClassUp;
+                }
             }
 
             if (RideModel.Group.MapUrl != null)
@@ -161,15 +231,27 @@ namespace FreeWheeling.UI.Models
         public int KeenCount { get; set; }
         public Boolean IsOwner { get; set; }
         public string MapUrl { get; set; }
-        public bool FromFavPage { get; set; }
+        public string FromHome { get; set; }
 
         //Expand items
         public Boolean FirstBunch { get; set; }
+        public String  FirstBunchChevronClass { get; set; }
+        public String  FirstBunchPanelClass { get; set; }
         public Boolean FirstKeen { get; set; }
+        public String  FirstKeenChevronClass { get; set; }
+        public String  FirstKeenPanelClass { get; set; }
         public Boolean FirstComment { get; set; }
+        public String  FirstCommentChevronClass { get; set; }
+        public String  FirstCommentPanelClass { get; set; }
         public Boolean SecondBunch { get; set; }
+        public String  SecondBunchChevronClass { get; set; }
+        public String  SecondBunchPanelClass { get; set; }
         public Boolean SecondKeen { get; set; }
+        public String  SecondKeenChevronClass { get; set; }
+        public String  SecondKeenPanelClass { get; set; }
         public Boolean SecondComment { get; set; }
+        public String  SecondCommentChevronClass { get; set; }
+        public String  SecondCommentPanelClass { get; set; }
 
         //Next ride
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
@@ -201,35 +283,24 @@ namespace FreeWheeling.UI.Models
         public Ride PreviousRide { get; set; }
     }
 
-    public class AdHocViewModel
+    public class SingleRideAndRandomRideViewModel
     {
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime RideDate { get; set; }
         public string RideTime { get; set; }
-        public Ad_HocRide Ride { get; set; }
-        public List<AdHocRider> Riders { get; set; }
-        public List<Route> Routes { get; set; }
-        public List<AdHocComment> Comments { get; set; }
-        public int CommentCount { get; set; }
-        public Boolean IsOwner { get; set; }
-        public string MapUrl { get; set; }
-        public int KeenCount { get; set; }
-    }
-
-    public class SingleRideViewModel
-    {
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime RideDate { get; set; }
-        public string RideTime { get; set; }
+        public Ad_HocRide RandomRide { get; set; }
         public Ride Ride { get; set; }
+        public List<AdHocRider> RandomRiders { get; set; }
         public List<Rider> Riders { get; set; }
         public List<Route> Routes { get; set; }
+        public List<AdHocComment> RandomComments { get; set; }
         public List<Comment> Comments { get; set; }
         public int CommentCount { get; set; }
         public Boolean IsOwner { get; set; }
         public string MapUrl { get; set; }
         public int KeenCount { get; set; }
         public int PusherChannel { get; set; }
+        public string FromHome { get; set; }
     }
 
     public class AdHocRideCommentModel

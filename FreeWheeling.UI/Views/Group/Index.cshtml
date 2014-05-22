@@ -6,237 +6,62 @@
 }
 
 @Html.ValidationSummary()
-
-<div class="row">
-    <div class="col-md-12">      
-        <p class="text-left">
-
-            @using (Html.BeginForm())
-            {
-            <p>
-               @Html.TextBox("SearchString")
-                <input onclick="ShowProgress();" type="submit" value="Search" />
-            </p>
-            }
-
-            @Html.ActionLink("Back <---", "Index", "Home", null, new { @class = "btn btn-info", onclick = "ShowProgress();" })
-
-            <h3 class="text-left"><span class="label label-primary">@Model.title in @Model.UserLocation</span></h3>
-                
-@if (@Model.PrivateBunches.Count > 0)
+  
+@using (Html.BeginForm())
 {
-    @:<div style="background-color:blanchedalmond">
-        foreach (Group item in Model.PrivateBunches)
-        {
-            bool isMember = Model.CurrentGroupMembership.Contains(item.id);
-            int RiderCount = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(g => g.NumberofRiders).FirstOrDefault();
-            DateTime NextRideDate = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(g => g.Date).FirstOrDefault();
-            
-                    bool isCreator = Model._OwnerGroupList.Contains(item.id);
-                    
-                    if(isCreator)
-                    {
-                        @Html.ActionLink(" ", "EditGroup", "Group", new { groupId = item.id },
-                        new { @class = "glyphicon glyphicon-pencil", onclick = "ShowProgress();" })
-                        <p></p>
-                        @Html.ActionLink("Invite Others", "InviteOthersToPrivateBunch", "Group", new { groupId = item.id },
-                        new { @class = "", onclick = "ShowProgress();" })
-                    }
-                    
-                    if (isMember)
-                    {
-                        @:<h3 class="text-left">
-                   
-                         if (item.Rides.Count > 0 )
-                         {
-                             @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id,
-                            FromFavPage = @Model.OnFavPage }, new { @class = "btn btn-default", onclick = "ShowProgress();" }) 
-    
-                             @Html.ActionLink(string.Concat("View ", NextRideDate.DayOfWeek, " bunch"), "Index", "Ride",
-                             new { groupid = item.id, FromFavPage = @Model.OnFavPage }, new { @class = "btn btn-success",
-                                 onclick = "ShowProgress();" })
-                             @*@Html.ActionLink(string.Concat("View Rides (", RiderCount, " 100% Rider/s for ", NextRideDate.DayOfWeek, ")"), "Index", "Ride", new { groupid = item.id }, new { @class = "btn btn-success" })*@                           
-                        @:</h3> 
-                             
-                         }
-                         else
-                         {
-                              @Html.Label(item.name)
-                              @:<span class="label label-danger">No Rides</span>
-                         }
-                                               
-                         @Html.ActionLink("Remove from favourites", "RemoveFromFavouriteList", "Group",
-                         new { id = item.id, title = @Model.title },
-                         new { @class = "btn btn-danger", onclick = "ShowProgress();" })
-                          
-                    }
-                    else
-                    {
-                 
-                    @:<h3 class="text-left">
-                            
-                         if (item.Rides.Count > 0 )
-                         {
-                             @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id,
-                            FromFavPage = @Model.OnFavPage },
-                            new { @class = "btn btn-default", onclick = "ShowProgress();" }) 
-                             @Html.ActionLink(string.Concat("View ", NextRideDate.DayOfWeek, " bunch"),
-                             "Index", "Ride", new { groupid = item.id, FromFavPage = @Model.OnFavPage },
-                             new { @class = "btn btn-success", onclick = "ShowProgress();" })
-                         }
-                         else
-                         {
-                             @Html.Label(item.name)
-                             @:<span class="label label-danger">No Rides</span>
-                         }
-                                                           
-                    @Html.ActionLink(" ", "Join", "Group", new { id = item.id, title = @Model.title },
-                    new { @class = "glyphicon glyphicon-star", onclick = "ShowProgress();" })
-    
-                     @:</h3>
-                    }
-                    isMember = false;
-                                       
-                    @Ajax.ActionLink(" ", // <-- Text to display
-                     "GetGroupDetails", // <-- Action Method Name
-                 new { id = item.id },
-                 new AjaxOptions
-                 {
-                     UpdateTargetId = "GroupInfo"+item.id.ToString(), // <-- DOM element ID to update
-                     InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
-                     HttpMethod = "POST",
-                     OnSuccess = "HideInfoLink("+item.id.ToString()+")"
-                 }, new {id = "infoButton"+item.id.ToString(), @class = "glyphicon glyphicon-info-sign" })
-                   
-                <div class="Ginfo" id="@("GroupInfo" + @item.id)"></div>/*This is the div that gets replaced with group info*/
-
-                }
-             @:</div> 
-               }
-                
-                @if (@Model._Groups.Count > 0 )
-                {
-                                     
-                foreach (Group item in Model._Groups)
-                {
-                    bool isMember = Model.CurrentGroupMembership.Contains(item.id);
-                    int RiderCount = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(g => g.NumberofRiders)
-                        .FirstOrDefault();
-                    DateTime NextRideDate = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(g => g.Date)
-                        .FirstOrDefault();
-                    bool isCreator = Model._OwnerGroupList.Contains(item.id);
-                    
-                    if(isCreator)
-                    {
-                        @Html.ActionLink(" ", "EditGroup", "Group", new { groupId = item.id },
-                        new { @class = "glyphicon glyphicon-pencil", onclick = "ShowProgress();" })
-                    }
-                    
-                    if (isMember)
-                    {
-                        @:<h3 class="text-left">
-                   
-                         if (item.Rides.Count > 0 )
-                         {
-                             @Html.ActionLink(item.name, "Index", "Ride",
-                             new { groupid = item.id, FromFavPage = @Model.OnFavPage }, new { @class = "btn btn-default",
-                                 onclick = "ShowProgress();" }) 
-                             @Html.ActionLink(string.Concat("View ", NextRideDate.DayOfWeek, " bunch"), "Index", "Ride",
-                             new { groupid = item.id, FromFavPage = @Model.OnFavPage }, new { @class = "btn btn-success",
-                                 onclick = "ShowProgress();" })
-                        @:</h3> 
-                             
-                         }
-                         else
-                         {
-                              @Html.Label(item.name)
-                              @:<span class="label label-danger">No Rides</span>
-                         }
-                                               
-                         @Html.ActionLink("Remove from favourites", "RemoveFromFavouriteList", "Group",
-                         new { id = item.id, title = @Model.title },
-                         new { @class = "btn btn-danger", onclick = "ShowProgress();" })
-                    }
-                    else
-                    {
-                 
-                    @:<h3 class="text-left">
-                            
-                         if (item.Rides.Count > 0 )
-                         {
-                             @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id, FromFavPage = @Model.OnFavPage },
-                             new { @class = "btn btn-default", onclick = "ShowProgress();" }) 
-                             @Html.ActionLink(string.Concat("View ", NextRideDate.DayOfWeek, " bunch"), "Index", "Ride",
-                             new { groupid = item.id, FromFavPage = @Model.OnFavPage },
-                             new { @class = "btn btn-success", onclick = "ShowProgress();" })
-                         }
-                         else
-                         {
-                             @Html.Label(item.name)
-                              @:<span class="label label-danger">No Rides</span>
-                             
-                         }
-                                                           
-                      
-                    @Html.ActionLink(" ", "Join", "Group", new { id = item.id, title = @Model.title },
-                    new { @class = "glyphicon glyphicon-star", onclick = "ShowProgress();" })
-                     @:</h3>
-                    }
-                    isMember = false;
-                                       
-                    @Ajax.ActionLink(" ", // <-- Text to display
-                     "GetGroupDetails", // <-- Action Method Name
-                 new { id = item.id },
-                 new AjaxOptions
-                 {
-                     UpdateTargetId = "GroupInfo"+item.id.ToString(), // <-- DOM element ID to update
-                     InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
-                     HttpMethod = "POST",
-                     OnSuccess = "HideInfoLink("+item.id.ToString()+")"
-                 }, new {id = "infoButton"+item.id.ToString(), @class = "glyphicon glyphicon-info-sign" })
-                   
-                <div class="Ginfo" id="@("GroupInfo" + @item.id)"></div>/*This is the div that gets replaced with group info*/
-
-                }
-                }
-                
-                @if (@Model._Groups.Count + @Model.PrivateBunches.Count <= 0)
-                {
-                    if (@Model.OnFavPage)
-                    {
-                      @Html.ActionLink("You dont have any favourite bunches! Get some!", "Index", "Group",
-                      null, new { @class = "btn btn-default", onclick = "ShowProgress();" })                   
-                    }
-                    else
-                    {
-                        
-                      @Html.ActionLink("No bunches yet, please create some!", "Create", "Group",
-                      null, new { @class = "btn btn-default", onclick = "ShowProgress();" }) 
-                        
-                    }
-                    
-                }
+     <p></p>
+     @Html.ActionLink(" ", "Index", "Home", null, new {  @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
+    <div class="container-fluid">
+        <div class="pull-right" style="padding-left:10px">
+            <input onclick="ShowProgress();" type="submit" class="pull-right btn btn-default" value="Go" />
+        </div>
+        <div class="pull-right">
+            @Html.TextBox("SearchString", null, new { @class = "pull-right form-control", @placeholder = "Search" })
+        </div>
+    </div>
+}         
+    <p></p>
+<div class="row">
+    <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+        <span class="btn btn-default btn-block">@Model.UserLocation</span>
+    </div>
 </div>
+<div class="row">
+    <table class="table content-box">
+        <tr>
+            @if (@Model.PrivateBunches.Count > 0)
+            {
+                @Html.Partial("_ListPrivateRides")
+            }
+        </tr>
+        <tr>
+            @if (@Model._Groups.Count > 0)
+            {
+                @Html.Partial("_ListRides")
+            }
+        </tr>
+        <tr>
+            @if (@Model._Groups.Count + @Model.PrivateBunches.Count <= 0)
+            {
+                <td>
+                    <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                        @Html.ActionLink("No bunches yet, please create some!", "Create", "Group",
+                null, new { @class = "btn btn-default btn-block", onclick = "ShowProgress();" })
+                    </div>
+                </td>
+            }
+        </tr>
+    </table>
 </div>
-
-<div class="loading" style="display:none;" align="center">
-    Loading. Please wait.<br />
-    <br />
-    <img src="~/Content/Images/loader.gif" alt="" />
-</div>
-
 @section scripts{
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
 <script>
-    
     jQuery(document).ready(function () {
         HideProgress();
     });
 
     function HideInfoLink(GroupId) {
-        $("#infoButton" + GroupId).hide();
-        
+        $("#infoButton" + GroupId).hide();      
     }
-  
 </script>
 }

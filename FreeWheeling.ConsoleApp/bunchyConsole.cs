@@ -20,7 +20,6 @@ namespace FreeWheeling.ConsoleApp
             _CycleRepository = new CycleRepository();
             DeleteOldRidesAndCreateNew();
             PopulateHomePageRide();
-            //Console.ReadLine();
         }
 
         private static void PopulateHomePageRide()
@@ -29,7 +28,7 @@ namespace FreeWheeling.ConsoleApp
           List<ListOfRides> _ListOfRides = new List<ListOfRides>();
           CultureHelper _CultureHelper = new CultureHelper(_CycleRepository);
 
-          foreach (Member item in _CycleRepository.GetMembersWithGroups().ToList())
+          foreach (Member item in _CycleRepository.GetMembersWithGroupsIncludePrivate().ToList())
                 {
                     Group _Group = _CycleRepository.GetGroupByID(item.Group.id);
                     Location _Location = _CycleRepository.GetLocations().Where(l => l.id == _Group.Location.id).FirstOrDefault();
@@ -62,8 +61,6 @@ namespace FreeWheeling.ConsoleApp
                 foreach (ListOfRides item in _ListOfRides)
                 {
                     _HomePageRide.Add(new HomePageRide{ Rideid = item.RideId, Userid = item.userId});
-
-                   // Console.WriteLine(item.RideId + ", " + item.RideDate + ", " + item.userId);                 
                 }
 
                 _CycleRepository.PopulateUserHomePageRides(_HomePageRide);
@@ -72,7 +69,7 @@ namespace FreeWheeling.ConsoleApp
         private static void DeleteOldRidesAndCreateNew()
         {
             CultureHelper _CultureHelper = new CultureHelper(_CycleRepository);
-            foreach (Group item in _CycleRepository.GetGroups())
+            foreach (Group item in _CycleRepository.GetGroupsIncludePrivate())
             {
                 Location _Location = _CycleRepository.GetLocations().Where(l => l.id == item.Location.id).FirstOrDefault();
                 TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Location.id);

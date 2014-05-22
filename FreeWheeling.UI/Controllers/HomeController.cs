@@ -9,6 +9,7 @@ using FreeWheeling.UI.Models;
 using Microsoft.AspNet.Identity;
 using FreeWheeling.Domain.Entities;
 using FreeWheeling.UI.Infrastructure;
+using System.Threading.Tasks;
 
 
 namespace FreeWheeling.UI.Controllers
@@ -22,6 +23,35 @@ namespace FreeWheeling.UI.Controllers
         public HomeController(ICycleRepository repoParam)
         {
             repository = repoParam;
+        }
+
+        public ActionResult Feedback()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult Feedback(FeedBackModel _FeedBackModel)
+        {
+            if (_FeedBackModel.SumValue == 7)
+            {
+                var result = new { Success = true, Message = "Feedback Sent, Thanks!" };
+                Task T = new Task(() =>
+                {
+                    UserHelper _UserHelp = new UserHelper();
+                    _UserHelp.SendFeedBack(_FeedBackModel.Name, _FeedBackModel.Message);
+                });
+
+                T.Start();
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var result = new { Success = false, Message = "Please enter the correct sum" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            
         }
 
         private ActionResult RedirectToLocal(string returnUrl)
@@ -43,8 +73,15 @@ namespace FreeWheeling.UI.Controllers
             CultureHelper _CultureHelper = new CultureHelper(repository);           
             HomeIndexModel _HomeIndexModel = new HomeIndexModel();
             _HomeIndexModel.Locations = repository.GetLocations().ToList();
-            Member _CurrentMember = repository.GetMemberByUserID(currentUser.Id);
-
+            if (currentUser != null)
+            {
+                Member _CurrentMember = repository.GetMemberByUserID(currentUser.Id);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+                       
             if (currentUser.LocationID != null)
             {
                     //Check that user ID is a current location ID
@@ -59,7 +96,7 @@ namespace FreeWheeling.UI.Controllers
                         _HomeIndexModel.UpCommingAd_HocCount = repository.GetUpCommingAd_HocCount(repository.GetLocations()
                             .Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone);
                         _HomeIndexModel.UpCommingAd_HocCount = _HomeIndexModel.UpCommingAd_HocCount + repository.GetPrivateAdHocRideByUserID(currentUser.Id
-                            , _Location).Count();
+                            , _Location, TZone).Count();
                         _HomeIndexModel.HomePageRide = repository.GetHomePageRideByUserID(currentUser.Id);
                     }
             }

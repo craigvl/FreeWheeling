@@ -11,12 +11,16 @@ using Microsoft.Owin.Security;
 using FreeWheeling.UI.Models;
 using FreeWheeling.UI.DataContexts;
 using System.Web.Security;
+using FreeWheeling.UI.Infrastructure;
+using Postal;
 
 namespace FreeWheeling.UI.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+
+        private IdentityDb idb = new IdentityDb(); 
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new IdentityDb())))
         {
@@ -35,82 +39,73 @@ namespace FreeWheeling.UI.Controllers
             return View();
         }
 
-//        [HttpPost]
-//        [AllowAnonymous]
-//        [ValidateAntiForgeryToken]
-//public ActionResult LostPassword(LostPasswordModel model)
-//{
-//   if (ModelState.IsValid)
-//   {
-//      MembershipUser user;
-//      using (var context = new IdentityDbContext())
-//      {
-//         var foundUserName = (from u in context.Users
-//                              where u.email == model.Email
-//                              select u.UserName).FirstOrDefault();
-//         if (foundUserName != null)
-//         {
-//            user = Membership.GetUser(foundUserName.ToString());
-//         }
-//         else
-//         {
-//            user = null;
-//         }
-//      }
-//      if (user != null)
-//      {
-//         // Generae password token that will be used in the email link to authenticate user
-//         var token = WebSecurity.GeneratePasswordResetToken(user.UserName);
-//         // Generate the html link sent via email
-//         string resetLink = "<a href='"
-//            + Url.Action("ResetPassword", "Account", new { rt = token }, "http") 
-//            + "'>Reset Password Link</a>";
- 
-//         // Email stuff
-//         string subject = "Reset your password for asdf.com";
-//         string body = "You link: " + resetLink;
-//         string from = "donotreply@asdf.com";
- 
-//         MailMessage message = new MailMessage(from, model.Email);
-//         message.Subject = subject;
-//         message.Body = body;
-//         SmtpClient client = new SmtpClient();
- 
-//         // Attempt to send the email
-//         try
-//         {
-//            client.Send(message);
-//         }
-//         catch (Exception e)
-//         {
-//            ModelState.AddModelError("", "Issue sending email: " + e.Message);
-//         }
-//      }         
-//      else // Email not found
-//      {
-//         /* Note: You may not want to provide the following information
-//         * since it gives an intruder information as to whether a
-//         * certain email address is registered with this website or not.
-//         * If you're really concerned about privacy, you may want to
-//         * forward to the same "Success" page regardless whether an
-//         * user was found or not. This is only for illustration purposes.
-//         */
-//         ModelState.AddModelError("", "No user found by that email.");
-//      }
-//   }
- 
-//   /* You may want to send the user to a "Success" page upon the successful
-//   * sending of the reset email link. Right now, if we are 100% successful
-//   * nothing happens on the page. :P
-//   */
-//   return View(model);
-//}
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult LostPassword(LostPasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                IdentityUser user;
+                UserHelper _UserHelp = new UserHelper();
+
+                using (var context = new IdentityDbContext())
+                {
+                    var foundUserName = _UserHelp.GetUserNameViaEmail(model.Email);
+                        
+                    if (foundUserName != "New User")
+                    {
+                        // Generae password token that will be used in the email link to authenticate user
+                        var token = "Token here";
+                        // Generate the html link sent via email
+
+                        dynamic emailToUser = new Email("SendUserReset");
+                        emailToUser.To = model.Email;
+                        emailToUser.UserName = foundUserName;
+                        emailToUser.link = "<a href='"
+                           + Url.Action("ResetPassword", "Account", new { rt = token }, "http")
+                           + "'>Reset Password Link</a>";
+
+                        // Attempt to send the email
+                        try
+                        {
+                            emailToUser.Send();
+                        }
+                        catch (Exception e)
+                        {
+                            ModelState.AddModelError("", "Issue sending email: " + e.Message);
+                        }
+                    }
+                     else // Email not found
+                {
+                    /* Note: You may not want to provide the following information
+                    * since it gives an intruder information as to whether a
+                    * certain email address is registered with this website or not.
+                    * If you're really concerned about privacy, you may want to
+                    * forward to the same "Success" page regardless whether an
+                    * user was found or not. This is only for illustration purposes.
+                    */
+                    ModelState.AddModelError("", "No user found by that email.");
+                }
+                }
+            }
+
+            /* You may want to send the user to a "Success" page upon the successful
+            * sending of the reset email link. Right now, if we are 100% successful
+            * nothing happens on the page. :P
+            */
+            return View(model);
+        }
 
         ///
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if (returnUrl == null)
+            {
+                returnUrl = "/Home/Index/";
+            }
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -127,7 +122,7 @@ namespace FreeWheeling.UI.Controllers
                 var user = await UserManager.FindAsync(model.UserName, model.Password);
                 if (user != null)
                 {
-                    await SignInAsync(user, model.RememberMe);
+                    await SignInAsync(user, true);
 
                     //Create cookie if select remember me to expire in a year.
                     int timeout = model.RememberMe ? 525600 : 30; // Timeout in minutes, 525600 = 365 days.
@@ -178,7 +173,7 @@ namespace FreeWheeling.UI.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInAsync(user, isPersistent: false);
+                    await SignInAsync(user, isPersistent: true);
                     return RedirectToAction("Index", "Home", new { ReturnUrl = returnUrl });
                 }
                 else
@@ -302,7 +297,7 @@ namespace FreeWheeling.UI.Controllers
             var user = await UserManager.FindAsync(loginInfo.Login);
             if (user != null)
             {
-                await SignInAsync(user, isPersistent: false);
+                await SignInAsync(user, isPersistent: true);
                 return RedirectToLocal(returnUrl);
             }
             else
@@ -373,7 +368,7 @@ namespace FreeWheeling.UI.Controllers
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
-                        await SignInAsync(user, isPersistent: false);
+                        await SignInAsync(user, isPersistent: true);
                         return RedirectToLocal(returnUrl);
                     }
                 }
@@ -391,7 +386,7 @@ namespace FreeWheeling.UI.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
-            return RedirectToAction("Index", "Home", new {returnUrl = string.Empty });
+            return RedirectToAction("Login", "Account", new {returnUrl = "/Home/Index" });
         }
 
         //
@@ -438,6 +433,7 @@ namespace FreeWheeling.UI.Controllers
 
         private async Task SignInAsync(ApplicationUser user, bool isPersistent)
         {
+            isPersistent = true;
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
             var identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
             AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);

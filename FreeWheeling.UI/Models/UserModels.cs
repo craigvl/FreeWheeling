@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using FreeWheeling.Domain.Entities;
+using System.ComponentModel;
 
 namespace FreeWheeling.UI.Models
 {
@@ -213,11 +214,18 @@ namespace FreeWheeling.UI.Models
 
     public class UserExpandModel
     {
-
         [Key]
         public int Id { get; set; }
         public bool collapsed { get; set; }
         public string userid { get; set; }
+    }
 
+    public class FeedBackModel
+    {
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Message { get; set; }
+        [DisplayName("Sum")]
+        public int SumValue { get; set; }
     }
 }
