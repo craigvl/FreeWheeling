@@ -44,9 +44,9 @@
             @if (@Model._Groups.Count + @Model.PrivateBunches.Count <= 0)
             {
                 <td>
-                    <div class="btn-group col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                    <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="padding-left:10px">
                         @Html.ActionLink("No bunches yet, please create some!", "Create", "Group",
-                null, new { @class = "btn btn-default btn-block", onclick = "ShowProgress();" })
+             null, new { @class = "", style = "color:#333333;text-decoration:underline", onclick = "ShowProgress();" })
                     </div>
                 </td>
             }
