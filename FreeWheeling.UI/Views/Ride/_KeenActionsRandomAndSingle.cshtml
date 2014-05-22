@@ -29,7 +29,7 @@
 @if (type == "single")
 {
     @:<span>
-        @Ajax.ActionLink("I'm In!", "Attend",
+        @Ajax.ActionLink(" ", "Attend",
             new { RideId = @rideid, commitment = "In", Groupid = @groupid, ParentRideID = @parentid },
                  new AjaxOptions
                  {
@@ -39,13 +39,14 @@
                  },
                  new
                  {
-                     @class = "btn btn-primary",
+                     @class = "btn glyphicon glyphicon-ok-sign btn-lg",
+                     style = "color:#333333",
                      onclick = "ShowProgress();",
                      @id = @inid
                  })
     @:</span>
     @:<span>
-        @Ajax.ActionLink("I'm Out!", "Attend",
+        @Ajax.ActionLink(" ", "Attend",
                     new { RideId = @rideid, commitment = "Out", Groupid = @groupid, ParentRideID = @parentid },
                  new AjaxOptions
                  {
@@ -55,7 +56,8 @@
                  },
                       new
                       {
-                          @class = "btn btn-danger",
+                          @class = "btn glyphicon glyphicon-remove-sign btn-lg",
+                          style = "color:#333333",
                           onclick = "ShowProgress();",
                           @id = @outid
                       })
@@ -71,7 +73,7 @@
                  },
                  new
                  {
-                     @class = "btn btn-success",
+                     @class = "btn btn-default btn-sm",
                      onclick = "ShowProgress();",
                      @id = onwayid
                  })
@@ -81,7 +83,7 @@
 @if (type == "random")
 {
     @:<span>
-        @Ajax.ActionLink("I'm In!", "AttendAdHocRider",
+        @Ajax.ActionLink(" ", "AttendAdHocRider",
                             new { adhocrideid = @rideid, commitment = "In" },
                  new AjaxOptions
                  {
@@ -91,13 +93,14 @@
                  },
                  new
                  {
-                     @class = "btn btn-primary",
+                     @class = "btn glyphicon glyphicon-ok-sign btn-lg",
+                     style = "color:#333333",
                      onclick = "ShowProgress();",
                      @id = "InFirst"
                  })
     @:</span>
     @:<span>
-        @Ajax.ActionLink("I'm Out!", "AttendAdHocRider",
+        @Ajax.ActionLink(" ", "AttendAdHocRider",
                             new { adhocrideid = @rideid, commitment = "Out" },
                  new AjaxOptions
                  {
@@ -107,7 +110,8 @@
                  },
                       new
                       {
-                          @class = "btn btn-danger",
+                          @class = "btn glyphicon glyphicon-remove-sign btn-lg",
+                          style = "color:#333333",
                           onclick = "ShowProgress();",
                           @id = "OutFirst"
                       })
@@ -123,7 +127,7 @@
                  },
                  new
                  {
-                     @class = "btn btn-success",
+                     @class = "btn btn-default btn-sm",
                      onclick = "ShowProgress();",
                      @id = "OnWayFirst"
                  })

@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Index";
 }
-
+<p></p>
 @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
 <p></p>
 <div class="row">
@@ -13,11 +13,10 @@
 </div>
 
 <p></p>
-<div class="row">
-    Change Location
+<div class="row>">
+    <b>Change Location</b>
     <p></p>
-    </div>
-
+    <div>
     @using (Ajax.BeginForm("Index",
     new AjaxOptions { HttpMethod = "POST", OnSuccess = "OnSuccess", OnFailure = "OnFailure" }))
     {
@@ -32,20 +31,18 @@
                  "Text", Model.LocationsId
     ), "-- Set a Location --", new { @class = "form-control" }
 )
+        @:</div>
         <p></p>
-    <div class="row">
-        Email Settings
-    </div>
+    <div>
+       <b> Email Settings</b>
         <p></p>
-        @:Receive email updates:
+        Receive email updates:
         @Html.CheckBoxFor(x => x.ReceiveEmails)
-
-        <p></p>
-    <div class="row">
-        <input onclick="ShowProgress();" type="submit" value="Save" class="btn btn-primary" />
     </div>
+        <p></p>    
+        <input onclick="ShowProgress();" type="submit" value="Save" class="btn btn-default" />  
     }
-
+</div>
     @section scripts{
         @Scripts.Render("~/bundles/jqueryval")
 

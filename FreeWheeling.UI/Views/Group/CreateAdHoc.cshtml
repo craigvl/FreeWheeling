@@ -9,12 +9,12 @@
 <p></p>
 <div class="container-fluid">
     <div class="pull-left">
-        @Html.ActionLink(" ", "Index", "Home", null, new { @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
+        @Html.ActionLink(" ", "Index", "Home", null, new {@style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
     </div>
 </div>
-
-<h2>Create a random bunch</h2>
-
+<p></p>
+<b>Create a random bunch</b>
+<p></p>
 @using (Html.BeginForm("CreateAdHoc", "Group", FormMethod.Post, new { @class = "form-horizontal" }))
 {
     @Html.AntiForgeryToken()

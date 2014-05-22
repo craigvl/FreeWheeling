@@ -55,11 +55,11 @@
     </div>
 }
 <p></p>
-When: @Model.RandomRide.RideDate.ToLongDateString() @@ @Model.RideDate.ToShortTimeString()
+<b>When:</b> @Model.RandomRide.RideDate.ToLongDateString() @@ @Model.RideDate.ToShortTimeString()
 <p></p>
-Start Location: @Model.RandomRide.StartLocation
+<b>Start Location:</b> @Model.RandomRide.StartLocation
 <p></p>
-Description: @Model.RandomRide.Description
+<b>Description:</b> @Model.RandomRide.Description
 <p></p>
 <div class="row">
     <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
@@ -103,7 +103,7 @@ Description: @Model.RandomRide.Description
         {
             adhocrideid = @Model.RandomRide.id
         },
-        new { @class = "btn btn-success", onclick = "ShowProgress();", id = "InviteFirst" })
+        new { @class = "btn btn-default btn-sm", onclick = "ShowProgress();", id = "InviteFirst" })
     </div>
     @section scripts{
         @Scripts.Render("~/Scripts/jquery.timeago.js")

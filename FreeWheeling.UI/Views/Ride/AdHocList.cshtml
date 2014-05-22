@@ -29,21 +29,17 @@
 
 @if (@Model._Ad_HocRide.Count + @Model.PrivateRandomBunches.Count <= 0)
 {
-    <table style="width:100%">
-        <tr style="width:100%">
-            <td style="width:100%">
-                <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-                    @Html.ActionLink("No Random bunches yet, please create some!", "CreateAdHoc", "Group", null,
-                                new { @class = "btn btn-default btn-block", onclick = "ShowProgress();" })
-                </div>
-            </td>
-        </tr>
-    </table>
-}
-@section scripts{
-    <script>
-        jQuery(document).ready(function () {
-            HideProgress();
-        });
-    </script>
-}
+    <div class="row">
+                    <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="padding-left:10px">
+                        @Html.ActionLink("No Random bunches yet, please create some!", "CreateAdHoc", "Group", null,
+                 new { @class = "", style = "color:#333333;text-decoration:underline", onclick = "ShowProgress();" })
+                    </div>              
+    </div>
+        }
+        @section scripts{
+            <script>
+                jQuery(document).ready(function () {
+                    HideProgress();
+                });
+            </script>
+        }

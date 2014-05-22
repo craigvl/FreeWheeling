@@ -41,9 +41,9 @@
         @Html.TextBox("CommentString", null, new { @class = "form-control", id = @commenttextid, placeholder = "Enter comment" })
         <p></p>
         <span class="input-group-addon-C">
-            <button class="btn btn-default" id="@submitid" type="submit">Add comment</button>
+            <button class="btn btn-default btn-sm" id="@submitid" type="submit">Add comment</button>
         </span>
-        @Html.ActionLink(string.Concat("View all (", @commentcount, ")"), "SeeAllComments", "Ride", new { RideId = @rideid, Groupid = @Model.Group.id }, new { @class = "btn btn-default", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @rideid.ToString()) })
+        @Html.ActionLink(string.Concat("View all (", @commentcount, ")"), "SeeAllComments", "Ride", new { RideId = @rideid, Groupid = @Model.Group.id }, new { @class = "btn btn-default btn-sm", onclick = "ShowProgress();", id = string.Concat("CommentCountSpanSeeAll", @rideid.ToString()) })
         <span id="@("CommentCountSpan" + @rideid)"></span>
     </div>
     }
