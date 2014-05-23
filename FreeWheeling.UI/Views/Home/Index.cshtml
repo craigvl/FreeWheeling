@@ -4,14 +4,43 @@
     ViewBag.Title = "Home Page";
 }
 <hr />
+@Html.Hidden("RideIdHidden", @Model.HomePageRide.id)
 @if (Model.LocationsId != 0)
 {
     if (Model.HomePageRide != null)
     {   
         <table class="table content-box">
             <tr style="width:100%">
-                <th style="width:100%"><span style="position: relative; top: -3px;"><a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true">your next bunch: @Model.HomePageRide.Group.name</a></span></th>
-                <th></th>
+                <td style="width:80%"><span id="bunchname" style="position: relative; top: 0px;"><a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true"><b>your next bunch:</b> @Model.HomePageRide.Group.name</a></span>             
+               </td>
+                <td>
+                    @if (!@Model.IsOnWay)
+                    {
+                        <span id="onwayspan" class="pull-right">
+                            @Ajax.ActionLink("on way", "Attend", "Ride",
+                new { RideId = @Model.HomePageRide.id, commitment = "OnWay", Groupid = @Model.HomePageRide.Group.id, ParentRideID = @Model.HomePageRide.id },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "onsuccesskeen",
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "",
+                     style = "text-decoration:underline;textcolor:#FFF;position:relative;",
+                     onclick = "ShowProgress();",
+                     @id = "onwayid"
+                 })
+                    </span>
+                    }
+                    else
+                    {
+                        <span id="onwayspan" class="pull-right">                                           
+                        <img src="~/Content/Images/glyphicons_306_bicycle.png" />
+                        </span>
+                    }
+                </td>
             </tr>
             <tr>
                 <td>
@@ -19,7 +48,7 @@
                 </td>
                 <td>
                     @Html.ActionLink(string.Concat(" "), "ViewSingleRide", "Ride", new { RideId = @Model.HomePageRide.id, fromhome = "true" },
-             new { @class = "glyphicon glyphicon-search", onclick = "ShowProgress();" })
+             new { @class = "pull-right glyphicon glyphicon-search", onclick = "ShowProgress();" })
 
                 </td>
             </tr>
@@ -50,8 +79,7 @@
 
         </table>
     }
-    <hr class="visible-xs" />
-         
+    <hr class="visible-xs" />         
 }
 else
 {
@@ -75,7 +103,19 @@ else
         <img src="~/Content/Images/loader.gif" alt="loading" />
     </div>
     @section scripts{
+    @Scripts.Render("~/Scripts/jquery.timeago.js")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/azuremobile")
+    @Scripts.Render("~/bundles/pusher")
+<script src="~/Scripts/DoubleBunchRide.js"></script>
         <script>
+            function onsuccesskeen(data) {
+                //alert(moment(data.leavetime));
+                KeenCompleteFirst(data);
+                $("#onwayspan").html("<img src='/Content/Images/glyphicons_306_bicycle.png'/>");
+                $("#bunchname").css("top", "0px");
+                HideProgress();
+            }
             jQuery(document).ready(function () {
                 HideProgress();
             });
