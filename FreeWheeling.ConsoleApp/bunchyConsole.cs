@@ -8,18 +8,39 @@ using System.Text;
 using System.Threading.Tasks;
 using FreeWheeling.UI.Infrastructure;
 using FreeWheeling.UI.DataContexts;
+using Microsoft.AspNet.Identity.EntityFramework;
+using FreeWheeling.UI.Models;
+
 
 namespace FreeWheeling.ConsoleApp
 {
     public class bunchyConsole
     {
         private static CycleRepository _CycleRepository;
+        private static IdentityDb _idb;
 
         static void Main()    
         {
             _CycleRepository = new CycleRepository();
+            _idb = new IdentityDb();
             DeleteOldRidesAndCreateNew();
             PopulateHomePageRide();
+            CheckUserExpands(_idb);
+        }
+
+        private static void CheckUserExpands(IdentityDb context)
+        {
+            int Totalusers = _idb.Users.Count();
+            int TotalExpandConfig = _CycleRepository.GetUserExpandCount();
+
+            if (Totalusers != TotalExpandConfig)
+            {
+                foreach (var item in _idb.Users)
+                {
+                    _CycleRepository.PopulateInitialExpandValues(item.Id.ToString());
+                }
+            }
+
         }
 
         private static void PopulateHomePageRide()

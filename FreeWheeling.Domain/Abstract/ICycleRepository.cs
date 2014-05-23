@@ -67,6 +67,7 @@ namespace FreeWheeling.Domain.Abstract
         
         //Get .. UserExpand
         UserExpand GetUserExpandByUserID(string UserId);
+        int GetUserExpandCount();
 
         //Get HomePageRide
         Ride GetHomePageRideByUserID(string UserId);

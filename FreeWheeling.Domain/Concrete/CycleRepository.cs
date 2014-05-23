@@ -437,6 +437,11 @@ namespace FreeWheeling.Domain.Concrete
             return Riders;
         }
 
+        public int GetUserExpandCount()
+        {
+            return context.UserExpands.Count();
+        }
+
         /// <summary>
         /// Finds the next date whose day of the week equals the specified day of the week.
         /// </summary>
@@ -1010,16 +1015,23 @@ namespace FreeWheeling.Domain.Concrete
 
         public void PopulateInitialExpandValues(string UserId)
         {
-            UserExpand UserExpands = new UserExpand { FirstBunch = true,
-                                                      FirstKeen = true,
-                                                      FirstComment = true,
-                                                      SecondBunch = true,
-                                                      SecondComment = true,
-                                                      SecondKeen = true,
-                                                      userId = UserId};
-            context.UserExpands.Add(UserExpands);
-            context.Entry(UserExpands).State = System.Data.Entity.EntityState.Added;
-            context.SaveChanges();
+            UserExpand CurrentUserExpand = context.UserExpands.Where(y => y.userId == UserId).FirstOrDefault();
+            if (CurrentUserExpand == null)
+            {
+                UserExpand UserExpands = new UserExpand
+                {
+                    FirstBunch = true,
+                    FirstKeen = true,
+                    FirstComment = true,
+                    SecondBunch = true,
+                    SecondComment = true,
+                    SecondKeen = true,
+                    userId = UserId
+                };
+                context.UserExpands.Add(UserExpands);
+                context.Entry(UserExpands).State = System.Data.Entity.EntityState.Added;
+                context.SaveChanges();
+            }        
         }
 
         public void Save()

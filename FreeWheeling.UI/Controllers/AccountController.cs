@@ -19,8 +19,6 @@ namespace FreeWheeling.UI.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-
-        private IdentityDb idb = new IdentityDb(); 
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new IdentityDb())))
         {
