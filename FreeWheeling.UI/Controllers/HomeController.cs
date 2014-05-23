@@ -102,6 +102,14 @@ namespace FreeWheeling.UI.Controllers
             }
             else
             {
+
+                Task T = new Task(() =>
+                {
+                    repository.PopulateInitialExpandValues(currentUser.Id);
+                });
+
+                T.Start();
+
                 _HomeIndexModel.CurrentUserLocation = "Please set a Location";
             }
             return View(_HomeIndexModel);
@@ -128,13 +136,6 @@ namespace FreeWheeling.UI.Controllers
             }
             else
             {
-                Task T = new Task(() =>
-                {
-                    repository.PopulateInitialExpandValues(currentUser.Id);
-                });
-
-                T.Start();
-
                 _HomeIndexModel.CurrentUserLocation = "Please set a Location";
             }
 
