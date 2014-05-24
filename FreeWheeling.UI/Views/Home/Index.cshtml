@@ -11,7 +11,15 @@
         @Html.Hidden("RideIdHidden", @Model.HomePageRide.id)
         <table class="table content-box">
             <tr style="width:100%">
-                <td style="width:80%"><span id="bunchname" style="position: relative; top: 0px;"><a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true"><b>your next bunch:</b> @Model.HomePageRide.Group.name</a></span>             
+                <td style="width:70%">
+                    @if (!@Model.IsOnWay)
+                    {
+                    <span id="bunchname" style="position: relative; top: 0px;"><a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true"><b>your next bunch:</b> @Model.HomePageRide.Group.name</a></span>
+                    }
+                    else
+                    {
+                        <span id="bunchname" style="position: relative; top: 10px;"><a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true"><b>your next bunch:</b> @Model.HomePageRide.Group.name</a></span>
+                    }
                </td>
                 <td>
                     @if (!@Model.IsOnWay)
@@ -36,15 +44,15 @@
                     }
                     else
                     {
-                        <span id="onwayspan" class="pull-right">                                           
-                        <img src="~/Content/Images/glyphicons_306_bicycle.png" />
+                        <span id="onwayspan" class="pull-right btn glyphicon glyphicon-ok-sign btn-lg">
+                            
                         </span>
                     }
                 </td>
             </tr>
             <tr>
                 <td>
-                    <a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true">@Model.HomePageRide.RideDate.ToLongDateString() , @Model.HomePageRide.RideDate.ToShortTimeString()</a>
+                    <a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true">@Model.HomePageRide.RideDate.DayOfWeek, @Model.HomePageRide.RideDate.ToShortTimeString()</a>
                 </td>
                 <td>
                     @Html.ActionLink(string.Concat(" "), "ViewSingleRide", "Ride", new { RideId = @Model.HomePageRide.id, fromhome = "true" },
@@ -112,8 +120,10 @@ else
             function onsuccesskeen(data) {
                 //alert(moment(data.leavetime));
                 KeenCompleteFirst(data);
-                $("#onwayspan").html("<img src='/Content/Images/glyphicons_306_bicycle.png'/>");
-                $("#bunchname").css("top", "0px");
+               // $("#onwayspan").html("<img src='/Content/Images/glyphicons_306_bicycle.png'/>");
+                $("#bunchname").css("top", "10px");
+                $("#onwayspan").addClass("btn glyphicon glyphicon-ok-sign btn-lg");
+                $("#onwayspan").html("");
                 HideProgress();
             }
             jQuery(document).ready(function () {
