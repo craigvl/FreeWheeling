@@ -6,19 +6,24 @@
 <p></p>
 @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
 <p></p>
-<b>Create a new bunch</b>
+
+<div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+    <span class="btn btn-default btn-block"> Create a new bunch </span>
+</div>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
     <p></p>
-    <div><span class="RequiredField">*&nbsp;</span><b>bunch Name:</b></div>
+     <div class="form-group">
+    <div ><span class="RequiredField control-label">*&nbsp;</span><b>bunch Name:</b></div>
         <div>
-            @Html.TextBoxFor(model => model.Name)
+            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Name)
         </div>
     <div>
+        </div>
         <p></p>
         <div><span class="RequiredField">*&nbsp;</span><b>location:</b></div>
         @Html.DropDownListFor(
@@ -57,33 +62,33 @@
     <hr />
         <div><span class="RequiredField">*&nbsp;</span><b>Hour (24 Hour)</b></div>
         <div>
-            @Html.TextBoxFor(model => model.Hour, new { id="scroller" })
+            @Html.TextBoxFor(model => model.Hour, new { id = "scroller", @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Hour)
         </div>
         <p></p>
         <div><span class="RequiredField">*&nbsp;</span><b>Minute</b></div>
         <div>
-            @Html.TextBoxFor(model => model.Minute)
+            @Html.TextBoxFor(model => model.Minute, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Minute) 
         </div>
            <p></p>
         <div><span class="RequiredField">*&nbsp;</span><b>Start Location</b></div>
         
         <div> 
-            @Html.TextBoxFor(model => model.StartLocation)
+            @Html.TextBoxFor(model => model.StartLocation, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.StartLocation)
         </div>
     <p></p>
     <div><b>Description</b></div>
         
         <div> 
-            @Html.TextAreaFor(model => model.Description)
+            @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
         </div>
-    
+    <p></p>
    <div><b>Map</b> (Enter <a target="_blank" href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</div>
         
         <div> 
-            @Html.TextBoxFor(model => model.MapUrl)
+            @Html.TextBoxFor(model => model.MapUrl, new { @class = "form-control" })
         </div>
     
         <div>
@@ -93,6 +98,7 @@
         </div>
     <p></p>
 }
+<p></p>
     @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 

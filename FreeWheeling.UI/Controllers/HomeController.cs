@@ -98,10 +98,22 @@ namespace FreeWheeling.UI.Controllers
                         _HomeIndexModel.UpCommingAd_HocCount = _HomeIndexModel.UpCommingAd_HocCount + repository.GetPrivateAdHocRideByUserID(currentUser.Id
                             , _Location, TZone).Count();
                         _HomeIndexModel.HomePageRide = repository.GetHomePageRideByUserID(currentUser.Id);
+                        if (_HomeIndexModel.HomePageRide != null)
+	                    {
+                            _HomeIndexModel.IsOnWay = repository.IsOnWay(_HomeIndexModel.HomePageRide.id,currentUser.Id);
+	                    }
                     }
             }
             else
             {
+
+                Task T = new Task(() =>
+                {
+                    repository.PopulateInitialExpandValues(currentUser.Id);
+                });
+
+                T.Start();
+
                 _HomeIndexModel.CurrentUserLocation = "Please set a Location";
             }
             return View(_HomeIndexModel);

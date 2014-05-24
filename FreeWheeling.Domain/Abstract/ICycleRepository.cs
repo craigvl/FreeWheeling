@@ -67,6 +67,7 @@ namespace FreeWheeling.Domain.Abstract
         
         //Get .. UserExpand
         UserExpand GetUserExpandByUserID(string UserId);
+        int GetUserExpandCount();
 
         //Get HomePageRide
         Ride GetHomePageRideByUserID(string UserId);
@@ -117,6 +118,7 @@ namespace FreeWheeling.Domain.Abstract
         Group PopulateRideDates(Group _Group, TimeZoneInfo _TimeZoneInfo);
         void PopulateRideDatesFromDate(Group _Group, DateTime _DateTime, TimeZoneInfo _TimeZoneInfo);
         void PopulateUserHomePageRides(List<HomePageRide> _HomePageRides);
+        void PopulateInitialExpandValues(string UserId);
 
         void Save();
       

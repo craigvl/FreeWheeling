@@ -16,6 +16,7 @@ namespace FreeWheeling.UI.Models
         public List<Group> FavouriteBunches { get; set; }
         public Ride HomePageRide { get; set; }
         public List<int> _OwnerGroupList;
+        public bool IsOnWay { get; set; }
     }
 
     public class LocationChangeModel
