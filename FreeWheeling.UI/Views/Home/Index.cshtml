@@ -18,7 +18,7 @@
                     }
                     else
                     {
-                        <span id="bunchname" style="position: relative; top: 10px;"><a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true"><b>your next bunch:</b> @Model.HomePageRide.Group.name</a></span>
+                        <span id="bunchname" style="position: relative; top: 0px;"><a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true"><b>your next bunch:</b> @Model.HomePageRide.Group.name</a></span>
                     }
                </td>
                 <td>
@@ -44,7 +44,7 @@
                     }
                     else
                     {
-                        <span id="onwayspan" class="pull-right btn glyphicon glyphicon-ok-sign btn-lg">
+                        <span id="onwayspan" class="pull-right glyphicon glyphicon-ok-sign">
                             
                         </span>
                     }
@@ -121,8 +121,8 @@ else
                 //alert(moment(data.leavetime));
                 KeenCompleteFirst(data);
                // $("#onwayspan").html("<img src='/Content/Images/glyphicons_306_bicycle.png'/>");
-                $("#bunchname").css("top", "10px");
-                $("#onwayspan").addClass("btn glyphicon glyphicon-ok-sign btn-lg");
+                $("#bunchname").css("top", "0px");
+                $("#onwayspan").addClass("glyphicon glyphicon-ok-sign");
                 $("#onwayspan").html("");
                 HideProgress();
             }
