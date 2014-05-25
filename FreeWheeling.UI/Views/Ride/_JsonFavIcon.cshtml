@@ -1,0 +1,70 @@
+﻿@model FreeWheeling.UI.Models.RideModelIndex
+@if (@Model.IsFavourite)
+{
+    @Ajax.ActionLink(" ", "RemoveFromFavouriteListJSON",
+                     new { id = @Model.Group.id },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "onsuccessremovefav",
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "pull-right glyphicon glyphicon-star-empty",
+                     style = "color:#333333;",
+                     onclick = "ShowProgress();",
+                     @id = "RemoveFav"
+                 })
+
+    @Ajax.ActionLink(" ", "JoinJSON",
+                     new { id = @Model.Group.id },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "onsuccessjoinfav",
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "pull-right glyphicon glyphicon-star",
+                     style = "color:#333333;display:none;",
+                     onclick = "ShowProgress();",
+                     @id = "JoinFav"
+                 })
+
+}
+else
+{
+    @Ajax.ActionLink(" ", "JoinJSON",
+                     new { id = @Model.Group.id },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "onsuccessjoinfav",
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "pull-right glyphicon glyphicon-star",
+                     style = "color:#333333;",
+                     onclick = "ShowProgress();",
+                     @id = "JoinFav"
+                 })
+
+    @Ajax.ActionLink(" ", "RemoveFromFavouriteListJSON",
+                     new { id = @Model.Group.id },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "onsuccessremovefav",
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "pull-right glyphicon glyphicon-star-empty",
+                     style = "display:none;color:#333333;",
+                     onclick = "ShowProgress();",
+                     @id = "RemoveFav"
+                 })
+}

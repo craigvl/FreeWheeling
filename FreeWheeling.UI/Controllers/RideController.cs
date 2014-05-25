@@ -84,6 +84,7 @@ namespace FreeWheeling.UI.Controllers
             }
 
             RideModel.FromHome = fromhome;
+            RideModel.IsFavourite = repository.IsInFavouriteList(RideModel.Group.id, currentUser.Id);
 
             if (RideModel.Group.IsPrivate)
             {
@@ -97,6 +98,54 @@ namespace FreeWheeling.UI.Controllers
             }
 
             return View(RideModel);
+        }
+
+        [HttpPost]
+        public JsonResult RemoveFromFavouriteListJSON(int id)
+        {
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            Member _Member = repository.GetMemberByUserID(currentUser.Id);
+            Group group = repository.GetGroupByID(id);
+            CultureHelper _CultureHelper = new CultureHelper(repository);
+            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
+            repository.RemoveMember(currentUser.Id, group);
+            repository.Save();
+
+            Task T = new Task(() =>
+            {
+                Ride _Ride = repository.GetHomePageRideByUserID(currentUser.Id);
+                if (_Ride.Group.id == id)
+                {
+                    repository.DeleteHomePageRide(currentUser.Id);
+                }
+            });
+
+            T.Start();
+
+            return Json(new
+            {
+                success = true,
+                message = "Emails Sent",
+                GroupId = 2
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult JoinJSON(int id)
+        {
+
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            Member _Member = repository.GetMemberByUserID(currentUser.Id);
+            Group group = repository.GetGroupByID(id);
+            repository.AddMember(currentUser.Id, group);
+            repository.Save();
+
+            return Json(new
+            {
+                success = true,
+                message = "Emails Sent",
+                GroupId = 2
+            }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult AdHocList()
@@ -162,7 +211,7 @@ namespace FreeWheeling.UI.Controllers
             }
         }
 
-        [Compress]
+        //[Compress]
         public ActionResult ViewSingleRide(int RideId, string fromhome = "false")
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
@@ -180,6 +229,7 @@ namespace FreeWheeling.UI.Controllers
                 RideModelHelper _AdHocHelper = new RideModelHelper(repository);
                 _SingleRideRandomRideViewModel = _AdHocHelper.PopulateSingleRideModel(RideId, currentUser.Id);
                 _SingleRideRandomRideViewModel.FromHome = fromhome;
+                _SingleRideRandomRideViewModel.IsFavourite = repository.IsInFavouriteList(_Ride.Group.id, currentUser.Id);
                 return View(_SingleRideRandomRideViewModel);
             }
         }

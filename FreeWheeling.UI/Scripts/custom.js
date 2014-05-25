@@ -14,6 +14,19 @@ function HideProgress() {
     loading.css({ top: top, left: left });
 }
 
+function onsuccessjoinfav()
+{
+    $("#JoinFav").hide();
+    $("#RemoveFav").show();
+    HideProgress()
+}
+
+function onsuccessremovefav() {
+    $("#RemoveFav").hide();
+    $("#JoinFav").show();
+    HideProgress()
+}
+
 function UpdateKeenActionsPusher(message, rideid, keencount, username, leavetime) {
 
     if (message == 'In') {

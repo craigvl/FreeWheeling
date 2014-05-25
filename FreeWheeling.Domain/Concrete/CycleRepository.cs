@@ -810,6 +810,21 @@ namespace FreeWheeling.Domain.Concrete
             }
         }
 
+        public bool IsInFavouriteList(int _GroupId, string UserId)
+        {
+            Member _Member = context.Members.Where(i => i.Group.id == _GroupId && i.userId == UserId).FirstOrDefault();
+
+            if (_Member == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+        }
+
         public bool IsGroupCreator(int _GroupId, string UserId)
         {
             Group CurrentGroup = GetGroupByIDNoIncludes(_GroupId);
@@ -1037,6 +1052,6 @@ namespace FreeWheeling.Domain.Concrete
         public void Save()
         {
             context.SaveChanges();
-        }       
+        }    
     }
 }

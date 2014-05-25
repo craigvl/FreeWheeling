@@ -41,14 +41,14 @@
                             {
                                 <div style="width: 10%; float: right;">
                                     @Html.ActionLink(" ", "RemoveFromFavouriteList", "Group",
-                        new { id = item.id, title = @Model.title },
+                        new { id = item.id },
                         new { @class = "glyphicon glyphicon-star-empty", onclick = "ShowProgress();" })
                                 </div>
                             }
                             else
                             {
                                 <div style="width: 10%; float: right;">
-                                    @Html.ActionLink(" ", "Join", "Group", new { id = item.id, title = @Model.title },
+                                    @Html.ActionLink(" ", "Join", "Group", new { id = item.id },
                                             new { @class = "glyphicon glyphicon-star", onclick = "ShowProgress();" })
                                 </div>
                             }
