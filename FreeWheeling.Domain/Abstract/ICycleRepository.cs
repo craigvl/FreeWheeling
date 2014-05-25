@@ -106,6 +106,7 @@ namespace FreeWheeling.Domain.Abstract
         //Checks
         Boolean IsAdHocCreator(int AdHocRideid, string UserId);
         Boolean IsGroupCreator(int _GroupId, string UserId);
+        Boolean IsInFavouriteList(int _GroupId, string UserId);
         Boolean IsIn(int RideId, string UserId);
         Boolean IsOut(int RideId, string UserId);
         Boolean IsOnWay(int RideId, string UserId);

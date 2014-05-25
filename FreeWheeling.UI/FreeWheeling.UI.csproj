@@ -570,6 +570,7 @@
     <Content Include="Views\Ride\_KeenActionsRandomAndSingle.cshtml" />
     <Content Include="Views\Home\Feedback.cshtml" />
     <Content Include="Views\Emails\SendFeedback.cshtml" />
+    <Content Include="Views\Ride\_JsonFavIcon.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

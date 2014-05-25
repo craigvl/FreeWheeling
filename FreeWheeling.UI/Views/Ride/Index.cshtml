@@ -14,16 +14,22 @@
 @Html.Hidden("KeenCountNext", @Model.NextKeenCount)
 <p></p>
 <div class="row">
-    <div  class="pull-left col-md-1">
+    <div class="pull-left col-xs-12 col-md-12 col-sm-12 col-xs-12">
+<div class="row">
+    @if (@Model.FromHome == "true")
+    {
 
-        @if (@Model.FromHome == "true")
-        {
-            @Html.ActionLink(" ", "Index", "Home", null, new {  @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
-        }
-        else
-        {
-        @Html.ActionLink(" ", "Index", "Group", null, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
-        }
+        @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
+ 
+    }
+    else
+    {      
+         @Html.ActionLink(" ", "Index", "Group", null, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })    
+    }
+
+    @Html.Partial("_JsonFavIcon")  
+
+    </div>
     </div>
     <hr />
     <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">

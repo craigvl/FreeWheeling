@@ -395,7 +395,7 @@ namespace FreeWheeling.UI.Controllers
             return RedirectToAction("Index", "Group");
         }
 
-        public ActionResult RemoveFromFavouriteList(int id, string title)
+        public ActionResult RemoveFromFavouriteList(int id)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Member _Member = repository.GetMemberByUserID(currentUser.Id);
@@ -420,7 +420,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         //// This is to add group to fav list
-        public ActionResult Join(int id, string title)
+        public ActionResult Join(int id)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Member _Member = repository.GetMemberByUserID(currentUser.Id);

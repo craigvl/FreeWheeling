@@ -2,9 +2,9 @@
 @using FreeWheeling.Domain.Entities
 @using Microsoft.AspNet.Identity;
 @* ///////////////////////////////NOTE//////////////////////////////////
-      If you change this file then you should also change the ViewAdHocRide.cshtml to match, Thanks!
-    Note: IsOwner is not required for this view.
-////////////////////////////////////////////////////////////////////////////////////////////////// *@
+          If you change this file then you should also change the ViewAdHocRide.cshtml to match, Thanks!
+        Note: IsOwner is not required for this view.
+    ////////////////////////////////////////////////////////////////////////////////////////////////// *@
 @{
     ViewBag.Title = "View Single Ride";
 }
@@ -16,160 +16,167 @@
 @Html.Hidden("PusherChannel", @Model.PusherChannel)
 
 <p></p>
-@if (@Model.FromHome == "true")
-{
-  @Html.ActionLink(" ", "Index", "Home", null, new {  @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
-}
-else
-{
-  @Html.ActionLink(" ", "Index", "Group", null, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
-}
-<p></p>
 <div class="row">
-    <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-        <span class="btn btn-default btn-block">
-          @Model.Ride.Group.name
-        </span>
-    </div>
-</div>
-@if (@Model.MapUrl != null)
-{
-    <div class="row">
-        <div class='panel-group'>
-            <div class='panel panel-default'>
-                <div class="SecondaryHeading panel-heading">
-                    <div class="col-xs-10 col-md-11 col-sm-10">
-                        Map
-                    </div>
-                    <div class="col-xs-1 col-md-1 col-sm-1">
-                        <a class="glyphicon glyphicon glyphicon-plus" id="MapPanel" data-toggle="collapse" href="#CollapseMap"></a>
-                    </div>
-                </div>
-                <div class='panel-collapse collapse out' id="CollapseMap">
-                    @Html.Raw(@Model.MapUrl)
+    <div class="pull-left col-xs-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="row">
+            @if (@Model.FromHome == "true")
+            {
+                @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
+            }
+            else
+            {
+                @Html.ActionLink(" ", "Index", "Group", null, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
+            }
+            <p></p>
+            @*@Html.Partial("_JsonFavIcon")*@ 
+            </div>
+            <div class="row">
+                <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                    <span class="btn btn-default btn-block">
+                        @Model.Ride.Group.name
+                    </span>
                 </div>
             </div>
         </div>
     </div>
-}
-<p></p>
-<b>When:</b> @Model.Ride.RideDate.ToLongDateString() @@ @Model.Ride.RideDate.ToShortTimeString()
-<p></p>
-<b>Start Location:</b> @Model.Ride.Group.StartLocation
-<p></p>
-<b>Description:</b> @Model.Ride.Group.Description
-<p></p>
-<div class="row">
-    <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-        <span class="SecondaryHeading btn btn-block">Keen <span id="@("KeenCountSpan" + @Model.Ride.id)">(@Model.KeenCount.ToString())</span></span>
-    </div>
-</div>
+        @if (@Model.MapUrl != null)
+        {
+            <div class="row">
+                <div class='panel-group'>
+                    <div class='panel panel-default'>
+                        <div class="SecondaryHeading panel-heading">
+                            <div class="col-xs-10 col-md-11 col-sm-10">
+                                Map
+                            </div>
+                            <div class="col-xs-1 col-md-1 col-sm-1">
+                                <a class="glyphicon glyphicon glyphicon-plus" id="MapPanel" data-toggle="collapse" href="#CollapseMap"></a>
+                            </div>
+                        </div>
+                        <div class='panel-collapse collapse out' id="CollapseMap">
+                            @Html.Raw(@Model.MapUrl)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <p></p>
+        <b>When:</b> @Model.Ride.RideDate.ToLongDateString() @@ @Model.Ride.RideDate.ToShortTimeString()
+        <p></p>
+        <b>Start Location:</b> @Model.Ride.Group.StartLocation
+        <p></p>
+        <b>Description:</b> @Model.Ride.Group.Description
+        <p></p>
+        <div class="row">
+            <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                <span class="SecondaryHeading btn btn-block">Keen <span id="@("KeenCountSpan" + @Model.Ride.id)">(@Model.KeenCount.ToString())</span></span>
+            </div>
+        </div>
 
-    <div class="row">
-        <div class="col-xs-8 col-md-11 col-sm-10" id="@("keendiv_" + @Model.Ride.id)">
-            @{
-                @Html.Partial("_RidersKeenRandomAndSingle", Model, new ViewDataDictionary { { "type", "single" } })
+        <div class="row">
+            <div class="col-xs-8 col-md-11 col-sm-10" id="@("keendiv_" + @Model.Ride.id)">
+                @{
+                    @Html.Partial("_RidersKeenRandomAndSingle", Model, new ViewDataDictionary { { "type", "single" } })
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                <span class="SecondaryHeading btn btn-block">Comments <span id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount.ToString())</span></span>
+            </div>
+        </div>
+        <div>
+            @if (@Model.Comments != null)
+            {
+                @Html.Partial("_CommentsRandomAndSingle", Model, new ViewDataDictionary { { "type", "single" } })
             }
         </div>
-    </div>
-<div class="row">
-    <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-        <span class="SecondaryHeading btn btn-block">Comments <span id="@("CommentCountSpan" + @Model.Ride.id)">(@Model.CommentCount.ToString())</span></span>
-    </div>
-</div>
-    <div>
-        @if (@Model.Comments != null)
-        {
-            @Html.Partial("_CommentsRandomAndSingle", Model, new ViewDataDictionary { { "type", "single" } })
-        }
-    </div>
-<div class="row">
-    <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-        <span class="SecondaryHeading btn btn-block">You in?</span>
-    </div>
-</div>
+        <div class="row">
+            <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+                <span class="SecondaryHeading btn btn-block">You in?</span>
+            </div>
+        </div>
 
-    @Html.Partial("_KeenActionsRandomAndSingle", Model, new ViewDataDictionary { { "type", "single" } })
-    <p></p>
-    @section scripts{
-        @Scripts.Render("~/Scripts/jquery.timeago.js")
-        @Scripts.Render("~/bundles/jqueryval")
-        @Scripts.Render("~/bundles/azuremobile")
-        @Scripts.Render("~/bundles/pusher")
-        <script>
-            var socketId = null;
+        @Html.Partial("_KeenActionsRandomAndSingle", Model, new ViewDataDictionary { { "type", "single" } })
+        <p></p>
+        @section scripts{
+            @Scripts.Render("~/Scripts/jquery.timeago.js")
+            @Scripts.Render("~/bundles/jqueryval")
+            @Scripts.Render("~/bundles/azuremobile")
+            @Scripts.Render("~/bundles/pusher")
+            <script>
+                var socketId = null;
 
-            function CommentComplete(data) {
-                HideProgress();
-                //Azure Mobile Storage
+                function CommentComplete(data) {
+                    HideProgress();
+                    //Azure Mobile Storage
 
-                var client = new WindowsAzure.MobileServiceClient(
-                          "http://bunchydev.azure-mobile.net/",
-                          "HIdMfCPoYsHPanowdOvYsYOnmbZbsq45"
-                           );
+                    var client = new WindowsAzure.MobileServiceClient(
+                              "http://bunchydev.azure-mobile.net/",
+                              "HIdMfCPoYsHPanowdOvYsYOnmbZbsq45"
+                               );
 
-                var item = {
-                    text: data.message,
-                    bunchid: data.rideid,
-                    username: data.username,
-                    commentcount: data.commentcount,
-                    channel_id: data.parentid,
-                    socket_id: socketId
-                };
-                client.getTable("Item").insert(item);
+                    var item = {
+                        text: data.message,
+                        bunchid: data.rideid,
+                        username: data.username,
+                        commentcount: data.commentcount,
+                        channel_id: data.parentid,
+                        socket_id: socketId
+                    };
+                    client.getTable("Item").insert(item);
 
-                UpdateCommentFields(data.message, data.rideid, data.username, data.commentcount);
-            }
+                    UpdateCommentFields(data.message, data.rideid, data.username, data.commentcount);
+                }
 
-            function KeenCompleteFirst(data) {
-                HideProgress();
-                //alert(data.message);
-
-                var client = new WindowsAzure.MobileServiceClient(
-                          "http://bunchydev.azure-mobile.net/",
-                          "HIdMfCPoYsHPanowdOvYsYOnmbZbsq45"
-                           );
-
-                var item = {
-                    text: data.message,
-                    bunchid: data.rideid,
-                    username: data.username,
-                    keencount: data.keencount,
-                    leavetime: data.leavetime,
-                    channel_id: data.parentid,
-                    socket_id: socketId
-                };
-                client.getTable("Keen").insert(item);
-
-                UpdateKeenActions(data.message, data.rideid, data.keencount, data.username, data.leavetime);
-            }
-
-            jQuery(document).ready(function () {
-                HideProgress();
-                //Pusher
-                var rideId = jQuery('#RideIdHidden').val();
-                var pusherChannel = jQuery('#PusherChannel').val();
-                var pusher = new Pusher('dba777635636cbc16582');
-                var channel = pusher.subscribe('BunchyRide' + pusherChannel);
-                var userName = jQuery('#RideUserNameHidden').val();
-                var commentCount = jQuery('#CommentCount').val();
-                var keenCount = jQuery('#KeenCount').val();
-
-                channel.bind('New-Comments', function (data) {
-                    UpdateCommentFieldsPusher(data.message, data.rideid, data.username, data.commentcount);
-                });
-
-                pusher.connection.bind('connected', function () {
-                    socketId = pusher.connection.socket_id;
-                });
-
-                channel.bind('You-In', function (data) {
+                function KeenCompleteFirst(data) {
+                    HideProgress();
                     //alert(data.message);
-                    UpdateKeenActionsPusher(data.message, data.rideid, data.keencount, data.username, data.leavetime);
-                });
 
-                //End Pusher
-                jQuery("abbr.timeago").timeago();
-            });
-        </script>
-    }
+                    var client = new WindowsAzure.MobileServiceClient(
+                              "http://bunchydev.azure-mobile.net/",
+                              "HIdMfCPoYsHPanowdOvYsYOnmbZbsq45"
+                               );
+
+                    var item = {
+                        text: data.message,
+                        bunchid: data.rideid,
+                        username: data.username,
+                        keencount: data.keencount,
+                        leavetime: data.leavetime,
+                        channel_id: data.parentid,
+                        socket_id: socketId
+                    };
+                    client.getTable("Keen").insert(item);
+
+                    UpdateKeenActions(data.message, data.rideid, data.keencount, data.username, data.leavetime);
+                }
+
+                jQuery(document).ready(function () {
+                    HideProgress();
+                    //Pusher
+                    var rideId = jQuery('#RideIdHidden').val();
+                    var pusherChannel = jQuery('#PusherChannel').val();
+                    var pusher = new Pusher('dba777635636cbc16582');
+                    var channel = pusher.subscribe('BunchyRide' + pusherChannel);
+                    var userName = jQuery('#RideUserNameHidden').val();
+                    var commentCount = jQuery('#CommentCount').val();
+                    var keenCount = jQuery('#KeenCount').val();
+
+                    channel.bind('New-Comments', function (data) {
+                        UpdateCommentFieldsPusher(data.message, data.rideid, data.username, data.commentcount);
+                    });
+
+                    pusher.connection.bind('connected', function () {
+                        socketId = pusher.connection.socket_id;
+                    });
+
+                    channel.bind('You-In', function (data) {
+                        //alert(data.message);
+                        UpdateKeenActionsPusher(data.message, data.rideid, data.keencount, data.username, data.leavetime);
+                    });
+
+                    //End Pusher
+                    jQuery("abbr.timeago").timeago();
+                });
+            </script>
+        }

@@ -230,6 +230,7 @@ namespace FreeWheeling.UI.Models
         public int CommentCount { get; set; }
         public int KeenCount { get; set; }
         public Boolean IsOwner { get; set; }
+        public Boolean IsFavourite { get; set; }
         public string MapUrl { get; set; }
         public string FromHome { get; set; }
 
@@ -301,6 +302,7 @@ namespace FreeWheeling.UI.Models
         public int KeenCount { get; set; }
         public int PusherChannel { get; set; }
         public string FromHome { get; set; }
+        public Boolean IsFavourite { get; set; }
     }
 
     public class AdHocRideCommentModel

@@ -4,6 +4,7 @@
     ViewBag.Title = "Home Page";
 }
 <hr />
+<div class="row">
 @if (Model.LocationsId != 0)
 {
     if (Model.HomePageRide != null)
@@ -11,14 +12,14 @@
         @Html.Hidden("RideIdHidden", @Model.HomePageRide.id)
         <table class="table content-box">
             <tr style="width:100%">
-                <td style="width:70%">
+                <td style="width:100%">
                     @if (!@Model.IsOnWay)
-                    {
-                    <span id="bunchname" style="position: relative; top: 0px;"><a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true"><b>your next bunch:</b> @Model.HomePageRide.Group.name</a></span>
+                    {                            
+                        <span id="bunchname" style="position: relative; top: 0px;"><a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true"><b>your next bunch:</b> @Model.HomePageRide.Group.name</a></span>                    
                     }
                     else
-                    {
-                        <span id="bunchname" style="position: relative; top: 0px;"><a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true"><b>your next bunch:</b> @Model.HomePageRide.Group.name</a></span>
+                    {                 
+                            <span id="bunchname" style="position: relative; top: 0px;"><a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true"><b>your next bunch:</b> @Model.HomePageRide.Group.name</a></span>                       
                     }
                </td>
                 <td>
@@ -107,6 +108,8 @@ else
 		<input type="submit" value="Set Location" class="btn btn-primary" />
 	}
 }
+
+    </div>
     <div class="loading" border-radius:100%;" align="center">
         <img src="~/Content/Images/loader.gif" alt="loading" />
     </div>
