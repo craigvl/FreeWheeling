@@ -12,10 +12,26 @@ form {
     padding-right:20px;
 }
 
+.onway {
+    font-style:italic;
+    font-size:12px;
+}
+
+.backbaricon {
+    padding-left:0px;
+    padding-right:0px;
+}
+
+.boldtext {
+
+    font-weight:bold;
+
+}
+
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+    /*padding-left: 15px;
+    padding-right: 15px;*/
     padding-top:30px;
     /*background-image: url('/../Content/Images/bike.jpg');*/
     background-repeat:no-repeat;

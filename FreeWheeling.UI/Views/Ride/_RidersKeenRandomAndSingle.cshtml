@@ -33,7 +33,7 @@ if (type == "single")
                     break;
                     case "OnWay":
                     <text>
-                    <p><span id="@("keen_" + @item.Name + @rideid)" class="">@item.Name Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
+                    <p><span id="@("keen_" + @item.Name + @rideid)" class="">@item.Name <span class="onway"> left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
                     </text>
                     break;
                     case "In":
@@ -59,7 +59,7 @@ if (type == "random")
                 break;
                 case "OnWay":
                 <text>
-                <p><span id="@("keen_" + @item.Name + @rideid)" class="">@item.Name Left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></p>
+                <p><span id="@("keen_" + @item.Name + @rideid)" class="">@item.Name <span class="onway"> left <abbr class="timeago" title="@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")">@item.LeaveTime.ToString("MM/dd/yyyy HH:mm:ss")</abbr></span></span></p>
                 </text>
                 break;
                 case "In":

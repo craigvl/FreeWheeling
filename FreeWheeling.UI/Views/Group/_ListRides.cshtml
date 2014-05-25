@@ -23,7 +23,7 @@
                             </div>
                             <div style="width:30%;float:left;">
                                 @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id },
-                                new { @class = "", onclick = "ShowProgress();" })
+                                new { @class = "boldtext", onclick = "ShowProgress();" })
                             </div>                          
                             <div style="width: 10%; float: right;">
                                 @Ajax.ActionLink(" ", // <-- Text to display

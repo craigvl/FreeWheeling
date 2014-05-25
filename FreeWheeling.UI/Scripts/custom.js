@@ -48,7 +48,7 @@ function UpdateKeenActionsPusher(message, rideid, keencount, username, leavetime
         $("#KeenCountSpan" + rideid).html("(" + keencount + ")");
         var keenuser = "#keen_" + username + rideid;
         if ($("#keen_" + username + rideid).length) {
-            $(keenuser).html(username + '<span class=""> Left  <abbr class="timeago" title="' + moment(leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
+            $(keenuser).html(username + '<span class="onway"> left  <abbr class="timeago" title="' + moment(leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
             $(keenuser).attr('class', '');
             $(keenuser).css("text-decoration", "none");
             jQuery("abbr.timeago").timeago();
@@ -118,7 +118,7 @@ function UpdateKeenActions(message, rideid, keencount, username, leavetime, posi
         var keenuser = "#keen_" + username + rideid;
         $("#KeenCountSpan" + rideid).html("(" + keencount + ")");
         if ($("#keen_" + username + rideid).length) {
-            $(keenuser).html(username + ' <span class=""> Left  <abbr class="timeago" title="' + moment(leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
+            $(keenuser).html(username + ' <span class="onway"> left  <abbr class="timeago" title="' + moment(leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
             $(keenuser).attr('class', '');
             $(keenuser).css("text-decoration", "none");
         }
@@ -159,6 +159,7 @@ function UpdateCommentFieldsPusher(message, rideid, username, commentcount) {
 
 function toggleChevron(e) {
     $(e).toggleClass('glyphicon-minus glyphicon-plus');
+    //alert($(e).attr("id"));
 }
 
 function MapCollapse() {
