@@ -2,16 +2,6 @@
 @using FreeWheeling.Domain.Entities
 @using Microsoft.AspNet.Identity;
 
-<div id="fb-root"></div>
-<script>
-(function (d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1403149849923216&version=v2.0";
-    fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-
 @{
     ViewBag.Title = "Index";
 }
@@ -22,6 +12,50 @@
 @Html.Hidden("CommentCountNext", @Model.NextCommentCount)
 @Html.Hidden("KeenCount", @Model.KeenCount)
 @Html.Hidden("KeenCountNext", @Model.NextKeenCount)
+
+<script>
+      window.fbAsyncInit = function() {
+          FB.init({
+              appId: '1403149849923216',
+              xfbml      : true,
+              version    : 'v2.0'
+          });
+      };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+    
+
+function fb_publish() {
+    FB.ui(
+       {
+           method: 'feed',
+           name: 'The Facebook SDK for Javascript',
+           caption: 'Bringing Facebook to the desktop and mobile web',
+           description: (
+              'A small JavaScript library that allows you to harness ' +
+              'the power of Facebook, bringing the user\'s identity, ' +
+              'social graph and distribution power to your site.'
+           ),
+           link: 'https://developers.facebook.com/docs/reference/javascript/',
+           picture: 'http://www.fbrell.com/public/f8.jpg'
+       },
+       function (response) {
+           if (response && response.post_id) {
+               alert('Post was published.');
+           } else {
+               alert('Post was not published.');
+           }
+       }
+     );
+}
+
+</script>
 <p></p>
 <div class="row">
     <div class="pull-left col-xs-12 col-md-12 col-sm-12 col-xs-12">
@@ -44,7 +78,7 @@
     </div>
     <hr />
     <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-        <span class="btn btn-default btn-block">@Model.Group.name</span>
+        <span class="btn btn-default btn-block">@Model.Group.name</span><a onclick="fb_publish();">face me</a>
     </div>
     </div>
 @if (@Model.IsOwner)
