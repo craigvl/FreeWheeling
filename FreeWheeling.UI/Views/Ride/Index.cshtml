@@ -6,6 +6,8 @@
     ViewBag.Title = "Index";
 }
 @Html.Hidden("RideIdHidden", @Model.Ride.id)
+@Html.Hidden("GroupName",@Model.Group.name)
+@Html.Hidden("GroupIdHidden", @Model.Group.id)
 @Html.Hidden("NextRideIdHidden", @Model.NextRide.id)
 @Html.Hidden("RideUserNameHidden", User.Identity.GetUserName())
 @Html.Hidden("CommentCount", @Model.CommentCount)
@@ -20,8 +22,9 @@
               xfbml      : true,
               version    : 'v2.0'
           });
+          
       };
-
+  
     (function(d, s, id){
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) {return;}
@@ -30,29 +33,25 @@
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
     
-
-function fb_publish() {
-    FB.ui(
-       {
-           method: 'feed',
-           name: 'The Facebook SDK for Javascript',
-           caption: 'Bringing Facebook to the desktop and mobile web',
-           description: (
-              'A small JavaScript library that allows you to harness ' +
-              'the power of Facebook, bringing the user\'s identity, ' +
-              'social graph and distribution power to your site.'
-           ),
-           link: 'https://developers.facebook.com/docs/reference/javascript/',
-           picture: 'http://www.fbrell.com/public/f8.jpg'
-       },
-       function (response) {
-           if (response && response.post_id) {
-               alert('Post was published.');
-           } else {
-               alert('Post was not published.');
-           }
-       }
-     );
+    function fb_publish() {
+        FB.login(function () {
+            FB.api(
+  'me/bunchy_:join',
+  'post',
+  {
+      bunch: {
+          app_id: 1403149849923216,
+          type: "bunchy_:bunch",
+          title: $("#GroupName").val(),
+          image: "https://fbstatic-a.akamaihd.net/images/devsite/attachment_blank.png",
+          description: ""
+      }
+  },
+  function (response) {
+      console.log(response);
+  }
+);
+}, { scope: 'publish_actions' });
 }
 
 </script>
