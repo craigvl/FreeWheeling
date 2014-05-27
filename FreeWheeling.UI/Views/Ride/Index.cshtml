@@ -14,37 +14,31 @@
 @Html.Hidden("CommentCountNext", @Model.NextCommentCount)
 @Html.Hidden("KeenCount", @Model.KeenCount)
 @Html.Hidden("KeenCountNext", @Model.NextKeenCount)
-
+<div id="fb-root"></div>
 <script>
-      window.fbAsyncInit = function() {
-          FB.init({
-              appId: '1403149849923216',
-              xfbml      : false,
-              version    : 'v2.0'
-          });
-          
-      };
-  
-    (function(d, s, id){
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-    
+(function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1403149849923216&version=v2.0";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<script>
     function fb_publish() {
         FB.login(function () {
             FB.api(
   'me/bunchy_:join',
   'post',
   {
+      'fb:explicitly_shared':'true',
       bunch: {
           app_id: 1403149849923216,
           type: "bunchy_:bunch",
           title: $("#GroupName").val(),
           image: "http://www.bunchy.com.au/content/images/bunchy_logo.png",
-          description: ""
+          description: "You keen?" ,
+          url: "http://www.bunchy.com.au/Ride?groupid=" + $("#GroupIdHidden").val(),
+          web: "http://www.bunchy.com.au/Ride?groupid=" + $("#GroupIdHidden").val()
       }
   },
   function (response) {
@@ -54,8 +48,9 @@
 }, { scope: 'publish_actions' });
 }
 
-</script>
-<p></p>
+</script>sss
+<div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-type="button"></div>
+<p><div  class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-type="button"></div></p>
 <div class="row">
     <div class="pull-left col-xs-12 col-md-12 col-sm-12 col-xs-12">
 <div class="row">
@@ -75,7 +70,7 @@
     </div>
     <hr />
     <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-        <span class="btn btn-default btn-block">@Model.Group.name</span><a onclick="fb_publish();">face me</a>
+        <span class="btn btn-default btn-block">@Model.Group.name</span>
     </div>
     </div>
 @if (@Model.IsOwner)

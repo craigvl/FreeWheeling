@@ -12,7 +12,7 @@
         @Html.Hidden("RideIdHidden", @Model.HomePageRide.id)
         <table class="table content-box">
             <tr style="width:100%">
-                <td style="width:100%">
+                <td style="width:65%">
                     @if (!@Model.IsOnWay)
                     {                            
                         <span id="bunchname" style="position: relative; top: 0px;"><a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true"><b>your next bunch:</b> @Model.HomePageRide.Group.name</a></span>                    
