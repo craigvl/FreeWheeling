@@ -112,7 +112,6 @@ namespace FreeWheeling.UI.Controllers
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
@@ -380,7 +379,6 @@ namespace FreeWheeling.UI.Controllers
         //
         // POST: /Account/LogOff
         [HttpPost]
-        [HandleAntiForgeryError]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
