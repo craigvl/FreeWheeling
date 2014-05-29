@@ -9,7 +9,7 @@
 
 form {
 
-    padding-right:20px;
+    padding-right:0px;
 }
 
 .onway {
@@ -497,8 +497,7 @@ as per http://stackoverflow.com/questions/18192082/bootstrap-3-navbar-collapse *
 -----------------------------------------------------------*/
 #messagewrapper
 {
-    position: fixed;        /*Change to absolute according to ReadMe.txt. Original value is fixed*/
-    width: 500px;           /* Change this value to adjust the message box size */
+    position: absolute;        /*Change to absolute according to ReadMe.txt. Original value is fixed*/
     top: 0px;
     margin: 47px auto;      /* Change this to adjust height from top of page. Default is 47px */
     z-index: 2000;

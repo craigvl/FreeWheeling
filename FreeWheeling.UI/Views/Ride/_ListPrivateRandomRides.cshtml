@@ -2,24 +2,26 @@
 @* ///////////////////////////////NOTE//////////////////////////////////
         If you change this file then you should also change the _ListRandomRides.cshtml to match, Thanks!
     ////////////////////////////////////////////////////////////////////////////////////////////////// *@
-<table class="table content-box" style="width:100%">
-    @foreach (Ad_HocRide item in @Model.PrivateRandomBunches)
-    {
-        <tr style="width:100%;">
-            <td>
-                <div class="col-xs-4 col-md-4 col-sm-5 col-lg-4">
-                    @Html.ActionLink(@item.Name, "ViewAdHocRide", "Ride", new { adhocrideid = item.id },
+<div class="row">
+    <table class="table content-box" style="width:100%">
+        @foreach (Ad_HocRide item in @Model.PrivateRandomBunches)
+        {
+            <tr style="width:100%;">
+                <td>
+                    <div class="col-xs-5 col-md-5 col-sm-5 col-lg-5">
+                        @Html.ActionLink(@item.Name, "ViewAdHocRide", "Ride", new { adhocrideid = item.id },
+             new { @class = "pull-left", onclick = "ShowProgress();" })
+                    </div>
+                    <div class="col-md-5 col-sm-5 col-lg-5 col-xs-5">
+                        @Html.ActionLink(string.Concat(@item.RideDate.DayOfWeek.ToString()), "ViewAdHocRide", "Ride", new { adhocrideid = item.id },
              new { @class = "", onclick = "ShowProgress();" })
-                </div>
-                <div class="col-md-4 col-sm-6 col-lg-4 col-xs-4">
-                    @Html.ActionLink(string.Concat(@item.RideDate.DayOfWeek.ToString()), "ViewAdHocRide", "Ride", new { adhocrideid = item.id },
-             new { @class = "", onclick = "ShowProgress();" })
-                </div>
-                <div class="col-xs-4 col-md-1 col-sm-1 col-lg-4">
-                    @Html.ActionLink(string.Concat(" "), "ViewAdHocRide", "Ride", new { adhocrideid = item.id },
+                    </div>
+                    <div class="col-xs-1 col-md-1 col-sm-1 col-lg-1">
+                        @Html.ActionLink(string.Concat(" "), "ViewAdHocRide", "Ride", new { adhocrideid = item.id },
              new { @class = "pull-right glyphicon glyphicon-search", onclick = "ShowProgress();" })
-                </div>
-            </td>
-        </tr>
-    }
-</table>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

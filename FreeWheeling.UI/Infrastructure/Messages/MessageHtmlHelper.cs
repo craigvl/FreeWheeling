@@ -51,15 +51,15 @@ namespace FreeWheeling.UI.Infrastructure.Messages
                             messageHeading = "<strong>Success! </strong>";
                             break;
                         case "Warning":
-                            messageTypeCssClass = "alert";
+                            messageTypeCssClass = "alert alert-warning";
                             messageHeading = "<strong>Warning! </strong>";
                             break;
                         case "Error":
-                            messageTypeCssClass = "alert alert-error";
+                            messageTypeCssClass = "alert alert-danger";
                             messageHeading = "<strong>Error! </strong>";
                             break;
                         default:
-                            messageTypeCssClass = "alert";
+                            messageTypeCssClass = "alert alert-info";
                             messageHeading = "<strong>Warning! </strong>";
                             break;
                     }
@@ -76,11 +76,11 @@ namespace FreeWheeling.UI.Infrastructure.Messages
                     messageBoxBuilder.InnerHtml = messageHeading + message.ToString();
                     
                     //Inner button (x) to the right of the message (from Bootstrap)
-                    var closeButton = new TagBuilder("button");
-                    closeButton.MergeAttribute("type", "button");
-                    closeButton.MergeAttribute("data-dismiss", "alert");
-                    closeButton.AddCssClass("close");
-                    closeButton.InnerHtml = "&times;";
+                    //var closeButton = new TagBuilder("button");
+                    //closeButton.MergeAttribute("type", "button");
+                    //closeButton.MergeAttribute("data-dismiss", "alert");
+                    //closeButton.AddCssClass("close");
+                    //closeButton.InnerHtml = "&times;";
                     
                     //Parent div that holds all the elements for display
                     var messageBoxBuilderOuter = new TagBuilder("div");
@@ -89,7 +89,8 @@ namespace FreeWheeling.UI.Infrastructure.Messages
                     messageBoxBuilderOuter.AddCssClass(messageTypeCssClass + " " + messagePos + " " + persistCssClass);
 
                     //Append close button and message div to the outer div
-                    messageBoxBuilderOuter.InnerHtml = closeButton.ToString() + messageBoxBuilder.ToString();
+                    //messageBoxBuilderOuter.InnerHtml = closeButton.ToString() + messageBoxBuilder.ToString();
+                    messageBoxBuilderOuter.InnerHtml = messageBoxBuilder.ToString();
                                                             
                     //Return the whole string
                     messages += messageBoxBuilderOuter.ToString();

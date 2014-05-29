@@ -364,6 +364,7 @@ namespace FreeWheeling.UI.Controllers
                 ModelState.AddModelError(string.Empty, "Please select one or more days");
                 _GroupCreateModel.Locations = repository.GetLocations().ToList();
                 _GroupCreateModel.LocationsId = _Location.id;
+                this.ShowMessage(MessageType.Error, "Please select one or more days", true, MessagePosition.TopCentre, false);
                 return View(_GroupCreateModel);
             }
 
@@ -420,7 +421,7 @@ namespace FreeWheeling.UI.Controllers
                });
 
             T.Start();
-            this.ShowMessage(MessageType.Success, "Yep", true, MessagePosition.TopLeft, true);
+            this.ShowMessage(MessageType.Success, "Removed from favourites", true, MessagePosition.TopCentre, false);
             return RedirectToAction("Index", "Group");
         }
 
@@ -432,6 +433,7 @@ namespace FreeWheeling.UI.Controllers
             Group group = repository.GetGroupByID(id);
             repository.AddMember(currentUser.Id, group);
             repository.Save();
+            this.ShowMessage(MessageType.Success, "Added to favourites", true, MessagePosition.TopCentre, false);
             return RedirectToAction("Index", "Group");
         }
 

@@ -28,7 +28,7 @@
     </div>
     <div class="container body-content">
         <div id="messagewrapperajax"></div>
-        <div style="position: relative;">@Html.RenderMessages()</div>
+        <div class="row">@Html.RenderMessages()</div>
         @RenderBody()
         <div class="loading" style="display:none;" align="center">
             <img src="~/Content/Images/loader.gif" alt="" />
@@ -45,6 +45,10 @@
                 window.location.reload()
             }
         };
+        jQuery(document).ready(function () {
+            HideProgress();
+            DisplayMessages();
+        });
     </script>
 </body>
 </html>

@@ -7,42 +7,42 @@
 <link href="~/Content/datepicker.css" rel="stylesheet" />
 @Styles.Render("~/Content/jqueryui")
 <p></p>
-<div class="container-fluid">
+<div class="row">
     <div class="pull-left">
         @Html.ActionLink(" ", "Index", "Home", null, new {@style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
     </div>
 </div>
 <p></p>
+<div class="row">
+    <div class="btn-group btn-block col-xs-12 col-md-12 col-sm-12" style="margin-bottom:5px;width:100%;">
+        <span class="btn btn-default btn-block"> Create a random bunch </span>
+    </div>
+    <p></p>
+    @using (Html.BeginForm("CreateAdHoc", "Group", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            <label for="" class="col-sm-2 control-label">Location</label>
+            <div class="col-sm-12 col-xs-12">
+                <select class="form-control" data-bind="options: LocationChoices, optionsText: 'Name', optionsValue: 'id', selectedOptions: selectedLocation"></select>
+            </div>
+        </div>
 
-<div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-    <span class="btn btn-default btn-block"> Create a random bunch </span>
-</div>
-<p></p>
-@using (Html.BeginForm("CreateAdHoc", "Group", FormMethod.Post, new { @class = "form-horizontal" }))
-{
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-    <div class="form-group">
-        <label for="" class="col-sm-2 control-label">Location</label>
-        <div class="col-sm-10">
-            <select class="form-control" data-bind="options: LocationChoices, optionsText: 'Name', optionsValue: 'id', selectedOptions: selectedLocation"></select>
+        <div class="form-group">
+            <label for="" class="col-sm-2 control-label">Bunch Name</label>
+            <div data-bind="validationElement: Name" class="col-sm-10">
+                @Html.TextBoxFor(model => model.Name, new { data_bind = "value:Name, uniqueName:true", @class = "form-control" })
+            </div>
         </div>
-    </div>
-    
-    <div class="form-group">
-        <label for="" class="col-sm-2 control-label">Bunch Name</label>
-        <div data-bind="validationElement: Name" class="col-sm-10">
-            @Html.TextBoxFor(model => model.Name, new { data_bind = "value:Name, uniqueName:true", @class = "form-control" })
-        </div>
-    </div>
 
-    <div class="form-group">
-        <label class="col-md-2 control-label">Date</label>
-        <div class="col-md-10">
-            <input type="text" class="form-control" data-bind="datepicker: DateString, datepickerOptions: { dataType: 'format', format: 'DD/MM/YYYY' }">
-            @Html.ValidationMessageFor(model => model.DateString)
+        <div class="form-group">
+            <label class="col-md-2 control-label">Date</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" data-bind="datepicker: DateString, datepickerOptions: { dataType: 'format', format: 'DD/MM/YYYY' }">
+                @Html.ValidationMessageFor(model => model.DateString)
+            </div>
         </div>
-    </div>
         <div class="form-group">
             <label class="col-md-2 control-label">Hour (24 Hour)</label>
             <div class="col-md-10">
@@ -61,80 +61,80 @@
                 </div>
             </div>
         </div>
-   
+
 
 
         <hr />
-    
-    <div class="form-group">
-        <label for="" class="col-sm-2 control-label">Start Location</label>
-        <div class="col-sm-10">
-            <div data-bind="validationElement: StartLocation">
-                @Html.TextBoxFor(model => model.StartLocation, new { data_bind = "value:StartLocation, uniqueName:true", @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.StartLocation)
+
+        <div class="form-group">
+            <label for="" class="col-sm-2 control-label">Start Location</label>
+            <div class="col-sm-10">
+                <div data-bind="validationElement: StartLocation">
+                    @Html.TextBoxFor(model => model.StartLocation, new { data_bind = "value:StartLocation, uniqueName:true", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.StartLocation)
+                </div>
             </div>
         </div>
-    </div>
-    
-    <div class="form-group">
-        <label for="" class="col-sm-2 control-label">Private</label>
-        <div class="col-sm-10">
-        @Html.CheckBoxFor(model => model.IsPrivate, new { data_bind = "checked:IsPrivate, uniqueName:true", @class = "form-control" })
-    </div>
-    </div>
 
-    <div class="form-group">
-        <label for="" class="col-sm-2 control-label">Description</label>
-        <div class="col-sm-10">
-            <div>
-                @Html.TextAreaFor(model => model.Description, new { data_bind = "value:Description, uniqueName:true", @class = "form-control" })
+        <div class="form-group">
+            <label for="" class="col-sm-2 control-label">Private</label>
+            <div class="col-sm-10">
+                @Html.CheckBoxFor(model => model.IsPrivate, new { data_bind = "checked:IsPrivate, uniqueName:true", @class = "form-control" })
             </div>
         </div>
-    </div>
-    
-     <div class="form-group">
-        <label for="" class="col-sm-2 control-label">Map (Enter <a target="_blank" href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</label>
-        <div class="col-sm-10">
-            <div>
-                @Html.TextBoxFor(model => model.MapUrl, new { data_bind = "value:MapUrl, uniqueName:true", @class = "form-control" })
+
+        <div class="form-group">
+            <label for="" class="col-sm-2 control-label">Description</label>
+            <div class="col-sm-10">
+                <div>
+                    @Html.TextAreaFor(model => model.Description, new { data_bind = "value:Description, uniqueName:true", @class = "form-control" })
+                </div>
             </div>
         </div>
-    </div>
-        
-   <div id="templated">
 
-       <div data-bind="template: { name: 'userRowTemplate', foreach: usersLines }">
-       </div>
- 
-       <script type="text/html" id="userRowTemplate">
-           <div class="form-group">
-               <label for="" class="col-sm-2 control-label">User Name</label>
-               <div class="col-sm-10">
-                   <div>
-                       <input class="form-control" id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" />
-                   </div>
-               </div>
-           </div>
-       </script>
-    
-    
-    <!-- when Add Gift is clicked, the method addGift() in the view model (viewModelForTemplated) object will be called -->
-       <div class="form-group">
-           <div class="col-sm-offset-2 col-sm-10">
-               <button class="btn btn-default" data-bind="click: addUser">Invite a User/s</button> 
-           </div>
-       </div>
+        <div class="form-group">
+            <label for="" class="col-sm-2 control-label">Map (Enter <a target="_blank" href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</label>
+            <div class="col-sm-10">
+                <div>
+                    @Html.TextBoxFor(model => model.MapUrl, new { data_bind = "value:MapUrl, uniqueName:true", @class = "form-control" })
+                </div>
+            </div>
+        </div>
 
-    <!-- when Save is clicked, the method save() in the view model (viewModelForTemplated) object will be called. Simple eh? -->
-   @* <button data-bind="click: save">Save</button>*@
+        <div id="templated">
+
+            <div data-bind="template: { name: 'userRowTemplate', foreach: usersLines }">
+            </div>
+
+            <script type="text/html" id="userRowTemplate">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">User Name</label>
+                    <div class="col-sm-10">
+                        <div>
+                            <input class="form-control" id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" />
+                        </div>
+                    </div>
+                </div>
+            </script>
+
+
+            <!-- when Add Gift is clicked, the method addGift() in the view model (viewModelForTemplated) object will be called -->
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button class="btn btn-default" data-bind="click: addUser">Invite a User/s</button>
+                </div>
+            </div>
+
+            <!-- when Save is clicked, the method save() in the view model (viewModelForTemplated) object will be called. Simple eh? -->
+            @* <button data-bind="click: save">Save</button>*@
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input class="btn btn-default" onclick="ShowProgress();" data-bind="click: save" id="btnSubmit" type="submit" value="Create" />
+            </div>
+        </div>
+    }
 </div>
-    <div class="form-group">
-           <div class="col-sm-offset-2 col-sm-10">
-               <input class="btn btn-default" onclick="ShowProgress();" data-bind="click: save" id="btnSubmit" type="submit" value="Create" />
-           </div>
-       </div> 
-}
-
 @section Scripts {
 @Scripts.Render("~/bundles/jqueryval")
 @Scripts.Render("~/bundles/knockout")
