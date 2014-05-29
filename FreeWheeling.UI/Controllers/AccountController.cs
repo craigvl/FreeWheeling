@@ -380,6 +380,7 @@ namespace FreeWheeling.UI.Controllers
         //
         // POST: /Account/LogOff
         [HttpPost]
+        [HandleAntiForgeryError]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
