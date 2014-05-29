@@ -6,21 +6,63 @@
     ViewBag.Title = "Index";
 }
 @Html.Hidden("RideIdHidden", @Model.Ride.id)
+@Html.Hidden("GroupName",@Model.Group.name)
+@Html.Hidden("GroupIdHidden", @Model.Group.id)
 @Html.Hidden("NextRideIdHidden", @Model.NextRide.id)
 @Html.Hidden("RideUserNameHidden", User.Identity.GetUserName())
 @Html.Hidden("CommentCount", @Model.CommentCount)
 @Html.Hidden("CommentCountNext", @Model.NextCommentCount)
 @Html.Hidden("KeenCount", @Model.KeenCount)
 @Html.Hidden("KeenCountNext", @Model.NextKeenCount)
+<div id="fb-root"></div>
+<script>
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '1403149849923216',
+            xfbml: false,
+            version: 'v2.0'
+        });
+    };
+   (function(d, s, id){
+               var js, fjs = d.getElementsByTagName(s)[0];
+               if (d.getElementById(id)) {return;}
+               js = d.createElement(s); js.id = id;
+               js.src = "//connect.facebook.net/en_US/sdk.js";
+               fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
+    function fb_publish() {
+        FB.login(function () {
+            FB.api(
+  'me/bunchy_:join',
+  'post',
+  {
+      'fb:explicitly_shared':'true',
+      bunch: {
+          app_id: 1403149849923216,
+          type: "bunchy_:bunch",
+          title: $("#GroupName").val(),
+          image: "http://www.bunchy.com.au/content/images/bunchy_logo.png",
+          description: "You keen?" ,
+          url: "http://www.bunchy.com.au/Ride?groupid=" + $("#GroupIdHidden").val(),
+          web: "http://www.bunchy.com.au/Ride?groupid=" + $("#GroupIdHidden").val()
+      }
+  },
+  function (response) {
+      //console.log(response);
+  }
+);
+}, { scope: 'publish_actions' });
+}
+</script>
 <p></p>
 <div class="row">
     <div class="pull-left col-xs-12 col-md-12 col-sm-12 col-xs-12">
 <div class="row">
+
     @if (@Model.FromHome == "true")
     {
-
         @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
- 
     }
     else
     {      

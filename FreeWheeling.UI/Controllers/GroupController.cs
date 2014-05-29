@@ -14,6 +14,7 @@ using FreeWheeling.UI.Models;
 using FreeWheeling.UI.Infrastructure;
 using System.Globalization;
 using System.Threading.Tasks;
+using FreeWheeling.UI.Infrastructure.Messages;
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -363,6 +364,7 @@ namespace FreeWheeling.UI.Controllers
                 ModelState.AddModelError(string.Empty, "Please select one or more days");
                 _GroupCreateModel.Locations = repository.GetLocations().ToList();
                 _GroupCreateModel.LocationsId = _Location.id;
+                this.ShowMessage(MessageType.Error, "Please select one or more days", true, MessagePosition.TopCentre, false);
                 return View(_GroupCreateModel);
             }
 
@@ -408,14 +410,18 @@ namespace FreeWheeling.UI.Controllers
             Task T = new Task(() =>
                {
                    Ride _Ride = repository.GetHomePageRideByUserID(currentUser.Id);
-                   if (_Ride.Group.id == id)
+
+                   if (_Ride != null)
                    {
-                       repository.DeleteHomePageRide(currentUser.Id);
+                       if (_Ride.Group.id == id)
+                       {
+                           repository.DeleteHomePageRide(currentUser.Id);
+                       }
                    }
                });
 
             T.Start();
-
+            this.ShowMessage(MessageType.Success, "Removed from favourites", true, MessagePosition.TopCentre, false);
             return RedirectToAction("Index", "Group");
         }
 
@@ -427,6 +433,7 @@ namespace FreeWheeling.UI.Controllers
             Group group = repository.GetGroupByID(id);
             repository.AddMember(currentUser.Id, group);
             repository.Save();
+            this.ShowMessage(MessageType.Success, "Added to favourites", true, MessagePosition.TopCentre, false);
             return RedirectToAction("Index", "Group");
         }
 

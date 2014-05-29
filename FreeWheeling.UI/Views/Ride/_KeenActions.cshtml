@@ -34,7 +34,7 @@
                  },
                  new
                  {
-                     @class = "btn glyphicon glyphicon-ok-sign btn-lg",
+                     @class = "btn glyphicon glyphicon-thumbs-up btn-lg",
                      style = "color:#333333",
                      onclick = "ShowProgress();",
                      @id = @inid
@@ -50,13 +50,13 @@
                  },
                       new
                       {
-                          @class = "btn glyphicon glyphicon-remove-sign btn-lg",
+                          @class = "btn glyphicon glyphicon-thumbs-down btn-lg",
                           style = "color:#333333",
                           onclick = "ShowProgress();",
                           @id = @outid
                       })
 
-@Ajax.ActionLink("on my way!", "Attend",
+@Ajax.ActionLink("on way", "Attend",
                  new { RideId = @rideid, commitment = "OnWay", Groupid = @Model.Group.id, ParentRideID = @parentid },
                  new AjaxOptions
                  {
@@ -67,19 +67,14 @@
                  new
                  {
                      @class = "btn btn-default btn-sm",
-                     style = "color:#FFF",
+                     style = "",
                      onclick = "ShowProgress();",
                      @id = onwayid
                  })
-
-<p></p>
-
-<div id="Invite_Users">
-    @Html.ActionLink("invite others", "InviteOthersToBunch", "Ride",
+    @Html.ActionLink("invite", "InviteOthersToBunch", "Ride",
         new
         {
             RideId = @rideid,
             PreviousID = @groupid
         },
-        new { @class = "btn btn-default btn-sm", onclick = "ShowProgress();", id = "InviteFirst" })
-</div>
+                new { @class = "btn btn-default btn-sm", onclick = "ShowProgress();", id = "InviteFirst", style = "padding-right:10px" })

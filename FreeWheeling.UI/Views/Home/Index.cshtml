@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "Home Page";
 }
-<hr />
 <div class="row">
 @if (Model.LocationsId != 0)
 {
@@ -12,7 +11,7 @@
         @Html.Hidden("RideIdHidden", @Model.HomePageRide.id)
         <table class="table content-box">
             <tr style="width:100%">
-                <td style="width:100%">
+                <td style="width:65%">
                     @if (!@Model.IsOnWay)
                     {                            
                         <span id="bunchname" style="position: relative; top: 0px;"><a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true"><b>your next bunch:</b> @Model.HomePageRide.Group.name</a></span>                    
@@ -45,8 +44,7 @@
                     }
                     else
                     {
-                        <span id="onwayspan" class="pull-right glyphicon glyphicon-ok-sign">
-                            
+                        <span id="onwayspan" class="pull-right glyphicon glyphicon-ok-sign">                           
                         </span>
                     }
                 </td>
@@ -79,13 +77,29 @@
             <tr>
                 <th><span style="" class="glyphicon glyphicon-star"></span><span style="position: relative; top: -1px;"> favourites</span></th>
             </tr>
-            @foreach (Group bunch in Model.FavouriteBunches)
+
+            @if (Model.FavouriteBunches.Count() != 0)
+            {
+                foreach (Group bunch in Model.FavouriteBunches)
+                {
+                    <tr>
+                        <td><a href="/Ride?groupid=@(bunch.id)&fromhome=true"><div>@bunch.name<div class=" pull-right glyphicon glyphicon-search"></div></div></a></td>
+                    </tr>
+                }
+            }
+            else
             {
                 <tr>
-                    <td><a href="/Ride?groupid=@(bunch.id)&fromhome=true"><div>@bunch.name<div class=" pull-right glyphicon glyphicon-search"></div></div></a></td>
-                </tr>
+                    <td>
+                        <p>Hey you don't have any favourite bunches?</p>
+                        <p>
+                            Did you know that adding bunches to your favourites makes it easier to access
+                            your next bunch from the home screen.
+                        </p>
+                        <p><b>What are you waiting for add a bunch to your favourite list!</b></p> 
+                    </td>
+                </tr>  
             }
-
         </table>
     }
     <hr class="visible-xs" />         
@@ -130,6 +144,7 @@ else
                 HideProgress();
             }
             jQuery(document).ready(function () {
+                //displayMessageAjax("hello", "error", "BottomCentre", "tempoarayMessage");
                 HideProgress();
             });
         </script>

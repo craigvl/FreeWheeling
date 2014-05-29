@@ -14,7 +14,48 @@
 @Html.Hidden("CommentCount", @Model.CommentCount)
 @Html.Hidden("KeenCount", @Model.KeenCount)
 @Html.Hidden("PusherChannel", @Model.PusherChannel)
+@Html.Hidden("RideName", @Model.Ride.Group.name)
+<div id="fb-root"></div>
+<script>
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '1403149849923216',
+            xfbml: false,
+            version: 'v2.0'
+        });
+    };
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) { return; }
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
 
+    function fb_publish() {
+        FB.login(function () {
+            FB.api(
+  'me/bunchy_:join',
+  'post',
+  {
+      'fb:explicitly_shared': 'true',
+      bunch: {
+          app_id: 1403149849923216,
+          type: "bunchy_:bunch",
+          title: $("#RideName").val(),
+          image: "http://www.bunchy.com.au/content/images/bunchy_logo.png",
+          description: "You keen?",
+          url: "http://www.bunchy.com.au/Ride/ViewSingleRide?rideid=" + $("#RideIdHidden").val(),
+          web: "http://www.bunchy.com.au/Ride/ViewSingleRide?rideid=" + $("#RideIdHidden").val()
+      }
+  },
+  function (response) {
+      //console.log(response);
+  }
+);
+        }, { scope: 'publish_actions' });
+    }
+</script>
 <p></p>
 <div class="row">
     <div class="pull-left col-xs-12 col-md-12 col-sm-12 col-xs-12">
