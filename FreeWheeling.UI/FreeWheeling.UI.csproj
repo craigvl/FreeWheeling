@@ -247,6 +247,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\CultureHelper.cs" />
+    <Compile Include="Infrastructure\Messages\Message.cs" />
+    <Compile Include="Infrastructure\Messages\MessageHtmlHelper.cs" />
+    <Compile Include="Infrastructure\Messages\Types.cs" />
     <Compile Include="Infrastructure\UserHelper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ExternalLoginViewModel.cs" />

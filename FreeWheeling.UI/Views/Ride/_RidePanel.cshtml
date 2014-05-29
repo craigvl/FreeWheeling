@@ -97,10 +97,15 @@
                         <div class="panel-body panelBody">
                             <div id="@("keendiv_" + @rideid)">
                                 @Html.Partial(@riderskeenpartial, Model, new ViewDataDictionary { { "position", @position } })                             
+                            </div> 
+                            <hr />                    
+                                <div class="row">                                  
+                                        <div class="col-xs-12 col-md-12 col-sm-12">
+                                            <b>Are you keen?</b>
+                                        </div>
+                                </div>                          
+                                @Html.Partial(@keenactionpartial, Model, new ViewDataDictionary { { "position", @position } })
                             </div>
-                            <hr />
-                            @Html.Partial(@keenactionpartial, Model, new ViewDataDictionary { { "position", @position } })
-                        </div>
                     </div>
                 </div>
                 <div class='panel panel-default'>

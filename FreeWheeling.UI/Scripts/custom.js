@@ -84,12 +84,12 @@ function UpdateKeenActions(message, rideid, keencount, username, leavetime, posi
         $("#KeenCountSpan" + rideid).html("(" + keencount + ")");
         var keenuser = "#keen_" + username + rideid;
         if ($("#keen_" + username + rideid).length) {
-            $(keenuser).html(username + " <span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-up'></span>");
+            $(keenuser).html(username + ' <span style="padding-left:5px;" class="glyphicon glyphicon-thumbs-up"><span style="padding-left:5px;" class="pull-right"> <a href="#" onclick="fb_publish();"> <img src="Content/Images/share_facebook.png" /></a></span></span>');
             $(keenuser).attr('class', '');
             $(keenuser).css('text-decoration', 'none');          
         }
         else {
-            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="">' + username + " <span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-up'></span>  </span>");
+            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="">' + username + " <span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-up'></span><span style='padding-left:5px;' class='pull-right'> <a href='#' onclick='fb_publish();'> <img src='Content/Images/share_facebook.png' /></a></span>  </span>");
         }
 
         if (position == "next") {
@@ -185,4 +185,85 @@ function MapCollapse() {
         event.stopPropagation();
         toggleChevron('#MapPanel');
     });
+}
+
+//This function must be called from the _layout.cshtml or wherever @Html.RenderMessages() is being used 
+function DisplayMessages() {
+    if ($("#messagewrapper").children().length > 0) {
+        //Apply a delay and fade the message in
+        $("#messagewrapper").delay(200).fadeIn(300);    //Adjust timing if required
+
+        //Apply a delay abd fade out temp messages
+        $(".tempoarayMessage").delay(6000).fadeOut(300);
+
+        //Hide message on click
+        $("#messagewrapper").click(function () {
+            $("#messagewrapper").stop();
+            ClearMessages();
+        });
+    }
+    else {
+        $("#messagewrapper").hide();
+    }
+}
+
+function ClearMessages() {
+    $("#messagewrapper").fadeOut(100, function () {
+        $("#messagewrapper").empty();
+    });
+}
+
+function displayMessageAjax(message, messageType, position, PersistMessage) {
+
+    if (messageType == "error") {
+        $("#messagewrapperajax").removeClass();
+        $("#messagewrapperajax").addClass('alert btn-danger ' + ' ' + position + ' ' + PersistMessage);
+    }
+
+    if (messageType == "success") {
+        $("#messagewrapperajax").removeClass();
+        $("#messagewrapperajax").addClass('alert btn-success ' + ' ' + position + ' ' + PersistMessage);
+
+    }
+
+    if (messageType == "warning") {
+        $("#messagewrapperajax").removeClass();
+        $("#messagewrapperajax").addClass('alert btn-warning' + ' ' + position + ' ' + PersistMessage);
+
+    }
+
+    if (messageType == null) {
+        $("#messagewrapperajax").removeClass();
+        $("#messagewrapperajax").addClass('alert ' + ' ' + position + ' ' + PersistMessage);
+
+    }
+
+    $("#messagewrapperajax").html('<button class="close" type="button">×</button><div id="messagebox" class="messagebox"></div>');
+    $("#messagewrapperajax .messagebox").text(message);
+
+    displayMessagesAjax();
+}
+
+function displayMessagesAjax() {
+    if ($("#messagewrapperajax").children().length > 0) {
+        $(".tempoarayMessage").delay(6000).fadeOut(300);
+        $("#messagewrapperajax").show();
+        $("#messagewrapperajax").click(function () {
+            ClearMessagesAjaxClick();
+        });
+        $(".button .close").click(function () {
+            ClearMessagesAjaxClick();
+        });
+    }
+    else {
+        $("#messagewrapperajax").hide();
+    }
+}
+
+function ClearMessagesAjax() {
+    $("#messagewrapperajax").hide();
+}
+
+function ClearMessagesAjaxClick() {
+    $("#messagewrapperajax").hide();
 }

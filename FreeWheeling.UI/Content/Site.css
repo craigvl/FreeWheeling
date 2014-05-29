@@ -491,3 +491,35 @@ as per http://stackoverflow.com/questions/18192082/bootstrap-3-navbar-collapse *
 }
 
 /*------------------------------------Nav Bar End------------------------------------------------------*/
+
+/*  Messages styles
+    Note: The main styling is being done by the Bootstrap library. 
+          Refer to the ReadMe.txt and MessageHtmlHelper.cs file for more info.
+-----------------------------------------------------------*/
+#messagewrapper
+{
+    position: fixed;        /*Change to absolute according to ReadMe.txt. Original value is fixed*/
+    width: 500px;           /* Change this value to adjust the message box size */
+    top: 0px;
+    margin: 47px auto;      /* Change this to adjust height from top of page. Default is 47px */
+    z-index: 2000;
+    text-align: center;
+    -webkit-box-shadow: 0px 0px 7px rgba(50, 50, 50, 0.25);
+    -moz-box-shadow:    0px 0px 7px rgba(50, 50, 50, 0.25);
+    box-shadow:         0px 0px 7px rgba(50, 50, 50, 0.25);
+}
+.TopLeft
+{
+    left: 13px;
+}
+.TopCentre
+{
+    left: 0;
+    right: 0;
+}
+.TopRight
+{
+    right: 13px;
+}
+
+/*End messages*/

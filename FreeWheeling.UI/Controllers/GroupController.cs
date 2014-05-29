@@ -14,6 +14,7 @@ using FreeWheeling.UI.Models;
 using FreeWheeling.UI.Infrastructure;
 using System.Globalization;
 using System.Threading.Tasks;
+using FreeWheeling.UI.Infrastructure.Messages;
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -408,14 +409,18 @@ namespace FreeWheeling.UI.Controllers
             Task T = new Task(() =>
                {
                    Ride _Ride = repository.GetHomePageRideByUserID(currentUser.Id);
-                   if (_Ride.Group.id == id)
+
+                   if (_Ride != null)
                    {
-                       repository.DeleteHomePageRide(currentUser.Id);
+                       if (_Ride.Group.id == id)
+                       {
+                           repository.DeleteHomePageRide(currentUser.Id);
+                       }
                    }
                });
 
             T.Start();
-
+            this.ShowMessage(MessageType.Success, "Yep", true, MessagePosition.TopLeft, true);
             return RedirectToAction("Index", "Group");
         }
 

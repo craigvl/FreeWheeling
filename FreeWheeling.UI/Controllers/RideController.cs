@@ -133,7 +133,6 @@ namespace FreeWheeling.UI.Controllers
         [HttpPost]
         public JsonResult JoinJSON(int id)
         {
-
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             Member _Member = repository.GetMemberByUserID(currentUser.Id);
             Group group = repository.GetGroupByID(id);
@@ -148,6 +147,7 @@ namespace FreeWheeling.UI.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+        [Compress]
         public ActionResult AdHocList()
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
@@ -211,7 +211,7 @@ namespace FreeWheeling.UI.Controllers
             }
         }
 
-        //[Compress]
+        [Compress]
         public ActionResult ViewSingleRide(int RideId, string fromhome = "false")
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
@@ -445,7 +445,6 @@ namespace FreeWheeling.UI.Controllers
             {
                 return RedirectToAction("AdHocList", "Ride");
             }
-
 
             if (!repository.IsAdHocCreator(adhocrideid,currentUser.Id))
             {
