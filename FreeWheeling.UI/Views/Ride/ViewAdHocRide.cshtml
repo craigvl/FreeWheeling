@@ -97,7 +97,7 @@
     </div>
 }
 <p></p>
-<b>When:</b> @Model.RandomRide.RideDate.ToLongDateString() @@ @Model.RideDate.ToShortTimeString()
+<b>When:</b> @Model.RandomRide.RideDate.ToString("dddd, d MMM HH:mm")
 <p></p>
 <b>Start Location:</b> @Model.RandomRide.StartLocation
 <p></p>
@@ -110,7 +110,7 @@
 </div>
 
     <div class="row">
-        <div class="col-xs-8 col-md-11 col-sm-10" id="@("keendiv_" + @Model.RandomRide.id)">
+        <div class="col-xs-12 col-md-12 col-sm-12" id="@("keendiv_" + @Model.RandomRide.id)">
             @{
                 @Html.Partial("_RidersKeenRandomAndSingle", Model, new ViewDataDictionary { { "type", "random" } })
             }
@@ -135,18 +135,16 @@
         <span class="SecondaryHeading btn btn-block">You in?</span>
     </div>
 </div>
-
-
     @Html.Partial("_KeenActionsRandomAndSingle", Model, new ViewDataDictionary { { "type", "random" } })
-    <p></p>
-    <div id="Invite_Users_First">
-        @Html.ActionLink("Invite Users", "InviteOthersToAdHocBunch", "Ride",
+
+  
+        @Html.ActionLink("Invite", "InviteOthersToAdHocBunch", "Ride",
         new
         {
             adhocrideid = @Model.RandomRide.id
         },
         new { @class = "btn btn-default btn-sm", onclick = "ShowProgress();", id = "InviteFirst" })
-    </div>
+
     @section scripts{
         @Scripts.Render("~/Scripts/jquery.timeago.js")
         @Scripts.Render("~/bundles/jqueryval")

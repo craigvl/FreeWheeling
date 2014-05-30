@@ -12,6 +12,10 @@ form {
     padding-right:0px;
 }
 
+footer {
+    height:50px;
+}
+
 .onway {
     font-style:italic;
     font-size:12px;
@@ -519,5 +523,14 @@ as per http://stackoverflow.com/questions/18192082/bootstrap-3-navbar-collapse *
 {
     right: 13px;
 }
+/*Box for ajax message display*/
+#messagewrapperajax {
+    display:none;
+    height:50px;
+}
 
+/*Inner box with text for ajax message display*/
+.messagebox {
+   
+}
 /*End messages*/

@@ -17,7 +17,7 @@
                 <table style="width:100%">
                     <tr style="width:100%">
                         <td style="width:100%">
-                            <div style="width:10%;float:left;">
+                            <div style="width:20%;float:left;">
                                 @Html.ActionLink(" ", "Index", "Ride", new { groupid = item.id },
                     new { @class = "glyphicon glyphicon-search", onclick = "ShowProgress();" })
                             </div>
@@ -42,14 +42,14 @@
                                 <div style="width: 10%; float: right;">
                                     @Html.ActionLink(" ", "RemoveFromFavouriteList", "Group",
                         new { id = item.id },
-                        new { @class = "glyphicon glyphicon-star-empty", onclick = "ShowProgress();" })
+                        new { @class = "glyphicon glyphicon-star", onclick = "ShowProgress();" })
                                 </div>
                             }
                             else
                             {
                                 <div style="width: 10%; float: right;">
                                     @Html.ActionLink(" ", "Join", "Group", new { id = item.id },
-                                            new { @class = "glyphicon glyphicon-star", onclick = "ShowProgress();" })
+                                            new { @class = "glyphicon glyphicon-star-empty", onclick = "ShowProgress();" })
                                 </div>
                             }
 
@@ -59,10 +59,11 @@
                                     @Html.ActionLink(" ", "EditGroup", "Group", new { groupId = item.id },
                                                  new { @class = "glyphicon glyphicon-pencil", onclick = "ShowProgress();" })
                                 </div>
-                                <div style="width: 10%; float: right;">
-                                    @Html.ActionLink(" ", "InviteOthersToPrivateBunch", "Group", new { groupId = item.id },
+                                //todo need to add ability for creator to send invites to group from home page list.
+                                @*<div style="width: 10%; float: right;">
+                                    @Html.ActionLink(" ", "InviteOthersToBunch", "Ride", new { RideId = item.id },
                                                       new { @class = "glyphicon glyphicon-user", onclick = "ShowProgress();" })
-                                </div>
+                                </div>*@
                             }
                         </td>
                     </tr>

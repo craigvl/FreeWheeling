@@ -18,13 +18,15 @@ function onsuccessjoinfav()
 {
     $("#JoinFav").hide();
     $("#RemoveFav").show();
-    HideProgress()
+    HideProgress();
+    displayMessageAjax("Added to favourites", "success", "BottomCentre", "tempoarayMessage");
 }
 
 function onsuccessremovefav() {
     $("#RemoveFav").hide();
     $("#JoinFav").show();
-    HideProgress()
+    HideProgress();
+    displayMessageAjax("Removed from favourites", "success", "BottomCentre", "tempoarayMessage");
 }
 
 function UpdateKeenActionsPusher(message, rideid, keencount, username, leavetime) {
@@ -84,12 +86,12 @@ function UpdateKeenActions(message, rideid, keencount, username, leavetime, posi
         $("#KeenCountSpan" + rideid).html("(" + keencount + ")");
         var keenuser = "#keen_" + username + rideid;
         if ($("#keen_" + username + rideid).length) {
-            $(keenuser).html(username + ' <span style="padding-left:5px;" class="glyphicon glyphicon-thumbs-up"><span style="padding-left:5px;" class="pull-right"> <a href="#" onclick="fb_publish();"> <img src="Content/Images/share_facebook.png" /></a></span></span>');
+            $(keenuser).html(username + ' <span style="padding-left:5px;" class="glyphicon glyphicon-thumbs-up"><span style="padding-left:5px;" class="pull-right"> <a href="#" onclick="fb_publish();"> <img src="/Content/Images/share_facebook.png" /></a></span></span>');
             $(keenuser).attr('class', '');
             $(keenuser).css('text-decoration', 'none');          
         }
         else {
-            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="">' + username + " <span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-up'></span><span style='padding-left:5px;' class='pull-right'> <a href='#' onclick='fb_publish();'> <img src='Content/Images/share_facebook.png' /></a></span>  </span>");
+            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="">' + username + " <span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-up'></span><span style='padding-left:5px;' class='pull-right'> <a href='#' onclick='fb_publish();'> <img src='/Content/Images/share_facebook.png' /></a></span>  </span>");
         }
 
         if (position == "next") {
@@ -238,16 +240,17 @@ function displayMessageAjax(message, messageType, position, PersistMessage) {
 
     }
 
-    $("#messagewrapperajax").html('<button class="close" type="button">×</button><div id="messagebox" class="messagebox"></div>');
+    $("#messagewrapperajax").html('<div id="messagebox" class="messagebox"></div>');
     $("#messagewrapperajax .messagebox").text(message);
 
     displayMessagesAjax();
 }
 
 function displayMessagesAjax() {
-    if ($("#messagewrapperajax").children().length > 0) {
-        $(".tempoarayMessage").delay(6000).fadeOut(300);
-        $("#messagewrapperajax").show();
+    if ($("#messagewrapperajax").children().length > 0) {      
+        $("#messagewrapperajax").delay(200).fadeIn(300);
+        $(".tempoarayMessage").delay(2000).fadeOut(300);
+       
         $("#messagewrapperajax").click(function () {
             ClearMessagesAjaxClick();
         });
