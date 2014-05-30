@@ -4,4 +4,12 @@
     {
         @:on your way
     }
+    @if (@Model.IsIn)
+    {
+        <span class="glyphicon glyphicon-thumbs-up"></span>
+    }
+    @if (@Model.IsOut)
+    {
+        <span class="glyphicon glyphicon-thumbs-down"></span>
+    }
 </span>

@@ -17,6 +17,8 @@ namespace FreeWheeling.UI.Models
         public Ride HomePageRide { get; set; }
         public List<int> _OwnerGroupList;
         public bool IsOnWay { get; set; }
+        public bool IsIn { get; set; }
+        public bool IsOut { get; set; }
     }
 
     public class LocationChangeModel
