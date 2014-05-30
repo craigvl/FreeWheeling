@@ -48,19 +48,19 @@ namespace FreeWheeling.UI.Infrastructure.Messages
                     {
                         case "Success":
                             messageTypeCssClass = "alert alert-success";
-                            messageHeading = "<strong>Success! </strong>";
+                            //messageHeading = "<strong>Success! </strong>";
                             break;
                         case "Warning":
                             messageTypeCssClass = "alert alert-warning";
-                            messageHeading = "<strong>Warning! </strong>";
+                            //messageHeading = "<strong>Warning! </strong>";
                             break;
                         case "Error":
                             messageTypeCssClass = "alert alert-danger";
-                            messageHeading = "<strong>Error! </strong>";
+                            //messageHeading = "<strong>Error! </strong>";
                             break;
                         default:
                             messageTypeCssClass = "alert alert-info";
-                            messageHeading = "<strong>Warning! </strong>";
+                            //messageHeading = "<strong>Warning! </strong>";
                             break;
                     }
 

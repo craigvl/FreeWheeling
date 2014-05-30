@@ -578,6 +578,8 @@
     <Content Include="Views\Home\Feedback.cshtml" />
     <Content Include="Views\Emails\SendFeedback.cshtml" />
     <Content Include="Views\Ride\_JsonFavIcon.cshtml" />
+    <Content Include="Views\Home\_HomePageKeenActions.cshtml" />
+    <Content Include="Views\Home\_HomePageKeenStatus.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

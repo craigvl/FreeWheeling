@@ -1,0 +1,55 @@
+﻿@model FreeWheeling.UI.Models.HomeIndexModel
+ <div class="row">
+     <span class="col-xs-3 col-sm-1 col-md-1 col-lg-1" id="inspan">
+         @Ajax.ActionLink(" ", "Attend", "Ride",
+                new { RideId = @Model.HomePageRide.id, commitment = "In", Groupid = @Model.HomePageRide.Group.id, ParentRideID = @Model.HomePageRide.id },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "onsuccesskeen",
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "btn glyphicon glyphicon-thumbs-up btn-lg",
+                     style = "",
+                     onclick = "ShowProgress();",
+                     @id = "inid"
+                 })
+     </span>
+
+     <span class="col-xs-3 col-sm-1  col-md-1 col-lg-1" id="outspan">
+         @Ajax.ActionLink(" ", "Attend", "Ride",
+                new { RideId = @Model.HomePageRide.id, commitment = "Out", Groupid = @Model.HomePageRide.Group.id, ParentRideID = @Model.HomePageRide.id },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "onsuccesskeen",
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "btn glyphicon glyphicon-thumbs-down btn-lg",
+                     style = "",
+                     onclick = "ShowProgress();",
+                     @id = "outid"
+                 })
+     </span>
+     <span class="col-xs-2 col-sm-1  col-md-2 col-lg-1" id="onwayspan">
+         @Ajax.ActionLink("on way", "Attend", "Ride",
+                new { RideId = @Model.HomePageRide.id, commitment = "OnWay", Groupid = @Model.HomePageRide.Group.id, ParentRideID = @Model.HomePageRide.id },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "onsuccesskeen",
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "btn",
+                     style = "text-decoration:underline;textcolor:#FFF;position:relative;",
+                     onclick = "ShowProgress();",
+                     @id = "onwayid"
+                 })
+     </span>
+</div>
