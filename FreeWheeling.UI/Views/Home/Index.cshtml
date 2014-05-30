@@ -11,43 +11,10 @@
         @Html.Hidden("RideIdHidden", @Model.HomePageRide.id)
         <table class="table content-box">
             <tr style="width:100%">
-                <td style="width:65%">
-                    @if (!@Model.IsOnWay)
-                    {                            
-                        <span id="bunchname" style="position: relative; top: 0px;"><a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true"><b>your next bunch:</b> @Model.HomePageRide.Group.name</a></span>                    
-                    }
-                    else
-                    {                 
-                            <span id="bunchname" style="position: relative; top: 0px;"><a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true"><b>your next bunch:</b> @Model.HomePageRide.Group.name</a></span>                       
-                    }
+                <td style="width:65%">                                
+                    <span id="bunchname" style="position: relative; top: 0px;"><a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true"><b>your next bunch:</b> @Model.HomePageRide.Group.name</a></span>
                </td>
-                <td>
-                    @if (!@Model.IsOnWay)
-                    {
-                        <span id="onwayspan" class="pull-right">
-                            @Ajax.ActionLink("on way", "Attend", "Ride",
-                new { RideId = @Model.HomePageRide.id, commitment = "OnWay", Groupid = @Model.HomePageRide.Group.id, ParentRideID = @Model.HomePageRide.id },
-                 new AjaxOptions
-                 {
-                     HttpMethod = "POST",
-                     OnSuccess = "onsuccesskeen",
-                     OnBegin = "ShowProgress"
-                 },
-                 new
-                 {
-                     @class = "",
-                     style = "text-decoration:underline;textcolor:#FFF;position:relative;",
-                     onclick = "ShowProgress();",
-                     @id = "onwayid"
-                 })
-                    </span>
-                    }
-                    else
-                    {
-                        <span id="onwayspan" class="pull-right glyphicon glyphicon-ok-sign">                           
-                        </span>
-                    }
-                </td>
+               <td></td>
             </tr>
             <tr>
                 <td>
@@ -56,8 +23,14 @@
                 <td>
                     @Html.ActionLink(string.Concat(" "), "ViewSingleRide", "Ride", new { RideId = @Model.HomePageRide.id, fromhome = "true" },
              new { @class = "pull-right glyphicon glyphicon-search", onclick = "ShowProgress();" })
-
                 </td>
+            </tr>
+            <tr><td><b>You in?</b></td><td>@Html.Partial("_HomePageKeenStatus", Model)</td></tr>
+            <tr>
+                <td>
+                   @Html.Partial("_HomePageKeenActions", Model)
+                </td>
+                <td></td>
             </tr>
         </table>
     }
@@ -132,12 +105,28 @@ else
 <script src="~/Scripts/DoubleBunchRide.js"></script>
         <script>
             function onsuccesskeen(data) {
-                //alert(moment(data.leavetime));
+                //alert(data.message);
                 KeenCompleteFirst(data);
-               // $("#onwayspan").html("<img src='/Content/Images/glyphicons_306_bicycle.png'/>");
-                $("#bunchname").css("top", "0px");
-                $("#onwayspan").addClass("glyphicon glyphicon-ok-sign");
-                $("#onwayspan").html("");
+                //$("#bunchname").css("top", "0px");
+
+                if (data.message == "OnWay") {
+                    //$("#statusspan").addClass("glyphicon glyphicon-ok-sign");
+                    $("#statusspan").removeClass();
+                    $("#statusspan").addClass("pull-right");
+                    $("#statusspan").html("on your way");
+                }
+
+                if (data.message == "In") {
+                    $("#statusspan").removeClass();
+                    $("#statusspan").addClass("pull-right glyphicon glyphicon-thumbs-up");
+                    $("#statusspan").html("");
+                }
+
+                if (data.message == "Out") {
+                    $("#statusspan").removeClass();
+                    $("#statusspan").addClass("pull-right glyphicon glyphicon-thumbs-down");
+                    $("#statusspan").html("");
+                }               
                 HideProgress();
             }
             jQuery(document).ready(function () {
