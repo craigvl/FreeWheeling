@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity;
 using FreeWheeling.Domain.Entities;
 using FreeWheeling.UI.Infrastructure;
 using System.Threading.Tasks;
+using FreeWheeling.UI.Filters;
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -24,9 +25,9 @@ namespace FreeWheeling.UI.Controllers
             repository = repoParam;
         }
 
+        [Compress]
         public ActionResult Feedback()
         {
-
             return View();
         }
 
@@ -65,6 +66,7 @@ namespace FreeWheeling.UI.Controllers
             }
         }
 
+        [Compress]
         public ActionResult Index(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -117,6 +119,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [HttpPost]
+        [Compress]
         public ActionResult Index(HomeIndexModel _HomeIndexModel, string returnUrl)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());

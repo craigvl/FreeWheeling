@@ -15,6 +15,7 @@ using FreeWheeling.UI.Infrastructure;
 using System.Globalization;
 using System.Threading.Tasks;
 using FreeWheeling.UI.Infrastructure.Messages;
+using FreeWheeling.UI.Filters;
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -30,6 +31,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         // GET: /Group/
+        [Compress]
         public ActionResult Index(string searchString)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
@@ -42,6 +44,7 @@ namespace FreeWheeling.UI.Controllers
             return View(_GroupModel);
         }
 
+        [Compress]
         public PartialViewResult GetGroupDetails(int id)
         {
             Group _Group = new Group();
@@ -53,6 +56,7 @@ namespace FreeWheeling.UI.Controllers
             return PartialView("_GroupDetailPartial", _MoreGroupDetailsModel);
         }
 
+        [Compress]
         public ActionResult CreateAdHoc()
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
@@ -196,6 +200,7 @@ namespace FreeWheeling.UI.Controllers
             };
         }
 
+        [Compress]
         public ActionResult EditGroup(int groupId)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
@@ -293,6 +298,7 @@ namespace FreeWheeling.UI.Controllers
             return RedirectToAction("Index", "Group");
         }
 
+        [Compress]
         public ActionResult DeleteGroup(int GroupId)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
@@ -326,6 +332,7 @@ namespace FreeWheeling.UI.Controllers
             }
         }
 
+        [Compress]
         public ActionResult Create()
         {
             GroupCreateModel _GroupCreateModel = new GroupCreateModel();
@@ -437,6 +444,7 @@ namespace FreeWheeling.UI.Controllers
             return RedirectToAction("Index", "Group");
         }
 
+        [Compress]
         public ActionResult InviteOthersToPrivateBunch(int GroupId)
         {
             Group _Group = repository.GetGroupByID(GroupId);
