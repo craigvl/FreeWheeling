@@ -86,12 +86,12 @@ function UpdateKeenActions(message, rideid, keencount, username, leavetime, posi
         $("#KeenCountSpan" + rideid).html("(" + keencount + ")");
         var keenuser = "#keen_" + username + rideid;
         if ($("#keen_" + username + rideid).length) {
-            $(keenuser).html(username + ' <span style="padding-left:5px;" class="glyphicon glyphicon-thumbs-up"><span style="padding-left:5px;" class="pull-right"> <a href="#" onclick="fb_publish();"> <img src="/Content/Images/share_facebook.png" /></a></span></span>');
+            $(keenuser).html(username + ' <span style="padding-left:5px;" class="glyphicon glyphicon-thumbs-up"></span><span style="padding-left:5px;" class="pull-right"> <a href="#" onclick="fb_publish();"> <img src="/Content/Images/share_facebook.png" /></a></span></span>');
             $(keenuser).attr('class', '');
             $(keenuser).css('text-decoration', 'none');          
         }
         else {
-            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="">' + username + " <span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-up'></span><span style='padding-left:5px;' class='pull-right'> <a href='#' onclick='fb_publish();'> <img src='/Content/Images/share_facebook.png' /></a></span>  </span>");
+            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="">' + username + "<span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-up'></span><span style='padding-left:5px;' class='pull-right'> <a href='#' onclick='fb_publish();'> <img src='/Content/Images/share_facebook.png' /></a></span> </span>");
         }
 
         if (position == "next") {
