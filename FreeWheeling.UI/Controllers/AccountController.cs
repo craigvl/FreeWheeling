@@ -13,6 +13,7 @@ using FreeWheeling.UI.DataContexts;
 using System.Web.Security;
 using FreeWheeling.UI.Infrastructure;
 using Postal;
+using FreeWheeling.UI.Filters;
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -98,6 +99,7 @@ namespace FreeWheeling.UI.Controllers
         ///
         // GET: /Account/Login
         [AllowAnonymous]
+        [Compress]
         public ActionResult Login(string returnUrl)
         {
             if (returnUrl == null)
@@ -112,6 +114,7 @@ namespace FreeWheeling.UI.Controllers
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
+        [Compress]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
@@ -145,6 +148,7 @@ namespace FreeWheeling.UI.Controllers
         //
         // GET: /Account/Register
         [AllowAnonymous]
+        [Compress]
         public ActionResult Register(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -221,6 +225,7 @@ namespace FreeWheeling.UI.Controllers
         // POST: /Account/Manage
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Compress]
         public async Task<ActionResult> Manage(ManageUserViewModel model)
         {
             bool hasPassword = HasPassword();
@@ -273,6 +278,7 @@ namespace FreeWheeling.UI.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [Compress]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
             // Request a redirect to the external login provider
