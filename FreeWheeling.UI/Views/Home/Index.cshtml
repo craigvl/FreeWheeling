@@ -18,14 +18,14 @@
             </tr>
             <tr>
                 <td>
-                    <a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true">@Model.HomePageRide.RideDate.DayOfWeek, @Model.HomePageRide.RideDate.ToShortTimeString()</a>
+                    <a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true">@Model.HomePageRide.RideDate.DayOfWeek.ToString().ToLower(), @Model.HomePageRide.RideDate.ToShortTimeString()</a>
                 </td>
                 <td>
                     @Html.ActionLink(string.Concat(" "), "ViewSingleRide", "Ride", new { RideId = @Model.HomePageRide.id, fromhome = "true" },
              new { @class = "pull-right glyphicon glyphicon-search", onclick = "ShowProgress();" })
                 </td>
             </tr>
-            <tr><td><b>You in?</b></td><td>@Html.Partial("_HomePageKeenStatus", Model)</td></tr>
+            <tr><td><b>you in?</b></td><td>@Html.Partial("_HomePageKeenStatus", Model)</td></tr>
             <tr>
                 <td>
                    @Html.Partial("_HomePageKeenActions", Model)
@@ -113,19 +113,22 @@ else
                     //$("#statusspan").addClass("glyphicon glyphicon-ok-sign");
                     $("#statusspan").removeClass();
                     $("#statusspan").addClass("pull-right");
-                    $("#statusspan").html("on your way");
+                    $("#statusspan").html("On your way");
+                    displayMessageAjax("Your on your way", "success", "", "tempoarayMessage");
                 }
 
                 if (data.message == "In") {
                     $("#statusspan").removeClass();
                     $("#statusspan").addClass("pull-right glyphicon glyphicon-thumbs-up");
                     $("#statusspan").html("");
+                    displayMessageAjax("Your in", "success", "", "tempoarayMessage");
                 }
 
                 if (data.message == "Out") {
                     $("#statusspan").removeClass();
                     $("#statusspan").addClass("pull-right glyphicon glyphicon-thumbs-down");
                     $("#statusspan").html("");
+                    displayMessageAjax("Your out", "success", "", "tempoarayMessage");
                 }               
                 HideProgress();
             }
