@@ -135,18 +135,16 @@
         <span class="SecondaryHeading btn btn-block">You in?</span>
     </div>
 </div>
-
-
     @Html.Partial("_KeenActionsRandomAndSingle", Model, new ViewDataDictionary { { "type", "random" } })
-    <p></p>
-    <div id="Invite_Users_First">
-        @Html.ActionLink("Invite Users", "InviteOthersToAdHocBunch", "Ride",
+
+  
+        @Html.ActionLink("Invite", "InviteOthersToAdHocBunch", "Ride",
         new
         {
             adhocrideid = @Model.RandomRide.id
         },
         new { @class = "btn btn-default btn-sm", onclick = "ShowProgress();", id = "InviteFirst" })
-    </div>
+
     @section scripts{
         @Scripts.Render("~/Scripts/jquery.timeago.js")
         @Scripts.Render("~/bundles/jqueryval")
