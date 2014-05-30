@@ -1,6 +1,5 @@
 ﻿@model FreeWheeling.UI.Models.GroupModel
 @using FreeWheeling.Domain.Entities 
-@using FreeWheeling.UI.Infrastructure.Messages
 
 @{
     ViewBag.Title = "Index";
@@ -25,8 +24,6 @@
                 }
 </div>
 <p></p>
-<div style="position: relative;">@Html.RenderMessages()</div>
-
 <div class="row">
     <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
         <span class="btn btn-default btn-block">@Model.UserLocation</span>

@@ -2,9 +2,10 @@
 @{
     ViewBag.Title = "Invite Others to Bunch";
 }
-<p></p> 
-    @* I have used PreviousID here from the _KeenActions.cshtml file should at some date update to read better *@  
+<div class="row">
+    @* I have used PreviousID here from the _KeenActions.cshtml file should at some date update to read better *@
     @Html.ActionLink(" ", "Index", "Ride", new { groupid = @Model.PreviousID }, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
+</div>
 <p></p>
  <div class="row">
     <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
@@ -95,15 +96,19 @@
                     if (data.success == true) {
                         // alert(ko.toJSON(self));
                         HideProgress();
-                        alert(data.message);
+                        displayMessageAjax(data.message, "success", "BottomCentre", "tempoarayMessage");
                         var RId = $('#RideIdHidden').val();
                         //window.location.href = '@Url.Action("Index", "Ride")';
-                        window.location.href = '/Ride?rideid=' + RId;
+                        //window.location.href = '/Ride?rideid=' + RId;
+
+                        setTimeout(function () {
+                            window.location.href = '/Ride?rideid=' + RId; //will redirect to your blog page (an ex: blog.html)
+                        }, 1000); //will call the function after 2 secs.
 
                         }
                     },
                     error: function () {
-                        alert("Failed");
+                        displayMessageAjax("Error", "error", "BottomCentre", "tempoarayMessage");
                     }
                 });
 

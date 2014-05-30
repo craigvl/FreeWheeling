@@ -18,13 +18,15 @@ function onsuccessjoinfav()
 {
     $("#JoinFav").hide();
     $("#RemoveFav").show();
-    HideProgress()
+    HideProgress();
+    displayMessageAjax("Added to favourites", "success", "BottomCentre", "tempoarayMessage");
 }
 
 function onsuccessremovefav() {
     $("#RemoveFav").hide();
     $("#JoinFav").show();
-    HideProgress()
+    HideProgress();
+    displayMessageAjax("Removed from favourites", "success", "BottomCentre", "tempoarayMessage");
 }
 
 function UpdateKeenActionsPusher(message, rideid, keencount, username, leavetime) {
@@ -238,16 +240,17 @@ function displayMessageAjax(message, messageType, position, PersistMessage) {
 
     }
 
-    $("#messagewrapperajax").html('<button class="close" type="button">×</button><div id="messagebox" class="messagebox"></div>');
+    $("#messagewrapperajax").html('<div id="messagebox" class="messagebox"></div>');
     $("#messagewrapperajax .messagebox").text(message);
 
     displayMessagesAjax();
 }
 
 function displayMessagesAjax() {
-    if ($("#messagewrapperajax").children().length > 0) {
-        $(".tempoarayMessage").delay(6000).fadeOut(300);
-        $("#messagewrapperajax").show();
+    if ($("#messagewrapperajax").children().length > 0) {      
+        $("#messagewrapperajax").delay(200).fadeIn(300);
+        $(".tempoarayMessage").delay(2000).fadeOut(300);
+       
         $("#messagewrapperajax").click(function () {
             ClearMessagesAjaxClick();
         });

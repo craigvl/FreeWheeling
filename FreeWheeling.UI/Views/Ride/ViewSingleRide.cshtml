@@ -101,20 +101,20 @@
             </div>
         }
         <p></p>
-        <b>When:</b> @Model.Ride.RideDate.ToLongDateString() @@ @Model.Ride.RideDate.ToShortTimeString()
+        <b>When:</b> @Model.Ride.RideDate.ToString("dddd, d MMM HH:mm")
         <p></p>
         <b>Start Location:</b> @Model.Ride.Group.StartLocation
         <p></p>
         <b>Description:</b> @Model.Ride.Group.Description
         <p></p>
         <div class="row">
-            <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+            <div class="btn-group btn-block col-xs-12 col-md-12 col-sm-12" style="margin-bottom:5px;width:100%;">
                 <span class="SecondaryHeading btn btn-block">Keen <span id="@("KeenCountSpan" + @Model.Ride.id)">(@Model.KeenCount.ToString())</span></span>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-xs-8 col-md-11 col-sm-10" id="@("keendiv_" + @Model.Ride.id)">
+            <div class="col-xs-12 col-md-12 col-sm-12" id="@("keendiv_" + @Model.Ride.id)">
                 @{
                     @Html.Partial("_RidersKeenRandomAndSingle", Model, new ViewDataDictionary { { "type", "single" } })
                 }

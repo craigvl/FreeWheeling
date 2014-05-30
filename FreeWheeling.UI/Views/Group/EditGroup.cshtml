@@ -2,10 +2,10 @@
 @{
     ViewBag.Title = "Edit bunch";
 }
+<div class="row">
+    @Html.ActionLink(" ", "Index", "Group", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
+</div>
 <p></p>
-@Html.ActionLink(" ", "Index", "Group", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
-<p></p>
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -16,7 +16,7 @@
         <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
             <span class="btn btn-default btn-block"> Edit bunch </span>
         </div>
-        <div class="col-lg-12">
+        <div >
             <div ><span class="RequiredField">*&nbsp;</span><b>bunch Name:</b></div>
             <div >
                 @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
