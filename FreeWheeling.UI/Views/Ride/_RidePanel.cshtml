@@ -75,8 +75,7 @@
                             <a class="SecondaryHeadingMain @bunchchevronclass" id="@bunchpanelid" data-toggle="collapse" href="@collapseMainHash"></a>
                         </div>
                     </div>
-                </div>
-           
+                </div> 
             <div id="@collapseMain" class="@bunchpannelclass">
                 <div class='panel'>                   
                             <div class="SecondaryHeading panel-heading">
@@ -96,21 +95,26 @@
                                 @Html.Partial(@riderskeenpartial, Model, new ViewDataDictionary { { "position", @position } })                             
                             </div> 
                                 <hr />                                                          
-                                        <div class="col-xs-12 col-md-12 col-sm-12">
-                                            <b>Are you in?</b>
-                                        </div>                                                   
+                              <div class="col-xs-12 col-md-12 col-sm-12">
+                                           <b>Are you in?</b>
+                                        </div>
+                            <div class="col-xs-12 col-md-12 col-sm-12">
                                 @Html.Partial(@keenactionpartial, Model, new ViewDataDictionary { { "position", @position } })
+                                </div>
                             </div>
                     </div>
                 </div>
-                <div class='panel panel-default'>                                      
+                <div class='panel'>                                      
                             <div class="SecondaryHeading panel-heading" id="@commentcollapsearea">
-                                <div class="col-xs-10 col-md-11 col-sm-10">
-                                    <a data-toggle="collapse" href="@collapseCommentHash">Comments</a>
-                                    <a id="@("CommentCountSpan" + @rideid)">(@commentcount)</a>
-                                </div>
-                                <div class="col-xs-1 col-md-1 col-sm-1">
-                                    <a id="@commentcountid" class="SecondaryHeading @commentchevronclass" data-toggle="collapse" href="@collapseCommentHash"></a>
+                                <div class="col-xs-12 col-md-12 col-sm-12">
+                                    <div class="col-xs-10 col-md-11 col-sm-10">
+                                        <a data-toggle="collapse" href="@collapseCommentHash">Comments</a>
+                                        <a id="@("CommentCountSpan" + @rideid)">(@commentcount)</a>
+                                    </div>
+
+                                    <div class="col-xs-1 col-md-1 col-sm-1">
+                                        <a id="@commentcountid" class="SecondaryHeading @commentchevronclass" data-toggle="collapse" href="@collapseCommentHash"></a>
+                                    </div>
                                 </div>
                             </div>                                 
                     <div id="@commentpanelid" class="@commentpannelclass">

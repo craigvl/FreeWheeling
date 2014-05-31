@@ -104,6 +104,7 @@ namespace FreeWheeling.UI.Controllers
                             _HomeIndexModel.IsOnWay = repository.IsOnWay(_HomeIndexModel.HomePageRide.id,currentUser.Id);
                             _HomeIndexModel.IsIn = repository.IsIn(_HomeIndexModel.HomePageRide.id, currentUser.Id);
                             _HomeIndexModel.IsOut = repository.IsOut(_HomeIndexModel.HomePageRide.id, currentUser.Id);
+                            _HomeIndexModel.Keencount = repository.GetKeenCountForRide(_HomeIndexModel.HomePageRide.id);
 	                    }
                     }
             }
