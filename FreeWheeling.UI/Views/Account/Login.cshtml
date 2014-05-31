@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col-md-12">
         <section id="loginForm">
-            <div class="col-md-12">
+            <div class="col-md-12 col-xs-12 ">
                 <section id="socialLoginForm">
                     @Html.Partial("_ExternalLoginsListPartial", 
                     new FreeWheeling.UI.Models.ExternalLoginViewModel() { Action = "ExternalLogin",
@@ -16,7 +16,7 @@
                 </section>
             </div>
             <div style="clear:both"></div>
-            <hr class="full-line" />
+            <hr  />
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, 
                 new { @class = "form-horizontal", role = "form" }))
             {

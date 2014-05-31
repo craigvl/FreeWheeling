@@ -4,67 +4,69 @@
 @{
     ViewBag.Title = "Index";
 }
-
-    @Html.ValidationSummary()
-    <div class="row">
-        <div class="backbaricon col-xs-12 col-md-12 col-sm-12 col-lg-12" style="padding-bottom:5px;">
-            @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
-        </div>
-        <span style="margin-bottom:5px"> </span>
-                @using (Html.BeginForm())
-                {            
-                        <div class="backbaricon col-xs-9 col-md-11 col-sm-11 col-lg-11">
-                            @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder = "Search" })
-                        </div>
-                        <div class=" backbaricon col-xs-1 col-md-1 col-sm-1 col-lg-1">
-                    </div>
-                        <div class=" backbaricon col-xs-1 col-md-1 col-sm-1 col-lg-1">
-                            <input onclick=" showprogress();" type="submit" class="btn btn-default" value="Go" />
-                        </div>               
-                }
-</div>
-<p></p>
 <div class="row">
-    <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-        <span class="btn btn-default btn-block">@Model.UserLocation</span>
+    @Html.ValidationSummary()
+
+    <div class="backbaricon col-xs-12 col-md-12 col-sm-12 col-lg-12" style="padding-bottom:5px;">
+        @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
     </div>
 </div>
-<div class="row">
-    <table class="table content-box">
-        <tr>
-            @if (@Model.PrivateBunches.Count > 0)
-            {
-                @Html.Partial("_ListPrivateRides")
-            }
-        </tr>
-        <tr>
-            @if (@Model._Groups.Count > 0)
-            {
-                @Html.Partial("_ListRides")
-            }
-        </tr>
-        <tr>
-            @if (@Model._Groups.Count + @Model.PrivateBunches.Count <= 0)
-            {
-                <td>
-                    <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="padding-left:10px">
-                        @Html.ActionLink("No bunches yet, please create some!", "Create", "Group",
-             null, new { @class = "", style = "color:#333333;text-decoration:underline", onclick = "ShowProgress();" })
-                    </div>
-                </td>
-            }
-        </tr>
-    </table>
-</div>
-@section scripts{
-    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
-<script>
-    jQuery(document).ready(function () {
-        HideProgress();
-    });
+    <div class="row">
+        @using (Html.BeginForm())
+        {
+            <div class="backbaricon col-xs-9 col-md-11 col-sm-11 col-lg-11">
+                @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder = "Search" })
+            </div>
+            <div class=" backbaricon col-xs-1 col-md-1 col-sm-1 col-lg-1">
+            </div>
+            <div class=" backbaricon col-xs-1 col-md-1 col-sm-1 col-lg-1">
+                <input onclick=" showprogress();" type="submit" class="btn btn-default" value="Go" />
+            </div>
+        }
 
-    function HideInfoLink(GroupId) {
-        $("#infoButton" + GroupId).hide();      
+    </div>
+    <p></p>
+    <div class="row">
+        <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+            <span class="btn btn-default btn-block">@Model.UserLocation</span>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table content-box">
+            <tr>
+                @if (@Model.PrivateBunches.Count > 0)
+                {
+                    @Html.Partial("_ListPrivateRides")
+                }
+            </tr>
+            <tr>
+                @if (@Model._Groups.Count > 0)
+                {
+                    @Html.Partial("_ListRides")
+                }
+            </tr>
+            <tr>
+                @if (@Model._Groups.Count + @Model.PrivateBunches.Count <= 0)
+                {
+                    <td>
+                        <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="padding-left:10px">
+                            @Html.ActionLink("No bunches yet, please create some!", "Create", "Group",
+             null, new { @class = "", style = "color:#333333;text-decoration:underline", onclick = "ShowProgress();" })
+                        </div>
+                    </td>
+                }
+            </tr>
+        </table>
+    </div>
+    @section scripts{
+        @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+        <script>
+            jQuery(document).ready(function () {
+                HideProgress();
+            });
+
+            function HideInfoLink(GroupId) {
+                $("#infoButton" + GroupId).hide();
+            }
+        </script>
     }
-</script>
-}

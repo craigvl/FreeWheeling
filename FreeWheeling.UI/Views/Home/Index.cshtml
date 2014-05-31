@@ -9,40 +9,67 @@
     if (Model.HomePageRide != null)
     {   
         @Html.Hidden("RideIdHidden", @Model.HomePageRide.id)
-        <table class="table content-box">
-            <tr style="width:100%">
-                <td style="width:65%">                                
-                    <span id="bunchname" style="position: relative; top: 0px;"><a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true"><b>your next bunch:</b> @Model.HomePageRide.Group.name</a></span>
-               </td>
-               <td></td>
-            </tr>
-            <tr>
-                <td>
-                    <a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true">@Model.HomePageRide.RideDate.DayOfWeek.ToString().ToLower(), @Model.HomePageRide.RideDate.ToShortTimeString()</a>
-                </td>
-                <td>
-                    @Html.ActionLink(string.Concat(" "), "ViewSingleRide", "Ride", new { RideId = @Model.HomePageRide.id, fromhome = "true" },
-             new { @class = "pull-right glyphicon glyphicon-search", onclick = "ShowProgress();" })
-                </td>
-            </tr>
-            <tr><td><b>you in?</b></td><td>@Html.Partial("_HomePageKeenStatus", Model)</td></tr>
-            <tr>
-                <td>
-                   @Html.Partial("_HomePageKeenActions", Model)
-                </td>
-                <td></td>
-            </tr>
-        </table>
-    }
-     <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;">
-		@Html.ActionLink("bunches", "Index", "Group", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
-		@Html.ActionLink(" ", "Create", "Group", new { }, new { @class = "btn btn-default col-xs-3 glyphicon glyphicon-plus", style = "text-align:center;top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })
-	</div>
+        
+        <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+            <span class="btn btn-default btn-block">Your next bunch: <a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true"> @Model.HomePageRide.Group.name</a></span>
+        </div>  
+        <div class='panel-group'>
+            <div class='panel panel-default'>           
+                    <div class="SecondaryHeadingMain panel-heading">
+                        <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
+                            <div class="col-xs-10 col-md-11 col-sm-10 SecondaryHeadingMain" data-toggle=" collapse" href="">
+                                <a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true">
+                                    @Model.HomePageRide.RideDate.ToString("dddd, d MMM, HH:mm")
+                                </a>
+                            </div>
+                            <div class="col-xs-1 col-md-1 col-sm-1">
+                                @Html.ActionLink(string.Concat(" "), "ViewSingleRide", "Ride", new { RideId = @Model.HomePageRide.id, fromhome = "true" },
+                                new { @class = "glyphicon glyphicon-search", onclick = "ShowProgress();" })
+                            </div>
+                        </div>
+                    </div>                               
+                        <div class="SecondaryHeading panel-heading">
+                            <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
+                                <div class="col-xs-10 col-md-11 col-sm-10">
+                                    <a data-toggle="collapse" href="#collapseKeenFirst" class="SecondaryHeading">Keen</a>
+                                    <a class="SecondaryHeading" id="@("KeenCountSpan"+@Model.HomePageRide.id)">(@Model.Keencount.ToString())</a>
 
-    <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:15px;">
-        @Html.ActionLink("random bunches (" + @Model.UpCommingAd_HocCount + ")", "AdHocList", "Ride", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
-        @Html.ActionLink(" ", "CreateAdHoc", "Group", new { }, new { @class = "btn btn-default col-xs-3 glyphicon glyphicon-plus", style = "text-align:center;top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })
-    </div>
+                                </div>
+                                <div class="col-xs-1 col-md-1 col-sm-1">
+                                    <a class="SecondaryHeading" id="" data-toggle="collapse" href=""></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body panelBody">
+                            <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
+                                <div style="" class="col-xs-10 col-md-11 col-sm-10 col-lg-11">
+                                    <b>Are you in?</b>
+                                </div>
+                                <div class="col-xs-1 col-md-1 col-sm-1 col-lg-1">
+                                    @Html.Partial("_HomePageKeenStatus", Model)
+                                </div>
+                            </div>
+
+
+                            <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
+                                <div style="" class="col-xs-12 col-md-12 col-sm-12">
+                                    @Html.Partial("_HomePageKeenActions", Model)
+                                </div>
+                            </div>
+
+                        </div>
+                </div>
+        </div>
+    }
+        <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;">
+		    @Html.ActionLink("bunches", "Index", "Group", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
+		    @Html.ActionLink(" ", "Create", "Group", new { }, new { @class = "btn btn-default col-xs-3 glyphicon glyphicon-plus", style = "text-align:center;top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })
+	    </div>
+
+        <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:15px;">
+            @Html.ActionLink("random bunches (" + @Model.UpCommingAd_HocCount + ")", "AdHocList", "Ride", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
+            @Html.ActionLink(" ", "CreateAdHoc", "Group", new { }, new { @class = "btn btn-default col-xs-3 glyphicon glyphicon-plus", style = "text-align:center;top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })
+        </div>
 
     if (Model.FavouriteBunches != null)
     {
@@ -74,8 +101,7 @@
                 </tr>  
             }
         </table>
-    }
-    <hr class="visible-xs" />         
+    }        
 }
 else
 {
@@ -113,22 +139,22 @@ else
                     //$("#statusspan").addClass("glyphicon glyphicon-ok-sign");
                     $("#statusspan").removeClass();
                     $("#statusspan").addClass("pull-right");
-                    $("#statusspan").html("On your way");
-                    displayMessageAjax("Your on your way", "success", "", "tempoarayMessage");
+                    $("#statusspan").html("On you're way");
+                    displayMessageAjax("You're on your way", "success", "", "tempoarayMessage");
                 }
 
                 if (data.message == "In") {
                     $("#statusspan").removeClass();
                     $("#statusspan").addClass("pull-right glyphicon glyphicon-thumbs-up");
                     $("#statusspan").html("");
-                    displayMessageAjax("Your in", "success", "", "tempoarayMessage");
+                    displayMessageAjax("You're in", "success", "", "tempoarayMessage");
                 }
 
                 if (data.message == "Out") {
                     $("#statusspan").removeClass();
                     $("#statusspan").addClass("pull-right glyphicon glyphicon-thumbs-down");
                     $("#statusspan").html("");
-                    displayMessageAjax("Your out", "success", "", "tempoarayMessage");
+                    displayMessageAjax("You're out", "success", "", "tempoarayMessage");
                 }               
                 HideProgress();
             }
