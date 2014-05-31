@@ -65,8 +65,7 @@
 
 <div class="row">
     <div class='panel-group'>
-        <div class='panel panel-default'>
-            <div class="row">
+        <div class='panel panel-default'>        
                 <div class="SecondaryHeadingMain panel-heading">
                     <div class="col-xs-12 col-md-12 col-sm-12">        
                             <a class="col-xs-10 col-md-11 col-sm-10 SecondaryHeadingMain" data-toggle=" collapse" href="@collapseMainHash">
@@ -77,10 +76,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
+           
             <div id="@collapseMain" class="@bunchpannelclass">
-                <div class='panel'>
-                    <div class="row">
+                <div class='panel'>                   
                             <div class="SecondaryHeading panel-heading">
                                 <div class="col-xs-12 col-md-12 col-sm-12">
                                     <div class="col-xs-10 col-md-11 col-sm-10">
@@ -91,26 +89,21 @@
                                         <a class="SecondaryHeading @keenchevronclass" id="@keencountid" data-toggle="collapse" href="@collapseKeenHash"></a>
                                     </div>
                                 </div>
-                                </div>
-                    </div>
+                            </div>               
                     <div id="@keenpanelid" class="@keenpannelclass">
                         <div class="panel-body panelBody">
-                            <div id="@("keendiv_" + @rideid)">
+                            <div class="col-xs-12" id="@("keendiv_" + @rideid)">
                                 @Html.Partial(@riderskeenpartial, Model, new ViewDataDictionary { { "position", @position } })                             
                             </div> 
-                            <hr />                    
-                                <div class="row">                                  
+                                <hr />                                                          
                                         <div class="col-xs-12 col-md-12 col-sm-12">
                                             <b>Are you in?</b>
-                                        </div>
-                                </div>                          
+                                        </div>                                                   
                                 @Html.Partial(@keenactionpartial, Model, new ViewDataDictionary { { "position", @position } })
                             </div>
                     </div>
                 </div>
-                <div class='panel panel-default'>
-                    <div class="row">
-                        <div class="col-xs-12 col-md-12 col-sm-12" style="">
+                <div class='panel panel-default'>                                      
                             <div class="SecondaryHeading panel-heading" id="@commentcollapsearea">
                                 <div class="col-xs-10 col-md-11 col-sm-10">
                                     <a data-toggle="collapse" href="@collapseCommentHash">Comments</a>
@@ -119,9 +112,7 @@
                                 <div class="col-xs-1 col-md-1 col-sm-1">
                                     <a id="@commentcountid" class="SecondaryHeading @commentchevronclass" data-toggle="collapse" href="@collapseCommentHash"></a>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
+                            </div>                                 
                     <div id="@commentpanelid" class="@commentpannelclass">
                         <div id="@commentcollapsearea">
                             <div class="panel-body panelBody">
