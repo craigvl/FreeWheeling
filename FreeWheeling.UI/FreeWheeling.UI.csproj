@@ -299,10 +299,11 @@
     <Content Include="Content\Images\autocompleteLoader.gif" />
     <Content Include="Content\Images\animated-overlay.gif" />
     <Content Include="Content\Images\bike.jpg" />
-    <Content Include="Content\Images\bunchy_logo.png" />
+    <Content Include="Content\Images\bunchy.png" />
+    <Content Include="Content\Images\bunchyicon.png" />
+    <Content Include="Content\Images\bunchytag.png" />
     <Content Include="Content\Images\glyphicons_306_bicycle.png" />
     <Content Include="Content\Images\loader.gif" />
-    <Content Include="Content\Images\logo_with_name.png" />
     <Content Include="Content\Images\share_facebook.png" />
     <Content Include="Content\Images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
     <Content Include="Content\Images\ui-bg_diagonals-thick_20_666666_40x40.png" />
