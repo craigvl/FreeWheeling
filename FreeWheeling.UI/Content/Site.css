@@ -274,6 +274,10 @@ padding-left: 25px !important;
  color: #333333;
 }
 
+.panel-body {
+padding: 10px;
+}
+
 .SecondaryHeadingMain a{
     color: #333333;
     background-color:#D7D7D0 !important;

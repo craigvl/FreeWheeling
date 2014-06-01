@@ -16,6 +16,11 @@ using System.Globalization;
 using System.Threading.Tasks;
 using FreeWheeling.UI.Infrastructure.Messages;
 using FreeWheeling.UI.Filters;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Queue;
+using Microsoft.WindowsAzure;
+using System.Configuration;
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -440,6 +445,29 @@ namespace FreeWheeling.UI.Controllers
             Group group = repository.GetGroupByID(id);
             repository.AddMember(currentUser.Id, group);
             repository.Save();
+
+            Task T = new Task(() =>
+            {
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+            ConfigurationManager.ConnectionStrings["AzureJobsData"].ConnectionString);    
+
+            // Create the queue client.
+            CloudQueueClient queueClient = storageAccount.CreateCloudQueueClient();
+
+            // Retrieve a reference to a queue.
+            CloudQueue queue = queueClient.GetQueueReference("updatehomepage");
+
+            // Create the queue if it doesn't already exist.
+            queue.CreateIfNotExists();
+
+            // Create a message and add it to the queue.
+            CloudQueueMessage message = new CloudQueueMessage("Hello, World");
+            queue.AddMessage(message);
+
+            });
+
+            T.Start();
+
             this.ShowMessage(MessageType.Success, "Added to favourites", true, MessagePosition.TopCentre, false);
             return RedirectToAction("Index", "Group");
         }

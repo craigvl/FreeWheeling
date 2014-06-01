@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2013 for Web
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeWheeling.UI", "FreeWheeling.UI\FreeWheeling.UI.csproj", "{82567F6A-2B48-4057-AD76-C63AE9B79158}"
 EndProject
@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeWheeling.ConsoleApp", "FreeWheeling.ConsoleApp\FreeWheeling.ConsoleApp.csproj", "{F4CB8244-279E-407B-AE80-AA25201E06DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessHomePageRide", "ProcessHomePageRide\ProcessHomePageRide.csproj", "{9538E3AC-C4CA-46F8-9DD1-47F2EF2CBDDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{F4CB8244-279E-407B-AE80-AA25201E06DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4CB8244-279E-407B-AE80-AA25201E06DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4CB8244-279E-407B-AE80-AA25201E06DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9538E3AC-C4CA-46F8-9DD1-47F2EF2CBDDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9538E3AC-C4CA-46F8-9DD1-47F2EF2CBDDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9538E3AC-C4CA-46F8-9DD1-47F2EF2CBDDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9538E3AC-C4CA-46F8-9DD1-47F2EF2CBDDC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

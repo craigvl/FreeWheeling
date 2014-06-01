@@ -13,6 +13,9 @@ using FreeWheeling.UI.Infrastructure;
 using System.Globalization;
 using PusherServer;
 using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Storage;
+using System.Configuration;
+using Microsoft.WindowsAzure.Storage.Queue;
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -138,6 +141,28 @@ namespace FreeWheeling.UI.Controllers
             Group group = repository.GetGroupByID(id);
             repository.AddMember(currentUser.Id, group);
             repository.Save();
+
+            Task T = new Task(() =>
+            {
+                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                ConfigurationManager.ConnectionStrings["AzureJobsData"].ConnectionString);
+
+                // Create the queue client.
+                CloudQueueClient queueClient = storageAccount.CreateCloudQueueClient();
+
+                // Retrieve a reference to a queue.
+                CloudQueue queue = queueClient.GetQueueReference("updatehomepage");
+
+                // Create the queue if it doesn't already exist.
+                queue.CreateIfNotExists();
+
+                // Create a message and add it to the queue.
+                CloudQueueMessage message = new CloudQueueMessage("Hello, World");
+                queue.AddMessage(message);
+
+            });
+
+            T.Start();
 
             return Json(new
             {
