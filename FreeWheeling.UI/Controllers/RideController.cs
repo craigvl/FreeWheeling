@@ -125,6 +125,28 @@ namespace FreeWheeling.UI.Controllers
 
             T.Start();
 
+            Task T = new Task(() =>
+            {
+                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                ConfigurationManager.ConnectionStrings["AzureJobsData"].ConnectionString);
+
+                // Create the queue client.
+                CloudQueueClient queueClient = storageAccount.CreateCloudQueueClient();
+
+                // Retrieve a reference to a queue.
+                CloudQueue queue = queueClient.GetQueueReference("updatehomepage");
+
+                // Create the queue if it doesn't already exist.
+                queue.CreateIfNotExists();
+
+                // Create a message and add it to the queue.
+                CloudQueueMessage message = new CloudQueueMessage("Hello, World");
+                queue.AddMessage(message);
+
+            });
+
+            T.Start();
+
             return Json(new
             {
                 success = true,
@@ -729,6 +751,28 @@ namespace FreeWheeling.UI.Controllers
 
             E.Start();
 
+            Task T = new Task(() =>
+            {
+                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                ConfigurationManager.ConnectionStrings["AzureJobsData"].ConnectionString);
+
+                // Create the queue client.
+                CloudQueueClient queueClient = storageAccount.CreateCloudQueueClient();
+
+                // Retrieve a reference to a queue.
+                CloudQueue queue = queueClient.GetQueueReference("updatehomepage");
+
+                // Create the queue if it doesn't already exist.
+                queue.CreateIfNotExists();
+
+                // Create a message and add it to the queue.
+                CloudQueueMessage message = new CloudQueueMessage("Hello, World");
+                queue.AddMessage(message);
+
+            });
+
+            T.Start();
+
             return Json(new { success = true,
                                   message = Commitment,
                                   rideid = RideId,
@@ -789,6 +833,28 @@ namespace FreeWheeling.UI.Controllers
 
             E.Start();
 
+            Task T = new Task(() =>
+            {
+                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                ConfigurationManager.ConnectionStrings["AzureJobsData"].ConnectionString);
+
+                // Create the queue client.
+                CloudQueueClient queueClient = storageAccount.CreateCloudQueueClient();
+
+                // Retrieve a reference to a queue.
+                CloudQueue queue = queueClient.GetQueueReference("updatehomepage");
+
+                // Create the queue if it doesn't already exist.
+                queue.CreateIfNotExists();
+
+                // Create a message and add it to the queue.
+                CloudQueueMessage message = new CloudQueueMessage("Hello, World");
+                queue.AddMessage(message);
+
+            });
+
+            T.Start();
+
             return Json(new
             {
                 success = true,
@@ -840,6 +906,28 @@ namespace FreeWheeling.UI.Controllers
             });
 
             E.Start();
+
+            Task T = new Task(() =>
+            {
+                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                ConfigurationManager.ConnectionStrings["AzureJobsData"].ConnectionString);
+
+                // Create the queue client.
+                CloudQueueClient queueClient = storageAccount.CreateCloudQueueClient();
+
+                // Retrieve a reference to a queue.
+                CloudQueue queue = queueClient.GetQueueReference("updatehomepage");
+
+                // Create the queue if it doesn't already exist.
+                queue.CreateIfNotExists();
+
+                // Create a message and add it to the queue.
+                CloudQueueMessage message = new CloudQueueMessage("Hello, World");
+                queue.AddMessage(message);
+
+            });
+
+            T.Start();
 
             return Json(new
             {
