@@ -2,14 +2,14 @@
 <span id="statusspan" class="">
     @if (@Model.IsOnWay)
     {
-        @:on your way
+        <span class="col-xs-4 col-md-4 col-sm-4 col-lg-4">on way</span>
     }
     @if (@Model.IsIn)
     {
-        <span class="glyphicon glyphicon-thumbs-up"></span>
+        <span class="col-xs-1 col-md-1 col-sm-1 col-lg-1 glyphicon glyphicon-thumbs-up"></span>
     }
     @if (@Model.IsOut)
     {
-        <span class="glyphicon glyphicon-thumbs-down"></span>
+        <span class="col-xs-1 col-md-1 col-sm-1 col-lg-1 glyphicon glyphicon-thumbs-down"></span>
     }
 </span>
