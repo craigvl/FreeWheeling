@@ -125,7 +125,7 @@ namespace FreeWheeling.UI.Controllers
 
             T.Start();
 
-            Task T = new Task(() =>
+            Task E = new Task(() =>
             {
                 CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
                 ConfigurationManager.ConnectionStrings["AzureJobsData"].ConnectionString);
@@ -145,7 +145,7 @@ namespace FreeWheeling.UI.Controllers
 
             });
 
-            T.Start();
+            E.Start();
 
             return Json(new
             {
