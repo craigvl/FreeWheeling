@@ -6,15 +6,12 @@
 @Styles.Render("~/Content/awesome")
 @Styles.Render("~/Content/csssocial")
 <div class="row">
-    <div class="col-md-12">
-        <section id="loginForm">
-            <div class="col-md-12 col-xs-12 ">
+        <section id="loginForm">        
                 <section id="socialLoginForm">
                     @Html.Partial("_ExternalLoginsListPartial", 
                     new FreeWheeling.UI.Models.ExternalLoginViewModel() { Action = "ExternalLogin",
                         ReturnUrl = ViewBag.ReturnUrl })
-                </section>
-            </div>
+                </section>    
             <div style="clear:both"></div>
             <hr  />
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, 
@@ -69,7 +66,6 @@
                 
             }
         </section>
-    </div>
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

@@ -23,16 +23,14 @@
 
                     if (p.AuthenticationType == "Google")
                     {
-                        <div class="col-xs-12 col-sm-6">
+                       
                             <button type="submit" class="btn btn-block btn-social btn-google-plus" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType<i class="fa fa-google-plus"></i></button>
                             <hr />
-                        </div>
+                        
                     }
                     if (p.AuthenticationType == "Facebook")
-                    {
-                        <div class="col-xs-12 col-sm-6">
+                    {                     
                             <button type="submit" class="btn btn-block btn-social btn-facebook" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType<i class="fa fa-facebook"></i></button>
-                        </div>
                     }
                 }
             </div>      
