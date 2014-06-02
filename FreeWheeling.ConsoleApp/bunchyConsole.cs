@@ -132,9 +132,7 @@ namespace FreeWheeling.ConsoleApp
                 Location _Location = _CycleRepository.GetLocations().Where(l => l.id == item.Location.id).FirstOrDefault();
                 TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Location.id);
                 _CycleRepository.DeleteOldRandomRide(item.id,TZone);
-            }
-
-           
+            }   
         }
     }
 
