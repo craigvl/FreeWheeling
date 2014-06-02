@@ -134,6 +134,7 @@
             </div>
         </div>
     }
+ 
 </div>
 @section Scripts {
 @Scripts.Render("~/bundles/jqueryval")
@@ -220,7 +221,7 @@
 
             if (errors().length > 0) {  
                 // something went wrong - you should see the error messages
-                alert("There are some errors. Please fix them and try save again.");
+                displayMessageAjax("Errors! Please fix and try again.", "error", "BottomCentre", "tempoarayMessage");
                 HideProgress();
                 return;
             }
@@ -236,17 +237,14 @@
                 success: function (data, textStatus, jqXHR) {
                     var err = eval("(" + jqXHR.responseText + ")");
                     if (data.success == false) {
-
-                        alert(err.Message);
+                        displayMessageAjax(err.Message, "error", "BottomCentre", "tempoarayMessage");
                         HideProgress();
-
                     }
 
                     if (data.success == true) {
                        // alert(ko.toJSON(self));
                         HideProgress();
-                        window.location.href = '@Url.Action("AdHocList", "Ride")'
-
+                        window.location.href = '@Url.Action("AdHocList", "Ride")';
                      }
                 },
                 error: function () {
