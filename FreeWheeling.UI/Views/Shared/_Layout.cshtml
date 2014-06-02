@@ -36,9 +36,11 @@
             </div>
         </div>
     </div>
+    <div id="messagewrapperajax" align="center"></div>
+        <div align="center">@Html.RenderMessages()</div>
+
     <div class="container body-content">
-        <div id="messagewrapperajax"></div>
-        <div class="row">@Html.RenderMessages()</div>
+        
         @RenderBody()
         <div class="loading" style="display:none;" align="center">
             <img src="http://bunchy.hoocreative.netdna-cdn.com/Content/Images/loader.gif" alt="" />
