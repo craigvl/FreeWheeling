@@ -433,6 +433,29 @@ namespace FreeWheeling.UI.Controllers
                });
 
             T.Start();
+
+            Task E = new Task(() =>
+            {
+                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                ConfigurationManager.ConnectionStrings["AzureJobsData"].ConnectionString);
+
+                // Create the queue client.
+                CloudQueueClient queueClient = storageAccount.CreateCloudQueueClient();
+
+                // Retrieve a reference to a queue.
+                CloudQueue queue = queueClient.GetQueueReference("updatehomepage");
+
+                // Create the queue if it doesn't already exist.
+                queue.CreateIfNotExists();
+
+                // Create a message and add it to the queue.
+                CloudQueueMessage message = new CloudQueueMessage("Hello, World");
+                queue.AddMessage(message);
+
+            });
+
+            E.Start();
+
             this.ShowMessage(MessageType.Success, "Removed from favourites", true, MessagePosition.TopCentre, false);
             return RedirectToAction("Index", "Group");
         }

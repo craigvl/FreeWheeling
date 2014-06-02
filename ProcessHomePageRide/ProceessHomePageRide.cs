@@ -28,8 +28,8 @@ namespace ProcessHomePageRide
         public static void ProcessQueueMessage([QueueInput("updatehomepage")] string inputText,
                                       [BlobOutput("containername/blobname")]TextWriter writer)
         {
-            PopulateHomePageRide();
             writer.WriteLine(inputText);
+            PopulateHomePageRide();          
         }
 
         private static void PopulateHomePageRide()
