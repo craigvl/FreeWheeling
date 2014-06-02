@@ -32,12 +32,8 @@
         <div class="panel-body panelBody">
             <span class="col-xs-6 col-md-2 col-sm-2 col-lg-2"> <b>Are you in?</b></span>
             @Html.Partial("_HomePageKeenStatus", Model)
-            <hr />
-            <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
-                <div style="" class="col-xs-12 col-md-12 col-sm-12">
-                   @Html.Partial("_HomePageKeenActionsRandom", Model)
-                </div>
-            </div>
+            <hr />           
+            @Html.Partial("_HomePageKeenActionsRandom", Model)            
         </div>
     </div>
 </div>

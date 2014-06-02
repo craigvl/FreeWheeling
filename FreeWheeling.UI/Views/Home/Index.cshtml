@@ -41,7 +41,7 @@
                 foreach (Group bunch in Model.FavouriteBunches)
                 {
                     <tr>
-                        <td><a href="/Ride?groupid=@(bunch.id)&fromhome=true"><div>@bunch.name<div class=" pull-right glyphicon glyphicon-search"></div></div></a></td>
+                        <td><a href="/Ride?groupid=@(bunch.id)&fromhome=true"><div><b>@bunch.name</b><div class=" pull-right glyphicon glyphicon-search"></div></div></a></td>
                     </tr>
                 }
             }

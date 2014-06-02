@@ -1,5 +1,5 @@
 ﻿@model FreeWheeling.UI.Models.HomeIndexModel
- <div class="row">
+
      <span class="col-xs-2 col-sm-1 col-md-1 col-lg-1" id="inspan">
          @Ajax.ActionLink(" ", "Attend", "Ride",
                 new { RideId = @Model.HomePageRide.id, commitment = "In", Groupid = @Model.HomePageRide.Group.id, ParentRideID = @Model.HomePageRide.id },
@@ -52,4 +52,3 @@
                      @id = "onwayid"
                  })
      </span>
-</div>

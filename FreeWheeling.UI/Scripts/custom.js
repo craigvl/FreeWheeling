@@ -49,7 +49,7 @@ function UpdateKeenActionsPusher(message, rideid, keencount, username, leavetime
         var keenuser = "#keen_" + username + rideid;
         if ($("#keen_" + username + rideid).length) {
             $(keenuser).html(username + "<span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-down'></span>");
-            $(keenuser).attr('class', 'line-through');
+            $(keenuser).attr('class', 'greyout');
             $(keenuser).css("text-decoration", "line-through");
         }
         else {
@@ -110,7 +110,7 @@ function UpdateKeenActions(message, rideid, keencount, username, leavetime, posi
         $("#KeenCountSpan" + rideid).html("(" + keencount + ")");
         if ($("#keen_" + username + rideid).length) {
             $(keenuser).html(username + "<span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-down'></span>");
-            $(keenuser).attr('class', '');
+            $(keenuser).attr('class', 'greyout');
             $(keenuser).css("text-decoration", "line-through");
         }
         else {
