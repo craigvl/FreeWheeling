@@ -56,9 +56,18 @@
 </script>
 <p></p>
 <div class="row" style="padding-left:10px;padding-right:10px;">
+@if (@Model.FromHome == "true")
+{
+    <span>
+        @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })        
+    </span>
+}
+else
+{
     <span>
         @Html.ActionLink(" ", "AdHocList", "Ride", null, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
     </span>
+}
     <span class="pull-right">
         @if (@Model.IsOwner)
         {

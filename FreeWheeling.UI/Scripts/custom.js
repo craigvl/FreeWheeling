@@ -30,7 +30,6 @@ function onsuccessremovefav() {
 }
 
 function UpdateKeenActionsPusher(message, rideid, keencount, username, leavetime) {
-
     if (message == 'In') {
         $("#KeenCountSpan" + rideid).html("(" + keencount + ")");
         var keenuser = "#keen_" + username + rideid;
@@ -54,7 +53,7 @@ function UpdateKeenActionsPusher(message, rideid, keencount, username, leavetime
             $(keenuser).css("text-decoration", "line-through");
         }
         else {
-            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="">' + username + " <span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-down'></span>  </span>");
+            $("#keendiv_" + rideid).prepend('<p><span style="text-decoration:line-through;" id=keen_' + username + rideid + ' class="">' + username + " <span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-down'></span>  </span>");
         }
     }
                 
@@ -115,7 +114,7 @@ function UpdateKeenActions(message, rideid, keencount, username, leavetime, posi
             $(keenuser).css("text-decoration", "line-through");
         }
         else {
-            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="">' + username + " <span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-down'></span>  </span>");
+            $("#keendiv_" + rideid).prepend('<p><span style="text-decoration:line-through;" id=keen_' + username + rideid + ' class="">' + username + " <span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-down'></span>  </span>");
         }
         if (position == "next") {
             $("#OutNext").hide();

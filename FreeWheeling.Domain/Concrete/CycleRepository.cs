@@ -91,9 +91,19 @@ namespace FreeWheeling.Domain.Concrete
             return context.Rides;
         }
 
+        public IEnumerable<Ad_HocRide> GetRandomRides()
+        {
+            return context.Ad_HocRide;
+        }
+
         public IEnumerable<Ride> GetRidesWithRiders()
         {
             return context.Rides.Include("Riders");
+        }
+
+        public IEnumerable<Ad_HocRide> GetRandomRidesWithRiders()
+        {
+            return context.Ad_HocRide.Include("Riders");
         }
 
         public IEnumerable<Member> GetMembersWithGroups()
@@ -354,6 +364,19 @@ namespace FreeWheeling.Domain.Concrete
             if (_HomePageRide != null)
             {
                 return context.Rides.Include("Group").Where(r => r.id == _HomePageRide.Rideid).FirstOrDefault();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public Ad_HocRide GetHomePageRandomRideByUserID(string UserId)
+        {
+            HomePageRide _HomePageRide = context.HomePageRide.Where(i => i.Userid == UserId).FirstOrDefault();
+            if (_HomePageRide != null)
+            {
+                return context.Ad_HocRide.Where(r => r.id == _HomePageRide.Rideid).FirstOrDefault();
             }
             else
             {
@@ -871,6 +894,33 @@ namespace FreeWheeling.Domain.Concrete
                 return false;
         }
 
+        public bool IsInRandom(int RideId, string UserId)
+        {
+            int KeenCountForRider = context.AdHocRider.Where(r => r.AdHocRide.id == RideId && r.PercentKeen == "In" && r.userId == UserId).Count();
+            if (KeenCountForRider > 0)
+                return true;
+            else
+                return false;
+        }
+
+        public bool IsOutRandom(int RideId, string UserId)
+        {
+            int KeenCountForRider = context.AdHocRider.Where(r => r.AdHocRide.id == RideId && r.PercentKeen == "Out" && r.userId == UserId).Count();
+            if (KeenCountForRider > 0)
+                return true;
+            else
+                return false;
+        }
+
+        public bool IsOnWayRandom(int RideId, string UserId)
+        {
+            int KeenCountForRider = context.AdHocRider.Where(r => r.AdHocRide.id == RideId && r.PercentKeen == "OnWay" && r.userId == UserId).Count();
+            if (KeenCountForRider > 0)
+                return true;
+            else
+                return false;
+        }
+
         public void UpdateGroup(Group _Group)
         {
             Group CurrentGroup = context.Groups.Where(i => i.id == _Group.id).FirstOrDefault();
@@ -983,6 +1033,29 @@ namespace FreeWheeling.Domain.Concrete
             context.Ad_HocRide.Remove(CurrentAdHocRide);
             context.Entry(CurrentAdHocRide).State = System.Data.Entity.EntityState.Deleted;
             context.SaveChanges();
+        }
+
+        public void DeleteOldRandomRide(int RandomRideId, TimeZoneInfo TimeZone)
+        {          
+            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZone);
+            Ad_HocRide _Ad_HocRide = context.Ad_HocRide.Where(h => h.id == RandomRideId).FirstOrDefault();
+
+            if (_Ad_HocRide != null)
+            {
+                if (_Ad_HocRide.RideDate.AddHours(1) < LocalNow)
+                {
+                    if (_Ad_HocRide.Riders != null)
+                    {
+                        foreach (AdHocRider _Rider in _Ad_HocRide.Riders.ToList())
+                        {
+                            context.Entry(_Rider).State = System.Data.Entity.EntityState.Deleted;
+                            context.SaveChanges();
+                        }
+                    }
+                    context.Entry(_Ad_HocRide).State = System.Data.Entity.EntityState.Deleted;
+                    context.SaveChanges();
+                }
+            }          
         }
 
         public void DeleteOldRides(int GroupId, TimeZoneInfo TimeZone)

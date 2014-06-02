@@ -1,0 +1,55 @@
+﻿@model FreeWheeling.UI.Models.HomeIndexModel
+ <div class="row">
+     <span class="col-xs-2 col-sm-1 col-md-1 col-lg-1" id="inspan">
+        @Ajax.ActionLink(" ", "AttendAdHocRider","Ride",
+                        new { adhocrideid = @Model.HomePageRandomRide.id, commitment = "In" },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "onsuccesskeenrandom",
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "btn glyphicon glyphicon-thumbs-up btn-lg",
+                     style = "color:#333333",
+                     onclick = "ShowProgress();",
+                     @id = "InFirst"
+                 })
+     </span>
+
+     <span class="col-xs-2 col-sm-1  col-md-1 col-lg-1" id="outspan">
+         @Ajax.ActionLink(" ", "AttendAdHocRider","Ride",
+                         new { adhocrideid = @Model.HomePageRandomRide.id, commitment = "Out" },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "onsuccesskeenrandom",
+                     OnBegin = "ShowProgress"
+                 },
+                      new
+                      {
+                          @class = "btn glyphicon glyphicon-thumbs-down btn-lg",
+                          style = "color:#333333",
+                          onclick = "ShowProgress();",
+                          @id = "OutFirst"
+                      })
+     </span>
+     <span class="col-xs-2 col-sm-1  col-md-2 col-lg-1" id="onwayspan">
+         @Ajax.ActionLink("On way", "AttendAdHocRider","Ride",
+                                          new { adhocrideid = @Model.HomePageRandomRide.id, commitment = "OnWay" },
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "onsuccesskeenrandom",
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "btn btn-default btn-sm",
+                     style = "color:#FFF",
+                     onclick = "ShowProgress();",
+                     @id = "OnWayFirst"
+                 })
+     </span>
+</div>

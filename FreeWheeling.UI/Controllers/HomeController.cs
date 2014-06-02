@@ -66,7 +66,7 @@ namespace FreeWheeling.UI.Controllers
             }
         }
 
-        [Compress]
+        //[Compress]
         public ActionResult Index(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -106,6 +106,17 @@ namespace FreeWheeling.UI.Controllers
                             _HomeIndexModel.IsOut = repository.IsOut(_HomeIndexModel.HomePageRide.id, currentUser.Id);
                             _HomeIndexModel.Keencount = repository.GetKeenCountForRide(_HomeIndexModel.HomePageRide.id);
 	                    }
+                        else
+                        {
+                            _HomeIndexModel.HomePageRandomRide = repository.GetHomePageRandomRideByUserID(currentUser.Id);
+                            if (_HomeIndexModel.HomePageRandomRide != null)
+                            {
+                                _HomeIndexModel.IsOnWay = repository.IsOnWayRandom(_HomeIndexModel.HomePageRandomRide.id, currentUser.Id);
+                                _HomeIndexModel.IsIn = repository.IsInRandom(_HomeIndexModel.HomePageRandomRide.id, currentUser.Id);
+                                _HomeIndexModel.IsOut = repository.IsOutRandom(_HomeIndexModel.HomePageRandomRide.id, currentUser.Id);
+                                _HomeIndexModel.Keencount = repository.GetKeenCountForAdHocRide(_HomeIndexModel.HomePageRandomRide.id);
+                            }
+                        }
                     }
             }
             else

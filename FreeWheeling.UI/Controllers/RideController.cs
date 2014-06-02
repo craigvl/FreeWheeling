@@ -211,7 +211,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [Compress]
-        public ActionResult ViewAdHocRide(int adhocrideid = -1, int InviteRandomId = -1)
+        public ActionResult ViewAdHocRide(int adhocrideid = -1, int InviteRandomId = -1, string fromhome = "false")
         {    
             if(adhocrideid == -1)
             {
@@ -254,6 +254,7 @@ namespace FreeWheeling.UI.Controllers
                 SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel();
                 RideModelHelper _AdHocHelper = new RideModelHelper(repository);
                 _SingleRideRandomRideViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
+                _SingleRideRandomRideViewModel.FromHome = fromhome;
                 return View(_SingleRideRandomRideViewModel);
             }
         }
