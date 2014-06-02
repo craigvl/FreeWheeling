@@ -297,6 +297,10 @@ padding: 10px;
     background-color:#EFEFE7;
 }
 
+.greyout {
+    color:#D7D7D0;
+}
+
 .btn {
     text-align:left;
     padding-left:10px;
