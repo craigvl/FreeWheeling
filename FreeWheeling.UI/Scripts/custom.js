@@ -246,7 +246,14 @@ function displayMessageAjax(message, messageType, position, PersistMessage) {
 }
 
 function displayMessagesAjax() {
-    if ($("#messagewrapperajax").children().length > 0) {      
+
+    var loading = $("#messagewrapperajax");
+    var top = Math.max($(window).height() / 2 - loading[0].offsetHeight / 2, 0);
+    var left = Math.max($(window).width() / 2 - loading[0].offsetWidth / 2, 0);
+    loading.css({ top: top, left: (left - 100) });
+
+    if ($("#messagewrapperajax").children().length > 0) {
+
         $("#messagewrapperajax").delay(200).fadeIn(300);
         $(".tempoarayMessage").delay(2000).fadeOut(300);
        

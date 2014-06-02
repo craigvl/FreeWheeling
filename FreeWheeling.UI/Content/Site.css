@@ -557,7 +557,10 @@ as per http://stackoverflow.com/questions/18192082/bootstrap-3-navbar-collapse *
 /*Box for ajax message display*/
 #messagewrapperajax {
     display:none;
-    height:50px;
+    margin-left:auto;
+    margin-right:auto;      
+    position: fixed;
+    z-index: 999;   
 }
 
 /*Inner box with text for ajax message display*/
