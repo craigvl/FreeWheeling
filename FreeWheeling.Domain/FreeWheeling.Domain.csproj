@@ -55,6 +55,10 @@
     <Compile Include="DataContexts\CycleMigrations\201405031402174_init.Designer.cs">
       <DependentUpon>201405031402174_init.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201406012236190_homerandomride.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201406012236190_homerandomride.Designer.cs">
+      <DependentUpon>201406012236190_homerandomride.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\AdHocComment.cs" />
     <Compile Include="Entities\PrivateRandomUsers.cs" />
@@ -80,6 +84,9 @@
   <ItemGroup>
     <EmbeddedResource Include="DataContexts\CycleMigrations\201405031402174_init.resx">
       <DependentUpon>201405031402174_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201406012236190_homerandomride.resx">
+      <DependentUpon>201406012236190_homerandomride.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

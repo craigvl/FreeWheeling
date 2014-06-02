@@ -39,6 +39,8 @@ namespace FreeWheeling.Domain.Abstract
 
         //Get .. AdHoc
         Ad_HocRide GetAdHocRideByID(int id);
+        IEnumerable<Ad_HocRide> GetRandomRides();
+        IEnumerable<Ad_HocRide> GetRandomRidesWithRiders();
         List<AdHocComment> GetTop2CommentsForAdHocRide(int AdHocRideid);
         List<AdHocComment> GetAllCommentsForAdHocRide(int AdHocRideid);
         int GetCommentCountForAdHocRide(int AdHocRideid);
@@ -92,6 +94,7 @@ namespace FreeWheeling.Domain.Abstract
         void RemoveMember(string UserId, Group _Group);
         void DeleteGroup(int GroupId);
         void DeleteOldRides(int GroupId, TimeZoneInfo TimeZone);
+        void DeleteOldRandomRide(int RandomRideId, TimeZoneInfo TimeZone);
         void DeleteAdHocRide(int AdHocId);
         void DeleteHomePageRide(string UserId);
         
@@ -110,6 +113,9 @@ namespace FreeWheeling.Domain.Abstract
         Boolean IsIn(int RideId, string UserId);
         Boolean IsOut(int RideId, string UserId);
         Boolean IsOnWay(int RideId, string UserId);
+        Boolean IsInRandom(int RideId, string UserId);
+        Boolean IsOutRandom(int RideId, string UserId);
+        Boolean IsOnWayRandom(int RideId, string UserId);
         Boolean IsInvitedToPrivateBunch(int GroupId, string UserId);
         Boolean IsInvitedToPrivateRandomBunch(int RideId, string UserId);
         Boolean PrivateBunchInviteUserEmailNotSet(int id);

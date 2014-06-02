@@ -64,13 +64,31 @@ namespace ProcessHomePageRide
                 }
             }
 
+            foreach (Ad_HocRide _RandomRide in _CycleRepository.GetRandomRidesWithRiders())
+            {
+                CycleRepository _CycleRepository2 = new CycleRepository();
+                foreach (AdHocRider _Rider in _RandomRide.Riders)
+                {
+                    if (_CycleRepository2.IsOnWayRandom(_RandomRide.id, _Rider.userId))
+                    {
+                        _ListOfRides.Add(new ListOfRides { RideId = _RandomRide.id, userId = _Rider.userId, RideDate = _RandomRide.RideDate, IsRandomRide = true  });
+                    }
+
+                    if (_CycleRepository2.IsInRandom(_RandomRide.id, _Rider.userId))
+                    {
+                        _ListOfRides.Add(new ListOfRides { RideId = _RandomRide.id, userId = _Rider.userId, RideDate = _RandomRide.RideDate, IsRandomRide = true });
+                    }
+                }
+                
+            }
+
             _ListOfRides = _ListOfRides.Distinct().ToList();
             _ListOfRides = _ListOfRides.GroupBy(x => x.userId).Select(x => x.OrderBy(y => y.RideDate)).Select(x => x.First()).ToList();
             List<HomePageRide> _HomePageRide = new List<HomePageRide>();
 
             foreach (ListOfRides item in _ListOfRides)
             {
-                _HomePageRide.Add(new HomePageRide { Rideid = item.RideId, Userid = item.userId });
+                _HomePageRide.Add(new HomePageRide { Rideid = item.RideId, Userid = item.userId, IsRandomRide = item.IsRandomRide });
             }
 
             _CycleRepository.PopulateUserHomePageRides(_HomePageRide);
@@ -81,6 +99,7 @@ namespace ProcessHomePageRide
             public int RideId { get; set; }
             public string userId { get; set; }
             public DateTime RideDate { get; set; }
+            public bool IsRandomRide { get; set; }
         }
 
     }
