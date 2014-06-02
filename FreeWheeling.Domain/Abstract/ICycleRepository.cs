@@ -73,6 +73,7 @@ namespace FreeWheeling.Domain.Abstract
 
         //Get HomePageRide
         Ride GetHomePageRideByUserID(string UserId);
+        Ad_HocRide GetHomePageRandomRideByUserID(string UserId);
 
         //Get Private
         List<Group> GetPrivateGroupsByUserID(string UserId, Location _Location);

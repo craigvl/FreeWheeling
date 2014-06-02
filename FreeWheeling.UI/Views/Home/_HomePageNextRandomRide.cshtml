@@ -1,0 +1,43 @@
+﻿@model FreeWheeling.UI.Models.HomeIndexModel
+
+<div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+    <span class="btn btn-default btn-block">Your next bunch: <a href="/Ride/ViewAdHocRide?adhocrideid=@(Model.HomePageRandomRide.id)&fromhome=true"> @Model.HomePageRandomRide.Name</a></span>
+</div>
+<div class='panel-group'>
+    <div class='panel panel-default'>
+        <div class="SecondaryHeadingMain panel-heading">
+            <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
+                <div class="col-xs-10 col-md-11 col-sm-10 SecondaryHeadingMain" data-toggle=" collapse" href="">
+                    <a href="/Ride/ViewAdHocRide?adhocrideid=@(Model.HomePageRandomRide.id)&fromhome=true">
+                        @Model.HomePageRandomRide.RideDate.ToString("dddd, d MMM, HH:mm")
+                    </a>
+                </div>
+                <div class="col-xs-1 col-md-1 col-sm-1">
+                    @Html.ActionLink(string.Concat(" "), "ViewAdHocRide", "Ride", new { adhocrideid = @Model.HomePageRandomRide.id, fromhome = "true" },
+                                new { @class = "glyphicon glyphicon-search", onclick = "ShowProgress();" })
+                </div>
+            </div>
+        </div>
+        <div class="SecondaryHeading panel-heading">
+            <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
+                <div class="col-xs-10 col-md-11 col-sm-10">
+                    <a data-toggle="collapse" href="#collapseKeenFirst" class="SecondaryHeading">Keen</a>
+                    <a class="SecondaryHeading" id="@("KeenCountSpan"+@Model.HomePageRandomRide.id)">(@Model.Keencount.ToString())</a>
+                </div>
+                <div class="col-xs-1 col-md-1 col-sm-1">
+                    <a class="SecondaryHeading" id="" data-toggle="collapse" href=""></a>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body panelBody">
+            <span class="col-xs-6 col-md-2 col-sm-2 col-lg-2"> <b>Are you in?</b></span>
+            @Html.Partial("_HomePageKeenStatus", Model)
+            <hr />
+            <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
+                <div style="" class="col-xs-12 col-md-12 col-sm-12">
+                   @Html.Partial("_HomePageKeenActionsRandom", Model)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

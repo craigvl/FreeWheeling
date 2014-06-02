@@ -15,6 +15,7 @@ namespace FreeWheeling.UI.Models
         public int UpCommingAd_HocCount { get; set; }
         public List<Group> FavouriteBunches { get; set; }
         public Ride HomePageRide { get; set; }
+        public Ad_HocRide HomePageRandomRide { get; set; }
         public List<int> _OwnerGroupList;
         public bool IsOnWay { get; set; }
         public bool IsIn { get; set; }

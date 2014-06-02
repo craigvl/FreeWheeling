@@ -371,6 +371,19 @@ namespace FreeWheeling.Domain.Concrete
             }
         }
 
+        public Ad_HocRide GetHomePageRandomRideByUserID(string UserId)
+        {
+            HomePageRide _HomePageRide = context.HomePageRide.Where(i => i.Userid == UserId).FirstOrDefault();
+            if (_HomePageRide != null)
+            {
+                return context.Ad_HocRide.Where(r => r.id == _HomePageRide.Rideid).FirstOrDefault();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public int GetKeenCountForAdHocRide(int AdHocRideid)
         {
             return context.AdHocRider.Where(r => (r.AdHocRide.id == AdHocRideid && r.PercentKeen == "In") || (r.AdHocRide.id == AdHocRideid && r.PercentKeen == "OnWay")).Count();

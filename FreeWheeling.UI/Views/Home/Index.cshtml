@@ -7,50 +7,17 @@
 @if (Model.LocationsId != 0)
 {
     if (Model.HomePageRide != null)
-    {   
-        @Html.Hidden("RideIdHidden", @Model.HomePageRide.id)
-        
-        <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-            <span class="btn btn-default btn-block">Your next bunch: <a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true"> @Model.HomePageRide.Group.name</a></span>
-        </div>  
-        <div class='panel-group'>
-            <div class='panel panel-default'>           
-                    <div class="SecondaryHeadingMain panel-heading">
-                        <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
-                            <div class="col-xs-10 col-md-11 col-sm-10 SecondaryHeadingMain" data-toggle=" collapse" href="">
-                                <a href="/Ride/ViewSingleRide?RideId=@(Model.HomePageRide.id)&fromhome=true">
-                                    @Model.HomePageRide.RideDate.ToString("dddd, d MMM, HH:mm")
-                                </a>
-                            </div>
-                            <div class="col-xs-1 col-md-1 col-sm-1">
-                                @Html.ActionLink(string.Concat(" "), "Index", "Ride", new { groupid = @Model.HomePageRide.Group.id, fromhome = "true" },
-                                new { @class = "glyphicon glyphicon-search", onclick = "ShowProgress();" })
-                            </div>
-                        </div>
-                    </div>                               
-                        <div class="SecondaryHeading panel-heading">
-                            <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
-                                <div class="col-xs-10 col-md-11 col-sm-10">
-                                    <a data-toggle="collapse" href="#collapseKeenFirst" class="SecondaryHeading">Keen</a>
-                                    <a class="SecondaryHeading" id="@("KeenCountSpan"+@Model.HomePageRide.id)">(@Model.Keencount.ToString())</a>
-                                </div>
-                                <div class="col-xs-1 col-md-1 col-sm-1">
-                                    <a class="SecondaryHeading" id="" data-toggle="collapse" href=""></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel-body panelBody">                              
-                                    <span class="col-xs-6 col-md-2 col-sm-2 col-lg-2"> <b>Are you in?</b></span>                        
-                                 @Html.Partial("_HomePageKeenStatus", Model)
-                            <hr />
-                            <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
-                                <div style="" class="col-xs-12 col-md-12 col-sm-12">
-                                    @Html.Partial("_HomePageKeenActions", Model)
-                                </div>
-                            </div>
-                        </div>
-                </div>
-        </div>
+    { 
+      @Html.Hidden("RideIdHidden", @Model.HomePageRide.id)  
+      @Html.Partial("_HomePageNextRide",Model)
+    }
+    else
+    {
+        if(Model.HomePageRandomRide != null)
+        {
+         @Html.Hidden("RideIdHidden", @Model.HomePageRandomRide.id)
+         @Html.Partial("_HomePageNextRandomRide",Model)           
+        }   
     }
         <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;">
 		    @Html.ActionLink("bunches", "Index", "Group", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
@@ -122,7 +89,6 @@ else
 <script src="~/Scripts/DoubleBunchRide.js"></script>
         <script>
             function onsuccesskeen(data) {
-                //alert(data.message);
                 KeenCompleteFirst(data);
                 //$("#bunchname").css("top", "0px");
 
@@ -148,8 +114,67 @@ else
                 }               
                 HideProgress();
             }
+
+            function onsuccesskeenrandom(data) {
+                data.parentid = data.rideid; //This is set because we dont have parent id on home page but are using script that normally does.
+                KeenCompleteFirstRandom(data);
+                //$("#bunchname").css("top", "0px");
+
+                if (data.message == "OnWay") {
+                    //$("#statusspan").addClass("glyphicon glyphicon-ok-sign");
+                    $("#statusspan").removeClass();
+                    $("#statusspan").html("On way");
+                    displayMessageAjax("On you're way", "success", "", "tempoarayMessage");
+                }
+
+                if (data.message == "In") {
+                    $("#statusspan").removeClass();
+                    $("#statusspan").addClass("glyphicon glyphicon-thumbs-up");
+                    $("#statusspan").html("");
+                    displayMessageAjax("You're in", "success", "", "tempoarayMessage");
+                }
+
+                if (data.message == "Out") {
+                    $("#statusspan").removeClass();
+                    $("#statusspan").addClass("glyphicon glyphicon-thumbs-down");
+                    $("#statusspan").html("");
+                    displayMessageAjax("You're out", "success", "", "tempoarayMessage");
+                }
+                HideProgress();
+            }
+
+            function KeenCompleteFirstRandom(data) {
+                HideProgress();
+                //Keen
+                var client = new WindowsAzure.MobileServiceClient(
+                         "http://bunchydev.azure-mobile.net/",
+                         "HIdMfCPoYsHPanowdOvYsYOnmbZbsq45"
+                          );
+
+                var item = {
+                    text: data.message,
+                    bunchid: data.rideid,
+                    username: data.username,
+                    keencount: data.keencount,
+                    leavetime: data.leavetime,
+                    socket_id: socketId
+                };
+                client.getTable("Keenadhoc").insert(item);
+                $("form #submit_AdHocComment").val("");
+                UpdateKeenActions(data.message, data.rideid, data.keencount, data.username, data.leavetime);
+            }
+
             jQuery(document).ready(function () {
-                //displayMessageAjax("hello", "error", "BottomCentre", "tempoarayMessage");
+                var rideId = jQuery('#RideIdHidden').val();
+                var pusher = new Pusher('dba777635636cbc16582');
+                var channel = pusher.subscribe('BunchyRide' + rideId);
+
+                if (channel != null) {
+                    channel.bind('You-InAdHoc', function (data) {
+                        UpdateKeenActionsPusher(data.message, data.rideid, data.keencount, data.username, data.leavetime);
+                    });
+                }
+
                 HideProgress();
             });
         </script>
