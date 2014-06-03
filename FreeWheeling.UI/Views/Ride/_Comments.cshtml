@@ -1,23 +1,26 @@
 ﻿@model FreeWheeling.UI.Models.RideModelIndex
+@using FreeWheeling.Domain.Entities;
 @{
+    List<Comment> comments = new List<Comment>();    
     int position = Convert.ToInt32(ViewData["position"]);
     int rideid = Model.Ride.id;
     int commentcount = Model.CommentCount;
     string submitid = "submit_First";
     string commenttextid = "CommentStringFirst";
     int parentid = Model.Ride.id;
-
+    comments = Model.Comments;
+    
     if (position == 2)
     {
+        comments = Model.NextComments;
         rideid = Model.NextRide.id;
         commentcount = Model.NextCommentCount;
         commenttextid = "CommentStringSecond";
         submitid = "submit_Second";
     }
 }
-@using FreeWheeling.Domain.Entities;
 <div id="@("collapseCommentPanel" + @rideid)">
-    @foreach (Comment item in Model.Comments)
+    @foreach (Comment item in @comments)
         {
         @item.userName <text>: </text>
         @item.CommentText
