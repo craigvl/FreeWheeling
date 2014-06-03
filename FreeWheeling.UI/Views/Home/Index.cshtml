@@ -102,14 +102,14 @@ else
 
                 if (data.message == "In") {
                     $("#statusspan").removeClass();
-                    $("#statusspan").addClass("pull-right glyphicon glyphicon-thumbs-up");
+                    $("#statusspan").addClass("pull-right col-xs-1 col-lg-1 glyphicon glyphicon-thumbs-up");
                     $("#statusspan").html("");
                     displayMessageAjax("You're in", "success", "", "tempoarayMessage");
                 }
 
                 if (data.message == "Out") {
                     $("#statusspan").removeClass();
-                    $("#statusspan").addClass("pull-right glyphicon glyphicon-thumbs-down");
+                    $("#statusspan").addClass("pull-right col-xs-1 col-lg-1 glyphicon glyphicon-thumbs-down");
                     $("#statusspan").html("");
                     displayMessageAjax("You're out", "success", "", "tempoarayMessage");
                 }               
