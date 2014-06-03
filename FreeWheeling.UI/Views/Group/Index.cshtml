@@ -23,7 +23,6 @@
                 <input onclick=" showprogress();" type="submit" class="btn btn-default" value="Go" />
             </div>
         }
-
     </div>
     <p></p>
     <div class="row">
@@ -67,6 +66,14 @@
 
             function HideInfoLink(GroupId) {
                 $("#infoButton" + GroupId).hide();
+                $("#hideinfo" + GroupId).show();
+                $("#GroupInfo" + GroupId).show();
+            }
+
+            function hideinfodetails(GroupId) {
+                $("#GroupInfo" + GroupId).hide();
+                $("#infoButton" + GroupId).show();
+                $("#hideinfo" + GroupId).hide();
             }
         </script>
-    }
+}
