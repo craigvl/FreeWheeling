@@ -246,17 +246,28 @@ function displayMessageAjax(message, messageType, position, PersistMessage) {
 }
 
 function displayMessagesAjax() {
+    //As per http://stackoverflow.com/questions/14931410/center-message-box-on-any-screen-resolution with some edits as per loading image.
+    var windowWidth = document.documentElement.clientWidth;
+    var windowHeight = document.documentElement.clientHeight;
+    var el = $('#messagewrapperajax');
+    var elWidth = el.width();
+    var elHeight = el.height();
 
-    var loading = $("#messagewrapperajax");
-    var top = Math.max($(window).height() / 2 - loading[0].offsetHeight / 2, 0);
-    var left = Math.max($(window).width() / 2 - loading[0].offsetWidth / 2, 0);
-    loading.css({ top: top, left: (left - 100) });
+    var top = Math.max($(window).height() / 2 - el[0].offsetHeight / 2, 0);
+    var left = Math.max($(window).width() / 2 - el[0].offsetWidth / 2, 0);
 
     if ($("#messagewrapperajax").children().length > 0) {
 
-        $("#messagewrapperajax").delay(200).fadeIn(300);
-        $(".tempoarayMessage").delay(2000).fadeOut(300);
-       
+        $("#messagewrapperajax").delay(200).fadeIn(300).focus();
+
+        el.css({
+           // position: 'absolute',
+            top: top,
+            left: (windowWidth / 2) - (elWidth / 2),
+        });
+
+        $(".tempoarayMessage").delay(3000).fadeOut(300);
+           
         $("#messagewrapperajax").click(function () {
             ClearMessagesAjaxClick();
         });
