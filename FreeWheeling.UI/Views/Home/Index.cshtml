@@ -94,21 +94,22 @@ else
 
                 if (data.message == "OnWay") {
                     //$("#statusspan").addClass("glyphicon glyphicon-ok-sign");
-                    $("#statusspan").removeClass();                 
-                    $("#statusspan").html("On way");
+                    $("#statusspan").removeClass();
+                    $("#statusspan").addClass("pull-right");
+                    $("#statusspan").html("on way");
                     displayMessageAjax("On you're way", "success", "", "tempoarayMessage");
                 }
 
                 if (data.message == "In") {
                     $("#statusspan").removeClass();
-                    $("#statusspan").addClass("glyphicon glyphicon-thumbs-up");
+                    $("#statusspan").addClass("pull-right glyphicon glyphicon-thumbs-up");
                     $("#statusspan").html("");
                     displayMessageAjax("You're in", "success", "", "tempoarayMessage");
                 }
 
                 if (data.message == "Out") {
                     $("#statusspan").removeClass();
-                    $("#statusspan").addClass("glyphicon glyphicon-thumbs-down");
+                    $("#statusspan").addClass("pull-right glyphicon glyphicon-thumbs-down");
                     $("#statusspan").html("");
                     displayMessageAjax("You're out", "success", "", "tempoarayMessage");
                 }               
@@ -123,20 +124,21 @@ else
                 if (data.message == "OnWay") {
                     //$("#statusspan").addClass("glyphicon glyphicon-ok-sign");
                     $("#statusspan").removeClass();
-                    $("#statusspan").html("On way");
+                    $("#statusspan").addClass("pull-right");
+                    $("#statusspan").html("on way");
                     displayMessageAjax("On you're way", "success", "", "tempoarayMessage");
                 }
 
                 if (data.message == "In") {
                     $("#statusspan").removeClass();
-                    $("#statusspan").addClass("glyphicon glyphicon-thumbs-up");
+                    $("#statusspan").addClass("pull-right glyphicon glyphicon-thumbs-up");
                     $("#statusspan").html("");
                     displayMessageAjax("You're in", "success", "", "tempoarayMessage");
                 }
 
                 if (data.message == "Out") {
                     $("#statusspan").removeClass();
-                    $("#statusspan").addClass("glyphicon glyphicon-thumbs-down");
+                    $("#statusspan").addClass("pull-right glyphicon glyphicon-thumbs-down");
                     $("#statusspan").html("");
                     displayMessageAjax("You're out", "success", "", "tempoarayMessage");
                 }
