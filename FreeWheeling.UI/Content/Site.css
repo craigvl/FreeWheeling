@@ -307,6 +307,10 @@ padding: 10px;
     color:#D7D7D0;
 }
 
+.glyphicon-star-empty {
+     color:#D7D7D0 !important;
+}
+
 .btn {
     text-align:left;
     padding-left:10px;
