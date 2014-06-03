@@ -67,7 +67,7 @@
         <p></p>
         <div><span class="RequiredField">*&nbsp;</span><b>Minute</b></div>
         <div>
-            @Html.TextBoxFor(model => model.Minute, new { @class = "form-control" })
+            @Html.TextBoxFor(model => model.Minute, new { type = "number", @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Minute) 
         </div>
            <p></p>
