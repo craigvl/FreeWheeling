@@ -1,15 +1,15 @@
 ﻿@model FreeWheeling.UI.Models.HomeIndexModel
-<span id="statusspan" class="">
+<span id="statusspan">
     @if (@Model.IsOnWay)
     {
-        <span class="col-xs-4 col-md-4 col-sm-4 col-lg-4">on way</span>
+        <span class="pull-right">on way</span>
     }
     @if (@Model.IsIn)
     {
-        <span class="col-xs-1 col-md-1 col-sm-1 col-lg-1 glyphicon glyphicon-thumbs-up"></span>
+        <span  class="pull-right glyphicon glyphicon-thumbs-up"></span>
     }
     @if (@Model.IsOut)
     {
-        <span class="col-xs-1 col-md-1 col-sm-1 col-lg-1 glyphicon glyphicon-thumbs-down"></span>
+        <span  class="pull-right glyphicon glyphicon-thumbs-down"></span>
     }
 </span>
