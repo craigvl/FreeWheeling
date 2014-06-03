@@ -299,8 +299,8 @@
     <Content Include="Content\Images\autocompleteLoader.gif" />
     <Content Include="Content\Images\animated-overlay.gif" />
     <Content Include="Content\Images\bike.jpg" />
-    <Content Include="Content\Images\bunchy.png" />
-    <Content Include="Content\Images\bunchyicon.png" />
+    <Content Include="Content\Images\bunchynotag.png" />
+    <Content Include="Content\Images\bunchyfb.png" />
     <Content Include="Content\Images\bunchytag.png" />
     <Content Include="Content\Images\glyphicons_306_bicycle.png" />
     <Content Include="Content\Images\loader.gif" />
