@@ -192,10 +192,10 @@ function MapCollapse() {
 function DisplayMessages() {
     if ($("#messagewrapper").children().length > 0) {
         //Apply a delay and fade the message in
-        $("#messagewrapper").delay(200).fadeIn(300);    //Adjust timing if required
+        $("#messagewrapper").delay(150).fadeIn(300);    //Adjust timing if required
 
         //Apply a delay and fade out temp messages
-        $(".tempoarayMessage").delay(2000).fadeOut(300);
+        $(".tempoarayMessage").delay(1000).fadeOut(300);
 
         //Hide message on click
         $("#messagewrapper").click(function () {
