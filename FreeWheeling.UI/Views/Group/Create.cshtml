@@ -61,13 +61,13 @@
     <hr />
         <div><span class="RequiredField">*&nbsp;</span><b>Hour (24 Hour)</b></div>
         <div>
-            @Html.TextBoxFor(model => model.Hour, new { id = "scroller", @class = "form-control" })
+            @Html.TextBoxFor(model => model.Hour, new { id = "scroller", type = "number", @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Hour)
         </div>
         <p></p>
         <div><span class="RequiredField">*&nbsp;</span><b>Minute</b></div>
         <div>
-            @Html.TextBoxFor(model => model.Minute, new { @class = "form-control" })
+            @Html.TextBoxFor(model => model.Minute, new { type = "number", @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Minute) 
         </div>
            <p></p>
