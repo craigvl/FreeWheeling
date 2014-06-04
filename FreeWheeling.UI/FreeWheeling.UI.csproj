@@ -606,6 +606,8 @@
     <Content Include="Views\Home\_HomePageNextRandomRide.cshtml" />
     <Content Include="Views\Home\_HomePageKeenActionsRandom.cshtml" />
     <Content Include="Views\Emails\SendUserVerify.cshtml" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Account\DisplayEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

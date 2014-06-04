@@ -151,7 +151,7 @@ namespace FreeWheeling.UI.Controllers
                 switch (result)
                 {
                     case SignInStatus.Success:
-                        //await SignInAsync(user, true);
+                    //await SignInAsync(user, true);
 
                     //Create cookie if select remember me to expire in a year.
                     int timeout = model.RememberMe ? 525600 : 30; // Timeout in minutes, 525600 = 365 days.
@@ -250,6 +250,24 @@ namespace FreeWheeling.UI.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        //
+        // GET: /Account/ConfirmEmail
+        [AllowAnonymous]
+        public async Task<ActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return View("Error");
+            }
+            var result = await UserManager.ConfirmEmailAsync(userId, code);
+            if (result.Succeeded)
+            {
+                return View("ConfirmEmail");
+            }
+            AddErrors(result);
+            return View();
         }
 
         //

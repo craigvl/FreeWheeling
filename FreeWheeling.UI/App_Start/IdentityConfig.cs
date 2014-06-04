@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Web;
+using Postal;
 
 namespace FreeWheeling.UI.Models
 {
@@ -29,7 +30,7 @@ namespace FreeWheeling.UI.Models
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
-                RequireUniqueEmail = true
+                RequireUniqueEmail = false
             };
             // Configure validation logic for passwords
             manager.PasswordValidator = new PasswordValidator
@@ -131,7 +132,6 @@ namespace FreeWheeling.UI.Models
         public static ApplicationRoleManager Create(IdentityFactoryOptions<ApplicationRoleManager> options, IOwinContext context)
         {
             var manager = new ApplicationRoleManager(new RoleStore<IdentityRole>(context.Get<ApplicationDbContext>()));
-
             return manager;
         }
     }
@@ -140,7 +140,11 @@ namespace FreeWheeling.UI.Models
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
+            dynamic emailToUser = new Email("SendUserVerify");
+            emailToUser.To = message.Destination;
+            emailToUser.Body = message.Body;
+            emailToUser.Subject = message.Subject;
+            emailToUser.Send();
             return Task.FromResult(0);
         }
     }
@@ -319,6 +323,10 @@ namespace FreeWheeling.UI.Models
         {
             var user = await UserManager.FindByNameAsync(userName);
             if (user == null)
+            {
+                return SignInStatus.Failure;
+            }
+            if (!await UserManager.IsEmailConfirmedAsync(user.Id))
             {
                 return SignInStatus.Failure;
             }
