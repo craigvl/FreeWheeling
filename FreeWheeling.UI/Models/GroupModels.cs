@@ -191,6 +191,8 @@ namespace FreeWheeling.UI.Models
         public string StartLocation { get; set; }
         public string AverageSpeed { get; set; }
         public string Creator { get; set; }
+        [Required(ErrorMessage = "Your name is require")]
+        public string CreatorName { get; set; }
         public string Description { get; set; }
         public string MapUrl { get; set; }
         public bool IsPrivate { get; set; }
@@ -257,6 +259,8 @@ namespace FreeWheeling.UI.Models
     public string Description { get; set; }
     public string MapUrl { get; set; }
     public bool IsPrivate { get; set; }
+    [Required(ErrorMessage = "Your name is require")]
+    public string CreatorName { get; set; }
     }
 
     public class MyGroupsModel
@@ -277,6 +281,7 @@ namespace FreeWheeling.UI.Models
         public string StartLocation {get;set;}
         public string AverageSpeed {get;set;}
         public string Description {get; set;}
+        public string CreatedByName { get; set; }
     }
 
     public class EditGroupModel

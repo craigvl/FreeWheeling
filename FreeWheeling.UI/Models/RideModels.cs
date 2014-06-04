@@ -303,6 +303,7 @@ namespace FreeWheeling.UI.Models
         public int PusherChannel { get; set; }
         public string FromHome { get; set; }
         public Boolean IsFavourite { get; set; }
+        public string CreatedByName { get; set; }
     }
 
     public class AdHocRideCommentModel
