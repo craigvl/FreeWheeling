@@ -16,7 +16,7 @@
     @Html.ValidationSummary(true)
     <p></p>
      <div class="form-group">
-    <div ><span class="RequiredField control-label">*&nbsp;</span><b>bunch Name:</b></div>
+    <div ><span class="RequiredField control-label">*&nbsp;</span><b>Bunch Name:</b></div>
         <div>
             @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Name)
@@ -24,7 +24,7 @@
     <div>
         </div>
         <p></p>
-        <div><span class="RequiredField">*&nbsp;</span><b>location:</b></div>
+        <div><span class="RequiredField">*&nbsp;</span><b>Location:</b></div>
         @Html.DropDownListFor(
              x => x.LocationsId,
     new SelectList(
@@ -76,6 +76,13 @@
         <div> 
             @Html.TextBoxFor(model => model.StartLocation, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.StartLocation)
+        </div>
+    <p></p>
+    <div><span class="RequiredField">*&nbsp;</span><b>Your name</b></div>
+        
+        <div> 
+            @Html.TextBoxFor(model => model.CreatorName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.CreatorName)
         </div>
     <p></p>
     <div><b>Description</b></div>

@@ -58,6 +58,7 @@ namespace FreeWheeling.UI.Controllers
             _MoreGroupDetailsModel.AverageSpeed = _Group.AverageSpeed;
             _MoreGroupDetailsModel.StartLocation = _Group.StartLocation;
             _MoreGroupDetailsModel.Description = _Group.Description;
+            _MoreGroupDetailsModel.CreatedByName = _Group.CreatedByName;
             return PartialView("_GroupDetailPartial", _MoreGroupDetailsModel);
         }
 
@@ -127,7 +128,8 @@ namespace FreeWheeling.UI.Controllers
                     CreatedTimeStamp = LocalNow,
                     ModifiedTimeStamp = LocalNow,
                     MapUrl = _AdHocCreateModel.MapUrl,
-                    IsPrivate = _AdHocCreateModel.IsPrivate
+                    IsPrivate = _AdHocCreateModel.IsPrivate,
+                    CreatedByName = _AdHocCreateModel.CreatorName
                 };
 
                 repository.AddAdHocRide(NewAdHoc);
@@ -402,7 +404,8 @@ namespace FreeWheeling.UI.Controllers
                 ModifiedTimeStamp = LocalNow,              
                 CreatedTimeStamp = LocalNow,
                 MapUrl = _GroupCreateModel.MapUrl,
-                IsPrivate = _GroupCreateModel.IsPrivate
+                IsPrivate = _GroupCreateModel.IsPrivate,
+                CreatedByName = _GroupCreateModel.CreatorName
             };
 
             repository.AddGroup(NewGroup);
