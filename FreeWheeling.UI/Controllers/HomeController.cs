@@ -66,7 +66,7 @@ namespace FreeWheeling.UI.Controllers
             }
         }
 
-        [Compress]
+        //[Compress]
         public ActionResult Index(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;

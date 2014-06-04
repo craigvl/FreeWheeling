@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using FreeWheeling.UI.Models;
 using FreeWheeling.UI.DataContexts;
@@ -21,79 +22,110 @@ namespace FreeWheeling.UI.Controllers
     public class AccountController : Controller
     {
         public AccountController()
-            : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new IdentityDb())))
         {
         }
 
-        public AccountController(UserManager<ApplicationUser> userManager)
+        public AccountController(ApplicationUserManager userManager)
         {
             UserManager = userManager;
         }
 
-        public UserManager<ApplicationUser> UserManager { get; private set; }
+        private ApplicationUserManager _userManager;
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
+        //
+        // GET: /Account/ForgotPassword
         [AllowAnonymous]
-        public ActionResult LostPassword()
+        public ActionResult ForgotPassword()
         {
             return View();
         }
 
+        //
+        // POST: /Account/ForgotPassword
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult LostPassword(LostPasswordModel model)
+        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
-                IdentityUser user;
-                UserHelper _UserHelp = new UserHelper();
-
-                using (var context = new IdentityDbContext())
+                var user = await UserManager.FindByEmailAsync(model.Email);
+                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
-                    var foundUserName = _UserHelp.GetUserNameViaEmail(model.Email);
-                        
-                    if (foundUserName != "New User")
-                    {
-                        // Generae password token that will be used in the email link to authenticate user
-                        var token = "Token here";
-                        // Generate the html link sent via email
-
-                        dynamic emailToUser = new Email("SendUserReset");
-                        emailToUser.To = model.Email;
-                        emailToUser.UserName = foundUserName;
-                        emailToUser.link = "<a href='"
-                           + Url.Action("ResetPassword", "Account", new { rt = token }, "http")
-                           + "'>Reset Password Link</a>";
-
-                        // Attempt to send the email
-                        try
-                        {
-                            emailToUser.Send();
-                        }
-                        catch (Exception e)
-                        {
-                            ModelState.AddModelError("", "Issue sending email: " + e.Message);
-                        }
-                    }
-                     else // Email not found
-                {
-                    /* Note: You may not want to provide the following information
-                    * since it gives an intruder information as to whether a
-                    * certain email address is registered with this website or not.
-                    * If you're really concerned about privacy, you may want to
-                    * forward to the same "Success" page regardless whether an
-                    * user was found or not. This is only for illustration purposes.
-                    */
-                    ModelState.AddModelError("", "No user found by that email.");
+                    // Don't reveal that the user does not exist or is not confirmed
+                    return View("ForgotPasswordConfirmation");
                 }
-                }
+
+                var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
+                ViewBag.Link = callbackUrl;
+                return View("ForgotPasswordConfirmation");
             }
 
-            /* You may want to send the user to a "Success" page upon the successful
-            * sending of the reset email link. Right now, if we are 100% successful
-            * nothing happens on the page. :P
-            */
+            // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        //
+        // GET: /Account/ForgotPasswordConfirmation
+        [AllowAnonymous]
+        public ActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+
+        //
+        // GET: /Account/ResetPassword
+        [AllowAnonymous]
+        public ActionResult ResetPassword(string code)
+        {
+            return code == null ? View("Error") : View();
+        }
+
+        //
+        // POST: /Account/ResetPassword
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await UserManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                // Don't reveal that the user does not exist
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+            AddErrors(result);
+            return View();
+        }
+
+        //
+        // GET: /Account/ResetPasswordConfirmation
+        [AllowAnonymous]
+        public ActionResult ResetPasswordConfirmation()
+        {
+            return View();
         }
 
         ///
@@ -110,35 +142,79 @@ namespace FreeWheeling.UI.Controllers
             return View();
         }
 
+        private SignInHelper _helper;
+
+        private SignInHelper SignInHelper
+        {
+            get
+            {
+                if (_helper == null)
+                {
+                    _helper = new SignInHelper(UserManager, AuthenticationManager);
+                }
+                return _helper;
+            }
+        }
+
         //
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-        [Compress]
+        //[Compress]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindAsync(model.UserName, model.Password);
-                if (user != null)
-                {
-                    await SignInAsync(user, true);
 
-                    //Create cookie if select remember me to expire in a year.
-                    int timeout = model.RememberMe ? 525600 : 30; // Timeout in minutes, 525600 = 365 days.
-                    var ticket = new FormsAuthenticationTicket(model.UserName, model.RememberMe, timeout);
-                    string encrypted = FormsAuthentication.Encrypt(ticket);
-                    var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
-                    cookie.Expires = System.DateTime.Now.AddMinutes(timeout);// Not my line
-                    cookie.HttpOnly = true; // cookie not available in javascript.
-                    Response.Cookies.Add(cookie);
+                // This doen't count login failures towards lockout only two factor authentication
+                // To enable password failures to trigger lockout, change to shouldLockout: true
+                var result = await SignInHelper.PasswordSignIn(model.UserName,model.Password, true, shouldLockout: false);
+                switch (result)
+                {
+                    case SignInStatus.Success:
+                    //await SignInAsync(user, true);
+
+                    ////Create cookie if select remember me to expire in a year.
+                    //int timeout = model.RememberMe ? 525600 : 30; // Timeout in minutes, 525600 = 365 days.
+                    //var ticket = new FormsAuthenticationTicket(model.UserName, model.RememberMe, timeout);
+                    //string encrypted = FormsAuthentication.Encrypt(ticket);
+                    //var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
+                    //cookie.Expires = System.DateTime.Now.AddMinutes(timeout);// Not my line
+                    //cookie.HttpOnly = true; // cookie not available in javascript.
+                    //Response.Cookies.Add(cookie);
 
                     return RedirectToLocal(returnUrl);
+                    //return RedirectToLocal(returnUrl);
+                    case SignInStatus.LockedOut:
+                        return View("Lockout");
+                    case SignInStatus.RequiresTwoFactorAuthentication:
+                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl });
+                    case SignInStatus.Failure:
+                    default:
+                        ModelState.AddModelError("", "Invalid login attempt.");
+                        return View(model);
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Invalid username or password.");
-                }
+
+                //var user = await UserManager.FindAsync(model.UserName, model.Password);
+                //if (user != null)
+                //{
+                //    await SignInAsync(user, true);
+
+                //    //Create cookie if select remember me to expire in a year.
+                //    int timeout = model.RememberMe ? 525600 : 30; // Timeout in minutes, 525600 = 365 days.
+                //    var ticket = new FormsAuthenticationTicket(model.UserName, model.RememberMe, timeout);
+                //    string encrypted = FormsAuthentication.Encrypt(ticket);
+                //    var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
+                //    cookie.Expires = System.DateTime.Now.AddMinutes(timeout);// Not my line
+                //    cookie.HttpOnly = true; // cookie not available in javascript.
+                //    Response.Cookies.Add(cookie);
+
+                //    return RedirectToLocal(returnUrl);
+                //}
+                //else
+                //{
+                //    ModelState.AddModelError("", "Invalid username or password.");
+                //}
             }
 
             // If we got this far, something failed, redisplay form
@@ -174,8 +250,18 @@ namespace FreeWheeling.UI.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInAsync(user, isPersistent: true);
-                    return RedirectToAction("Index", "Home", new { ReturnUrl = returnUrl });
+                    var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account",
+                    new { userId = user.Id, code = code },
+                    protocol: Request.Url.Scheme);
+
+                    await UserManager.SendEmailAsync(user.Id,
+                        "Confirm your account",
+                        "Please confirm your account by clicking this link: <a href=\""
+                        + callbackUrl + "\">link</a>");
+
+                    ViewBag.Link = callbackUrl;
+                    return View("DisplayEmail");
                 }
                 else
                 {
@@ -185,6 +271,24 @@ namespace FreeWheeling.UI.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        //
+        // GET: /Account/ConfirmEmail
+        [AllowAnonymous]
+        public async Task<ActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return View("Error");
+            }
+            var result = await UserManager.ConfirmEmailAsync(userId, code);
+            if (result.Succeeded)
+            {
+                return View("ConfirmEmail");
+            }
+            AddErrors(result);
+            return View();
         }
 
         //
@@ -346,10 +450,10 @@ namespace FreeWheeling.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Manage");
-            }
+            //if (User.Identity.IsAuthenticated)
+            //{
+            //    return RedirectToAction("Index","Home");
+            //}
 
             if (ModelState.IsValid)
             {
@@ -400,13 +504,6 @@ namespace FreeWheeling.UI.Controllers
             return View();
         }
 
-        [ChildActionOnly]
-        public ActionResult RemoveAccountList()
-        {
-            var linkedAccounts = UserManager.GetLogins(User.Identity.GetUserId());
-            ViewBag.ShowRemoveButton = HasPassword() || linkedAccounts.Count > 1;
-            return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
-        }
 
         protected override void Dispose(bool disposing)
         {
