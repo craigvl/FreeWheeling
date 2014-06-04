@@ -179,6 +179,15 @@ namespace FreeWheeling.UI.Controllers
 
                     T.Start();
                 }
+
+                Task E = new Task(() =>
+                {
+                    UserHelper _UserHelp = new UserHelper();
+                    _UserHelp.SendNewGroupCreated(NewAdHoc.Name);
+                });
+
+                E.Start();
+
                 return Json(new { success = true, Message = "New AdHoc Ride has been created." }, 
                     JsonRequestBehavior.AllowGet);  
             }
@@ -405,6 +414,14 @@ namespace FreeWheeling.UI.Controllers
             {
                 return RedirectToAction("InviteOthersToPrivateBunch", "Group", new { GroupId = NewGroup.id });
             }
+
+            Task T = new Task(() =>
+            {
+                UserHelper _UserHelp = new UserHelper();
+                _UserHelp.SendNewGroupCreated(_GroupCreateModel.Name);
+            });
+
+            T.Start();
 
             return RedirectToAction("Index", "Group");
         }
