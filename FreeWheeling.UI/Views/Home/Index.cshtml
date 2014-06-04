@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Home Page";
 }
+<script src="http://cdn.millennialmedia.com/mmadlib/v1/mmadlib.js"></script>
 <div class="row">
 @if (Model.LocationsId != 0)
 {
@@ -59,7 +60,8 @@
                 </tr>  
             }
         </table>
-    }        
+    <div align="center" style="height:50px;" id="bunchycycle"></div>
+    }
 }
 else
 {
@@ -180,4 +182,18 @@ else
                 HideProgress();
             });
         </script>
+<script>
+    function callBack(adFilled) {
+        //adFilled will be true if the ad fills, else it will be false
+        //console.log("was the ad filled: " + adFilled);
+    };
+    window.mmAPI.placeAd({
+        containerElementId: "bunchycycle",
+        apid: "164536",
+        placementType: "inline",
+        width: 300,
+        height: 50,
+        allowLocation: true
+    },callBack);
+</script>
     }
