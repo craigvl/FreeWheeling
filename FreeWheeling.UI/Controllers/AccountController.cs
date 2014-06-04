@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using FreeWheeling.UI.Models;
 using FreeWheeling.UI.DataContexts;
@@ -21,16 +22,26 @@ namespace FreeWheeling.UI.Controllers
     public class AccountController : Controller
     {
         public AccountController()
-            : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new IdentityDb())))
         {
         }
 
-        public AccountController(UserManager<ApplicationUser> userManager)
+        public AccountController(ApplicationUserManager userManager)
         {
             UserManager = userManager;
         }
 
-        public UserManager<ApplicationUser> UserManager { get; private set; }
+        private ApplicationUserManager _userManager;
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
         [AllowAnonymous]
         public ActionResult LostPassword()
@@ -99,7 +110,7 @@ namespace FreeWheeling.UI.Controllers
         ///
         // GET: /Account/Login
         [AllowAnonymous]
-        [Compress]
+        //[Compress]
         public ActionResult Login(string returnUrl)
         {
             if (returnUrl == null)
@@ -110,19 +121,37 @@ namespace FreeWheeling.UI.Controllers
             return View();
         }
 
+        private SignInHelper _helper;
+
+        private SignInHelper SignInHelper
+        {
+            get
+            {
+                if (_helper == null)
+                {
+                    _helper = new SignInHelper(UserManager, AuthenticationManager);
+                }
+                return _helper;
+            }
+        }
+
         //
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-        [Compress]
+        //[Compress]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindAsync(model.UserName, model.Password);
-                if (user != null)
+
+                // This doen't count login failures towards lockout only two factor authentication
+                // To enable password failures to trigger lockout, change to shouldLockout: true
+                var result = await SignInHelper.PasswordSignIn(model.UserName,model.Password, model.RememberMe, shouldLockout: false);
+                switch (result)
                 {
-                    await SignInAsync(user, true);
+                    case SignInStatus.Success:
+                        //await SignInAsync(user, true);
 
                     //Create cookie if select remember me to expire in a year.
                     int timeout = model.RememberMe ? 525600 : 30; // Timeout in minutes, 525600 = 365 days.
@@ -134,11 +163,37 @@ namespace FreeWheeling.UI.Controllers
                     Response.Cookies.Add(cookie);
 
                     return RedirectToLocal(returnUrl);
+                    //return RedirectToLocal(returnUrl);
+                    case SignInStatus.LockedOut:
+                        return View("Lockout");
+                    case SignInStatus.RequiresTwoFactorAuthentication:
+                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl });
+                    case SignInStatus.Failure:
+                    default:
+                        ModelState.AddModelError("", "Invalid login attempt.");
+                        return View(model);
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Invalid username or password.");
-                }
+
+                //var user = await UserManager.FindAsync(model.UserName, model.Password);
+                //if (user != null)
+                //{
+                //    await SignInAsync(user, true);
+
+                //    //Create cookie if select remember me to expire in a year.
+                //    int timeout = model.RememberMe ? 525600 : 30; // Timeout in minutes, 525600 = 365 days.
+                //    var ticket = new FormsAuthenticationTicket(model.UserName, model.RememberMe, timeout);
+                //    string encrypted = FormsAuthentication.Encrypt(ticket);
+                //    var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
+                //    cookie.Expires = System.DateTime.Now.AddMinutes(timeout);// Not my line
+                //    cookie.HttpOnly = true; // cookie not available in javascript.
+                //    Response.Cookies.Add(cookie);
+
+                //    return RedirectToLocal(returnUrl);
+                //}
+                //else
+                //{
+                //    ModelState.AddModelError("", "Invalid username or password.");
+                //}
             }
 
             // If we got this far, something failed, redisplay form
@@ -174,8 +229,18 @@ namespace FreeWheeling.UI.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInAsync(user, isPersistent: true);
-                    return RedirectToAction("Index", "Home", new { ReturnUrl = returnUrl });
+                    var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account",
+                    new { userId = user.Id, code = code },
+                    protocol: Request.Url.Scheme);
+
+                    await UserManager.SendEmailAsync(user.Id,
+                        "Confirm your account",
+                        "Please confirm your account by clicking this link: <a href=\""
+                        + callbackUrl + "\">link</a>");
+
+                    ViewBag.Link = callbackUrl;
+                    return View("DisplayEmail");
                 }
                 else
                 {

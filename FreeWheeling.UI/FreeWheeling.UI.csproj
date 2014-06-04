@@ -244,6 +244,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\ResolveController.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -604,6 +605,7 @@
     <Content Include="Views\Home\_HomePageNextRide.cshtml" />
     <Content Include="Views\Home\_HomePageNextRandomRide.cshtml" />
     <Content Include="Views\Home\_HomePageKeenActionsRandom.cshtml" />
+    <Content Include="Views\Emails\SendUserVerify.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
