@@ -23,7 +23,7 @@
                     <br />
                     <div style="padding-left:15px;">
                         <u>@Html.ActionLink("Create Account", "Register", new { ReturnUrl = ViewBag.ReturnUrl })</u> or sign in below.
-                    </div>
+                    </div>                   
                     <br />
                     @Html.ValidationSummary(true)
 
@@ -60,9 +60,15 @@
                         <div class="col-md-offset-0 col-md-12">
                             <input onclick="ShowProgress();" type="submit" value="Log in" class="btn btn-default" />
                         </div>
+                      
                     </div>
-                    <div style="clear:both"></div>
-                </div>
+                    <div class="form-group col-md-12">
+                        <div style="padding-left:15px;">
+                            <u>@Html.ActionLink("Lost password?", "ForgotPassword", new { ReturnUrl = ViewBag.ReturnUrl })</u>
+                        </div>
+                        </div>
+                        <div style="clear:both"></div>
+                    </div>
                 
             }
         </section>

@@ -18,7 +18,6 @@
         }
 
         <section id="externalLogins">
-            @Html.Action("RemoveAccountList")
             @Html.Partial("_ExternalLoginsListPartial", new FreeWheeling.UI.Models.ExternalLoginViewModel() { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
         </section>
     </div>
