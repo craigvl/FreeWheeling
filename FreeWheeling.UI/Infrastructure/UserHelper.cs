@@ -100,6 +100,13 @@ namespace FreeWheeling.UI.Infrastructure
             emailToUser.Send();
         }
 
+        public void SendNewGroupCreated(string Name)
+        {
+            dynamic emailToUser = new Email("SendNewGroupCreated");
+            emailToUser.Name = Name;          
+            emailToUser.Send();
+        }
+
         public void SendUsersPrivateAdHocBunchInviteEmail(
            List<PrivateRandomUsers> _PrivateRandomUsers,
            int RideId,
