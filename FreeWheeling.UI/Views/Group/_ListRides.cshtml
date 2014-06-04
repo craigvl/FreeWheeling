@@ -29,9 +29,10 @@
                                 <span id="hideinfo@(item.id)" style="display:none;" onclick="hideinfodetails(@(item.id))" class="glyphicon glyphicon-info-sign"></span>
                                 @Ajax.ActionLink(" ", // <-- Text to display
                                 "GetGroupDetails", // <-- Action Method Name
-                                new { id = item.id },
+                                new { id = item.id},
                      new AjaxOptions
                      {
+                         OnBegin = "ShowProgress()",
                          UpdateTargetId = "GroupInfo" + item.id.ToString(), // <-- DOM element ID to update
                          InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
                          HttpMethod = "POST",
