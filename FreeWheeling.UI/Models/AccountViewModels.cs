@@ -29,13 +29,43 @@ namespace FreeWheeling.UI.Models
         public string ConfirmPassword { get; set; }
     }
 
-    public class LostPasswordModel
+    public class ForgotViewModel
     {
         [Required(ErrorMessage = "We need your email to send you a reset link!")]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email")]
         [EmailAddress(ErrorMessage = "Not a valid email")]
         public string Email { get; set; }
+    }
+
+    public class ForgotPasswordViewModel
+    {
+        [Required(ErrorMessage = "We need your email to send you a reset link!")]
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "Email")]
+        [EmailAddress(ErrorMessage = "Not a valid email")]
+        public string Email { get; set; }
+    }
+
+    public class ResetPasswordViewModel
+    {
+        [Required(ErrorMessage = "We need your email to send you a reset link!")]
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        public string Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm password")]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
+
+        public string Code { get; set; }
     }
 
     public class LoginViewModel

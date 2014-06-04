@@ -244,6 +244,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\ResolveController.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -583,7 +584,6 @@
     <Content Include="Views\Group\InviteOthersToPrivateBunch.cshtml" />
     <Content Include="Views\Emails\SendUsersPrivateBunchInviteEmail.cshtml" />
     <Content Include="Views\Emails\SendUsersPrivateAdHocBunchInviteEmail.cshtml" />
-    <Content Include="Views\Account\LostPassword.cshtml" />
     <Content Include="Views\Emails\SendUserReset.cshtml" />
     <Content Include="Views\Ride\_RidersKeen.cshtml" />
     <Content Include="Views\Group\_ListPrivateRides.cshtml" />
@@ -604,6 +604,13 @@
     <Content Include="Views\Home\_HomePageNextRide.cshtml" />
     <Content Include="Views\Home\_HomePageNextRandomRide.cshtml" />
     <Content Include="Views\Home\_HomePageKeenActionsRandom.cshtml" />
+    <Content Include="Views\Emails\SendUserVerify.cshtml" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Account\DisplayEmail.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
