@@ -3,25 +3,20 @@
 @{
     ViewBag.Title = "Index";
 }
-<p></p>
-@Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
-<p></p>
 <div class="row">
-    <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-        <span class="btn btn-default btn-block">Settings</span>
-    </div>
-</div>
-
-<p></p>
-<div class="row>">
-    <b>Change Location</b>
-    <p></p>
-    <div>
-    @using (Ajax.BeginForm("Index",
+    <p>
+        @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
+    </p>
+        <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+            <span class="btn btn-default btn-block">Settings</span>
+        </div> 
+    <p><b>Change Location</b></p>   
+    <div class="">
+        @using (Ajax.BeginForm("Index",
     new AjaxOptions { HttpMethod = "POST", OnSuccess = "OnSuccess", OnFailure = "OnFailure" }))
-    {
-        @Html.ValidationMessageFor(c => c.LocationsId, "Please select a Location")
-        @Html.DropDownListFor(
+        {
+            @Html.ValidationMessageFor(c => c.LocationsId, "Please select a Location")
+            @Html.DropDownListFor(
              x => x.LocationsId,
     new SelectList(
         Model.Locations.ToList().Select(
@@ -29,38 +24,27 @@
         ),
         "Value",
                  "Text", Model.LocationsId
-    ), "-- Set a Location --", new { @class = "form-control" }
-)
-        @:</div>
-        <p></p>
-    <div>
-       <b> Email Settings</b>
-        <p></p>
-        Receive email updates:
-        @Html.CheckBoxFor(x => x.ReceiveEmails)
+    ), "-- Set a Location --", new { @class = "form-control" })
+                <p></p>
+                <p><b>Email Settings</b></p>
+                <p>Receive email updates: @Html.CheckBoxFor(x => x.ReceiveEmails)</p>        
+            <input onclick="ShowProgress();" type="submit" value="Save" class="btn btn-default" />
+        }
     </div>
-        <p></p>    
-        <input onclick="ShowProgress();" type="submit" value="Save" class="btn btn-default" />  
-    }
-</div>
+    </div>
     @section scripts{
         @Scripts.Render("~/bundles/jqueryval")
-
         <script>
-
             jQuery(document).ready(function () {
                 HideProgress();
             });
-
             function OnSuccess(data) {
                 alert(data.message);
                 HideProgress();
             }
-
             function OnFailure(data) {
                 alert(data.message);
             }
-
             $("form").submit(function () {
                 if (!$(this).valid()) {
                     HideProgress();
@@ -70,6 +54,5 @@
                     return true;
                 }
             });
-
         </script>
     }

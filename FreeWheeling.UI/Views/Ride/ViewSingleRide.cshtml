@@ -114,7 +114,7 @@
         </div>
 
         <div class="row">
-            <div class="col-xs-12 col-md-12 col-sm-12" id="@("keendiv_" + @Model.Ride.id)">
+            <div class="col-xs-12 col-md-12 col-sm-12" id="@("keendiv_" + @Model.Ride.id)" style="padding-left:35px">
                 @{
                     @Html.Partial("_RidersKeenRandomAndSingle", Model, new ViewDataDictionary { { "type", "single" } })
                 }
