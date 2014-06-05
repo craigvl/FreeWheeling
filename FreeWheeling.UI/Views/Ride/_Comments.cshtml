@@ -19,11 +19,11 @@
         submitid = "submit_Second";
     }
 }
-<div id="@("collapseCommentPanel" + @rideid)">
+<div id="@("collapseCommentPanel" + @rideid)" style="padding-left:20px">
     @foreach (Comment item in @comments)
-        {
-        @item.userName <text>: </text>
-        @item.CommentText
+    {
+        <span>@item.userName :</span>
+        <span style="font-style:italic">@item.CommentText</span>
         @:<p></p>
         }
 </div>
