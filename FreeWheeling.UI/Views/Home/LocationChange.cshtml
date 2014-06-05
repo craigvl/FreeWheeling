@@ -3,13 +3,16 @@
     ViewBag.Title = "Change Location";
 }
 
-@Html.ActionLink("Back <---", "Index", "Home", null, new { @class = "btn btn-info" })
+<div class="row">
+    <p>
+        @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
+    </p>
 
-<h2>Change Location</h2>
+    <p>Change Location</p>
 
-@using (Html.BeginForm("Index", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.DropDownListFor(
+    @using (Html.BeginForm("Index", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.DropDownListFor(
              x => x.LocationsId,
     new SelectList(
         Model.Locations.ToList().Select(
@@ -17,22 +20,17 @@
         ),
         "Value",
                  "Text", Model.LocationsId
-    ), "-- Set a Location --", new {@class = "form-control" }
+    ), "-- Set a Location --", new { @class = "form-control" }
 )
-    <p></p>
-    <input onclick="ShowProgress();" type="submit" value="Set Location" class="btn btn-primary" />
+        <p></p>
+        <input onclick="ShowProgress();" type="submit" value="Set Location" class="btn btn-default" />
 
-}
-
-<div class="loading" align="center">
-    Loading. Please wait.<br />
-    <br />
-    <img src="~/Content/Images/loader.gif" alt="" />
+    }
 </div>
-@section scripts{
-    <script>
-        jQuery(document).ready(function () {
-            HideProgress();
-        });
-    </script>
-}
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                HideProgress();
+            });
+        </script>
+    }
