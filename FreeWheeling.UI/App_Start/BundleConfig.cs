@@ -71,11 +71,8 @@ namespace FreeWheeling.UI
             bundles.Add(azuremobile);
 
             //Custom css
-            bundles.Add(new StyleBundle("~/Content/css", "http://bunchy.hoocreative.netdna-cdn.com/Content/Site.css").Include(
-                      "~/Content/site.css"));
-
-            bundles.Add(new StyleBundle("~/Content/custom").Include(
-                   "~/Content/site.css"));
+            bundles.Add(new StyleBundle("~/Content/custom", "http://bunchy.hoocreative.netdna-cdn.com/Content/Site.css").Include(
+                      "~/Content/Site.css"));
 
             bundles.Add(new StyleBundle("~/Content/css", "//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css").Include(
                       "~/Content/bootstrap.css"));
