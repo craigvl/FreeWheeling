@@ -103,9 +103,9 @@
 @Html.Partial("_RidePanel", Model, new ViewDataDictionary { { "position", "1" } })
 @Html.Partial("_RidePanel", Model, new ViewDataDictionary { { "position", "2" } })
 @section scripts{
-  @Scripts.Render("~/Scripts/jquery.timeago.js")
+  @Scripts.Render("http://bunchy.hoocreative.netdna-cdn.com/Scripts/jquery.timeago.js")
   @Scripts.Render("~/bundles/jqueryval")
   @Scripts.Render("~/bundles/azuremobile")
   @Scripts.Render("~/bundles/pusher")
-  <script src="~/Scripts/DoubleBunchRide.js"></script>
+  <script src="http://bunchy.hoocreative.netdna-cdn.com/Scripts/DoubleBunchRide.js"></script>
 }
