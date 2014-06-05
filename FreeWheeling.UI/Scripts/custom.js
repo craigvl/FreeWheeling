@@ -68,13 +68,11 @@ function UpdateKeenActionsPusher(message, rideid, keencount, username, leavetime
             jQuery("abbr.timeago").timeago();
         }
         else {
-            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="" style"text-decoration: none;">' + username + '<span class=""> Left  <abbr class="timeago" title="' + moment(leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
-
+            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="" style"text-decoration: none;">' + username + '<span class="onway"> Left  <abbr class="timeago" title="' + moment(leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
         }
     }
             
 jQuery("abbr.timeago").timeago();
-
 }
 
 function UpdateKeenActions(message, rideid, keencount, username, leavetime, position)
@@ -137,7 +135,7 @@ function UpdateKeenActions(message, rideid, keencount, username, leavetime, posi
             $(keenuser).css("text-decoration", "none");
         }
         else {
-            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="" style"text-decoration: none;">' + username + '<span class=""> is on the way! Left  <abbr class="timeago" title="' + moment(leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
+            $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="" style"text-decoration: none;">' + username + '<span class="onway"> left  <abbr class="timeago" title="' + moment(leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
         }
         jQuery("abbr.timeago").timeago();
 
