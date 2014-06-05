@@ -3,9 +3,6 @@
 @{
     ViewBag.Title = "Manage Account";
 }
-@Styles.Render("~/Content/awesome")
-@Styles.Render("~/Content/csssocial")
-
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div class="row">
     <p>You're logged in as <strong>@User.Identity.GetUserName()</strong>.</p>
