@@ -80,7 +80,7 @@ namespace FreeWheeling.UI
             bundles.Add(new StyleBundle("~/Content/awesome", "//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css").Include(
                       "~/Content/font-awesome.css"));
 
-            bundles.Add(new StyleBundle("~/Content/csssocial").Include(
+            bundles.Add(new StyleBundle("~/Content/csssocial",  "http://bunchy.hoocreative.netdna-cdn.com/Content/bootstrap-social.css").Include(
                       "~/Content/bootstrap-social.css"
                       ));
 
