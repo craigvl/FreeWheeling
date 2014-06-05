@@ -69,12 +69,10 @@ function UpdateKeenActionsPusher(message, rideid, keencount, username, leavetime
         }
         else {
             $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="" style"text-decoration: none;">' + username + '<span class="onway"> Left  <abbr class="timeago" title="' + moment(leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
-
         }
     }
             
 jQuery("abbr.timeago").timeago();
-
 }
 
 function UpdateKeenActions(message, rideid, keencount, username, leavetime, position)
