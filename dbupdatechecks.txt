@@ -1,0 +1,2 @@
+If you update db and then need to update webjobs make sure that you rebuild
+whole project in RELEASE!
