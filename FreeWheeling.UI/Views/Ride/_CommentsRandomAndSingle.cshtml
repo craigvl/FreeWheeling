@@ -23,28 +23,28 @@
         rideid = Model.Ride.id;
         groupid = Model.Ride.Group.id;
         parentid = Model.Ride.id;
-    } 
-
-<div id="@("collapseCommentPanel" + @rideid)">
-    @if (type == "single")
-    {
-        foreach (Comment item in @commentssingle)
-        {
-           @item.userName <text>: </text>
-           @item.CommentText
-           @:<p></p>
-        }
-     }
-    @if (type == "random")
-    {
-      foreach (AdHocComment item in @commentsrandom)
-      {
-            @item.userName <text>: </text>
-            @item.CommentText
-            @:<p></p>
-      }  
     }
-</div>
+
+    <div id="@("collapseCommentPanel" + @rideid)" style="padding-left:20px">
+        @if (type == "single")
+        {
+            foreach (Comment item in @commentssingle)
+            {
+                <span>@item.userName :</span>
+                <span style="font-style:italic">@item.CommentText</span>
+                @:<p></p>
+        }
+        }
+        @if (type == "random")
+        {
+            foreach (AdHocComment item in @commentsrandom)
+            {
+                <span>@item.userName :</span>
+                <span style="font-style:italic">@item.CommentText</span>
+                @:<p></p>
+      }
+        }
+    </div>
 <div>
 
 @if (type == "single"){

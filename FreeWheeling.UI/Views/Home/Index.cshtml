@@ -21,12 +21,12 @@
         }   
     }
         <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;">
-		    @Html.ActionLink("bunches", "Index", "Group", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
+		    @Html.ActionLink("Bunches", "Index", "Group", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
 		    @Html.ActionLink(" ", "Create", "Group", new { }, new { @class = "btn btn-default col-xs-3 glyphicon glyphicon-plus", style = "text-align:center;top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })
 	    </div>
 
         <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:15px;">
-            @Html.ActionLink("random bunches (" + @Model.UpCommingAd_HocCount + ")", "AdHocList", "Ride", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
+            @Html.ActionLink("Random Bunches (" + @Model.UpCommingAd_HocCount + ")", "AdHocList", "Ride", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
             @Html.ActionLink(" ", "CreateAdHoc", "Group", new { }, new { @class = "btn btn-default col-xs-3 glyphicon glyphicon-plus", style = "text-align:center;top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })
         </div>
 
@@ -34,9 +34,8 @@
     {
         <table class="table content-box">
             <tr>
-                <th><span style="" class="glyphicon glyphicon-star"></span><span style="position: relative; top: -1px;"> favourites</span></th>
+                <th><span style="" class="glyphicon glyphicon-star"></span><span style="position: relative; top: -1px;"> Favourites</span></th>
             </tr>
-
             @if (Model.FavouriteBunches.Count() != 0)
             {
                 foreach (Group bunch in Model.FavouriteBunches)
@@ -81,7 +80,6 @@ else
 		<input type="submit" value="Set Location" class="btn btn-primary" />
 	}
 }
-
     </div>
     @section scripts{
     @Scripts.Render("~/Scripts/jquery.timeago.js")

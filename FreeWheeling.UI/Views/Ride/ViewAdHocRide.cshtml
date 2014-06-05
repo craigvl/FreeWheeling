@@ -121,7 +121,7 @@ else
 </div>
 
     <div class="row">
-        <div class="col-xs-12 col-md-12 col-sm-12" id="@("keendiv_" + @Model.RandomRide.id)">
+        <div class="col-xs-12 col-md-12 col-sm-12" id="@("keendiv_" + @Model.RandomRide.id)" style="padding-left:35px">
             @{
                 @Html.Partial("_RidersKeenRandomAndSingle", Model, new ViewDataDictionary { { "type", "random" } })
             }

@@ -17,60 +17,62 @@
                             <table style="width:100%">
                                 <tr style="width:100%">
                                     <td style="width:100%">
-                                        <div style="width:20%;float:left;">
+                                        <div style="width:10%;float:left;">
                                             @Html.ActionLink(" ", "Index", "Ride", new { groupid = item.id },
-                                            new { @class = "glyphicon glyphicon-search", onclick = "ShowProgress();" })
-                                            <span class="glyphicon glyphicon-lock"></span>
-                                        </div>
-                                        <div style="width:40%;float:left;">
-                                            @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id },
+                                            new { @class = "glyphicon glyphicon-search", onclick = "ShowProgress();" })                                            
+                                        </div>                         
+                                            <div style="width:40%;float:left;">
+                                                @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id },
                                  new { @class = "boldtext", onclick = "ShowProgress();" })
-                                        </div>                                      
-                                        <div style="width: 10%; float: right;">
-                                            <span id="hideinfo@(item.id)" style="display:none;" onclick="hideinfodetails(@(item.id))" class="glyphicon glyphicon-info-sign"></span>
-                                            @Ajax.ActionLink(" ", // <-- Text to display
+                                            </div>
+                                            <div style="width: 10%; float: right;">
+                                                <span id="hideinfo@(item.id)" style="display:none;" onclick="hideinfodetails(@(item.id))" class="glyphicon glyphicon-info-sign"></span>
+                                                @Ajax.ActionLink(" ", // <-- Text to display
                                             "GetGroupDetails", // <-- Action Method Name
                                             new { id = item.id },
                                             new AjaxOptions
                                                 {
-                                                    OnBegin = "ShowProgress()",  
+                                                    OnBegin = "ShowProgress()",
                                                     UpdateTargetId = "GroupInfo" + item.id.ToString(), // <-- DOM element ID to update
                                                     InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
                                                     HttpMethod = "POST",
                                                     OnSuccess = "HideInfoLink(" + item.id.ToString() + ")"
                                                 }, new { id = "infoButton" + item.id.ToString(), @class = "glyphicon glyphicon-info-sign" })
+                                            </div>
+                                        <div style="width:10%;float:right;">
+                                            <span class="glyphicon glyphicon-lock"></span>
                                         </div>
 
-                                        @if (isMember)
+                                            @if (isMember)
                                             {
 
-                                            <div style="width: 10%; float: right;">
-                                                        @Html.ActionLink(" ", "RemoveFromFavouriteList", "Group",
+                                                <div style="width: 10%; float: right;">
+                                                    @Html.ActionLink(" ", "RemoveFromFavouriteList", "Group",
                                                             new { id = item.id },
                                                               new { @class = "glyphicon glyphicon-star", onclick = "ShowProgress();" })
-                                            </div>
+                                                </div>
 
                                             }
                                             else
-                                            {   
-                                            <div style="width: 10%; float: right;">
-                                                @Html.ActionLink(" ", "Join", "Group", new { id = item.id },
+                                            {
+                                                <div style="width: 10%; float: right;">
+                                                    @Html.ActionLink(" ", "Join", "Group", new { id = item.id },
                                                 new { @class = "glyphicon glyphicon-star-empty", onclick = "ShowProgress();" })
-                                            </div>
+                                                </div>
                                             }
 
-                                        @if (isCreator)
-                                        {
-                                            <div style="width: 10%; float: right;">
-                                                @Html.ActionLink(" ", "EditGroup", "Group", new { groupId = item.id },
+                                            @if (isCreator)
+                                            {
+                                                <div style="width: 10%; float: right;">
+                                                    @Html.ActionLink(" ", "EditGroup", "Group", new { groupId = item.id },
                                                  new { @class = "glyphicon glyphicon-pencil", onclick = "ShowProgress();" })
-                                            </div>
-                                            <div style="width: 10%; float: right;">
-                                                @Html.ActionLink(" ", "InviteOthersToPrivateBunch", "Group", new { groupId = item.id },
+                                                </div>
+                                                <div style="width: 10%; float: right;">
+                                                    @Html.ActionLink(" ", "InviteOthersToPrivateBunch", "Group", new { groupId = item.id },
                                                       new { @class = "glyphicon glyphicon-user", onclick = "ShowProgress();" })
-                                            </div>
-                                        }
-                                    </td>
+                                                </div>
+                                            }
+</td>
                                 </tr>
                             </table>
                         }
