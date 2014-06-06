@@ -349,9 +349,9 @@ padding: 10px;
 }
 
 .btn-success {
-    background-color:#EFEFE7;
-    border-color: #D7D7D0;
-    color: #333333;
+    background-color:#8dc63f;
+    border-color: #8dc63f;
+    color: #FFF;
      -webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	-ms-border-radius: 10px;
@@ -362,15 +362,21 @@ padding: 10px;
 .btn-success:focus,
 .btn-success:active,
 .btn-success.active,
-.open .dropdown-toggle.btn-danger {
-    background-color:#EFEFE7;
-    border-color: #D7D7D0;
-    color: #333333;
+.open .dropdown-toggle.btn-success {
+    background-color:#8dc63f;
+    border-color: #8dc63f;
+    color: #FFF;
      -webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	-ms-border-radius: 10px;
 	-o-border-radius: 10px;
 	border-radius: 10px;
+}
+
+alert alert-success {
+    background-color:#8dc63f;
+    border-color: #8dc63f;
+    color: #333333;
 }
 
 /*----------------------------------------------------Nav Bar Start--------------------------------------------------------------------------*/
@@ -556,6 +562,9 @@ as per http://stackoverflow.com/questions/18192082/bootstrap-3-navbar-collapse *
 -----------------------------------------------------------*/
 #messagewrapper
 {
+    background-color:#8dc63f;
+    border-color: #8dc63f;
+    color: #FFF;
     position: absolute;        /*Change to absolute according to ReadMe.txt. Original value is fixed*/
     top: 0px;
     margin: 47px auto;      /* Change this to adjust height from top of page. Default is 47px */
