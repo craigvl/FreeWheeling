@@ -40,7 +40,8 @@ function UpdateKeenActionsPusher(message, rideid, keencount, username, leavetime
         }
         else {                     
             $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="">' + username + " <span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-up'></span>  </span>");
-        }                    
+        }
+        displayMessageAjax(username + " is in", "success", "", "tempoarayMessage");
     }
                 
     if (message == 'Out') {
@@ -55,6 +56,7 @@ function UpdateKeenActionsPusher(message, rideid, keencount, username, leavetime
         else {
             $("#keendiv_" + rideid).prepend('<p><span style="text-decoration:line-through;" id=keen_' + username + rideid + ' class="">' + username + " <span style='padding-left:5px;' class='glyphicon glyphicon-thumbs-down'></span>  </span>");
         }
+        displayMessageAjax(username + " is out", "success", "", "tempoarayMessage");
     }
                 
     if (message == 'OnWay') {
@@ -70,6 +72,7 @@ function UpdateKeenActionsPusher(message, rideid, keencount, username, leavetime
         else {
             $("#keendiv_" + rideid).prepend('<p><span id=keen_' + username + rideid + ' class="" style"text-decoration: none;">' + username + '<span class="onway"> Left  <abbr class="timeago" title="' + moment(leavetime).format('MM/DD/YYYY HH:mm:ss') + '"> </abbr></span>');
         }
+        displayMessageAjax(username + " has left", "success", "", "tempoarayMessage");
     }
             
 jQuery("abbr.timeago").timeago();
@@ -100,7 +103,8 @@ function UpdateKeenActions(message, rideid, keencount, username, leavetime, posi
             $("#OutFirst").show();
             $("#OnWayFirst").show();
             $("#InFirst").hide();
-        }    
+        }
+        displayMessageAjax("You're in", "success", "", "tempoarayMessage");
     }
 
     if (message == 'Out') {
@@ -124,6 +128,7 @@ function UpdateKeenActions(message, rideid, keencount, username, leavetime, posi
             $("#OnWayFirst").hide();
             $("#InFirst").show();
         }
+        displayMessageAjax("You're out", "success", "", "tempoarayMessage");
     }
 
     if (message == 'OnWay') {
@@ -149,6 +154,7 @@ function UpdateKeenActions(message, rideid, keencount, username, leavetime, posi
             $("#OnWayFirst").hide();
             $("#InFirst").hide();
         }
+        displayMessageAjax("On your way", "success", "", "tempoarayMessage");
     }
 }
 
@@ -156,7 +162,7 @@ function UpdateCommentFields(message, rideid, username, commentcount) {
     $("#collapseCommentPanel" + rideid).prepend("<p><span>" + username + " : <span><span style='font-style:italic'>" + message + "</span><p>");
     $("#CommentCountSpan" + rideid).html("(" + commentcount + ")");
     $("#CommentCountSpanSeeAll" + rideid).html("View All (" + commentcount + ")");
-
+    displayMessageAjax("Comment added", "success", "", "tempoarayMessage");
     //Clear comment textbox after submit for both rides.
     $("form #CommentStringFirst").val("");
     $("form #CommentStringSecond").val("");
@@ -167,6 +173,7 @@ function UpdateCommentFieldsPusher(message, rideid, username, commentcount) {
     $("#collapseCommentPanel" + rideid).prepend("<p><span>" + username + " : <span><span style='font-style:italic'>" + message + "</span><p>");
     $("#CommentCountSpan" + rideid).html("(" + commentcount + ")");
     $("#CommentCountSpanSeeAll" + rideid).html("View All (" + commentcount + ")");
+    displayMessageAjax(username + " added a new comment", "success", "", "tempoarayMessage");
 }
 
 function toggleChevron(e) {

@@ -55,6 +55,10 @@
         <div>
             <b>Private:</b>
             @Html.CheckBoxFor(f => f.IsPrivate)
+            <p></p>
+            <p><b>Note:</b> If this is a private group you will be able to invite users by clicking on the user icon
+            in the group list.</p><p>Only you as the bunch creator will be able to invite users and only those users that you invite will be 
+            able to see this bunch.</p>
         </div>
         <p></p>
         <hr />
@@ -73,55 +77,45 @@
         </div>
         <p></p>
         <div><span class="RequiredField">*&nbsp;</span><b>Start Location</b></div>
-
         <div>
             @Html.TextBoxFor(model => model.StartLocation, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.StartLocation)
         </div>
         <p></p>
         <div><span class="RequiredField">*&nbsp;</span><b>Your name</b></div>
-
         <div>
             @Html.TextBoxFor(model => model.CreatorName, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.CreatorName)
         </div>
         <p></p>
         <div><b>Description</b></div>
-
         <div>
             @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
         </div>
         <p></p>
-        <div><b>Map</b> (Enter <a target="_blank" href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</div>
-
+        <div><b>Map</b> (<a style="color:#333333;text-decoration:underline" target="_blank" href="http://veloroutes.org/bikemaps/">veloroutes</a> number)</div>
         <div>
             @Html.TextBoxFor(model => model.MapUrl, new { @class = "form-control", type = "number" })
         </div>
-
         <div>
             <p></p>
             <input class="btn btn-default" onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create" />
-
         </div>
         <p></p>
     }
 </div>
     @section Scripts {
         @Scripts.Render("~/bundles/jqueryval")
-
         <script type="text/javascript">
             jQuery(document).ready(function () {
                 HideProgress();
             });
-
             $("form").submit(function () {
                 if (!$(this).valid()) {
                     HideProgress();
                 }
                 else {
-
                 }
             });
-
         </script>
     }

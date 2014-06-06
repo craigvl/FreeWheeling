@@ -5,49 +5,43 @@
 
 <div class="row">
     @Html.ActionLink(" ", "Index", "Ride", new { groupid = @Model.GroupId }, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
-</div>
-<p></p>
-<div class="row">
-    <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+    <p></p>
         <span class="btn btn-default btn-block">
             Invite Others : @Model.Name
         </span>
+    <p></p>
+    <p>Hit the <b>Select a user</b> button to invite your first user.</p><p><b>Note:</b> Hit the select a user button each time you wish to add a user</p>
+    <p>When done hit the Send Invites button.</p>
+    <div id="templated">
+        @Html.HiddenFor(model => model.GroupId, new { @id = "GroupIdHidden" })
+        <table>
+            <tbody data-bind="template: { name: 'userRowTemplate', foreach: usersLines }"></tbody>
+        </table>
+        <script type="text/html" id="userRowTemplate">
+            <tr>
+                <td>
+                    Enter Bunchy user name or a valid email address <p></p> 
+                    <input placeholder="Bunchy username or email" class="form-control" id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" />
+                    <p></p>
+                    <b>Hit Select a user again to invite another user!</b>
+                    <p></p>
+                </td>
+            </tr>
+        </script>
+        <p></p>
+        <span><button class="btn btn-default btn-sm" data-bind="click: addUser">Select a user</button></span>
+        <span><input class="btn btn-default btn-sm" onclick="ShowProgress();" data-bind="click: save" id="btnSubmit" type="submit" value="Send Invites" /></span>
+        @* Need to keep cancel button here as this page is used with private create bunch*@
+        @Html.ActionLink("Cancel", "Index", "Home", null, new { @class = "btn btn-default btn-sm", onclick = "ShowProgress();" })
+        <span></span>
+        <p></p>
+        <div>
+            <p></p>
+            
+        </div>
+        <p></p>
     </div>
 </div>
-<div id="templated">
-    @Html.HiddenFor(model => model.GroupId, new { @id = "GroupIdHidden" })
-    <table>
-        <tbody data-bind="template: { name: 'userRowTemplate', foreach: usersLines }"></tbody>
-    </table>
-
-    <script type="text/html" id="userRowTemplate">
-        <tr>
-            
-            <td>Enter User name or a valid email address <p></p> <input class="form-control" id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" />
-            <p></p>
-            Hit Select a user again to invite another user!
-            <p></p>
-            </td>
-
-        </tr>
-    </script>
-    <p></p>
-
-    <button class="btn btn-default btn-sm" data-bind="click: addUser">Select a user</button>
-
-    <p></p>
-
-    <div>
-        <p></p>
-        <input class="btn btn-default btn-sm" onclick="ShowProgress();" data-bind="click: save" id="btnSubmit" type="submit" value="Send Invites" />
-
-    </div> 
-    <p></p>
-    @Html.ActionLink("Cancel", "Index", "Home", null, new { @class = "btn btn-default", onclick = "ShowProgress();" })
-</div>
-
-
-
 @section Scripts {
 
     @Scripts.Render("~/bundles/knockout")
