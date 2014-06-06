@@ -107,6 +107,7 @@ else
 <script src="~/Scripts/DoubleBunchRide.js"></script>
         <script>
             function onsuccesskeen(data) {
+                //Display popups are called in function below.
                 KeenCompleteFirst(data);
                 //$("#bunchname").css("top", "0px");
 
@@ -114,22 +115,19 @@ else
                     //$("#statusspan").addClass("glyphicon glyphicon-ok-sign");
                     $("#statusspan").removeClass();
                     $("#statusspan").addClass("pull-right");
-                    $("#statusspan").html("on way");
-                    displayMessageAjax("On your way", "success", "", "tempoarayMessage");
+                    $("#statusspan").html("on way");                   
                 }
 
                 if (data.message == "In") {
                     $("#statusspan").removeClass();
                     $("#statusspan").addClass("pull-right col-xs-1 col-lg-1 glyphicon glyphicon-thumbs-up");
-                    $("#statusspan").html("");
-                    displayMessageAjax("You're in", "success", "", "tempoarayMessage");
+                    $("#statusspan").html("");                   
                 }
 
                 if (data.message == "Out") {
                     $("#statusspan").removeClass();
                     $("#statusspan").addClass("pull-right col-xs-1 col-lg-1 glyphicon glyphicon-thumbs-down");
-                    $("#statusspan").html("");
-                    displayMessageAjax("You're out", "success", "", "tempoarayMessage");
+                    $("#statusspan").html("");                   
                 }               
                 HideProgress();
             }
@@ -143,22 +141,19 @@ else
                     //$("#statusspan").addClass("glyphicon glyphicon-ok-sign");
                     $("#statusspan").removeClass();
                     $("#statusspan").addClass("pull-right");
-                    $("#statusspan").html("on way");
-                    displayMessageAjax("On your way", "success", "", "tempoarayMessage");
+                    $("#statusspan").html("on way");                  
                 }
 
                 if (data.message == "In") {
                     $("#statusspan").removeClass();
                     $("#statusspan").addClass("pull-right glyphicon glyphicon-thumbs-up");
                     $("#statusspan").html("");
-                    displayMessageAjax("You're in", "success", "", "tempoarayMessage");
                 }
 
                 if (data.message == "Out") {
                     $("#statusspan").removeClass();
                     $("#statusspan").addClass("pull-right glyphicon glyphicon-thumbs-down");
                     $("#statusspan").html("");
-                    displayMessageAjax("You're out", "success", "", "tempoarayMessage");
                 }
                 HideProgress();
             }
