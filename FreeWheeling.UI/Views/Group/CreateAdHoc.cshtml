@@ -22,7 +22,7 @@
         @Html.ValidationSummary(true)
         <div class="form-group">
             <label for="" class="col-sm-2 control-label">Location</label>
-            <div class="col-sm-10 col-xs-10">
+            <div class="col-sm-10">
                 <select class="form-control" data-bind="options: LocationChoices, optionsText: 'Name', optionsValue: 'id', selectedOptions: selectedLocation"></select>
             </div>
         </div>
@@ -74,7 +74,6 @@
                 @Html.CheckBoxFor(model => model.IsPrivate, new { data_bind = "checked:IsPrivate, uniqueName:true", @class = "form-control" })
             </div>
         </div>
-
          <div class="form-group">
             <label for="" class="col-sm-2 control-label">Your name</label>
             <div class="col-sm-10">
@@ -83,8 +82,7 @@
                     @Html.ValidationMessageFor(model => model.CreatorName)
                 </div>
             </div>
-        </div>
-        
+        </div>       
         <div class="form-group">
             <label for="" class="col-sm-2 control-label">Description</label>
             <div class="col-sm-10">
@@ -93,38 +91,35 @@
                 </div>
             </div>
         </div>
-
         <div class="form-group">
-            <label for="" class="col-sm-2 control-label">Map (Enter <a target="_blank" href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</label>
+            <label for="" class="col-sm-2 control-label">Map (<a style="color:#333333;text-decoration:underline" target="_blank" href="http://veloroutes.org/bikemaps/">veloroutes</a> Number)</label>
             <div class="col-sm-10">
                 <div>
-                    @Html.TextBoxFor(model => model.MapUrl, new { data_bind = "value:MapUrl, uniqueName:true", type = "number", @class = "form-control" })
+                    @Html.TextBoxFor(model => model.MapUrl, new {@placeholder="veloroutes number", data_bind = "value:MapUrl, uniqueName:true", type = "number", @class = "form-control" })
                 </div>
             </div>
         </div>
         <div id="templated">
             <div data-bind="template: { name: 'userRowTemplate', foreach: usersLines }">
             </div>
-
             <script type="text/html" id="userRowTemplate">
                 <div class="form-group">
                     <label for="" class="col-sm-2 control-label">User Name</label>
                     <div class="col-sm-10">
                         <div>
-                            <input class="form-control" id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" />
+                            <input placeholder="Bunchy username or email" class="form-control" id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" />
                         </div>
                     </div>
                 </div>
             </script>
-
-
             <!-- when Add Gift is clicked, the method addGift() in the view model (viewModelForTemplated) object will be called -->
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button class="btn btn-default" data-bind="click: addUser">Invite a User/s</button>
+                    <button class="btn btn-default" data-bind="click: addUser">Invite a User/s</button><p></p><p>Use the above button to
+                    send an invite email to users.</p><p><b>Note: If this is a private bunch then only those users who you invite will
+                    be able to see the bunch.</b><p>You can hit this button as many times as you need!</p>
                 </div>
             </div>
-
             <!-- when Save is clicked, the method save() in the view model (viewModelForTemplated) object will be called. Simple eh? -->
             @* <button data-bind="click: save">Save</button>*@
         </div>
@@ -134,7 +129,6 @@
             </div>
         </div>
     }
- 
 </div>
 @section Scripts {
 @Scripts.Render("~/bundles/jqueryval")
@@ -143,7 +137,6 @@
 @Scripts.Render("~/bundles/jqueryui")
 <script src="~/Scripts/moment-datepicker.js"></script>
 <script src="~/Scripts/moment-datepicker-ko.js"></script>
-
 <script type="text/javascript">
 
     $('body').on('focus',"#InviteUser", function(){
@@ -151,23 +144,16 @@
             source: '@Url.Action("GetNames")'
         });
     })
-
       ko.validation.init({
         errorElementClass: 'has-error',
         errorMessageClass: 'help-block',
         decorateElement: true
     });
-
-
     var AdHocData;
-
     function UserModel() {
-
         var self = this;
         self.UserName = ko.observable();
-
     }
-
     var adhocModel = function () {
         var self = this;
         self.Name = ko.observable().extend({required:true});
@@ -182,15 +168,10 @@
         self.LocationChoices = ko.observable(@Html.Raw(Json.Encode(Model.Locations)));
         self.selectedLocation = ko.observable(@Html.Raw(Json.Encode(Model.LocationsId)));
         self.usersLines = ko.observableArray([]);
-
         self.addUser = function () {
-
             self.usersLines.push(new UserModel);
-
         };
-
         self.save = function () {
-
             //var UsersToSave = $.map(self.usersLines(), function (line) {
             //    return {                
             //    _UserToSave: line.UserName
@@ -198,7 +179,6 @@
             //});
 
             //alert(JSON.stringify(ko.toJSON(UsersToSave)));
-
             AdHocData = {
                 Name: self.Name,
                 DateString: self.DateString,
@@ -214,23 +194,16 @@
             };
 
             //AdHocData.InviteUsers = UsersToSave;
-
             //alert(JSON.stringify(ko.toJSON(AdHocData)));
-
             var errors = ko.validation.group(AdHocData, { deep: true });
-
             errors.showAllMessages();
-
             if (errors().length > 0) {  
                 // something went wrong - you should see the error messages
                 displayMessageAjax("Errors! Please fix and try again.", "error", "BottomCentre", "tempoarayMessage");
                 HideProgress();
                 return;
             }
-
-            //Ajax call to Insert the Ad Hoc Bunch
-          
-
+            //Ajax call to Insert the Ad Hoc Bunch         
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("CreateAdHoc", "Group")',
@@ -255,28 +228,20 @@
             });
             //Ends Here
         };
-
-    }
-  
+    } 
     $("form").submit(function () {
         if (!$(this).valid()) {
             HideProgress();
         }
         else {
-
         }
     });
-
     $(document).ready(function () {
         $('#InviteUser').autocomplete({
             source: '@Url.Action("GetNames")'
         });
-
         HideProgress();
         ko.applyBindingsWithValidation(adhocModel);
-
     })
-
 </script>
-
 }

@@ -5,9 +5,9 @@
 
 <div class="row">
     @Html.ActionLink(" ", "ViewAdHocRide", "Ride", new { adhocrideid = @Model.adhocrideid }, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
-</div>
+
 <p></p>
-<div class="row">
+
     <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
         <span class="btn btn-default btn-block">
             Invite Others : @Model.Name :
@@ -16,14 +16,18 @@
  </div>
 </div>
 <p></p>
+<p>Hit the <b>Select a user</b> button to invite your first user.</p><p><b>Note:</b> Hit the select a user button each time you wish to add a user</p>
+<p>When done hit the Send Invites button.</p>
 <div id="templated">
+    <hr />
     @Html.HiddenFor(model => model.adhocrideid, new { @id = "RideIdHidden" })
     <table>
         <tbody data-bind="template: { name: 'userRowTemplate', foreach: usersLines }"></tbody>
     </table>
     <script type="text/html" id="userRowTemplate">
         <tr>
-            <td>Enter User name or a valid email address <p></p> <input class="form-control" id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" />
+            <td>Enter Bunchy user name or a valid email address <p></p> 
+            <input placeholder="Bunchy username or email" class="form-control" id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" />
             <p></p>
             Hit Select a user again to invite another user!
             <p></p>
@@ -31,18 +35,16 @@
         </tr>
     </script>
     <p></p>
-    <button class="btn btn-default btn-sm" data-bind="click: addUser">Select a user</button>
+    <span><button class="btn btn-default btn-sm" data-bind="click: addUser">Select a user</button></span>
+    <span><input class="btn btn-default btn-sm" onclick="ShowProgress();" data-bind="click: save" id="btnSubmit" type="submit" value="Send Invites" /></span>
 </div>
 
 <div>
     <p></p>
-    <input class="btn btn-default btn-sm" onclick="ShowProgress();" data-bind="click: save" id="btnSubmit" type="submit" value="Send Invites" />
 </div>
 @section Scripts {
-
     @Scripts.Render("~/bundles/knockout")
     @Scripts.Render("~/bundles/jqueryui")
-
     <script type="text/javascript">
 
         $('body').on('focus', "#InviteUser", function () {
@@ -52,7 +54,6 @@
         })
 
         function UserModel() {
-
             var self = this;
             self.UserName = ko.observable();
         }
@@ -67,7 +68,6 @@
             };
 
             self.save = function () {
-
                 RideData = {
                     InviteUsers: self.usersLines(),
                     adhocrideid: $('#RideIdHidden').val()
@@ -81,38 +81,30 @@
                     success: function (data, textStatus, jqXHR) {
                         var err = eval("(" + jqXHR.responseText + ")");
                         if (data.success == false) {
-
                             alert(err.Message);
                             HideProgress();
-
                         }
 
                         if (data.success == true) {
                             // alert(ko.toJSON(self));
                             HideProgress();
-                            alert(data.message);
-                            window.location.href = '@Url.Action("AdHocList", "Ride")'
-
+                            displayMessageAjax(data.message, "success", "BottomCentre", "tempoarayMessage");
+                            setTimeout(function () {
+                                window.location.href = '@Url.Action("AdHocList", "Ride")'
+                            }, 1000); //will call the function after 2 secs.
                         }
                     },
                     error: function () {
                         alert("Failed");
                     }
                 });
-
             };
-
         }
-
         $(document).ready(function () {
             $('#InviteUser').autocomplete({
                 source: '@Url.Action("GetNames","Group")'
             });
-
             ko.applyBindings(new RideModel());
         })
-
     </script>
-
-
 }

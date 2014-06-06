@@ -5,75 +5,61 @@
 <div class="row">
     @* I have used PreviousID here from the _KeenActions.cshtml file should at some date update to read better *@
     @Html.ActionLink(" ", "Index", "Ride", new { groupid = @Model.PreviousID }, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
-</div>
-<p></p>
- <div class="row">
+    <p></p>
     <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
         <span class="btn btn-default btn-block">
             Invite Others : @Model.Name :
             Date: @Model.RideDate
         </span>
     </div>
-</div>
-<p></p>
-<div id="templated">
-    @Html.HiddenFor(model => model.RideId, new { @id = "RideIdHidden"})
-    <table>
-        <tbody data-bind="template: { name: 'userRowTemplate', foreach: usersLines }"></tbody>
-    </table>
-
-    <script type="text/html" id="userRowTemplate">
-        <tr>
-            <td>
-                Enter User name or a valid email address <p></p> <input class="form-control" id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" />
-                <p></p>
-                Hit Select a user again to invite another user!
-                <p></p>
-            </td>
-        </tr>
-    </script>
     <p></p>
-
-    <button class="btn btn-default btn-sm" data-bind="click: addUser">Select a user</button>
-
+    <p>Hit the <b>Select a user</b> button to invite your first user.</p><p><b>Note:</b> Hit the select a user button each time you wish to add a user</p>
+    <p>When done hit the Send Invites button.</p>
+    <hr />
+    <div id="templated">
+        @Html.HiddenFor(model => model.RideId, new { @id = "RideIdHidden" })
+        <table>
+            <tbody data-bind="template: { name: 'userRowTemplate', foreach: usersLines }"></tbody>
+        </table>
+        <script type="text/html" id="userRowTemplate">
+            <tr>
+                <td>
+                    Enter User name or a valid email address <p></p>
+                    <input placeholder="Bunchy username or email" class="form-control" id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" />
+                    <p></p>
+                    Hit Select a user again to invite another user!
+                    <p></p>
+                </td>
+            </tr>
+        </script>
+        <p></p>
+        <span><button class="btn btn-default btn-sm" data-bind="click: addUser">Select a user</button></span>
+        <span><input class="btn btn-default btn-sm" onclick="ShowProgress();" data-bind="click: save" id="btnSubmit" type="submit" value="Send Invites" /></span>
+    </div>
 </div>
-
-<div>
-    <p></p>
-    <input class="btn btn-default btn-sm" onclick="ShowProgress();" data-bind="click: save" id="btnSubmit" type="submit" value="Send Invites" />
-</div> 
 @section Scripts {
-
     @Scripts.Render("~/bundles/knockout")
     @Scripts.Render("~/bundles/jqueryui")
-
     <script type="text/javascript">
-
     $('body').on('focus', "#InviteUser", function () {
         $(this).autocomplete({
             source: '@Url.Action("GetNames","Group")'
         });
     })
-
     function UserModel() {
 
         var self = this;
         self.UserName = ko.observable();
     }
-
     var RideModel = function () {
         var self = this;
         self.usersLines = ko.observableArray([]);
 
-
         self.addUser = function () {
-
             self.usersLines.push(new UserModel);
-
         };
 
         self.save = function () {
-
             RideData = {
                 InviteUsers: self.usersLines(),
                 RideId: $('#RideIdHidden').val()
@@ -87,10 +73,8 @@
                 success: function (data, textStatus, jqXHR) {
                     var err = eval("(" + jqXHR.responseText + ")");
                     if (data.success == false) {
-
                         alert(err.Message);
                         HideProgress();
-
                     }
 
                     if (data.success == true) {
@@ -100,33 +84,22 @@
                         var RId = $('#RideIdHidden').val();
                         //window.location.href = '@Url.Action("Index", "Ride")';
                         //window.location.href = '/Ride?rideid=' + RId;
-
                         setTimeout(function () {
                             window.location.href = '/Ride?rideid=' + RId; //will redirect to your blog page (an ex: blog.html)
                         }, 1000); //will call the function after 2 secs.
-
                         }
                     },
                     error: function () {
                         displayMessageAjax("Error", "error", "BottomCentre", "tempoarayMessage");
                     }
                 });
-
             };
-
         }
-
         $(document).ready(function () {
             $('#InviteUser').autocomplete({
                 source: '@Url.Action("GetNames","Group")'
         });
-
-
         ko.applyBindings(RideModel);
-
     })
-
     </script>
-
-
     }
