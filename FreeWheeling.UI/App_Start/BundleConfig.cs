@@ -58,6 +58,12 @@ namespace FreeWheeling.UI
                    "~/Scripts/app/extendDataService.js",
                     "~/Scripts/moment.js"));
 
+            //spin
+            var spin = new ScriptBundle("~/bundles/spin", "http://bunchy.hoocreative.netdna-cdn.com/Scripts/spin.min.js").Include(
+                      "~/Scripts/spin.min.js");
+            spin.CdnFallbackExpression = "window.jQuery";
+            bundles.Add(spin);
+
             //Pusher
             var pusher = new ScriptBundle("~/bundles/pusher", "//js.pusher.com/2.2/pusher.min.js").Include(
                       "~/Scripts/pusher.min.js");
