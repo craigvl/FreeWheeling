@@ -10,7 +10,7 @@
             Invite Others : @Model.Name
         </span>
     <p></p>
-    <p>Hit the <b>Select a user</b> button to invite your first user.</p><p><b>Note:</b> Hit the select a user button each time you wish to add a user</p>
+    <p>Hit the <b>Select a person</b> button to invite your first person.</p><p><b>Note:</b> Hit the select a person button each time you wish to add another person to this private bunch</p>
     <p>When done hit the Send Invites button.</p>
     <div id="templated">
         @Html.HiddenFor(model => model.GroupId, new { @id = "GroupIdHidden" })
@@ -21,15 +21,17 @@
             <tr>
                 <td>
                     Enter Bunchy user name or a valid email address <p></p> 
-                    <input placeholder="Bunchy username or email" class="form-control" id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" />
-                    <p></p>
-                    <b>Hit Select a user again to invite another user!</b>
-                    <p></p>
+                    <div data-bind="validationElement: UserName">
+                        <input placeholder="Bunchy username or email" class="form-control" id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" />
+                        </div>
+                        <p></p>
+                        <b>Hit Select a user again to invite another person!</b>
+                        <p></p>
                 </td>
             </tr>
         </script>
         <p></p>
-        <span><button class="btn btn-default btn-sm" data-bind="click: addUser">Select a user</button></span>
+        <span><button class="btn btn-default btn-sm" data-bind="click: addUser">Select a person</button></span>
         <span><input class="btn btn-default btn-sm" onclick="ShowProgress();" data-bind="click: save" id="btnSubmit" type="submit" value="Send Invites" /></span>
         @* Need to keep cancel button here as this page is used with private create bunch*@
         @Html.ActionLink("Cancel", "Index", "Home", null, new { @class = "btn btn-default btn-sm", onclick = "ShowProgress();" })
@@ -44,8 +46,9 @@
 </div>
 @section Scripts {
 
-    @Scripts.Render("~/bundles/knockout")
-    @Scripts.Render("~/bundles/jqueryui")
+@Scripts.Render("~/bundles/knockout")
+@Scripts.Render("~/bundles/knockoutvalidation")
+@Scripts.Render("~/bundles/jqueryui")
 
     <script type="text/javascript">
 
@@ -54,10 +57,18 @@
             source: '@Url.Action("GetNames","Group")'
         });
     })
+        ko.validation.init({
+            errorElementClass: 'has-error',
+            errorMessageClass: 'help-block',
+            decorateElement: true
+        });
 
     function UserModel() {
         var self = this;
+        //uncomment below when able to remove add user boxes
+        //self.UserName = ko.observable().extend({ required: true });
         self.UserName = ko.observable();
+
     }
 
     var GroupModel = function () {
@@ -72,6 +83,15 @@
                 InviteUsers: self.usersLines(),
                 GroupId: $('#GroupIdHidden').val()
             };
+
+            var errors = ko.validation.group(GroupData, { deep: true });
+            errors.showAllMessages();
+            if (errors().length > 0) {
+                // something went wrong - you should see the error messages
+                displayMessageAjax("Errors! Please fix and try again.", "error", "BottomCentre", "tempoarayMessage");
+                HideProgress();
+                return;
+            }
 
             $.ajax({
                 type: "POST",

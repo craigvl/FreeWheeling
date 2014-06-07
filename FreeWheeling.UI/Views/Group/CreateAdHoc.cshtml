@@ -21,27 +21,27 @@
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
         <div class="form-group">
-            <label for="" class="col-sm-2 control-label">Location</label>
+            <label for="" class="col-sm-2 control-label">Location *</label>
             <div class="col-sm-10">
                 <select class="form-control" data-bind="options: LocationChoices, optionsText: 'Name', optionsValue: 'id', selectedOptions: selectedLocation"></select>
             </div>
         </div>
         <div class="form-group">
-            <label for="" class="col-sm-2 control-label">Bunch Name</label>
+            <label for="" class="col-sm-2 control-label">Bunch Name *</label>
             <div data-bind="validationElement: Name" class="col-sm-10">
                 @Html.TextBoxFor(model => model.Name, new { data_bind = "value:Name, uniqueName:true", @class = "form-control" })
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-md-2 control-label">Date</label>
-            <div class="col-md-10">
-                <input type="text" class="form-control" data-bind="datepicker: DateString, datepickerOptions: { dataType: 'format', format: 'DD/MM/YYYY' }">
-                @Html.ValidationMessageFor(model => model.DateString)
+                <label class="col-md-2 control-label">Date *</label>            
+                    <div data-bind="validationElement: DateString" class="col-sm-10">
+                        <input type="text" class="form-control" data-bind="datepicker: DateString, datepickerOptions: { dataType: 'format', format: 'DD/MM/YYYY' }">
+                        @Html.ValidationMessageFor(model => model.DateString)
+                    </div>
             </div>
-        </div>
         <div class="form-group">
-            <label class="col-md-2 control-label">Hour (24 Hour)</label>
+            <label class="col-md-2 control-label">Hour (24 Hour) *</label>
             <div class="col-md-10">
                 <div data-bind="validationElement: Hour">
                     @Html.TextBoxFor(model => model.Hour, new { data_bind = "value:Hour, uniqueName:true", type = "number", @class = "form-control" })
@@ -50,7 +50,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-md-2 control-label">Minute</label>
+            <label class="col-md-2 control-label">Minute *</label>
             <div class="col-md-10">
                 <div data-bind="validationElement: Minute">
                     @Html.TextBoxFor(model => model.Minute, new { data_bind = "value:Minute, uniqueName:true", type = "number", @class = "form-control" })
@@ -60,7 +60,7 @@
         </div>
         <hr />
         <div class="form-group">
-            <label for="" class="col-sm-2 control-label">Start Location</label>
+            <label for="" class="col-sm-2 control-label">Start Location *</label>
             <div class="col-sm-10">
                 <div data-bind="validationElement: StartLocation">
                     @Html.TextBoxFor(model => model.StartLocation, new { data_bind = "value:StartLocation, uniqueName:true", @class = "form-control" })
@@ -75,7 +75,7 @@
             </div>
         </div>
          <div class="form-group">
-            <label for="" class="col-sm-2 control-label">Your name</label>
+            <label for="" class="col-sm-2 control-label">Your name *</label>
             <div class="col-sm-10">
                 <div data-bind="validationElement: YourName">
                     @Html.TextBoxFor(model => model.CreatorName, new { data_bind = "value:YourName, uniqueName:true", @class = "form-control" })
@@ -115,8 +115,8 @@
             <!-- when Add Gift is clicked, the method addGift() in the view model (viewModelForTemplated) object will be called -->
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button class="btn btn-default" data-bind="click: addUser">Invite a User/s</button><p></p><p>Use the above button to
-                    send an invite email to users.</p><p><b>Note: If this is a private bunch then only those users who you invite will
+                    <button class="btn btn-default" data-bind="click: addUser">Invite people</button><p></p><p>Use the above button to
+                    send an invite email to people.</p><p><b>Note: If this is a private bunch then only those people who you invite will
                     be able to see the bunch.</b><p>You can hit this button as many times as you need!</p>
                 </div>
             </div>
