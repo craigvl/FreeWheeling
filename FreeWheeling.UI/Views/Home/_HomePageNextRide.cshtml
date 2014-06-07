@@ -1,21 +1,21 @@
 ﻿@* Please update _HomePageNextRandomRide to match  *@
 @model FreeWheeling.UI.Models.HomeIndexModel
 <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-    <span class="btn btn-default btn-block">Your next Bunch: <a href="/Ride/Index?groupid=@(Model.HomePageRide.Group.id)&fromhome=true"> @Model.HomePageRide.Group.name</a></span>
+    <span class="btn btn-default btn-block"><a onclick="ShowProgress()" href="/Ride/Index?groupid=@(Model.HomePageRide.Group.id)&fromhome=true">Your next Bunch: @Model.HomePageRide.Group.name</a></span>
 </div>
-    <div class='panel-group'>     
-            <div class="SecondaryHeadingMain panel-heading col-xs-12 col-md-12 col-sm-12 col-lg-12">
-                    <div class="col-xs-10 col-md-11 col-sm-10 SecondaryHeadingMain" data-toggle=" collapse" href="">
-                        <a href="/Ride/Index?groupid=@(Model.HomePageRide.Group.id)&fromhome=true">
-                            @Model.HomePageRide.RideDate.ToString("dddd, d MMM, HH:mm")
-                        </a>
-                    </div>
-                    <div class="pull-right col-xs-1 col-md-1 col-sm-1">
-                        @Html.ActionLink(string.Concat(" "), "Index", "Ride", new { groupid = @Model.HomePageRide.Group.id, fromhome = "true" },
-                                new { @class = "glyphicon glyphicon-search", onclick = "ShowProgress();" })
-                    </div>
+<div class='panel-group'> 
+        <div class="SecondaryHeadingMain panel-heading col-xs-12 col-md-12 col-sm-12 col-lg-12">
+            <div class="col-xs-10 col-md-11 col-sm-10 SecondaryHeadingMain" data-toggle=" collapse">
+                <a onclick="ShowProgress()" href="/Ride/Index?groupid=@(Model.HomePageRide.Group.id)&fromhome=true">
+                    @Model.HomePageRide.RideDate.ToString("dddd, d MMM, HH:mm")
+                </a>
             </div>
-        <div class="SecondaryHeading panel-heading col-xs-12 col-md-12 col-sm-12 col-lg-12">
+            <div class="pull-right col-xs-1 col-md-1 col-sm-1">
+                @Html.ActionLink(string.Concat(" "), "Index", "Ride", new { groupid = @Model.HomePageRide.Group.id, fromhome = "true" },
+                                new { @class = "glyphicon glyphicon-search", onclick = "ShowProgress();" })
+            </div>
+        </div>
+        <div class="panel SecondaryHeading panel-heading col-xs-12 col-md-12 col-sm-12 col-lg-12">
             <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
                 <div class="col-xs-10 col-md-11 col-sm-10">
                     <a data-toggle="collapse" href="#collapseKeenFirst" class="SecondaryHeading">Keen</a>
@@ -25,11 +25,11 @@
                     <a class="SecondaryHeading" id="" data-toggle="collapse" href=""></a>
                 </div>
             </div>
-        </div>  
-            <div class="panel-body panelBody col-xs-12 col-md-12 col-sm-12 col-lg-12">
-                <span class="col-xs-9 col-md-2 col-sm-2 col-lg-2"> <b>Are you in?</b></span>
-                @Html.Partial("_HomePageKeenStatus", Model)
-                <hr />
-                @Html.Partial("_HomePageKeenActions", Model)
-            </div>
-        </div>
+        </div> 
+    <div class="panel panel-body col-xs-12 col-md-12 col-sm-12 col-lg-12">
+        <span class="col-xs-9 col-md-2 col-sm-2 col-lg-2"> <b>Are you in?</b></span>
+        @Html.Partial("_HomePageKeenStatus", Model)
+        <hr />
+        @Html.Partial("_HomePageKeenActions", Model)
+    </div>
+</div>
