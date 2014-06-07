@@ -322,7 +322,7 @@ namespace FreeWheeling.UI.Controllers
                 Ride _Ride = repository.GetRideByIDIncludeGroup(_InviteOthersToBunchModel.RideId);
                 List<string> UserNames = new List<string>();
 
-                if (_InviteOthersToBunchModel != null)
+                if (_InviteOthersToBunchModel.InviteUsers != null)
                 {
                     foreach (InviteUser item in _InviteOthersToBunchModel.InviteUsers)
                     {
