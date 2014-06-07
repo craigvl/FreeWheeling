@@ -7,7 +7,7 @@
     <p>
         @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
     </p>
-    <div class="btn-group btn-block" >
+    <div class="btn-group btn-block">
         <span class="btn btn-default btn-block"> Create a new bunch </span>
     </div>
 
@@ -56,9 +56,14 @@
             <b>Private:</b>
             @Html.CheckBoxFor(f => f.IsPrivate)
             <p></p>
-            <p><b>Note:</b> If this is a private group you will be able to invite users by clicking on the user icon
-            in the group list.</p><p>Only you as the bunch creator will be able to invite users and only those users that you invite will be 
-            able to see this bunch.</p>
+            <p><b>Note:</b> If this is a private group you will be able to invite users later.</p>
+            <p>
+                Only you as the bunch creator will be able to invite users.
+            </p>
+            <p>
+                Only those users that you invite will be
+                able to see this bunch.
+            </p>
         </div>
         <p></p>
         <hr />
@@ -104,18 +109,18 @@
         <p></p>
     }
 </div>
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-        <script type="text/javascript">
-            jQuery(document).ready(function () {
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            HideProgress();
+        });
+        $("form").submit(function () {
+            if (!$(this).valid()) {
                 HideProgress();
-            });
-            $("form").submit(function () {
-                if (!$(this).valid()) {
-                    HideProgress();
-                }
-                else {
-                }
-            });
-        </script>
-    }
+            }
+            else {
+            }
+        });
+    </script>
+}
