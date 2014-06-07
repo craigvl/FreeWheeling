@@ -352,6 +352,9 @@
     <Content Include="Content\mobiscroll.scroller.sense-ui-2.10.1.css" />
     <Content Include="Content\mobiscroll.scroller.wp-2.10.1.css" />
     <Content Include="Content\moment-datepicker\datepicker.css" />
+    <Content Include="Content\Site.min.css">
+      <DependentUpon>Site.css</DependentUpon>
+    </Content>
     <Content Include="Content\wp_icons.png" />
     <Content Include="Content\wp_icons_light.png" />
     <Content Include="favicon.ico" />
@@ -421,9 +424,21 @@
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\bunchy.pubxml" />
+    <Content Include="Scripts\custom.min.js">
+      <DependentUpon>custom.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\DoubleBunchRide.min.js.map">
+      <DependentUpon>DoubleBunchRide.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\custom.min.js.map">
+      <DependentUpon>custom.min.js</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\custom.js" />
     <Content Include="Scripts\DoubleBunchRide.js" />
+    <Content Include="Scripts\DoubleBunchRide.min.js">
+      <DependentUpon>DoubleBunchRide.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-dateFormat.js" />

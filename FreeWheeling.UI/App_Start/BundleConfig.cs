@@ -64,6 +64,11 @@ namespace FreeWheeling.UI
             spin.CdnFallbackExpression = "window.jQuery";
             bundles.Add(spin);
 
+            var doublejs = new ScriptBundle("~/bundles/doublejs", "http://bunchy.hoocreative.netdna-cdn.com/Scripts/DoubleBunchRide.min.js").Include(
+                     "~/Scripts/DoubleBunchRide.min.js");
+            doublejs.CdnFallbackExpression = "window.jQuery";
+            bundles.Add(doublejs);
+
             //Pusher
             var pusher = new ScriptBundle("~/bundles/pusher", "//js.pusher.com/2.2/pusher.min.js").Include(
                       "~/Scripts/pusher.min.js");
@@ -77,13 +82,13 @@ namespace FreeWheeling.UI
             bundles.Add(azuremobile);
 
             //Custom css
-            bundles.Add(new StyleBundle("~/Content/custom", "http://bunchy.hoocreative.netdna-cdn.com/Content/Site.css").Include(
-                      "~/Content/Site.css"));
+            bundles.Add(new StyleBundle("~/Content/custom", "http://bunchy.hoocreative.netdna-cdn.com/Content/Site.min.css").Include(
+                      "~/Content/Site.min.css"));
 
             bundles.Add(new StyleBundle("~/Content/css", "//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css").Include(
                       "~/Content/bootstrap.css"));
 
-            bundles.Add(new StyleBundle("~/Content/awesome", "//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css").Include(
+            bundles.Add(new StyleBundle("~/Content/awesome", "//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css").Include(
                       "~/Content/font-awesome.css"));
 
             bundles.Add(new StyleBundle("~/Content/csssocial",  "http://bunchy.hoocreative.netdna-cdn.com/Content/bootstrap-social.css").Include(
