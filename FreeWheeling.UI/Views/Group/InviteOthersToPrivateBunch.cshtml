@@ -21,10 +21,12 @@
             <tr>
                 <td>
                     Enter Bunchy user name or a valid email address <p></p> 
-                    <input placeholder="Bunchy username or email" class="form-control" id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" />
-                    <p></p>
-                    <b>Hit Select a user again to invite another person!</b>
-                    <p></p>
+                    <div data-bind="validationElement: UserName">
+                        <input placeholder="Bunchy username or email" class="form-control" id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" />
+                        </div>
+                        <p></p>
+                        <b>Hit Select a user again to invite another person!</b>
+                        <p></p>
                 </td>
             </tr>
         </script>
@@ -44,8 +46,9 @@
 </div>
 @section Scripts {
 
-    @Scripts.Render("~/bundles/knockout")
-    @Scripts.Render("~/bundles/jqueryui")
+@Scripts.Render("~/bundles/knockout")
+@Scripts.Render("~/bundles/knockoutvalidation")
+@Scripts.Render("~/bundles/jqueryui")
 
     <script type="text/javascript">
 
@@ -54,10 +57,18 @@
             source: '@Url.Action("GetNames","Group")'
         });
     })
+        ko.validation.init({
+            errorElementClass: 'has-error',
+            errorMessageClass: 'help-block',
+            decorateElement: true
+        });
 
     function UserModel() {
         var self = this;
+        //uncomment below when able to remove add user boxes
+        //self.UserName = ko.observable().extend({ required: true });
         self.UserName = ko.observable();
+
     }
 
     var GroupModel = function () {
@@ -72,6 +83,15 @@
                 InviteUsers: self.usersLines(),
                 GroupId: $('#GroupIdHidden').val()
             };
+
+            var errors = ko.validation.group(GroupData, { deep: true });
+            errors.showAllMessages();
+            if (errors().length > 0) {
+                // something went wrong - you should see the error messages
+                displayMessageAjax("Errors! Please fix and try again.", "error", "BottomCentre", "tempoarayMessage");
+                HideProgress();
+                return;
+            }
 
             $.ajax({
                 type: "POST",

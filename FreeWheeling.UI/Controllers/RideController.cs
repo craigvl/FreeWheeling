@@ -322,15 +322,17 @@ namespace FreeWheeling.UI.Controllers
                 Ride _Ride = repository.GetRideByIDIncludeGroup(_InviteOthersToBunchModel.RideId);
                 List<string> UserNames = new List<string>();
 
-                foreach (InviteUser item in _InviteOthersToBunchModel.InviteUsers)
+                if (_InviteOthersToBunchModel != null)
                 {
-                    UserNames.Add(item.UserName);
-                }
-
-                UserHelper _UserHelp = new UserHelper();
-                _UserHelp.SendUsersBunchInviteEmail(_UserHelp.GetEmailsForUserNames(UserNames),
+                    foreach (InviteUser item in _InviteOthersToBunchModel.InviteUsers)
+                    {
+                        UserNames.Add(item.UserName);
+                    }
+                    UserHelper _UserHelp = new UserHelper();
+                    _UserHelp.SendUsersBunchInviteEmail(_UserHelp.GetEmailsForUserNames(UserNames),
                     _InviteOthersToBunchModel.RideId,
-                    currentUser.UserName, _Ride.RideDate.ToString("dd/MM/yyyy"), _Ride.Group.name );
+                    currentUser.UserName, _Ride.RideDate.ToString("dd/MM/yyyy"), _Ride.Group.name ); 
+                }
             });
 
             T.Start();
@@ -398,27 +400,33 @@ namespace FreeWheeling.UI.Controllers
 
                             repository.AddPrivateAdHocInvite(_PrivateRandomUsersList);
                             repository.Save();
-
-                            _UserHelp.SendUsersPrivateAdHocBunchInviteEmail(
-                                _PrivateRandomUsersList,
-                                _InviteOthersToAdHocBunchModel.adhocrideid,
-                                currentUser.UserName,
-                                _Ride.RideDate.ToString("dd/MM/yyyy"),
-                                _Ride.Name);
-
                         }
                         else
                         {
-                            _UserHelp.SendUsersAdHocBunchInviteEmail(_UserHelp.GetEmailsForUserNames(UserNames),
-                                _InviteOthersToAdHocBunchModel.adhocrideid,
-                                currentUser.UserName,
-                                _Ride.RideDate.ToString("dd/MM/yyyy"),
-                                _Ride.Name);
+                           
                         }
                     }
-                }
 
-                
+                    if (CurrentRide.IsPrivate)
+                    {
+                        _UserHelp.SendUsersPrivateAdHocBunchInviteEmail(
+                               _PrivateRandomUsersList,
+                               _InviteOthersToAdHocBunchModel.adhocrideid,
+                               currentUser.UserName,
+                               _Ride.RideDate.ToString("dd/MM/yyyy"),
+                               _Ride.Name);
+                    }
+                    else
+                    {
+                        _UserHelp.SendUsersAdHocBunchInviteEmail(_UserHelp.GetEmailsForUserNames(UserNames),
+                               _InviteOthersToAdHocBunchModel.adhocrideid,
+                               currentUser.UserName,
+                               _Ride.RideDate.ToString("dd/MM/yyyy"),
+                               _Ride.Name);
+                    }
+
+                }
+              
             });
 
             T.Start();

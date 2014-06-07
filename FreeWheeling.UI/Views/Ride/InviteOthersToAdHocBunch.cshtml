@@ -26,11 +26,13 @@
     </table>
     <script type="text/html" id="userRowTemplate">
         <tr>
-            <td>Enter Bunchy user name or a valid email address <p></p> 
-            <input placeholder="Bunchy username or email" class="form-control" id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" />
-            <p></p>
-            Hit Select a user again to invite another user!
-            <p></p>
+            <td>Enter Bunchy user name or a valid email address <p></p>
+                <div data-bind="validationElement: UserName">
+                    <input placeholder="Bunchy username or email" class="form-control" id="InviteUser" data-bind="value: UserName, valueUpdate:'blur'" />
+                </div>
+                    <p></p>
+                    Hit Select a user again to invite another user!
+                    <p></p>
             </td>
         </tr>
     </script>
@@ -43,8 +45,9 @@
     <p></p>
 </div>
 @section Scripts {
-    @Scripts.Render("~/bundles/knockout")
-    @Scripts.Render("~/bundles/jqueryui")
+@Scripts.Render("~/bundles/knockout")
+@Scripts.Render("~/bundles/knockoutvalidation")
+@Scripts.Render("~/bundles/jqueryui")
     <script type="text/javascript">
 
         $('body').on('focus', "#InviteUser", function () {
@@ -52,10 +55,16 @@
                 source: '@Url.Action("GetNames","Group")'
             });
         })
-
+        ko.validation.init({
+            errorElementClass: 'has-error',
+            errorMessageClass: 'help-block',
+            decorateElement: true
+        });
         function UserModel() {
             var self = this;
             self.UserName = ko.observable();
+            //uncomment below when able to remove add user boxes
+            //self.UserName = ko.observable().extend({ required: true });
         }
 
         var RideModel = function () {
@@ -72,6 +81,15 @@
                     InviteUsers: self.usersLines(),
                     adhocrideid: $('#RideIdHidden').val()
                 };
+
+                var errors = ko.validation.group(RideData, { deep: true });
+                errors.showAllMessages();
+                if (errors().length > 0) {
+                    // something went wrong - you should see the error messages
+                    displayMessageAjax("Errors! Please fix and try again.", "error", "BottomCentre", "tempoarayMessage");
+                    HideProgress();
+                    return;
+                }
 
                 $.ajax({
                     type: "POST",
