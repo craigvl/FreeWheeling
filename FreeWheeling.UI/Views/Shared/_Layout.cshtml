@@ -8,6 +8,7 @@
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/custom")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/spin")
     @Scripts.Render("~/bundles/custom")
     <link rel="shortcut icon" href="http://bunchy.hoocreative.netdna-cdn.com/favicon.ico" />
     <script>
@@ -26,11 +27,9 @@
         <div class="container">
             <div class="navbar-header">
                 <a href="/Home/Index" onclick="ShowProgress()"><img class="nav-height" src="http://bunchy.hoocreative.netdna-cdn.com/Content/Images/bunchytag.png" /></a>
-
                 <button type="button" class="navbar-toggle pull-right" data-toggle="collapse" data-target=".user">
                     <div class="glyphicon glyphicon-user"></div></button>
-            </div>
-                      
+            </div>                     
             <div class="user collapse">
                 @Html.Partial("_LoginPartial")
             </div>
@@ -38,13 +37,10 @@
     </div>
     <div id="messagewrapperajax" align="center"></div>
         <div align="center">@Html.RenderMessages()</div>
-
-    <div class="container body-content">
-        
+    <div class="container body-content">       
         @RenderBody()
-        <div class="loading" style="display:none;" align="center">
-            <img src="http://bunchy.hoocreative.netdna-cdn.com/Content/Images/loader.gif" alt="" />
-            @*<img src="~/Content/Images/loader.gif" alt="" />*@
+        <div id="loading" class="loading">
+            
         </div>
         <footer></footer>
     </div>
