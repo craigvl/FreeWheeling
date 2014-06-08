@@ -92,6 +92,8 @@ namespace FreeWheeling.UI.Models
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$",
+         ErrorMessage = "Must include at least one upper case letter, one lower case letter, and one numeric digit")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
