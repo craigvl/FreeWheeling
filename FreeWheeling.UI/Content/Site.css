@@ -17,8 +17,8 @@ footer {
     font-size:12px;
 }
 .backbaricon {
-    padding-left:0px;
-    padding-right:0px;
+    padding-left:0;
+    padding-right:0;
 }
 .boldtext {
     font-weight:bold;
@@ -34,7 +34,7 @@ footer {
     padding-top:50px;
     /*background-image: url('/../Content/Images/bike.jpg');*/
     background-repeat:no-repeat;
-    background-position-x:0px;
+    background-position-x:0;
     height:200px;
 }
 /* Set width on the form input elements since they're 100% wide by default */
@@ -214,9 +214,6 @@ border-radius: .25em;
 }
 .panel-body {
 padding: 15px;
-padding-top: 15px;
-padding-right: 15px;
-padding-bottom: 15px;
 padding-left: 25px !important;
 background-color:#FFF;
 }
@@ -492,7 +489,7 @@ as per http://stackoverflow.com/questions/18192082/bootstrap-3-navbar-collapse *
     border-color: #8dc63f;
     color: #FFF;
     position: absolute;        /*Change to absolute according to ReadMe.txt. Original value is fixed*/
-    top: 0px;
+    top: 0;
     margin: 47px auto;      /* Change this to adjust height from top of page. Default is 47px */
     z-index: 2000;
     text-align: center;
