@@ -23,6 +23,10 @@ footer {
 .boldtext {
     font-weight:bold;
 }
+
+.glyphicon-chevron-left {
+    background-color:transparent !important;
+}
 /* Set padding to keep content from hitting the edges */
 .body-content {
     /*padding-left: 15px;
