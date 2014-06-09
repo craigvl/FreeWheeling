@@ -249,6 +249,8 @@ padding: 10px;
 .btn {
     text-align:left;
     padding-left:10px;
+    word-wrap: break-word;
+    white-space: normal;
 }
 .btn-primary {
     background-color:#0068ac;
