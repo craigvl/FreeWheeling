@@ -21,6 +21,7 @@ namespace FreeWheeling.Domain.Abstract
         Group GetGroupByID(int id);
         Group GetGroupByRideID(int Rideid);
         Group GetGroupByIDNoIncludes(int id);
+        int GetGroupCount(int? LocationID);
         List<CycleDays> GetCycleDaysForGroup(int GroupId);
         List<int> CurrentGroupsForUser(string UserId);
 

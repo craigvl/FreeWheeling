@@ -98,6 +98,7 @@ namespace FreeWheeling.UI.Controllers
                             .Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone);
                         _HomeIndexModel.UpCommingAd_HocCount = _HomeIndexModel.UpCommingAd_HocCount + repository.GetPrivateAdHocRideByUserID(currentUser.Id
                             , _Location, TZone).Count();
+                        _HomeIndexModel.BunchCount = repository.GetGroupCount(currentUser.LocationID);
                         _HomeIndexModel.HomePageRide = repository.GetHomePageRideByUserID(currentUser.Id);
                         if (_HomeIndexModel.HomePageRide != null)
 	                    {

@@ -21,7 +21,7 @@
         }   
     }     
         <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;margin-top:10px;">
-		    @Html.ActionLink("Bunches", "Index", "Group", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
+		    @Html.ActionLink("Bunches (" + @Model.BunchCount + ")", "Index", "Group", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
 		    @Html.ActionLink(" ", "Create", "Group", new { }, new { @class = "btn btn-default col-xs-3 glyphicon glyphicon-plus", style = "text-align:center;top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })
 	    </div>
 
