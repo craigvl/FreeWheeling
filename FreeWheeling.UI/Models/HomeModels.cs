@@ -13,6 +13,7 @@ namespace FreeWheeling.UI.Models
         public string CurrentUserLocation { get; set; }
         public List<Location> Locations { get; set; }
         public int UpCommingAd_HocCount { get; set; }
+        public int BunchCount { get; set; }
         public List<Group> FavouriteBunches { get; set; }
         public Ride HomePageRide { get; set; }
         public Ad_HocRide HomePageRandomRide { get; set; }
