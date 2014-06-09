@@ -46,6 +46,11 @@ namespace FreeWheeling.Domain.Concrete
                 .Where(g => g.Location.id == LocationID && g.IsPrivate == false).ToList();
         }
 
+        public int GetGroupCount(int? LocationID)
+        {
+            return context.Groups.Where(g => g.Location.id == LocationID && g.IsPrivate == false).Count();
+        }
+
         public IEnumerable<Group> GetGroupsByLocationWithSearch(int? LocationID, string SearchString)
         {
             return context.Groups.Include("Rides")
