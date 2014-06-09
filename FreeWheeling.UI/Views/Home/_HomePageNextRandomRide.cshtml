@@ -4,7 +4,7 @@
     <span class="btn btn-default btn-block">Your next bunch: <a href="/Ride/ViewAdHocRide?adhocrideid=@(Model.HomePageRandomRide.id)&fromhome=true"> @Model.HomePageRandomRide.Name</a></span>
 </div>
 <div class='panel-group'>
-    <div class="SecondaryHeadingMain panel-heading col-xs-12 col-md-12 col-sm-12 col-lg-12">
+    <div class="panel panel-default SecondaryHeadingMain panel-heading col-xs-12 col-md-12 col-sm-12 col-lg-12">
         <div class="col-xs-10 col-md-11 col-sm-10 SecondaryHeadingMain" data-toggle=" collapse" href="">
             <a href="/Ride/ViewAdHocRide?adhocrideid=@(Model.HomePageRandomRide.id)&fromhome=true">
                 @Model.HomePageRandomRide.RideDate.ToString("dddd, d MMM, HH:mm")
@@ -15,7 +15,7 @@
                                 new { @class = "glyphicon glyphicon-search", onclick = "ShowProgress();" })
         </div>
     </div>
-    <div class="SecondaryHeading panel-heading  col-xs-12 col-md-12 col-sm-12 col-lg-12">
+    <div class="panel panel-default SecondaryHeading panel-heading  col-xs-12 col-md-12 col-sm-12 col-lg-12">
         <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
             <div class="col-xs-10 col-md-11 col-sm-10">
                 <a data-toggle="collapse" href="#collapseKeenFirst" class="SecondaryHeading">Keen</a>
@@ -26,7 +26,7 @@
             </div>
         </div>
     </div>
-    <div class="panel-body panelBody col-xs-12 col-md-12 col-sm-12 col-lg-12">
+    <div class="panel panel-default panel-body col-xs-12 col-md-12 col-sm-12 col-lg-12">
         <span class="col-xs-9 col-md-2 col-sm-2 col-lg-2"> <b>Are you in?</b></span>
         @Html.Partial("_HomePageKeenStatus", Model)
         <hr />
