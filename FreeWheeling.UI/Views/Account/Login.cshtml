@@ -7,92 +7,109 @@
 @Styles.Render("~/Content/csssocial")
 <div class="row">
         <hr />
-        <section id="loginForm">        
-                <section id="socialLoginForm">
-                    @Html.Partial("_ExternalLoginsListPartial", 
-                    new FreeWheeling.UI.Models.ExternalLoginViewModel() { Action = "ExternalLogin",
-                        ReturnUrl = ViewBag.ReturnUrl })
-                </section>    
-            <div style="clear:both"></div>
-            <hr  />
-            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, 
+    <section id="loginForm">
+        <section id="socialLoginForm">
+            @Html.Partial("_ExternalLoginsListPartial",
+                    new FreeWheeling.UI.Models.ExternalLoginViewModel()
+                    {
+                        Action = "ExternalLogin",
+                        ReturnUrl = ViewBag.ReturnUrl
+                    })
+        </section>
+        <div style="clear:both"></div>
+        <hr />
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post,
                 new { @class = "form-horizontal", role = "form" }))
-            {
-                @Html.AntiForgeryToken()
-                
-                <div class="content-box">
-                    <br />
-                    <div style="padding-left:15px;">
-                        <u>@Html.ActionLink("Create Account", "Register", new { ReturnUrl = ViewBag.ReturnUrl })</u> or sign in below.
-                    </div>                   
-                    <br />
-                    @Html.ValidationSummary(true)
+        {
+            @Html.AntiForgeryToken()
 
-                    <div class="col-md-12" style="margin-bottom: 15px;">
-                        <div class="input-group">
-                            <span class="input-group-btn">
-                                <label class="glyphicon glyphicon-user btn-login" style="top: 0px; line-height: 1.45;"></label>
-                            </span>
-                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder="User Name" })
-                            @Html.ValidationMessageFor(m => m.UserName)
-                        </div>
-                    </div>
+            <div class="content-box">
+                <br />
+                <div style="padding-left:15px;">
+                    <u>@Html.ActionLink("Create Account", "Register", new { ReturnUrl = ViewBag.ReturnUrl })</u> or sign in below.
+                </div>
+                <br />
+                @Html.ValidationSummary(true)
 
-                    <div class="col-md-12" style="margin-bottom: 15px;">
-                        <div class="input-group">
-                            <span class="input-group-btn">
-                                <label class="glyphicon glyphicon-asterisk btn-login btn-block" style="top: 0px; line-height: 1.45;"></label>
-                            </span>
-                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
-                            @Html.ValidationMessageFor(m => m.Password)
-                        </div>
+                <div class="col-md-12" style="margin-bottom: 15px;">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <label class="glyphicon glyphicon-user btn-login" style="top: 0px; line-height: 1.45;"></label>
+                        </span>
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "User Name" })
+                        @Html.ValidationMessageFor(m => m.UserName)
                     </div>
-                    @*<div class="col-md-6">
+                </div>
+
+                <div class="col-md-12" style="margin-bottom: 15px;">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <label class="glyphicon glyphicon-asterisk btn-login btn-block" style="top: 0px; line-height: 1.45;"></label>
+                        </span>
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+                        @Html.ValidationMessageFor(m => m.Password)
+                    </div>
+                </div>
+                @*<div class="col-md-6">
                        <b>@Html.ActionLink("forgot password?", "LostPassword")</b>
                     </div>*@
-                    <p></p>
-                    @*<div class="col-md-6">
+                <p></p>
+                @*<div class="col-md-6">
                         <label style="padding:15px;"><u><b>remember me @Html.CheckBoxFor(m => m.RememberMe)</b></u></label>
-                        <div class="checkbox">                           
+                        <div class="checkbox">
                         </div>
                     </div>*@
-                    <p></p>
-                    <div class="form-group col-md-12">
-                        <div class="col-md-offset-0 col-md-12">
-                            <input onclick="ShowProgress();" type="submit" value="Log in" class="btn btn-default" />
-                        </div>
-                      
+                <p></p>
+                <div class="form-group col-md-12">
+                    <div class="col-md-offset-0 col-md-12">
+                        <input onclick="ShowProgress();" type="submit" value="Log in" class="btn btn-default" />
                     </div>
-                    <div class="form-group col-md-12">
-                        <div style="padding-left:15px;padding-right:20px">
-                            <span><u>@Html.ActionLink("Forgot Password?", "ForgotPassword", new { ReturnUrl = ViewBag.ReturnUrl })</u></span>
-                            <span class="pull-right"><u><a data-toggle="collapse" data-target="#whatabout" href="#">What is Bunchy?</a></u></span>
-                        </div>
-                        <div class="collapse" id="whatabout" style="padding-left:15px;padding-right:15px">
-                        <hr />
-                            <p>Bunchy, currently in <b>BETA</b> has been created by cyclists for cyclists.</p>
-                            <p>
-                                The goal of Bunchy is to allow
-                                cyclists to better communicate about cycle groups and allow them to quickly and easily tell their fellow cyclists
-                                if they are keen for a ride each week and when they have left for a ride.
-                            </p><p>
-                                It will also let them create random rides that can be public or private, send invites and get an indication
-                                about who is keen.
-                            </p> <b>Please enjoy</b> and use the Feedback link to let us know what could be improved as this is just
-                            the beginning.
-                            <p></p>
-                            <p><b>Life is better in a Bunch</b></p>
-                        </div>
-                        </div>
+
+                </div>
+                <div class="form-group col-md-12">
                     <div style="padding-left:15px;padding-right:20px">
-                        <span class=""><u><a href="https://policy-portal.truste.com/core/privacy-policy/Hoo-Creative/325e20d7-43c3-4e1f-b6a1-3c39ccc27337">
-                            Privacy Policy</a></u></span>
+                        <span><u>@Html.ActionLink("Forgot Password?", "ForgotPassword", new { ReturnUrl = ViewBag.ReturnUrl })</u></span>
+                        <span class="pull-right"><u><a data-toggle="collapse" data-target="#whatabout" href="#">What is Bunchy?</a></u></span>
                     </div>
-                    <p></p>
-                        <div style="clear:both"></div>
+                    <div class="collapse" id="whatabout" style="padding-left:15px;padding-right:15px">
+                        <hr />
+                        <p>Bunchy, currently in <b>BETA</b> has been created by cyclists for cyclists.</p>
+                        <p>
+                            The goal of Bunchy is to allow
+                            cycle groups to communicate and easily co-ordinate rides. Its features include the ability to;</p><p>
+                            <ul>
+                             <li> create repeating and random rides,</li>
+                             <li>create routes,</li>
+                             <li>invite others,</li>
+                             <li>search groups via location,</li>
+                             <li>indicate attendance/non attendance,</li>
+                             <li>flag rides as private,</li>
+                             <li>discuss rides with other attendees,</li>
+                             <li>indicate departure times and,</li>
+                             <li>save rides to favourites.
+                             </li>
+                            </ul>
+                        Tailored specifically for the biking community Bunchy provides a platform for seamless interaction with fellow cyclists.
+                        </p> <b>Please enjoy</b> and use the Feedback link to let us know what could be improved as this is just
+                        the beginning.
+                        <p></p>
+                        <p><b>Life is better in a Bunch</b></p>
                     </div>
-            }
-        </section>
+                </div>
+                <div style="padding-left:15px;padding-right:20px">
+                    <span class="">
+                        <u>
+                            <a href="https://policy-portal.truste.com/core/privacy-policy/Hoo-Creative/325e20d7-43c3-4e1f-b6a1-3c39ccc27337">
+                                Privacy Policy
+                            </a>
+                        </u>
+                    </span>
+                </div>
+                <p></p>
+                <div style="clear:both"></div>
+            </div>
+        }
+    </section>
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
