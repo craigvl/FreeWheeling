@@ -4,20 +4,27 @@
 @{
     ViewBag.Title = "See All Ad Hoc Comments";
 }
-
-@Html.ActionLink(" ", "ViewAdHocRide", "Ride", new { adhocrideid = @Model.adhocrideid }, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
-
-<h2>All Comments</h2>
-
-@foreach (AdHocComment item in @Model.Comments)
-{
-  @item.userName @Html.Raw(":")  @item.CommentText
+<div class="row">
+    @Html.ActionLink(" ", "ViewAdHocRide", "Ride", new { adhocrideid = @Model.adhocrideid }, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
     <p></p>
-}
-@section scripts{
-    <script>
-        jQuery(document).ready(function () {
-            HideProgress();
-        });
-    </script>
-}
+    <div class="panel-group">
+        <div class="panel panel-default SecondaryHeading panel-heading">
+            <b>All Comments</b>
+        </div>
+        <div class="panel panel-default" style="padding:10px;">
+            @foreach (AdHocComment item in @Model.Comments)
+            {
+                <span>@item.userName :</span>
+                <span style="font-style:italic">@item.CommentText</span>
+                @:<p></p>
+            }
+        </div>
+    </div>
+</div>
+    @section scripts{
+        <script>
+            jQuery(document).ready(function () {
+                HideProgress();
+            });
+        </script>
+    }

@@ -4,24 +4,31 @@
 @{
     ViewBag.Title = "See All Comments";
 }
+<div class="row">
+    @if (@Model.PreviousID != -1)
+    {
+        @Html.ActionLink(" ", "Index", "Ride", new { RideId = @Model.PreviousID, Groupid = @Model.GroupId }, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
+    }
+    else
+    {
+        @Html.ActionLink(" ", "Index", "Ride", new { RideId = @Model.RideId, Groupid = @Model.GroupId }, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
+    }
 
-@if (@Model.PreviousID != -1)
-{
-    @Html.ActionLink(" ", "Index", "Ride", new { RideId = @Model.PreviousID, Groupid = @Model.GroupId }, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
-}
-else
-{
-    @Html.ActionLink(" ", "Index", "Ride", new { RideId = @Model.RideId, Groupid = @Model.GroupId }, new { @class = "glyphicon glyphicon-chevron-left", @style = "background-color: #FFF; color: #333333;", onclick = "ShowProgress();" })
-}
-
-
-<h2>All Comments</h2>
-
-@foreach (Comment item in @Model.Comments)
-{
-  @item.userName @Html.Raw(":")  @item.CommentText
     <p></p>
-}
+    <div class="panel-group">
+        <div class="panel panel-default SecondaryHeading panel-heading">
+            <b>All Comments</b>
+        </div>
+        <div class="panel panel-default" style="padding:10px;">
+            @foreach (Comment item in @Model.Comments)
+            {
+                <span>@item.userName :</span>
+                <span style="font-style:italic">@item.CommentText</span>
+                @:<p></p>
+    }
+        </div>
+    </div>
+</div>
 @section scripts{
 <script>
     jQuery(document).ready(function () {
