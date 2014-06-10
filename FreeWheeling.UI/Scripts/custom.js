@@ -38,6 +38,17 @@ function onsuccessremovefav() {
     HideProgress();
     displayMessageAjax("Removed from favourites", "success", "BottomCentre", "tempoarayMessage");
 }
+function HideInfoLink(GroupId) {
+    $("#infoButton" + GroupId).hide();
+    $("#hideinfo" + GroupId).show();
+    $("#GroupInfo" + GroupId).show();
+    HideProgress();
+}
+function hideinfodetails(GroupId) {
+    $("#GroupInfo" + GroupId).hide();
+    $("#infoButton" + GroupId).show();
+    $("#hideinfo" + GroupId).hide();
+}
 function UpdateKeenActionsPusher(message, rideid, keencount, username, leavetime) {
     if (message == 'In') {
         $("#KeenCountSpan" + rideid).html("(" + keencount + ")");
