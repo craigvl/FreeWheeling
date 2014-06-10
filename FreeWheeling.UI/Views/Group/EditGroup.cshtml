@@ -17,7 +17,7 @@
             <span class="btn btn-default btn-block"> Edit bunch </span>
         </div>
         <div >
-            <div ><span class="RequiredField">*&nbsp;</span><b>bunch Name:</b></div>
+            <div ><span class="RequiredField">*&nbsp;</span><b>Bunch Name:</b></div>
             <div >
                 @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
             </div>
@@ -54,6 +54,12 @@
             <hr />
             <div><b>Time</b></div>
             <hr />
+            <div><span class="RequiredField">*&nbsp;</span><b>Your name</b></div>
+            <div>
+                @Html.TextBoxFor(model => model.CreatorName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CreatorName)
+            </div>
+            <p></p>
             <div><span class="RequiredField">*&nbsp;</span><b>Hour (24 Hour)</b></div>
             <div>
                 @Html.TextBoxFor(model => model.Hour, new { @class = "form-control" })
@@ -73,7 +79,13 @@
                 @Html.ValidationMessageFor(model => model.StartLocation)
             </div>
             <p></p>
-            <div><span class="RequiredField">*&nbsp;</span><b>Map</b> (Enter <a href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</div>
+            <div><b>Description</b></div>
+            <div>
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Description)
+            </div>
+            <p></p>
+            <div><b>Map</b> (Enter <a href="http://veloroutes.org/bikemaps/">veloroutes</a> Route Number)</div>
 
             <div>
                 @Html.TextBoxFor(model => model.MapUrl, new { @class = "form-control" })

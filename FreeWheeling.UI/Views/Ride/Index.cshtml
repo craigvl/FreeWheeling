@@ -74,7 +74,21 @@
     </div>
     <hr />
     <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-        <span class="btn btn-default btn-block">@Model.Group.name</span>
+        <span class="btn btn-default col-xs-10">@Model.Group.name</span>
+        <span class="btn btn-default col-xs-2" style="text-align:center;top: 0px; line-height: 1.45;">
+            <span id="hideinfo@(Model.Group.id)" style="display:none;" onclick="hideinfodetails(@(Model.Group.id))" class="glyphicon glyphicon-info-sign"></span>
+            @Ajax.ActionLink(" ", // <-- Text to display
+                                "GetGroupDetails","Group",// <-- Action Method Name
+                                         new { id = Model.Group.id },
+                     new AjaxOptions
+                     {
+                         OnBegin = "ShowProgress()",
+                         UpdateTargetId = "GroupInfo" + Model.Group.id.ToString(), // <-- DOM element ID to update
+                         InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+                         HttpMethod = "POST",
+                         OnSuccess = "HideInfoLink(" + Model.Group.id.ToString() + ")"
+                     }, new { id = "infoButton" + Model.Group.id.ToString(), @class = "glyphicon glyphicon-info-sign" })
+        </span>
     </div>
     </div>
 @if (@Model.IsOwner)
