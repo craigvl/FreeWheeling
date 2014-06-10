@@ -366,6 +366,8 @@ namespace FreeWheeling.UI.Models
         public string Description { get; set; }
         public string MapUrl { get; set; }
         public bool IsPrivate { get; set; }
+        [Required(ErrorMessage = "Your Name is required")]
+        public string CreatedByName { get; set; }
     }
 
     public class DeleteAdHocRideModel

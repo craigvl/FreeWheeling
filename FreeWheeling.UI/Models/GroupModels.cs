@@ -311,6 +311,8 @@ namespace FreeWheeling.UI.Models
         [Required(ErrorMessage = "Minute is required")]
         [Range(0, 60, ErrorMessage = "Between 0 and 60")]
         public int Minute { get; set; }
+        [Required(ErrorMessage = "Your Name is required")]
+        public string CreatorName { get; set; } 
         public int LocationsId { get; set; }
         public List<Location> Locations { get; set; }
         public IList<DayOfWeekViewModel> DaysOfWeek { get; set; }

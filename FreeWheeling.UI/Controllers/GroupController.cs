@@ -243,7 +243,9 @@ namespace FreeWheeling.UI.Controllers
                     StartLocation = CurrentGroup.StartLocation,
                     Locations = repository.GetLocations().ToList(),
                     MapUrl = CurrentGroup.MapUrl,
-                    IsPrivate = CurrentGroup.IsPrivate
+                    IsPrivate = CurrentGroup.IsPrivate,
+                    Description = CurrentGroup.Description,
+                    CreatorName = CurrentGroup.CreatedByName  
                 };
 
                 _EditGroupModel.LocationsId = repository.GetLocations()
@@ -298,9 +300,11 @@ namespace FreeWheeling.UI.Controllers
                 CreatedBy = CurrentGroup.CreatedBy,
                 CreatedTimeStamp = CurrentGroup.CreatedTimeStamp,
                 ModifiedTimeStamp = LocalNow,
-                MapUrl = _EditGroupModel.MapUrl,  
+                MapUrl = _EditGroupModel.MapUrl,
+                Description = _EditGroupModel.Description,
                 id = _EditGroupModel.GroupId,
-                IsPrivate = _EditGroupModel.IsPrivate
+                IsPrivate = _EditGroupModel.IsPrivate,
+                CreatedByName = _EditGroupModel.CreatorName
             };
 
             repository.UpdateGroup(UpdatedGroup);

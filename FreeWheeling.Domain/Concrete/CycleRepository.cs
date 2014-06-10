@@ -941,6 +941,8 @@ namespace FreeWheeling.Domain.Concrete
             CurrentGroup.CreatedBy = CurrentGroup.CreatedBy;
             CurrentGroup.MapUrl = _Group.MapUrl;
             CurrentGroup.IsPrivate = _Group.IsPrivate;
+            CurrentGroup.Description = _Group.Description;
+            CurrentGroup.CreatedByName = _Group.CreatedByName;
             context.Entry(CurrentGroup).State = System.Data.Entity.EntityState.Modified;
             context.SaveChanges();
         }
@@ -962,6 +964,7 @@ namespace FreeWheeling.Domain.Concrete
             CurrentAdHocRide.MapUrl = _AdHocRide.MapUrl;
             CurrentAdHocRide.Description = _AdHocRide.Description;
             CurrentAdHocRide.IsPrivate = _AdHocRide.IsPrivate;
+            CurrentAdHocRide.CreatedByName = _AdHocRide.CreatedByName;
             context.Entry(CurrentAdHocRide).State = System.Data.Entity.EntityState.Modified;
             context.SaveChanges();
         }
