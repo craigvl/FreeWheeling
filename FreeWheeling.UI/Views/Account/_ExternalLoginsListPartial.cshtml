@@ -20,17 +20,14 @@
     <div id="socialLoginList">
                 @foreach (AuthenticationDescription p in loginProviders)
                 {
-
                     if (p.AuthenticationType == "Google")
-                    {
-                       
-                            <button type="submit" class="btn btn-block btn-social btn-google-plus" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType<i class="fa fa-google-plus"></i></button>
+                    {                     
+                            <button type="submit" class="btn btn-block btn-social btn-google-plus" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account"><i class="fa fa-google-plus"></i>Sign in with Google</button>                        
                             <hr />
-                        
                     }
                     if (p.AuthenticationType == "Facebook")
                     {                     
-                            <button type="submit" class="btn btn-block btn-social btn-facebook" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType<i class="fa fa-facebook"></i></button>
+                            <button type="submit" class="btn btn-block btn-social btn-facebook" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account"><i class="fa fa-facebook"></i>Sign in with Facebook</button>
                     }
                 }
             </div>      
