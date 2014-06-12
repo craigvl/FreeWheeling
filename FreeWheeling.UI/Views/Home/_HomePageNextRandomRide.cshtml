@@ -6,7 +6,7 @@
 <div class='panel-group'>
     <div class="panel panel-default SecondaryHeadingMain panel-heading col-xs-12 col-md-12 col-sm-12 col-lg-12">
         <div class="col-xs-10 col-md-11 col-sm-10 SecondaryHeadingMain" data-toggle=" collapse" href="">
-            <a href="/Ride/ViewAdHocRide?adhocrideid=@(Model.HomePageRandomRide.id)&fromhome=true">
+            <a onclick="ShowProgress()" href="/Ride/ViewAdHocRide?adhocrideid=@(Model.HomePageRandomRide.id)&fromhome=true">
                 @Model.HomePageRandomRide.RideDate.ToString("dddd, d MMM, HH:mm")
             </a>
         </div>
@@ -18,8 +18,8 @@
     <div class="panel panel-default SecondaryHeading panel-heading  col-xs-12 col-md-12 col-sm-12 col-lg-12">
         <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
             <div class="col-xs-10 col-md-11 col-sm-10">
-                <a data-toggle="collapse" href="#collapseKeenFirst" class="SecondaryHeading">Keen</a>
-                <a class="SecondaryHeading" id="@("KeenCountSpan"+@Model.HomePageRandomRide.id)">(@Model.Keencount.ToString())</a>
+                <a onclick="ShowProgress()" href="/Ride/ViewAdHocRide?adhocrideid=@(Model.HomePageRandomRide.id)&fromhome=true" class="SecondaryHeading">Keen</a>
+                <a onclick="ShowProgress()" href="/Ride/ViewAdHocRide?adhocrideid=@(Model.HomePageRandomRide.id)&fromhome=true" class="SecondaryHeading" id="@("KeenCountSpan"+@Model.HomePageRandomRide.id)">(@Model.Keencount.ToString())</a>
             </div>
             <div class="col-xs-1 col-md-1 col-sm-1">
                 <a class="SecondaryHeading" id="" data-toggle="collapse" href=""></a>

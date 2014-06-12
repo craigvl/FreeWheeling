@@ -18,8 +18,8 @@
     <div class="panel panel-default SecondaryHeading panel-heading col-xs-12 col-md-12 col-sm-12 col-lg-12">
         <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
             <div class="col-xs-10 col-md-11 col-sm-10">
-                <a data-toggle="collapse" href="#collapseKeenFirst" class="SecondaryHeading">Keen</a>
-                <a class="SecondaryHeading" id="@("KeenCountSpan"+@Model.HomePageRide.id)">(@Model.Keencount.ToString())</a>
+                <a onclick="ShowProgress()" href="/Ride/Index?groupid=@(Model.HomePageRide.Group.id)&fromhome=true" class="SecondaryHeading">Keen</a>
+                <a onclick="ShowProgress()" href="/Ride/Index?groupid=@(Model.HomePageRide.Group.id)&fromhome=true" class="SecondaryHeading" id="@("KeenCountSpan"+@Model.HomePageRide.id)">(@Model.Keencount.ToString())</a>
             </div>
             <div class="col-xs-1 col-md-1 col-sm-1">
                 <a class="SecondaryHeading" id="" data-toggle="collapse" href=""></a>
