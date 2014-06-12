@@ -86,6 +86,7 @@ namespace FreeWheeling.UI.Controllers
             if (currentUser.LocationID != null)
             {
                     //Check that user ID is a current location ID
+                    //Don't forget to update http post method to match model updates.
                     if (_HomeIndexModel.Locations.Any(l => l.id == currentUser.LocationID))
                     {
                         TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
@@ -151,7 +152,38 @@ namespace FreeWheeling.UI.Controllers
 
             if (currentUser.LocationID != null)
             {
-                _HomeIndexModel.CurrentUserLocation = repository.GetLocations().Where(i => i.id == currentUser.LocationID).Select(o => o.Name).FirstOrDefault();
+                CultureHelper _CultureHelper = new CultureHelper(repository);
+                TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
+                Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
+                _HomeIndexModel.FavouriteBunches = repository.GetFavouriteGroupsByLocation(_Location.id, currentUser.Id).ToList();
+                Session["Culture"] = _CultureHelper.GetCulture(Convert.ToInt32(currentUser.LocationID));
+                _HomeIndexModel.LocationsId = _Location.id;
+                _HomeIndexModel.CurrentUserLocation = _Location.Name;
+                _HomeIndexModel.UpCommingAd_HocCount = repository.GetUpCommingAd_HocCount(repository.GetLocations()
+                    .Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone);
+                _HomeIndexModel.UpCommingAd_HocCount = _HomeIndexModel.UpCommingAd_HocCount + repository.GetPrivateAdHocRideByUserID(currentUser.Id
+                    , _Location, TZone).Count();
+                _HomeIndexModel.BunchCount = repository.GetGroupCount(currentUser.LocationID);
+                _HomeIndexModel.HomePageRide = repository.GetHomePageRideByUserID(currentUser.Id);
+                if (_HomeIndexModel.HomePageRide != null)
+                {
+                    _HomeIndexModel.IsOnWay = repository.IsOnWay(_HomeIndexModel.HomePageRide.id, currentUser.Id);
+                    _HomeIndexModel.IsIn = repository.IsIn(_HomeIndexModel.HomePageRide.id, currentUser.Id);
+                    _HomeIndexModel.IsOut = repository.IsOut(_HomeIndexModel.HomePageRide.id, currentUser.Id);
+                    _HomeIndexModel.Keencount = repository.GetKeenCountForRide(_HomeIndexModel.HomePageRide.id);
+                }
+                else
+                {
+                    _HomeIndexModel.HomePageRandomRide = repository.GetHomePageRandomRideByUserID(currentUser.Id);
+                    if (_HomeIndexModel.HomePageRandomRide != null)
+                    {
+                        _HomeIndexModel.IsOnWay = repository.IsOnWayRandom(_HomeIndexModel.HomePageRandomRide.id, currentUser.Id);
+                        _HomeIndexModel.IsIn = repository.IsInRandom(_HomeIndexModel.HomePageRandomRide.id, currentUser.Id);
+                        _HomeIndexModel.IsOut = repository.IsOutRandom(_HomeIndexModel.HomePageRandomRide.id, currentUser.Id);
+                        _HomeIndexModel.Keencount = repository.GetKeenCountForAdHocRide(_HomeIndexModel.HomePageRandomRide.id);
+                    }
+                }
+
             }
             else
             {
