@@ -256,7 +256,7 @@ namespace FreeWheeling.UI.Controllers
                     protocol: Request.Url.Scheme);
 
                     await UserManager.SendEmailAsync(user.Id,
-                        "Confirm your account",
+                        user.UserName + " Please confirm your account",
                         "Please confirm your account by clicking this link: <a href=\""
                         + callbackUrl + "\">link</a>");
 
