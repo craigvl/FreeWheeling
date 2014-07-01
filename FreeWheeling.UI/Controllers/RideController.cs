@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using System.Configuration;
 using Microsoft.WindowsAzure.Storage.Queue;
+using Microsoft.ServiceBus.Notifications;
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -24,10 +25,14 @@ namespace FreeWheeling.UI.Controllers
     {
         private IdentityDb idb = new IdentityDb(); 
         private ICycleRepository repository;
+        private NotificationHubClient hubClient;
 
         public RideController(ICycleRepository repoParam)
         {
             repository = repoParam;
+            var cn = "Endpoint=sb://bunchy-ns.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=l+yxYaa2g7FcqmNAUrwX0K1Rq/dfFh2GpaYXMuuAHig=";
+            hubClient = NotificationHubClient
+                .CreateClientFromConnectionString(cn, "bunchy");
         }
 
         [Compress]
@@ -755,6 +760,8 @@ namespace FreeWheeling.UI.Controllers
                              Emails.Add(email);
                          }
                      }
+
+                     sendNotification(currentUser.UserName + " Is " + Commitment + " Ride " + _Group.name, item.Name);
                 }
 
                 _UserHelp.SendUsersGroupAttendStatusEmail(Emails, GroupName, Commitment, currentUser.UserName, _Ride.Group.id, _Ride.RideDate);
@@ -793,6 +800,30 @@ namespace FreeWheeling.UI.Controllers
                                   parentid = ParentRideID
                 }, JsonRequestBehavior.AllowGet);  
         }
+
+        private async Task sendNotification(string notificationText, string tag)
+        {
+            try
+            {
+                // Create notifications for both Windows Store and iOS platforms.
+                var toast = @"<toast><visual><binding template=""ToastText01""><text id=""1"">" +
+                    notificationText + "</text></binding></visual></toast>";
+                var alert = "{\"aps\":{\"alert\":\"" + notificationText +
+                    "\"}, \"inAppMessage\":\"" + notificationText + "\"}";
+                string gcmMessage = "{\"data\":{\"message\":\"" + notificationText + "\"}}";
+
+                // Send a notification to the logged-in user on both platforms.
+                //await hubClient.SendWindowsNativeNotificationAsync(toast, tag);
+                //await hubClient.SendAppleNativeNotificationAsync(alert, tag);
+                await hubClient.SendGcmNativeNotificationAsync(gcmMessage, tag);
+            }
+            catch (ArgumentException ex)
+            {
+                // This is expected when an APNS registration doesn't exist.
+                Console.WriteLine(ex.Message);
+            }
+        }
+
 
         public JsonResult AttendSingleRide(int RideId, string Commitment, int Groupid, int ParentRideID)
         {
