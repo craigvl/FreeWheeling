@@ -1,0 +1,44 @@
+﻿@model FreeWheeling.UI.Models.LocationCreate
+
+@{
+    ViewBag.Title = "Location Create";
+}
+
+<div class="row">
+    <p>
+        @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
+    </p>
+    <div class="btn-group btn-block">
+        <span class="btn btn-default btn-block"> Create a new location </span>
+    </div>
+    @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <p></p>
+            @Html.ValidationSummary(true)
+            <p></p>
+            <div><span class="RequiredField control-label">*&nbsp;</span><b>Location Name:</b></div>
+            <div>
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+            <p></p>
+            <input class="btn btn-default" onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create" />
+        }
+    </div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        HideProgress();
+    });
+    $("form").submit(function () {
+        if (!$(this).valid()) {
+            HideProgress();
+        }
+        else {
+        }
+    });
+</script>
+
+}

@@ -30,4 +30,10 @@ namespace FreeWheeling.UI.Models
         public string CurrentUserLocation { get; set; }
         public List<Location> Locations { get; set; }
     }
+
+    public class LocationCreate
+    {
+        [Required(ErrorMessage = "Location Name is required")]
+        public string Name { get; set; }
+    }
 }

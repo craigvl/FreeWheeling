@@ -85,6 +85,7 @@ namespace FreeWheeling.Domain.Abstract
         void AddRider(Rider _Rider, Group _Group);
         void AddAdHocRider(AdHocRider _Rider, Ad_HocRide _Ride);
         void AddGroup(Group _Group);
+        void AddLocation(Location _Location);
         void AddAdHocRide(Ad_HocRide _AdHocRide);
         void AddRideComment(string Comment, int RideId, string UserName, string UserId);
         void AddAdHocRideComment(string Comment, int RideId, string UserName, string UserId);

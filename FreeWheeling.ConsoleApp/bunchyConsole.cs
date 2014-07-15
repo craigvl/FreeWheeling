@@ -114,25 +114,30 @@ namespace FreeWheeling.ConsoleApp
                 TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Location.id);
                 _CycleRepository.DeleteOldRides(item.id, TZone);
                 _CycleRepository.Save();
+            }
+
+            foreach (Group item in _CycleRepository.GetGroupsIncludePrivate())
+            {
+                Location _Location = _CycleRepository.GetLocations().Where(l => l.id == item.Location.id).FirstOrDefault();
+                TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Location.id);
                 Ride NextRide = _CycleRepository.GetClosestNextRide(item, TZone);
-                 if (NextRide == null)
-                 {
-                     if (item.RideDays != null)
-                     {
-                         _CycleRepository.PopulateRideDates(item, TZone);
-                         _CycleRepository.Save();
-                     }
-                 }
+                if (NextRide == null)
+                {
+                    if (item.RideDays != null)
+                    {
+                        _CycleRepository.PopulateRideDates(item, TZone);
+                        _CycleRepository.Save();
+                    }
+                }
             }
 
             List<Ad_HocRide> RandomRideList = _CycleRepository.GetRandomRides().ToList();
-
             foreach (Ad_HocRide item in RandomRideList)
             {
                 Location _Location = _CycleRepository.GetLocations().Where(l => l.id == item.Location.id).FirstOrDefault();
                 TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Location.id);
-                _CycleRepository.DeleteOldRandomRide(item.id,TZone);
-            }   
+                _CycleRepository.DeleteOldRandomRide(item.id, TZone);
+            }
         }
     }
 
