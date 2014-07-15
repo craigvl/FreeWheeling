@@ -280,6 +280,10 @@
     <Compile Include="DataContexts\IdentityMigrations\201405031351088_init.Designer.cs">
       <DependentUpon>201405031351088_init.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201407152156497_Added_FirstNameLastName.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201407152156497_Added_FirstNameLastName.Designer.cs">
+      <DependentUpon>201407152156497_Added_FirstNameLastName.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Filters\CompressAttribute.cs" />
     <Compile Include="Filters\RoleAttribute.cs" />
@@ -676,6 +680,9 @@
   <ItemGroup>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201405031351088_init.resx">
       <DependentUpon>201405031351088_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201407152156497_Added_FirstNameLastName.resx">
+      <DependentUpon>201407152156497_Added_FirstNameLastName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
