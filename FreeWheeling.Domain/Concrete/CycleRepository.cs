@@ -595,6 +595,13 @@ namespace FreeWheeling.Domain.Concrete
             context.SaveChanges();
         }
 
+        public void AddLocation(Location _Location)
+        {
+            context.Locations.Add(_Location);
+            context.Entry(_Location).State = System.Data.Entity.EntityState.Added;
+            context.SaveChanges();
+        }
+
         public void AddAdHocRider(AdHocRider _Rider, Ad_HocRide _Ride)
         {
             AdHocRider CurrentRiders = context.AdHocRider.Where(o => o.userId == _Rider.userId && o.AdHocRide.id == _Ride.id).FirstOrDefault();

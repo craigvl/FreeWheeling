@@ -95,7 +95,12 @@ else
 			), "-- Set a Location --", new { @class = "form-control" }
 			)
 		<p></p>
-		<input type="submit" value="Set Location" class="btn btn-default" />
+		<input type="submit" value="Set Location" class="btn btn-block btn-default" />
+        <p></p>
+    <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;margin-top:10px;">
+            @Html.ActionLink("Add a new location", "LocationCreate", "Home", new { }, new { @class = "btn btn-default col-xs-9", style = "text-align:left;top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })
+		    @Html.ActionLink(" ", "LocationCreate", "Home", new { }, new { @class = "btn btn-default col-xs-3 glyphicon glyphicon-plus", style = "text-align:center;top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })
+    </div>
 	}
 }
     </div>
