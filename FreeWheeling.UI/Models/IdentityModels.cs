@@ -19,6 +19,8 @@ namespace FreeWheeling.UI.Models
         public bool ReceiveComments { get; set; }
         public bool ReceiveSummary { get; set; }
         public string TimeBefore { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

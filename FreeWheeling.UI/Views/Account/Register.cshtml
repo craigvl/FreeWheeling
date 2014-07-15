@@ -12,6 +12,28 @@
                 <span class="btn btn-default btn-block"> create a new account </span>
             </div>
         </div>
+    <div style="margin-bottom: 15px;">
+        <div class="input-group">
+            <span class="input-group-btn">
+                <label class="glyphicon glyphicon-user btn-login" style="top: 0px; line-height: 1.45;"></label>
+            </span>
+            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "First Name" })
+        </div>
+        <div style="padding-left:15px;">
+            @Html.ValidationMessageFor(m => m.FirstName)
+        </div>
+    </div>
+    <div style="margin-bottom: 15px;">
+        <div class="input-group">
+            <span class="input-group-btn">
+                <label class="glyphicon glyphicon-user btn-login" style="top: 0px; line-height: 1.45;"></label>
+            </span>
+            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Last Name" })
+        </div>
+        <div style="padding-left:15px;">
+            @Html.ValidationMessageFor(m => m.LastName)
+        </div>
+    </div>
         <div style="margin-bottom: 15px;">
             <div class="input-group">
                 <span class="input-group-btn">

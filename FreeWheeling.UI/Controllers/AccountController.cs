@@ -246,7 +246,9 @@ namespace FreeWheeling.UI.Controllers
                     ReceiveComments = true,
                     ReceiveSummary = false,
                     ReceiveEmails = true,
-                    TimeBefore = "0"};
+                    TimeBefore = "0",
+                    FirstName = model.FirstName,
+                    LastName = model.LastName};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
