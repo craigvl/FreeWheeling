@@ -77,6 +77,7 @@ namespace FreeWheeling.UI.Controllers
             _Ad_HocRide.LocationsId = _Location.id;
             _Ad_HocRide.Hour = 5;
             _Ad_HocRide.Minute = 30;
+            _Ad_HocRide.CreatorName = currentUser.FirstName + " " + currentUser.LastName;
             return View(_Ad_HocRide);
         }
 
@@ -209,9 +210,21 @@ namespace FreeWheeling.UI.Controllers
             var results = nameList.Where(n =>
                 n.StartsWith(term, StringComparison.OrdinalIgnoreCase));
 
+            List<string> FirstnameList = idb.Users.Where(y => y.LocationID == currentUser.LocationID)
+               .Select(i => i.FirstName).ToList(); 
+
+            var results1 = FirstnameList.Where(n =>
+                n.StartsWith(term, StringComparison.OrdinalIgnoreCase));
+
+            List<string> LastnameList = idb.Users.Where(y => y.LocationID == currentUser.LocationID)
+               .Select(i => i.LastName).ToList();
+
+            var results2 = LastnameList.Where(n =>
+                n.StartsWith(term, StringComparison.OrdinalIgnoreCase));
+
             return new JsonResult()
             {
-                Data = results.ToArray(),
+                Data = results.Concat(results1).Concat(results2).ToArray(),
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
@@ -355,11 +368,12 @@ namespace FreeWheeling.UI.Controllers
         [Compress]
         public ActionResult Create()
         {
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
             GroupCreateModel _GroupCreateModel = new GroupCreateModel();
             _GroupCreateModel.Locations = repository.GetLocations().ToList();
             _GroupCreateModel.Hour = 5;
             _GroupCreateModel.Minute = 30;
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            _GroupCreateModel.CreatorName = currentUser.FirstName + " " + currentUser.LastName;
             Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
             _GroupCreateModel.LocationsId = _Location.id;
             return View(_GroupCreateModel);
