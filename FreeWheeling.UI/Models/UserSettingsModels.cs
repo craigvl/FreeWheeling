@@ -9,6 +9,12 @@ namespace FreeWheeling.UI.Models
 {
     public class UserSettingsModel
     {
+        [Required]
+        [Display(Name = "Frist Name")]
+        public string FirstName { get; set; }
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
         public int LocationsId { get; set; }
         public string CurrentUserLocation { get; set; }
         public List<Location> Locations { get; set; }

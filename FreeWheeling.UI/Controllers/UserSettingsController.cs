@@ -34,6 +34,8 @@ namespace FreeWheeling.UI.Controllers
             _SettingsModel.LocationsId = _Location.id;
             _SettingsModel.CurrentUserLocation = _Location.Name;
             _SettingsModel.ReceiveEmails = currentUser.ReceiveEmails;
+            _SettingsModel.FirstName = currentUser.FirstName;
+            _SettingsModel.LastName = currentUser.LastName;
 
             if (currentUser.LocationID != null)
             {
@@ -59,6 +61,8 @@ namespace FreeWheeling.UI.Controllers
 
                 currentUser.LocationID = repository.GetLocations().Where(l => l.id == _SettingsModel.LocationsId).Select(o => o.id).FirstOrDefault();
                 currentUser.ReceiveEmails = _SettingsModel.ReceiveEmails;
+                currentUser.FirstName = _SettingsModel.FirstName;
+                currentUser.LastName = _SettingsModel.LastName;
                 idb.SaveChanges();
 
                 return Json(new

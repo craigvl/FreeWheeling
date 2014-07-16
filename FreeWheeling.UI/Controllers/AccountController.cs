@@ -470,7 +470,7 @@ namespace FreeWheeling.UI.Controllers
                 var emailClaim = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
                 var email = emailClaim.Value;
 
-                var user = new ApplicationUser() { UserName = model.UserName, Email = email };
+                var user = new ApplicationUser() { UserName = model.UserName, Email = email, FirstName = model.FirstName, LastName = model.LastName };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
