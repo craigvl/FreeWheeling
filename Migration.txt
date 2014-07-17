@@ -8,4 +8,4 @@ add-migration -ConfigurationTypeName FreeWheeling.Domain.DataContexts.CycleMigra
 
 add-migration -ConfigurationTypeName FreeWheeling.Domain.DataContexts.CycleMigrations.Configuration "Userid_Change" -verbose
 
-add-migration -ConfigurationTypeName FreeWheeling.UI.DataContexts.IdentityMigrations.Configuration "Added_Email" -verbose
+add-migration -ConfigurationTypeName FreeWheeling.UI.DataContexts.IdentityMigrations.Configuration "Added_FirstNameLastName" -verbose
