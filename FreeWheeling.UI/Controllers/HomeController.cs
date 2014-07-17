@@ -220,7 +220,7 @@ namespace FreeWheeling.UI.Controllers
             }
             else
             {
-                Location NewLocation = new Location { Name = _LocationCreate.Name };
+                Location NewLocation = new Location { Name = _LocationCreate.Name, TimeZoneInfo = _LocationCreate.TimeZoneId };
                 repository.AddLocation(NewLocation);
                 var currentUser = idb.Users.Find(User.Identity.GetUserId());
                 currentUser.LocationID = NewLocation.id;

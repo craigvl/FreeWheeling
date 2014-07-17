@@ -35,5 +35,11 @@ namespace FreeWheeling.UI.Models
     {
         [Required(ErrorMessage = "Location Name is required")]
         public string Name { get; set; }
+        public string TimeZoneId { get; set; }
+        public TimeZoneInfo TimeZone
+        {
+            get { return TimeZoneInfo.FindSystemTimeZoneById(TimeZoneId); }
+            set { TimeZoneId = value.Id; }
+        }
     }
 }
