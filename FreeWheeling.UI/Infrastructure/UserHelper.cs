@@ -19,10 +19,22 @@ namespace FreeWheeling.UI.Infrastructure
         public List<string> GetEmailsForUserNames(List<string> UserNames)
         {
             List<string> UserEmails = new List<string>();
+            string[] firstlastname = new string[2];
 
             foreach (string item in UserNames)
             {
                 string UserEmail = idb.Users.Where(e => e.UserName == item).Select(o => o.Email).FirstOrDefault();
+
+                if (UserEmail == null)
+                {
+                    firstlastname = item.Split(null);
+                    if (firstlastname != null)
+                    {
+                        string fname = firstlastname[0];
+                        string lname = firstlastname[1];
+                        UserEmail = idb.Users.Where(e => e.FirstName == fname && e.LastName == lname).Select(o => o.Email).FirstOrDefault();
+                    }
+                }
 
                 if (UserEmail != null)
                 {
@@ -32,7 +44,10 @@ namespace FreeWheeling.UI.Infrastructure
                 {
                     UserEmails.Add(item);
                 }
+                //reset array
+                firstlastname = new string[2];
             }
+            
             return UserEmails;
         }
 

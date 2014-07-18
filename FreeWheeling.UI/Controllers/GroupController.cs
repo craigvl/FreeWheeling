@@ -30,6 +30,12 @@ namespace FreeWheeling.UI.Controllers
         private IdentityDb idb = new IdentityDb(); 
         private ICycleRepository repository;
 
+        //This class is used to hold that concatinated first name and last name for the autocomplete invite users function. 
+        public class FirstNameLastName
+        {
+            public string FirstLastName { get; set; }
+        }
+
         public GroupController(ICycleRepository repoParam)
         {
             repository = repoParam;
@@ -204,27 +210,28 @@ namespace FreeWheeling.UI.Controllers
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
             // A list of names to mimic results from a database
-            List<string> nameList = idb.Users.Where(y => y.LocationID == currentUser.LocationID)
+            List<string> usernameList = idb.Users.Where(y => y.LocationID == currentUser.LocationID)
                 .Select(i => i.UserName).ToList();
 
-            var results = nameList.Where(n =>
+            var results = usernameList.Where(n =>
                 n.StartsWith(term, StringComparison.OrdinalIgnoreCase));
 
-            List<string> FirstnameList = idb.Users.Where(y => y.LocationID == currentUser.LocationID)
-               .Select(i => i.FirstName).ToList(); 
+            IQueryable<FirstNameLastName> nameList = idb.Users.Where(y => y.LocationID == currentUser.LocationID)
+               .Select(i => new FirstNameLastName { FirstLastName = i.FirstName + " " + i.LastName }).AsQueryable();
 
-            var results1 = FirstnameList.Where(n =>
-                n.StartsWith(term, StringComparison.OrdinalIgnoreCase));
+            var results1 = nameList.Where(n =>
+                n.FirstLastName.Contains(term));
 
-            List<string> LastnameList = idb.Users.Where(y => y.LocationID == currentUser.LocationID)
-               .Select(i => i.LastName).ToList();
+            List<string> allFirstNameLastNames = new List<string>();
 
-            var results2 = LastnameList.Where(n =>
-                n.StartsWith(term, StringComparison.OrdinalIgnoreCase));
-
+            foreach (FirstNameLastName item in results1)
+            {
+                allFirstNameLastNames.Add(item.FirstLastName);
+            }
+          
             return new JsonResult()
             {
-                Data = results.Concat(results1).Concat(results2).ToArray(),
+                Data = results.Concat(allFirstNameLastNames).ToArray(),
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
