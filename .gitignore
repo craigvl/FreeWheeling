@@ -156,3 +156,5 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+FreeWheeling.UI/Web.config
+FreeWheeling.ConsoleApp/App.config
