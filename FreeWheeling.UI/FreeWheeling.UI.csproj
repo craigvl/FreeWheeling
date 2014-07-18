@@ -659,10 +659,10 @@
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Emails\SendNewGroupCreated.cshtml" />
     <Content Include="Views\Home\LocationCreate.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\TimeZones.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Shared\DisplayTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

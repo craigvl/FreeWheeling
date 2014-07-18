@@ -46,23 +46,8 @@ namespace FreeWheeling.UI.Infrastructure
             else
             {
                 Location _Location = repository.GetLocations().Where(l => l.id == UserLocationId).FirstOrDefault();
-
-                if (_Location.Name == "Townsville" ||
-                    _Location.Name == "Cairns")
-                {
-                    TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
-                    return TZone;
-                }
-                if (_Location.Name == "Perth")
-                {
-                    TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("W. Australia Standard Time");
-                    return TZone;
-                }
-                else
-                {
-                    TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
-                    return TZone;
-                }
+                TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById(_Location.TimeZoneInfo);
+                return TZone;              
             }
         }
     }
