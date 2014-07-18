@@ -46,8 +46,16 @@ namespace FreeWheeling.UI.Infrastructure
             else
             {
                 Location _Location = repository.GetLocations().Where(l => l.id == UserLocationId).FirstOrDefault();
-                TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById(_Location.TimeZoneInfo);
-                return TZone;              
+                if (!string.IsNullOrWhiteSpace(_Location.TimeZoneInfo))
+                {
+                    TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById(_Location.TimeZoneInfo);
+                    return TZone;                  
+                }
+                else
+                {
+                    TimeZoneInfo TZone = TimeZoneInfo.FindSystemTimeZoneById("E. Australia Standard Time");
+                    return TZone;
+                }
             }
         }
     }
