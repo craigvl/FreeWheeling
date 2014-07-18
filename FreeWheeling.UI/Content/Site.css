@@ -58,6 +58,24 @@ input[type="checkbox"].input-validation-error {
     display: none;
 }
 /*Bootstrap over writes*/
+
+/*Force line at bottom of tables*/
+.table>tfoot>tr>td {
+padding: 8px;
+line-height: 1.42857143;
+vertical-align: top;
+border-top: 1px solid #ddd;
+border-bottom: 1px solid #ddd !important;
+}
+
+.table > tbody > tr > td, .table > tfoot > tr > td {
+padding: 8px;
+line-height: 1.42857143;
+vertical-align: top;
+border-top: 1px solid #ddd;
+border-bottom: 1px solid #ddd !important;
+}
+
 .label {
 display: inline;
 padding: .2em .6em .3em;
@@ -525,3 +543,4 @@ as per http://stackoverflow.com/questions/18192082/bootstrap-3-navbar-collapse *
 .messagebox {
 }
 /*End messages*/
+
