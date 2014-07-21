@@ -87,6 +87,7 @@ namespace FreeWheeling.UI.Controllers
                 FollowingModel _Fmodel = new FollowingModel { FirstName = item.FirstName,
                                                               LastName = item.LastName,
                                                               UserID = item.Id,
+                                                              UserName = item.UserName,
                                                               following = repository.IsFollowing(currentUser.Id, item.Id) };
                 _FollowingList.Add(_Fmodel);
             }
@@ -108,6 +109,7 @@ namespace FreeWheeling.UI.Controllers
                     FirstName = item.FirstName,
                     LastName = item.LastName,
                     UserID = item.Id,
+                    UserName = item.UserName,
                     following = repository.IsFollowing(currentUser.Id, item.Id)
                 };
                 _FollowingList.Add(_Fmodel);
@@ -130,6 +132,7 @@ namespace FreeWheeling.UI.Controllers
                     FirstName = item.FirstName,
                     LastName = item.LastName,
                     UserID = item.Id,
+                    UserName = item.UserName,
                     following = repository.IsFollowing(currentUser.Id, item.Id)
                 };
                 _FollowingList.Add(_Fmodel);
