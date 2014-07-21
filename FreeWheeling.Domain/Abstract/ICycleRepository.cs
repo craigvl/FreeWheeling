@@ -92,6 +92,7 @@ namespace FreeWheeling.Domain.Abstract
         void AddUserExpand(UserExpand _UserExpand);
         void AddPrivateAdHocInvite(List<PrivateRandomUsers> _PrivateRandomUsers);
         void AddPrivateGroupInvite(List<PrivateGroupUsers> _PrivateGroupUsers);
+        void AddFollowingUser(string CurrentUserId, string UserId);
 
         //Delete
         void RemoveMember(string UserId, Group _Group);
@@ -100,6 +101,7 @@ namespace FreeWheeling.Domain.Abstract
         void DeleteOldRandomRide(int RandomRideId, TimeZoneInfo TimeZone);
         void DeleteAdHocRide(int AdHocId);
         void DeleteHomePageRide(string UserId);
+        void DeleteFollowingUser(string CurrentUserId, string UserId);
         
         //Update
         void UpdateGroup(Group _Group);
@@ -123,6 +125,7 @@ namespace FreeWheeling.Domain.Abstract
         Boolean IsInvitedToPrivateRandomBunch(int RideId, string UserId);
         Boolean PrivateBunchInviteUserEmailNotSet(int id);
         Boolean PrivateRandomBunchInviteUserEmailNotSet(int id);
+        Boolean IsFollowing(string CurrentUserId, string UserId);
         
         //Populate
         Group PopulateRideDates(Group _Group, TimeZoneInfo _TimeZoneInfo);

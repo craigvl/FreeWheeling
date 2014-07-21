@@ -9,14 +9,12 @@ using Microsoft.AspNet.Identity;
 using FreeWheeling.UI.Models;
 using FreeWheeling.Domain.Entities;
 
-
 namespace FreeWheeling.UI.Controllers
 {
     [Authorize]
     public class UserSettingsController : Controller
     {
         private IdentityDb idb = new IdentityDb();
-
         private ICycleRepository repository;
 
         public UserSettingsController(ICycleRepository repoParam)
@@ -28,7 +26,6 @@ namespace FreeWheeling.UI.Controllers
         {
             UserSettingsModel _SettingsModel = new UserSettingsModel();
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
-
             _SettingsModel.Locations = repository.GetLocations().ToList();
             Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
             _SettingsModel.LocationsId = _Location.id;
@@ -39,7 +36,6 @@ namespace FreeWheeling.UI.Controllers
 
             if (currentUser.LocationID != null)
             {
-
             }
             else
             {
@@ -58,7 +54,6 @@ namespace FreeWheeling.UI.Controllers
             //Check that user ID is a current location ID
             if (_SettingsModel.Locations.Any(l => l.id == _SettingsModel.LocationsId))
             {
-
                 currentUser.LocationID = repository.GetLocations().Where(l => l.id == _SettingsModel.LocationsId).Select(o => o.id).FirstOrDefault();
                 currentUser.ReceiveEmails = _SettingsModel.ReceiveEmails;
                 currentUser.FirstName = _SettingsModel.FirstName;
@@ -70,7 +65,6 @@ namespace FreeWheeling.UI.Controllers
                     success = true,
                     message = "Settings Saved"
                 }, JsonRequestBehavior.AllowGet);
-
             }
             else
             {
@@ -80,6 +74,68 @@ namespace FreeWheeling.UI.Controllers
                     message = "Please Select a Location"
                 }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        public ActionResult Follow()
+        {
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            List<FollowingModel> _FollowingList = new List<FollowingModel>();
+            List<ApplicationUser> _Users = idb.Users.Where(l => l.LocationID == currentUser.LocationID && l.Id != currentUser.Id).ToList();
+
+            foreach (ApplicationUser item in _Users)
+            {
+                FollowingModel _Fmodel = new FollowingModel { FirstName = item.FirstName,
+                                                              LastName = item.LastName,
+                                                              UserID = item.Id,
+                                                              following = repository.IsFollowing(currentUser.Id, item.Id) };
+                _FollowingList.Add(_Fmodel);
+            }
+
+            return View(_FollowingList);
+        }
+
+        public ActionResult FollowAdd(string Id)
+        {
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            repository.AddFollowingUser(currentUser.Id, Id);
+            List<FollowingModel> _FollowingList = new List<FollowingModel>();
+            List<ApplicationUser> _Users = idb.Users.Where(l => l.LocationID == currentUser.LocationID && l.Id != currentUser.Id).ToList();
+
+            foreach (ApplicationUser item in _Users)
+            {
+                FollowingModel _Fmodel = new FollowingModel
+                {
+                    FirstName = item.FirstName,
+                    LastName = item.LastName,
+                    UserID = item.Id,
+                    following = repository.IsFollowing(currentUser.Id, item.Id)
+                };
+                _FollowingList.Add(_Fmodel);
+            }
+
+            return View("Follow",_FollowingList);
+        }
+
+        public ActionResult Unfollow(string Id)
+        {
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            repository.DeleteFollowingUser(currentUser.Id, Id);
+            List<FollowingModel> _FollowingList = new List<FollowingModel>();
+            List<ApplicationUser> _Users = idb.Users.Where(l => l.LocationID == currentUser.LocationID && l.Id != currentUser.Id).ToList();
+
+            foreach (ApplicationUser item in _Users)
+            {
+                FollowingModel _Fmodel = new FollowingModel
+                {
+                    FirstName = item.FirstName,
+                    LastName = item.LastName,
+                    UserID = item.Id,
+                    following = repository.IsFollowing(currentUser.Id, item.Id)
+                };
+                _FollowingList.Add(_Fmodel);
+            }
+
+            return View("Follow",_FollowingList);
         }
 	}
 }

@@ -650,6 +650,13 @@ namespace FreeWheeling.Domain.Concrete
             context.SaveChanges();
         }
 
+        public void AddFollowingUser(string CurrentUserId, string UserId)
+        {
+            UserFollowingUser _UserFollowingUser = new UserFollowingUser { userId = CurrentUserId, followedUserId = UserId };
+            context.UserFollowingUsers.Add(_UserFollowingUser);
+            context.SaveChanges();
+        }
+
         public void PopulateRideDatesFromDate(Group _Group, DateTime _DateTime, TimeZoneInfo _TimeZoneInfo)
         {
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, _TimeZoneInfo);
@@ -858,6 +865,15 @@ namespace FreeWheeling.Domain.Concrete
                 return true;
             }
 
+        }
+
+        public bool IsFollowing(string CurrentUserId, string UserId)
+        {
+            int count = context.UserFollowingUsers.Where(c => c.userId == CurrentUserId && c.followedUserId == UserId).Count();
+            if (count > 0)
+                return true;
+            else
+                return false;
         }
 
         public bool IsGroupCreator(int _GroupId, string UserId)
@@ -1102,6 +1118,17 @@ namespace FreeWheeling.Domain.Concrete
             context.Members.Remove(CurrentMember);
             context.Entry(CurrentMember).State = System.Data.Entity.EntityState.Deleted;
             context.SaveChanges();
+        }
+
+        public void DeleteFollowingUser(string CurrentUserId, string UserId)
+        {
+            UserFollowingUser _UserFollowingUser = context.UserFollowingUsers.Where(c => c.userId == CurrentUserId && c.followedUserId == UserId).FirstOrDefault();
+            if (_UserFollowingUser != null)
+            {
+                context.UserFollowingUsers.Remove(_UserFollowingUser);
+                context.Entry(_UserFollowingUser).State = System.Data.Entity.EntityState.Deleted;
+                context.SaveChanges();
+            }
         }
 
         public void PopulateUserHomePageRides(List<HomePageRide> _HomePageRides)

@@ -18,6 +18,7 @@ namespace FreeWheeling.Domain.DataContexts
         public DbSet<Route> Routes { get; set; }
         public DbSet<Ride> Rides { get; set; }
         public DbSet<Rider> Riders { get; set; }
+        public DbSet<UserFollowingUser> UserFollowingUsers { get; set; }
         public DbSet<Comment> Comment { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Ad_HocRide> Ad_HocRide { get; set; }

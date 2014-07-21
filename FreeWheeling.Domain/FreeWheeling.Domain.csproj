@@ -67,8 +67,13 @@
     <Compile Include="DataContexts\CycleMigrations\201407170536092_timezoneadd.Designer.cs">
       <DependentUpon>201407170536092_timezoneadd.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201407210358363_Added_Following.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201407210358363_Added_Following.Designer.cs">
+      <DependentUpon>201407210358363_Added_Following.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\AdHocComment.cs" />
+    <Compile Include="Entities\UserFollowingUser.cs" />
     <Compile Include="Entities\PrivateRandomUsers.cs" />
     <Compile Include="Entities\Comment.cs" />
     <Compile Include="Entities\PrivateGroupUsers.cs" />
@@ -101,6 +106,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\CycleMigrations\201407170536092_timezoneadd.resx">
       <DependentUpon>201407170536092_timezoneadd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201407210358363_Added_Following.resx">
+      <DependentUpon>201407210358363_Added_Following.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
