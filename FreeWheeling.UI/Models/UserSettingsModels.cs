@@ -10,7 +10,7 @@ namespace FreeWheeling.UI.Models
     public class UserSettingsModel
     {
         [Required]
-        [Display(Name = "Frist Name")]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
         [Required]
         [Display(Name = "Last Name")]
@@ -24,9 +24,13 @@ namespace FreeWheeling.UI.Models
     public class FollowingModel
     {
         public string UserID { get; set; }
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
+        [Display(Name = "User Name")]
         public string UserName { get; set; }
+        [Display(Name = "Following")]
         public bool following { get; set; }
     }       
 }

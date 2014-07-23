@@ -270,6 +270,11 @@ namespace FreeWheeling.Domain.Concrete
             return context.AdHocComment.Where(r => r.AdHocRide.id == AdHocRideid).OrderByDescending(r => r.Date).Take(2).ToList();
         }
 
+        public int GetFollowingCount(string UserID)
+        {
+            return context.UserFollowingUsers.Where(u => u.userId == UserID).Count();
+        }
+
         public List<AdHocComment> GetAllCommentsForAdHocRide(int AdHocRideid)
         {
             return context.AdHocComment.Where(r => r.AdHocRide.id == AdHocRideid).OrderByDescending(r => r.Date).ToList();

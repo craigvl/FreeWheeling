@@ -660,6 +660,7 @@
     <Content Include="Views\Emails\SendNewGroupCreated.cshtml" />
     <Content Include="Views\Home\LocationCreate.cshtml" />
     <Content Include="Views\UserSettings\Follow.cshtml" />
+    <Content Include="Views\Emails\Following.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

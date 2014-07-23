@@ -22,6 +22,7 @@ namespace FreeWheeling.UI.Models
         public bool IsIn { get; set; }
         public bool IsOut { get; set; }
         public int Keencount { get; set; }
+        public int Followingcount { get; set; }
     }
 
     public class LocationChangeModel

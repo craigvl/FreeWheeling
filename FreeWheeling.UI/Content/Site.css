@@ -305,7 +305,7 @@ padding: 10px;
 .btn-success {
     background-color:#8dc63f;
     border-color: #8dc63f;
-    color: #FFF;
+    color: #FFF !important;
      -webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	-ms-border-radius: 10px;

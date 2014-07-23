@@ -8,6 +8,8 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using FreeWheeling.UI.Models;
 using FreeWheeling.Domain.Entities;
+using System.Threading.Tasks;
+using FreeWheeling.UI.Infrastructure;
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -114,6 +116,17 @@ namespace FreeWheeling.UI.Controllers
                 };
                 _FollowingList.Add(_Fmodel);
             }
+
+            Task E = new Task(() =>
+            {
+                UserHelper _UserHelp = new UserHelper();
+                string email = _UserHelp.GetUserEmailViaUserId(Id);
+                ApplicationUser _u = idb.Users.Find(currentUser.Id);
+                string Username = _u.UserName + " (" + _u.FirstName + " " + _u.LastName + ")";
+                _UserHelp.SendFollowing(Username, email);
+            });
+
+            E.Start();
 
             return View("Follow",_FollowingList);
         }

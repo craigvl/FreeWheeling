@@ -107,6 +107,16 @@ namespace FreeWheeling.UI.Infrastructure
             }
         }
 
+        public void SendFollowing(string username, string email)
+        {
+            //username = name of the user that has hit the follow button
+            //email = email of user that is now being followed
+            dynamic emailToUser = new Email("Following");
+            emailToUser.To = email;
+            emailToUser.Name = username;
+            emailToUser.Send();
+        }
+
         public void SendFeedBack(string Name, string Message)
         {
             dynamic emailToUser = new Email("SendFeedback");

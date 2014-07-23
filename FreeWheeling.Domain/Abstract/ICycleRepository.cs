@@ -29,6 +29,9 @@ namespace FreeWheeling.Domain.Abstract
         IEnumerable<Location> GetLocations();
         string GetLocationName(int? id);
 
+        //Get .. Following
+        int GetFollowingCount(string UserID);
+
         //Get .. Ride
         IEnumerable<Ride> GetRides();
         IEnumerable<Ride> GetRidesWithRiders();
