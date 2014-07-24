@@ -30,6 +30,12 @@ namespace FreeWheeling.UI.Controllers
         private IdentityDb idb = new IdentityDb(); 
         private ICycleRepository repository;
 
+        //This class is used to hold that concatinated first name and last name for the autocomplete invite users function. 
+        public class FirstNameLastName
+        {
+            public string FirstLastName { get; set; }
+        }
+
         public GroupController(ICycleRepository repoParam)
         {
             repository = repoParam;
@@ -77,6 +83,7 @@ namespace FreeWheeling.UI.Controllers
             _Ad_HocRide.LocationsId = _Location.id;
             _Ad_HocRide.Hour = 5;
             _Ad_HocRide.Minute = 30;
+            _Ad_HocRide.CreatorName = currentUser.FirstName + " " + currentUser.LastName;
             return View(_Ad_HocRide);
         }
 
@@ -203,15 +210,28 @@ namespace FreeWheeling.UI.Controllers
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
             // A list of names to mimic results from a database
-            List<string> nameList = idb.Users.Where(y => y.LocationID == currentUser.LocationID)
+            List<string> usernameList = idb.Users.Where(y => y.LocationID == currentUser.LocationID)
                 .Select(i => i.UserName).ToList();
 
-            var results = nameList.Where(n =>
+            var results = usernameList.Where(n =>
                 n.StartsWith(term, StringComparison.OrdinalIgnoreCase));
 
+            IQueryable<FirstNameLastName> nameList = idb.Users.Where(y => y.LocationID == currentUser.LocationID)
+               .Select(i => new FirstNameLastName { FirstLastName = i.FirstName + " " + i.LastName }).AsQueryable();
+
+            var results1 = nameList.Where(n =>
+                n.FirstLastName.Contains(term));
+
+            List<string> allFirstNameLastNames = new List<string>();
+
+            foreach (FirstNameLastName item in results1)
+            {
+                allFirstNameLastNames.Add(item.FirstLastName);
+            }
+          
             return new JsonResult()
             {
-                Data = results.ToArray(),
+                Data = results.Concat(allFirstNameLastNames).ToArray(),
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
@@ -355,11 +375,12 @@ namespace FreeWheeling.UI.Controllers
         [Compress]
         public ActionResult Create()
         {
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
             GroupCreateModel _GroupCreateModel = new GroupCreateModel();
             _GroupCreateModel.Locations = repository.GetLocations().ToList();
             _GroupCreateModel.Hour = 5;
             _GroupCreateModel.Minute = 30;
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            _GroupCreateModel.CreatorName = currentUser.FirstName + " " + currentUser.LastName;
             Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
             _GroupCreateModel.LocationsId = _Location.id;
             return View(_GroupCreateModel);

@@ -7,9 +7,10 @@
     <p>
         @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
     </p>
-        <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
+        <div class="btn-group btn-block col-xs-12 col-md-12 col-sm-12" style="margin-bottom:5px;width:100%;">
             <span class="btn btn-default btn-block">Settings</span>
         </div> 
+    
     <p><b>Change Location</b></p>   
     <div class="">
         @using (Ajax.BeginForm("Index",
@@ -26,9 +27,33 @@
                  "Text", Model.LocationsId
     ), "-- Set a Location --", new { @class = "form-control" })
                 <p></p>
-                <p><b>Email Settings</b></p>
-                <p>Receive email updates: @Html.CheckBoxFor(x => x.ReceiveEmails)</p>        
-            <input onclick="ShowProgress();" type="submit" value="Save" class="btn btn-default" />
+            <p><b>First name</b></p> 
+    <div class="btn-group btn-block col-xs-12 col-md-12 col-sm-12" style="margin-bottom:5px;width:100%;">
+        <div class="input-group">
+            <span class="input-group-btn">
+                <label class="glyphicon glyphicon-user btn-login" style="top: 0px; line-height: 1.45;"></label>
+            </span>
+            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "First Name" })
+        </div>
+        <div style="padding-left:15px;">
+            @Html.ValidationMessageFor(m => m.FirstName)
+        </div>
+    </div>
+            <p><b>Last name</b></p> 
+    <div class="btn-group btn-block col-xs-12 col-md-12 col-sm-12" style="margin-bottom:5px;width:100%;">
+        <div class="input-group">
+            <span class="input-group-btn">
+                <label class="glyphicon glyphicon-user btn-login" style="top: 0px; line-height: 1.45;"></label>
+            </span>
+            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Last Name" })
+        </div>
+        <div style="padding-left:15px;">
+            @Html.ValidationMessageFor(m => m.LastName)
+        </div>
+    </div>
+       <p><b>Email Settings</b></p>
+       <p>Receive email updates: @Html.CheckBoxFor(x => x.ReceiveEmails)</p>        
+       <input onclick="ShowProgress();" type="submit" value="Save" class="btn btn-default" />
         }
     </div>
     </div>
@@ -39,11 +64,11 @@
                 HideProgress();
             });
             function OnSuccess(data) {
-                alert(data.message);
+                displayMessageAjax(data.message,"success","","tempoarayMessage");
                 HideProgress();
             }
             function OnFailure(data) {
-                alert(data.message);
+                displayMessageAjax(data.message, "error", "", "tempoarayMessage");
             }
             $("form").submit(function () {
                 if (!$(this).valid()) {

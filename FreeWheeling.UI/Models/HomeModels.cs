@@ -22,6 +22,7 @@ namespace FreeWheeling.UI.Models
         public bool IsIn { get; set; }
         public bool IsOut { get; set; }
         public int Keencount { get; set; }
+        public int Followingcount { get; set; }
     }
 
     public class LocationChangeModel
@@ -35,5 +36,11 @@ namespace FreeWheeling.UI.Models
     {
         [Required(ErrorMessage = "Location Name is required")]
         public string Name { get; set; }
+        public string TimeZoneId { get; set; }
+        public TimeZoneInfo TimeZone
+        {
+            get { return TimeZoneInfo.FindSystemTimeZoneById(TimeZoneId); }
+            set { TimeZoneId = value.Id; }
+        }
     }
 }

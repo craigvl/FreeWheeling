@@ -184,13 +184,13 @@ namespace FreeWheeling.UI.Controllers
                 queue.CreateIfNotExists();
 
                 // Create a message and add it to the queue.
-                CloudQueueMessage message = new CloudQueueMessage("Hello, World");
+                CloudQueueMessage message = new CloudQueueMessage("Joined");
                 queue.AddMessage(message);
 
             });
 
             T.Start();
-
+            //To Do: Need to confirm if this is used as looks incorrect.
             return Json(new
             {
                 success = true,
@@ -759,9 +759,28 @@ namespace FreeWheeling.UI.Controllers
                              string email = _UserHelp.GetUserEmailViaUserId(item.userId);
                              Emails.Add(email);
                          }
-                     }
+                     }                   
+                }
 
-                     sendNotification(currentUser.UserName + " Is " + Commitment + " Ride " + _Group.name, item.Name);
+                foreach (string u in repository.GetFollowers(currentUser.Id))
+                {
+                    var ThisUser = idb.Users.Find(u);
+                    if (ThisUser != null)
+                    {
+                        if (ThisUser.ReceiveEmails)
+                        {
+                            string email = _UserHelp.GetUserEmailViaUserId(u);
+                            Emails.Add(email);
+                        }
+                    }
+                }
+
+                Emails = Emails.Distinct().ToList();
+
+                foreach (string e in Emails)
+                {
+                    ApplicationUser _user = idb.Users.Where(d => d.Email == e).FirstOrDefault();
+                    sendNotification(currentUser.UserName + " Is " + Commitment + " Ride " + _Group.name, _user.UserName);
                 }
 
                 _UserHelp.SendUsersGroupAttendStatusEmail(Emails, GroupName, Commitment, currentUser.UserName, _Ride.Group.id, _Ride.RideDate);
@@ -870,6 +889,28 @@ namespace FreeWheeling.UI.Controllers
                          }
                      }
                 }
+
+                foreach (string u in repository.GetFollowers(currentUser.Id))
+                {
+                    var ThisUser = idb.Users.Find(u);
+                    if (ThisUser != null)
+                    {
+                        if (ThisUser.ReceiveEmails)
+                        {
+                            string email = _UserHelp.GetUserEmailViaUserId(u);
+                            Emails.Add(email);
+                        }
+                    }
+                }
+
+                Emails = Emails.Distinct().ToList();
+
+                foreach (string e in Emails)
+                {
+                    ApplicationUser _user = idb.Users.Where(d => d.Email == e).FirstOrDefault();
+                    sendNotification(currentUser.UserName + " Is " + Commitment + " Ride " + _Group.name, _user.UserName);
+                }
+
                 _UserHelp.SendUsersGroupAttendStatusEmail(Emails, GroupName, Commitment, currentUser.UserName, _Ride.Group.id, _Ride.RideDate);
             });
 
@@ -942,6 +983,27 @@ namespace FreeWheeling.UI.Controllers
                              Emails.Add(email);
                          }
                      }
+                }
+
+                foreach (string u in repository.GetFollowers(currentUser.Id))
+                {
+                    var ThisUser = idb.Users.Find(u);
+                    if (ThisUser != null)
+                    {
+                        if (ThisUser.ReceiveEmails)
+                        {
+                            string email = _UserHelp.GetUserEmailViaUserId(u);
+                            Emails.Add(email);
+                        }
+                    }
+                }
+
+                Emails = Emails.Distinct().ToList();
+
+                foreach (string e in Emails)
+                {
+                    ApplicationUser _user = idb.Users.Where(d => d.Email == e).FirstOrDefault();
+                    sendNotification(currentUser.UserName + " Is " + Commitment + "The Random Ride " + _Ride.Name, _user.UserName);
                 }
 
                 _UserHelp.SendUsersAdHocAttendStatusEmail(Emails, _Ride.Name, currentUser.UserName, Commitment, _Ride.id, _Ride.RideDate);

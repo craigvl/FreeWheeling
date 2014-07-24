@@ -5,6 +5,14 @@ namespace FreeWheeling.UI.Models
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
+        [Display(Name = "Frist Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [Required]
         [Display(Name = "User name")]
         [RegularExpression(@"^[a-zA-Z0-9]*$", ErrorMessage = "Please only use Numbers and Letters for user name")]
         public string UserName { get; set; }

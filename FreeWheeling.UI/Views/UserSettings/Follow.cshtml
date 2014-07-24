@@ -1,0 +1,58 @@
+﻿@model IEnumerable<FreeWheeling.UI.Models.FollowingModel>
+
+@{
+    ViewBag.Title = "Follow";
+}
+<div class="row">
+    <div class="backbaricon col-xs-12 col-md-12 col-sm-12 col-lg-12" style="padding-bottom:5px;">
+        @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
+    </div>
+
+    @if (Model.Count() == 0)
+    {
+        <p>No users to follow!</p>
+    }
+    else
+    {
+        <table class="table content-box">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>               
+                <th></th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="padding-top:15px">
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td style="padding-top:15px">
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td style="padding-top:15px">
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    @if (!item.following)
+                    {
+                        <td>
+                            @Html.ActionLink("Follow", "FollowAdd", new { id = item.UserID }, new { @class = "btn btn-success" })
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @Html.ActionLink("Unfollow", "Unfollow", new { id = item.UserID }, new { @class = "btn btn-success" })
+                        </td>
+                    }
+                </tr>
+            }
+        </table>
+    }
+</div>

@@ -2,6 +2,13 @@
 
 @{
     ViewBag.Title = "Location Create";
+    var timeZoneList = TimeZoneInfo
+        .GetSystemTimeZones()
+        .Select(t => new SelectListItem
+        {
+            Text = t.DisplayName,
+            Value = t.Id
+        });
 }
 
 <div class="row">
@@ -22,6 +29,11 @@
                 @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Name)
             </div>
+        <p></p>
+        <div><span class="RequiredField control-label">*&nbsp;</span><b>TimeZone for location</b></div>
+        <div>
+            @Html.DropDownListFor(m => m.TimeZoneId, timeZoneList, new { @class = "form-control" })
+        </div>
             <p></p>
             <input class="btn btn-default" onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create" />
         }

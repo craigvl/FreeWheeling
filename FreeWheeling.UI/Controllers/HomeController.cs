@@ -100,6 +100,7 @@ namespace FreeWheeling.UI.Controllers
                         _HomeIndexModel.UpCommingAd_HocCount = _HomeIndexModel.UpCommingAd_HocCount + repository.GetPrivateAdHocRideByUserID(currentUser.Id
                             , _Location, TZone).Count();
                         _HomeIndexModel.BunchCount = repository.GetGroupCount(currentUser.LocationID);
+                        _HomeIndexModel.Followingcount = repository.GetFollowingCount(currentUser.Id);
                         _HomeIndexModel.HomePageRide = repository.GetHomePageRideByUserID(currentUser.Id);
                         if (_HomeIndexModel.HomePageRide != null)
 	                    {
@@ -164,6 +165,7 @@ namespace FreeWheeling.UI.Controllers
                 _HomeIndexModel.UpCommingAd_HocCount = _HomeIndexModel.UpCommingAd_HocCount + repository.GetPrivateAdHocRideByUserID(currentUser.Id
                     , _Location, TZone).Count();
                 _HomeIndexModel.BunchCount = repository.GetGroupCount(currentUser.LocationID);
+                _HomeIndexModel.Followingcount = repository.GetFollowingCount(currentUser.Id);
                 _HomeIndexModel.HomePageRide = repository.GetHomePageRideByUserID(currentUser.Id);
                 if (_HomeIndexModel.HomePageRide != null)
                 {
@@ -220,7 +222,7 @@ namespace FreeWheeling.UI.Controllers
             }
             else
             {
-                Location NewLocation = new Location { Name = _LocationCreate.Name };
+                Location NewLocation = new Location { Name = _LocationCreate.Name, TimeZoneInfo = _LocationCreate.TimeZoneId };
                 repository.AddLocation(NewLocation);
                 var currentUser = idb.Users.Find(User.Identity.GetUserId());
                 currentUser.LocationID = NewLocation.id;
@@ -240,6 +242,7 @@ namespace FreeWheeling.UI.Controllers
                     _HomeIndexModel.UpCommingAd_HocCount = _HomeIndexModel.UpCommingAd_HocCount + repository.GetPrivateAdHocRideByUserID(currentUser.Id
                         , _Location, TZone).Count();
                     _HomeIndexModel.BunchCount = repository.GetGroupCount(currentUser.LocationID);
+                    _HomeIndexModel.Followingcount = repository.GetFollowingCount(currentUser.Id);
                     _HomeIndexModel.HomePageRide = repository.GetHomePageRideByUserID(currentUser.Id);
                     if (_HomeIndexModel.HomePageRide != null)
                     {

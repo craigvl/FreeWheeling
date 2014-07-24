@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace FreeWheeling.Domain.Entities
 {
-    public class Location
+    public class UserFollowingUser
     {
         public int id { get; set; }
-        public string Name { get; set; }
-        public string TimeZoneInfo { get; set; }
+        public string userId { get; set; }
+        public string followedUserId { get; set; }
     }
 }
