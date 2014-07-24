@@ -31,6 +31,7 @@ namespace FreeWheeling.Domain.Abstract
 
         //Get .. Following
         int GetFollowingCount(string UserID);
+        List<string> GetFollowers(string CurrentUserId);
 
         //Get .. Ride
         IEnumerable<Ride> GetRides();

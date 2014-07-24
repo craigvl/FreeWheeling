@@ -275,6 +275,12 @@ namespace FreeWheeling.Domain.Concrete
             return context.UserFollowingUsers.Where(u => u.userId == UserID).Count();
         }
 
+        public List<string> GetFollowers(string CurrentUserId)
+        {
+          List<string> Followers = new List<string>();
+          return Followers = context.UserFollowingUsers.Where(f => f.followedUserId == CurrentUserId).Select(u => u.userId).ToList();
+        }
+
         public List<AdHocComment> GetAllCommentsForAdHocRide(int AdHocRideid)
         {
             return context.AdHocComment.Where(r => r.AdHocRide.id == AdHocRideid).OrderByDescending(r => r.Date).ToList();
@@ -872,6 +878,7 @@ namespace FreeWheeling.Domain.Concrete
 
         }
 
+        //Check to see if CurrentUserId has followed UserId, used in the follow usersettings page to swap follow unfollow button.
         public bool IsFollowing(string CurrentUserId, string UserId)
         {
             int count = context.UserFollowingUsers.Where(c => c.userId == CurrentUserId && c.followedUserId == UserId).Count();
