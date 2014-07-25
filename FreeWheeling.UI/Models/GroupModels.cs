@@ -69,7 +69,11 @@ namespace FreeWheeling.UI.Models
                 if (item.Rides.Where(t => t.RideDate >= LocalNow).Count() != RideCount) 
                 {
                     repository.DeleteOldRides(item.id,TZone);
-                    repository.PopulateRideDatesFromDate(item,item.Rides.OrderByDescending(g => g.RideDate).Select(h => h.RideDate).FirstOrDefault(), TZone);
+                    //If no ride is greater than localtime then just need to set as current date to use.
+                    DateTime _NextDateTime = item.Rides.OrderByDescending(g => g.RideDate).Select(h => h.RideDate).FirstOrDefault();
+                    if (_NextDateTime == DateTime.MinValue)
+                        _NextDateTime = DateTime.Now;
+                    repository.PopulateRideDatesFromDate(item, _NextDateTime,TZone);
                 }
 
                 item.Rides = item.Rides.Where(t => t.RideDate >= LocalNow).ToList();
