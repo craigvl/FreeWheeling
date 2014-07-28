@@ -2,20 +2,24 @@
 @using FreeWheeling.Domain.Entities;
 @using FreeWheeling.UI.Models;
 
-    @foreach (NextRideGroupbyDayOfWeek item in Model._NextRideGroupbyDayOfWeek)
+    @foreach (NextRideGroupbyDayOfWeek NextRideDay in Model._NextRideGroupbyDayOfWeek)
     {
-        @item.Thedayofweek;
-    }
-
-     @foreach (Group item in Model._Groups)
-                {
+        
+        <tr>
+        <td>
+       <b> @NextRideDay.Thedayofweek</b>
+      </td>
+            </tr>
+        foreach (int gID in NextRideDay.Groupids)
+        {
+            Group item = Model._Groups.Where(g => g.id == gID).FirstOrDefault();
     <tr>
         <td>
             @{
-                    bool isMember = Model.CurrentGroupMembership.Contains(item.id);
-                    int RiderCount = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(g => g.NumberofRiders).FirstOrDefault();
-                    DateTime NextRideDate = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(g => g.Date).FirstOrDefault();
-                    bool isCreator = Model._OwnerGroupList.Contains(item.id);
+                bool isMember = Model.CurrentGroupMembership.Contains(item.id);
+                int RiderCount = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(g => g.NumberofRiders).FirstOrDefault();
+                DateTime NextRideDate = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(g => g.Date).FirstOrDefault();
+                bool isCreator = Model._OwnerGroupList.Contains(item.id);
             }
 
             @if (item.Rides.Count > 0)
@@ -30,12 +34,12 @@
                             <div style="width:50%;float:left;">
                                 @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id },
                                 new { @class = "boldtext", onclick = "ShowProgress();" })
-                            </div>                          
+                            </div>
                             <div style="width: 10%; float: right;">
                                 <span id="hideinfo@(item.id)" style="display:none;" onclick="hideinfodetails(@(item.id))" class="glyphicon glyphicon-info-sign"></span>
                                 @Ajax.ActionLink(" ", // <-- Text to display
                                 "GetGroupDetails", // <-- Action Method Name
-                                new { id = item.id},
+                                new { id = item.id },
                      new AjaxOptions
                      {
                          OnBegin = "ShowProgress()",
@@ -69,9 +73,9 @@
                                 </div>
                                 //todo need to add ability for creator to send invites to group from home page list.
                                 @*<div style="width: 10%; float: right;">
-                                    @Html.ActionLink(" ", "InviteOthersToBunch", "Ride", new { RideId = item.id },
-                                                      new { @class = "glyphicon glyphicon-user", onclick = "ShowProgress();" })
-                                </div>*@
+                                        @Html.ActionLink(" ", "InviteOthersToBunch", "Ride", new { RideId = item.id },
+                                                          new { @class = "glyphicon glyphicon-user", onclick = "ShowProgress();" })
+                                    </div>*@
                             }
                         </td>
                     </tr>
@@ -90,5 +94,6 @@
             }
             <div class="Ginfo" id="@("GroupInfo" + @item.id)"></div>@*This is the div that gets replaced with group info*@
         </td>
-</tr>                               
-}
+    </tr>
+        }
+    }
