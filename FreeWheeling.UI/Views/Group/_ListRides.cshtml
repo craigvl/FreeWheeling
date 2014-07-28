@@ -1,5 +1,11 @@
 ﻿@model FreeWheeling.UI.Models.GroupModel
 @using FreeWheeling.Domain.Entities;
+@using FreeWheeling.UI.Models;
+
+    @foreach (NextRideGroupbyDayOfWeek item in Model._NextRideGroupbyDayOfWeek)
+    {
+        @item.Thedayofweek;
+    }
 
      @foreach (Group item in Model._Groups)
                 {

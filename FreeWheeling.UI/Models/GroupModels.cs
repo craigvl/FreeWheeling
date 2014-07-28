@@ -22,8 +22,15 @@ namespace FreeWheeling.UI.Models
         public string UserLocation;
         public string title;
         public List<int> _OwnerGroupList;
-        public List<Group> PrivateBunches { get; set; }
+        public List<Group> PrivateBunches;
+        public IEnumerable<NextRideGroupbyDayOfWeek> _NextRideGroupbyDayOfWeek;
     }
+
+    public class NextRideGroupbyDayOfWeek
+    {
+        public DayOfWeek Thedayofweek;
+        public List<int> Groupids;
+    } 
 
     public class GroupModelHelper
     {
@@ -151,6 +158,10 @@ namespace FreeWheeling.UI.Models
                     _GroupModel._OwnerGroupList.Add(item.id);
                 }
             }
+
+
+            _GroupModel._NextRideGroupbyDayOfWeek = _GroupModel._NextRideDetails.GroupBy(g => g.Date.DayOfWeek, g => g.GroupId, (key, p) =>
+                                                            new NextRideGroupbyDayOfWeek { Thedayofweek = key, Groupids = p.ToList() }).OrderBy(i => i.Thedayofweek);
 
             //Show private first.
             _GroupModel._Groups.OrderByDescending(g => g.IsPrivate);
