@@ -35,7 +35,8 @@ foreach (int gID in NextRideDay.Groupids)
                                         <div style="width:40%;float:left;">
                                             @Html.ActionLink(item.name, "Index", "Ride", new { groupid = item.id },
                                  new { @class = "boldtext", onclick = "ShowProgress();" })
-                                            <p>Keen (@KeenCount)</p>
+                                            <br/>
+                                            Keen (@KeenCount)
                                         </div>
                                         <div style="width: 10%; float: right;">
                                             <span id="hideinfo@(item.id)" style="display:none;" onclick="hideinfodetails(@(item.id))" class="glyphicon glyphicon-info-sign"></span>
