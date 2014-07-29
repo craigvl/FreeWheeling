@@ -181,13 +181,17 @@ namespace FreeWheeling.UI.Models
                 }
             }
 
+            if (_GroupModel._NextRideDetails != null)
+            {
+                _GroupModel._NextRideGroupbyDayOfWeek = _GroupModel._NextRideDetails.GroupBy(g => g.Date.DayOfWeek, g => g.GroupId, (key, p) =>
+                                                                new NextRideGroupbyDayOfWeek { Thedayofweek = key, Groupids = p.ToList() }).OrderBy(i => i.Thedayofweek);
+            }
 
-            _GroupModel._NextRideGroupbyDayOfWeek = _GroupModel._NextRideDetails.GroupBy(g => g.Date.DayOfWeek, g => g.GroupId, (key, p) =>
-                                                            new NextRideGroupbyDayOfWeek { Thedayofweek = key, Groupids = p.ToList() }).OrderBy(i => i.Thedayofweek);
-
-            _GroupModel._NextRideGroupbyDayOfWeekPrivate = _GroupModel._NextRideDetailsPrivate.GroupBy(g => g.Date.DayOfWeek, g => g.GroupId, (key, p) =>
-                                                            new NextRideGroupbyDayOfWeekPrivate { Thedayofweek = key, Groupids = p.ToList() }).OrderBy(i => i.Thedayofweek);
-
+            if (_GroupModel._NextRideDetailsPrivate != null)
+            {
+                _GroupModel._NextRideGroupbyDayOfWeekPrivate = _GroupModel._NextRideDetailsPrivate.GroupBy(g => g.Date.DayOfWeek, g => g.GroupId, (key, p) =>
+                                                                new NextRideGroupbyDayOfWeekPrivate { Thedayofweek = key, Groupids = p.ToList() }).OrderBy(i => i.Thedayofweek);
+            }
             //Show private first.
             //_GroupModel._Groups.OrderByDescending(g => g.IsPrivate);
             _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(UserId);
