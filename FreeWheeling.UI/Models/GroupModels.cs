@@ -19,18 +19,40 @@ namespace FreeWheeling.UI.Models
         public List<Group> _Groups;
         public List<int> CurrentGroupMembership;
         public List<NextRideDetails> _NextRideDetails;
+        public List<NextRideDetailsPrivate> _NextRideDetailsPrivate;
         public string UserLocation;
-        public string title;
+        public string Title;
         public List<int> _OwnerGroupList;
         public List<Group> PrivateBunches;
         public IEnumerable<NextRideGroupbyDayOfWeek> _NextRideGroupbyDayOfWeek;
+        public IEnumerable<NextRideGroupbyDayOfWeekPrivate> _NextRideGroupbyDayOfWeekPrivate;
     }
 
     public class NextRideGroupbyDayOfWeek
     {
         public DayOfWeek Thedayofweek;
         public List<int> Groupids;
-    } 
+    }
+
+    public class NextRideGroupbyDayOfWeekPrivate
+    {
+        public DayOfWeek Thedayofweek;
+        public List<int> Groupids;
+    }
+
+    public class NextRideDetails
+    {
+        public int GroupId { get; set; }
+        public DateTime Date { get; set; }
+        public int NumberofKeenRiders { get; set; }
+    }
+
+    public class NextRideDetailsPrivate
+    {
+        public int GroupId { get; set; }
+        public DateTime Date { get; set; }
+        public int NumberofKeenRiders { get; set; }
+    }
 
     public class GroupModelHelper
     {
@@ -49,12 +71,12 @@ namespace FreeWheeling.UI.Models
             if (!String.IsNullOrEmpty(searchString))
             {
                     _GroupModel._Groups = repository.GetGroupsByLocationWithSearch(_Location.id, searchString).ToList();
-                    _GroupModel.title = "All bunches";
-                           }
+                    _GroupModel.Title = "All bunches";
+            }
             else
             {
                     _GroupModel._Groups = repository.GetGroupsByLocation(_Location.id).ToList();
-                    _GroupModel.title = "All bunches";
+                    _GroupModel.Title = "All bunches";
             }
 
             _GroupModel.PrivateBunches = repository.GetPrivateGroupsByUserID(UserId,
@@ -90,7 +112,7 @@ namespace FreeWheeling.UI.Models
                 {
                     _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate,
                         GroupId = item.id,
-                        NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
+                        NumberofKeenRiders = NextRide.Riders.Where(i => i.PercentKeen == "In").Count() });
                 }
                 else
                 {
@@ -101,7 +123,7 @@ namespace FreeWheeling.UI.Models
                         NextRide = repository.GetClosestNextRide(item, TZone);
                         _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate,
                             GroupId = item.id,
-                            NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count() });
+                            NumberofKeenRiders = NextRide.Riders.Where(i => i.PercentKeen == "In").Count() });
                     }
                 }
 
@@ -116,7 +138,7 @@ namespace FreeWheeling.UI.Models
             foreach (Group item in _GroupModel.PrivateBunches)
             {
                 int RideCount = item.Rides.Count();
-
+                _GroupModel._NextRideDetailsPrivate = new List<NextRideDetailsPrivate>();
                 //If Ride count does not equal rides greater than now then there are old ride so 
                 //call delete rides and populate new from latest ride date, note this should have been done by console app
                 if (item.Rides.Where(t => t.RideDate >= LocalNow).Count() != RideCount)
@@ -130,11 +152,11 @@ namespace FreeWheeling.UI.Models
 
                 if (NextRide != null)
                 {
-                    _GroupModel._NextRideDetails.Add(new NextRideDetails
+                    _GroupModel._NextRideDetailsPrivate.Add(new NextRideDetailsPrivate
                     {
                         Date = NextRide.RideDate,
                         GroupId = item.id,
-                        NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count()
+                        NumberofKeenRiders = NextRide.Riders.Where(i => i.PercentKeen == "In").Count()
                     });
                 }
                 else
@@ -144,11 +166,11 @@ namespace FreeWheeling.UI.Models
                         repository.PopulateRideDates(item, TZone);
                         repository.Save();
                         NextRide = repository.GetClosestNextRide(item, TZone);
-                        _GroupModel._NextRideDetails.Add(new NextRideDetails
+                        _GroupModel._NextRideDetailsPrivate.Add(new NextRideDetailsPrivate
                         {
                             Date = NextRide.RideDate,
                             GroupId = item.id,
-                            NumberofRiders = NextRide.Riders.Where(i => i.PercentKeen == "100").Count()
+                            NumberofKeenRiders = NextRide.Riders.Where(i => i.PercentKeen == "In").Count()
                         });
                     }
                 }
@@ -163,8 +185,11 @@ namespace FreeWheeling.UI.Models
             _GroupModel._NextRideGroupbyDayOfWeek = _GroupModel._NextRideDetails.GroupBy(g => g.Date.DayOfWeek, g => g.GroupId, (key, p) =>
                                                             new NextRideGroupbyDayOfWeek { Thedayofweek = key, Groupids = p.ToList() }).OrderBy(i => i.Thedayofweek);
 
+            _GroupModel._NextRideGroupbyDayOfWeekPrivate = _GroupModel._NextRideDetailsPrivate.GroupBy(g => g.Date.DayOfWeek, g => g.GroupId, (key, p) =>
+                                                            new NextRideGroupbyDayOfWeekPrivate { Thedayofweek = key, Groupids = p.ToList() }).OrderBy(i => i.Thedayofweek);
+
             //Show private first.
-            _GroupModel._Groups.OrderByDescending(g => g.IsPrivate);
+            //_GroupModel._Groups.OrderByDescending(g => g.IsPrivate);
             _GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(UserId);
 
             return _GroupModel;
@@ -282,13 +307,6 @@ namespace FreeWheeling.UI.Models
     {
         public int id { get; set; }
         public List<Group> CycleGroups { get;set; }
-    }
-
-    public class NextRideDetails
-    {
-        public int GroupId { get; set; }
-        public DateTime Date { get; set; }
-        public int NumberofRiders { get; set; }
     }
 
     public class MoreGroupDetailsModel
