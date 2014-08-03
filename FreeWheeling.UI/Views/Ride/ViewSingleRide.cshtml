@@ -35,13 +35,13 @@
     function fb_publish() {
         FB.login(function () {
             FB.api(
-  'me/bunchy_:keen',
+  'me/bunchy_:roll',
   'post',
   {
       'fb:explicitly_shared': 'true',
       bunch: {
           app_id: 1403149849923216,
-          type: "bunchy_:bunch",
+          type: "bunchy_:ride",
           title: $("#RideName").val(),
           image: "http://www.bunchy.com.au/content/images/bunchyfb.png",
           description: "You keen?",
