@@ -33,13 +33,14 @@
     function fb_publish() {
         FB.login(function () {
             FB.api(
-  'me/bunchy_:roll',
+  'me/bunchy_:ride',
   'post',
   {
       'fb:explicitly_shared': 'true',
-      ride: {
+      course: {
           app_id: 1403149849923216,
-          type: "bunchy_:ride",
+          type: "fitness.course",
+          display: "popup",
           title: $("#RideName").val(),
           image: "http://www.bunchy.com.au/content/images/bunchyfb.png",
           description: "You keen?",
