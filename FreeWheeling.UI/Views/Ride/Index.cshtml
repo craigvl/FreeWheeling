@@ -1,7 +1,6 @@
 ﻿@model FreeWheeling.UI.Models.RideModelIndex
 @using FreeWheeling.Domain.Entities
 @using Microsoft.AspNet.Identity;
-
 @{
     ViewBag.Title = "Bunchy - Ride";
 }
@@ -16,47 +15,13 @@
 @Html.Hidden("KeenCountNext", @Model.NextKeenCount)
 <div id="fb-root"></div>
 <script>
-    window.fbAsyncInit = function () {
-        FB.init({
-            appId: '1403149849923216',
-            xfbml: false,
-            version: 'v2.0'
-        });
-    };
-   (function(d, s, id){
-               var js, fjs = d.getElementsByTagName(s)[0];
-               if (d.getElementById(id)) {return;}
-               js = d.createElement(s); js.id = id;
-               js.src = "//connect.facebook.net/en_US/sdk.js";
-               fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-    
-   //This is called from the facebook share button.
-   function fb_publish() {
-       FB.login(function () {
-           FB.api(
- 'me/bunchy_:ride',
- 'post',
- {
-     //'fb:explicitly_shared':'true',
-     course: {
-         app_id: 1403149849923216,
-         type: "fitness.course",
-         display:"popup",
-         title: $("#GroupName").val(),
-         image: "http://www.bunchy.com.au/content/images/bunchyfb.png",
-         description: "You keen?" ,
-         url: "http://www.bunchy.com.au/Ride?groupid=" + $("#GroupIdHidden").val(),
-         web: "http://www.bunchy.com.au/Ride?groupid=" + $("#GroupIdHidden").val()
-     }
- },
- function (response) {
-     //console.log(response);
- }
-);
-       }, { scope: 'publish_actions' });
-   }
-</script>
+(function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1403149849923216&version=v2.0";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 <div class="row">
     <div class="pull-left col-xs-12 col-md-12 col-sm-12 col-xs-12">
 <div class="row">
