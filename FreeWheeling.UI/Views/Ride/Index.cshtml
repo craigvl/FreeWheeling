@@ -30,30 +30,32 @@
                js.src = "//connect.facebook.net/en_US/sdk.js";
                fjs.parentNode.insertBefore(js, fjs);
    }(document, 'script', 'facebook-jssdk'));
-
-    function fb_publish() {
-        FB.login(function () {
-            FB.api(
-  'me/bunchy_:roll',
-  'post',
-  {
-      'fb:explicitly_shared':'true',
-      ride: {
-          app_id: 1403149849923216,
-          type: "bunchy_:ride",
-          title: $("#GroupName").val(),
-          image: "http://www.bunchy.com.au/content/images/bunchyfb.png",
-          description: "You keen?" ,
-          url: "http://www.bunchy.com.au/Ride?groupid=" + $("#GroupIdHidden").val(),
-          web: "http://www.bunchy.com.au/Ride?groupid=" + $("#GroupIdHidden").val()
-      }
-  },
-  function (response) {
-      //console.log(response);
-  }
+    
+   //This is called from the facebook share button.
+   function fb_publish() {
+       FB.login(function () {
+           FB.api(
+ 'me/bunchy_:ride',
+ 'post',
+ {
+     //'fb:explicitly_shared':'true',
+     course: {
+         app_id: 1403149849923216,
+         type: "fitness.course",
+         display:"popup",
+         title: $("#GroupName").val(),
+         image: "http://www.bunchy.com.au/content/images/bunchyfb.png",
+         description: "You keen?" ,
+         url: "http://www.bunchy.com.au/Ride?groupid=" + $("#GroupIdHidden").val(),
+         web: "http://www.bunchy.com.au/Ride?groupid=" + $("#GroupIdHidden").val()
+     }
+ },
+ function (response) {
+     //console.log(response);
+ }
 );
-}, { scope: 'publish_actions' });
-}
+       }, { scope: 'publish_actions' });
+   }
 </script>
 <div class="row">
     <div class="pull-left col-xs-12 col-md-12 col-sm-12 col-xs-12">
