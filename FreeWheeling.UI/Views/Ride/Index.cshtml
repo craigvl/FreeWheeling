@@ -29,8 +29,9 @@
         js.src = "//connect.facebook.net/en_US/sdk.js";
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
-    function fb_publish(groupid, title, desc) {       
-        var obj = { method: 'feed', link: 'http://www.bunchy.com.au/Ride?groupid=' + groupid, picture: 'http://www.bunchy.com.au/Content/Images/bunchy1024.png', name: 'Keen for the ' + title + ' ride? Click here to let me know your keen!', description: desc, picture: 'http://i.istockimg.com/file_thumbview_approve/26364684/2/stock-photo-26364684-participants-of-70th-tour-de-pologne.jpg' };
+    function fb_publish(groupid, title, desc) {
+        var ridename = $('#GroupName').val();
+        var obj = { method: 'feed', link: 'http://www.bunchy.com.au/Ride?groupid=' + groupid, picture: 'http://www.bunchy.com.au/Content/Images/bunchy1024.png', name: 'Keen for the ' + ridename + ' ride? Click here to let me know your keen!', description: desc, picture: 'http://i.istockimg.com/file_thumbview_approve/26364684/2/stock-photo-26364684-participants-of-70th-tour-de-pologne.jpg' };
         function callback(response) { }
         FB.ui(obj, callback);
     }
