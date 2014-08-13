@@ -327,6 +327,7 @@
     <Content Include="Content\Images\autocompleteLoader.gif" />
     <Content Include="Content\Images\animated-overlay.gif" />
     <Content Include="Content\Images\bike.jpg" />
+    <Content Include="Content\Images\bikegroup.jpg" />
     <Content Include="Content\Images\bunchy1024.png" />
     <Content Include="Content\Images\bunchy16.png" />
     <Content Include="Content\Images\bunchynotag.png" />

@@ -40,7 +40,7 @@ if (type == "single")
                     <text>
                     @if (@User.Identity.Name == item.Name)
                     {
-                        <p><span id="@("keen_" + @item.Name + @rideid)" class="">@item.Name <span style="padding-left:5px;" class="glyphicon glyphicon-thumbs-up"></span><span class="pull-right"> <a href="#" onclick="fb_publish('@rideid','@Model.Ride.Group.name','Life is better in a bunch!');"> <img src="~/Content/Images/share_facebook.png" /></a></span></span></p>
+                        <p><span id="@("keen_" + @item.Name + @rideid)" class="">@item.Name <span style="padding-left:5px;" class="glyphicon glyphicon-thumbs-up"></span><span class="pull-right"> <a href="#" onclick="fb_publish('@rideid','@Model.Ride.Group.name','Life is better in a bunch');"> <img src="~/Content/Images/share_facebook.png" /></a></span></span></p>
                     }
                     else
                     {
@@ -73,7 +73,7 @@ if (type == "random")
                 <text>
                 @if (@User.Identity.Name == item.Name)
                 {
-                    <p><span id="@("keen_" + @item.Name + @rideid)" class="">@item.Name <span style="padding-left:5px;" class="glyphicon glyphicon-thumbs-up"></span><span class="pull-right"> <a href="#" onclick="fb_publish('@rideid','@Model.RandomRide.Name','Life is better in a bunch!');"> <img src="~/Content/Images/share_facebook.png" /></a></span></span></p>
+                    <p><span id="@("keen_" + @item.Name + @rideid)" class="">@item.Name <span style="padding-left:5px;" class="glyphicon glyphicon-thumbs-up"></span><span class="pull-right"> <a href="#" onclick="fb_publish('@rideid','@Model.RandomRide.Name','Life is better in a bunch');"> <img src="~/Content/Images/share_facebook.png" /></a></span></span></p>
                 }
                 else
                 {
