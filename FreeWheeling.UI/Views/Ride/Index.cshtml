@@ -15,13 +15,27 @@
 @Html.Hidden("KeenCountNext", @Model.NextKeenCount)
 <div id="fb-root"></div>
 <script>
-(function (d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1403149849923216&version=v2.0";
-    fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '1403149849923216',
+            xfbml: false,
+            version: 'v2.1'
+        });
+    };
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) { return; }
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+    function fb_publish(groupid, title, desc) {
+        var ridename = $('#GroupName').val();
+        var obj = { method: 'feed', link: 'http://www.bunchy.com.au/Ride?groupid=' + groupid, picture: 'http://www.bunchy.com.au/Content/Images/bunchy1024.png', name: 'Keen for the ' + ridename + ' ride? Click here to let me know your keen!', description: desc, picture: 'http://www.bunchy.com.au/Content/Images/bikegroup.jpg' };
+        function callback(response) { }
+        FB.ui(obj, callback);
+    }
+</script>
 <div class="row">
     <div class="pull-left col-xs-12 col-md-12 col-sm-12 col-xs-12">
 <div class="row">

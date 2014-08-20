@@ -21,7 +21,7 @@
         FB.init({
             appId: '1403149849923216',
             xfbml: false,
-            version: 'v2.0'
+            version: 'v2.1'
         });
     };
     (function (d, s, id) {
@@ -31,30 +31,11 @@
         js.src = "//connect.facebook.net/en_US/sdk.js";
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
-
-    function fb_publish() {
-        FB.login(function () {
-            FB.api(
-  'me/bunchy_:ride',
-  'post',
-  {
-      'fb:explicitly_shared': 'true',
-      course: {
-          app_id: 1403149849923216,
-          type: "fitness.course",
-          display:"popup",
-          title: $("#RideName").val(),
-          image: "http://www.bunchy.com.au/content/images/bunchyfb.png",
-          description: "You keen?",
-          url: "http://www.bunchy.com.au/Ride/ViewSingleRide?rideid=" + $("#RideIdHidden").val(),
-          web: "http://www.bunchy.com.au/Ride/ViewSingleRide?rideid=" + $("#RideIdHidden").val()
-      }
-  },
-  function (response) {
-      //console.log(response);
-  }
-);
-        }, { scope: 'publish_actions' });
+    function fb_publish(groupid, title, desc) {
+        var ridename = $('#RideName').val();
+        var obj = { method: 'feed', link: 'http://www.bunchy.com.au/Ride/ViewSingleRide?RideId=' + groupid, picture: 'http://www.bunchy.com.au/Content/Images/bunchy1024.png', name: 'Keen for the ' + ridename + ' ride? Click here to let me know your keen!', description: desc, picture: 'http://www.bunchy.com.au/Content/Images/bikegroup.jpg' };
+        function callback(response) { }
+        FB.ui(obj, callback);
     }
 </script>
 <p></p>
