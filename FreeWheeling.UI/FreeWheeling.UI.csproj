@@ -333,6 +333,7 @@
     <Content Include="Content\Images\bunchynotag.png" />
     <Content Include="Content\Images\bunchyfb.png" />
     <Content Include="Content\Images\bunchytag.png" />
+    <Content Include="Content\Images\cyclist.jpg" />
     <Content Include="Content\Images\glyphicons_306_bicycle.png" />
     <Content Include="Content\Images\share_facebook.png" />
     <Content Include="Content\Images\ui-bg_diagonals-thick_18_b81900_40x40.png" />

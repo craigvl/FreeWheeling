@@ -1,5 +1,12 @@
 ﻿body {
-    padding-top: 30px;
+    background: url('Images/cyclist.jpg') no-repeat center center fixed;
+    background-position:0 -20px;
+    -webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+    opacity:1;
+    padding-top: 80px;
     padding-bottom: 20px;
     background-color:#f7f7f7;
     padding-left:10px;
@@ -25,17 +32,21 @@ footer {
 }
 
 .glyphicon-chevron-left {
+    padding-left:10px;
     background-color:transparent !important;
 }
 /* Set padding to keep content from hitting the edges */
 .body-content {
     /*padding-left: 15px;
     padding-right: 15px;*/
-    padding-top:50px;
+    padding-top:10px;
+    opacity:0.9;
     /*background-image: url('/../Content/Images/bike.jpg');*/
     background-repeat:no-repeat;
     background-position-x:0;
-    height:200px;
+    background:#D7D7D0;
+    border-radius:10px; 
+    height:100%;
 }
 /* Set width on the form input elements since they're 100% wide by default */
 /* styles for validation helpers */
