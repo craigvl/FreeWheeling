@@ -15,8 +15,8 @@
     else
     {
         <table class="table content-box">
-            <tr>
-                <th>
+            <tr style="width:100%">
+                <th style="width:10px">
                     @Html.DisplayNameFor(model => model.FirstName)
                 </th>
                 <th>
@@ -24,13 +24,13 @@
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.UserName)
-                </th>               
+                </th>
                 <th></th>
             </tr>
             @foreach (var item in Model)
             {
                 <tr>
-                    <td style="padding-top:15px">
+                    <td style="padding-top:15px;">
                         @Html.DisplayFor(modelItem => item.FirstName)
                     </td>
                     <td style="padding-top:15px">
@@ -39,6 +39,8 @@
                     <td style="padding-top:15px">
                         @Html.DisplayFor(modelItem => item.UserName)
                     </td>
+                 </tr>
+                <tr>
                     @if (!item.following)
                     {
                         <td>
