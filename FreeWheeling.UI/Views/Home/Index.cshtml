@@ -4,7 +4,9 @@
     ViewBag.Title = "Home Page";
 }
 <script src="http://cdn.millennialmedia.com/mmadlib/v1/mmadlib.js"></script>
-@*<div class="row">
+@if (Model.LocationsId == 1)
+{
+<div class="row">
     <div class="panel panel-default">
         <div class="panel-heading" style="background-color:#8dc63f;color:#fff">
             <h3 class="panel-title"><b>Updates</b></h3>
@@ -23,7 +25,8 @@
             <p><span class="label label-success" style="padding:10px;"><a href="~/Usersettings/Follow" style="color:#fff;"><b>Follow others!</b></a></span></p>
         </div>
     </div>
-</div>*@
+</div>
+}
 <div class="row">
 @if (Model.LocationsId != 0)
 {
