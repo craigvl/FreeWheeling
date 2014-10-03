@@ -257,17 +257,17 @@ namespace FreeWheeling.Domain.Concrete
 
         public List<Comment> GetTop2CommentsForRide(int Rideid)
         {
-            return context.Comment.Where(c => c.Ride.id == Rideid).OrderByDescending(t => t.Date).Take(2).ToList();
+            return context.Comment.Where(c => c.Ride.id == Rideid).OrderByDescending(t => t.Date).Take(2).OrderBy(y => y.id).ToList();
         }
 
         public List<Comment> GetAllCommentsForRide(int Rideid)
         {
-            return context.Comment.Where(c => c.Ride.id == Rideid).OrderByDescending(t => t.Date).ToList();
+            return context.Comment.Where(c => c.Ride.id == Rideid).ToList();
         }
 
         public List<AdHocComment> GetTop2CommentsForAdHocRide(int AdHocRideid)
         {
-            return context.AdHocComment.Where(r => r.AdHocRide.id == AdHocRideid).OrderByDescending(r => r.Date).Take(2).ToList();
+            return context.AdHocComment.Where(r => r.AdHocRide.id == AdHocRideid).OrderByDescending(r => r.Date).Take(2).OrderBy(y => y.id).ToList();
         }
 
         public int GetFollowingCount(string UserID)

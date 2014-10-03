@@ -172,7 +172,7 @@ function UpdateKeenActions(message, rideid, keencount, username, leavetime, posi
     }
 }
 function UpdateCommentFields(message, rideid, username, commentcount) {
-    $("#collapseCommentPanel" + rideid).prepend("<p><span>" + username + " : <span><span style='font-style:italic'>" + message + "</span><p>");
+    $("#collapseCommentPanel" + rideid).append("<p><span>" + username + " : <span><span style='font-style:italic'>" + message + "</span><p>");
     $("#CommentCountSpan" + rideid).html("(" + commentcount + ")");
     $("#CommentCountSpanSeeAll" + rideid).html("View All (" + commentcount + ")");
     displayMessageAjax("Comment added", "success", "", "tempoarayMessage");
@@ -182,7 +182,7 @@ function UpdateCommentFields(message, rideid, username, commentcount) {
 }
 function UpdateCommentFieldsPusher(message, rideid, username, commentcount) {
     //alert('hello from pusher');
-    $("#collapseCommentPanel" + rideid).prepend("<p><span>" + username + " : <span><span style='font-style:italic'>" + message + "</span><p>");
+    $("#collapseCommentPanel" + rideid).append("<p><span>" + username + " : <span><span style='font-style:italic'>" + message + "</span><p>");
     $("#CommentCountSpan" + rideid).html("(" + commentcount + ")");
     $("#CommentCountSpanSeeAll" + rideid).html("View All (" + commentcount + ")");
     displayMessageAjax(username + " added a new comment", "success", "", "tempoarayMessage");
