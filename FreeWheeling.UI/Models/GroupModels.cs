@@ -302,6 +302,8 @@ namespace FreeWheeling.UI.Models
     public string AverageSpeed { get; set; }
     public string Description { get; set; }
     public string MapUrl { get; set; }
+    public string lat { get; set; }
+    public string lng { get; set; }
     public bool IsPrivate { get; set; }
     [Required(ErrorMessage = "Your name is require")]
     public string CreatorName { get; set; }
