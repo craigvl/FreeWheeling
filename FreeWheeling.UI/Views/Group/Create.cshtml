@@ -1,9 +1,9 @@
 ﻿@model FreeWheeling.UI.Models.GroupCreateModel
-
+@using Microsoft.AspNet.Identity;
 @{
     ViewBag.Title = "Create a bunch";
 }
-
+@Html.Hidden("RideUserNameHidden", User.Identity.GetUserName())
 <style>
     #map-canvas {
         width:100%;
@@ -21,15 +21,18 @@
     var map;
     var marker;
     function initialize() {
+        var userName = jQuery('#RideUserNameHidden').val();
+        console.log(userName);
         $.ajax({
             type: "GET",
-            url: "http://private-d1ca0-bunchyapi.apiary-mock.com/bunch/location/frog",
+            url: "http://bunchyapi.azurewebsites.net/api/bunch/location/" + userName,
             dataType: "json",
             success: function (data) {
+                console.debug(data);
                 geocoder = new google.maps.Geocoder();
-                var latlng = new google.maps.LatLng(data.lat, data.long);
+                var latlng = new google.maps.LatLng(data.lat, data.lng);
                 var mapOptions = {
-                    zoom: 8,
+                    zoom: 12,
                     center: latlng
                 }
                 map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
