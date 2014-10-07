@@ -27,5 +27,7 @@ namespace FreeWheeling.Domain.Entities
         public DateTime ModifiedTimeStamp { get; set; }
         public string Description { get; set; }
         public string MapUrl { get; set; }
+        public string Lat { get; set; }
+        public string Lng { get; set; }
     }
 }

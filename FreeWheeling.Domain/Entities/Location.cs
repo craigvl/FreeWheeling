@@ -11,5 +11,7 @@ namespace FreeWheeling.Domain.Entities
         public int id { get; set; }
         public string Name { get; set; }
         public string TimeZoneInfo { get; set; }
+        public string Lat { get; set; }
+        public string Lng { get; set; }
     }
 }
