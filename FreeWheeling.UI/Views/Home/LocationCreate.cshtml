@@ -11,6 +11,75 @@
         });
 }
 
+<style>
+    #map-canvas {
+        width: 100%;
+        height: 200px;
+    }
+
+    #panel {
+    }
+</style>
+
+
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+<script>
+
+    function initialize() {
+
+        var mapOptions = {
+            center: new google.maps.LatLng(-33.8688, 151.2195),
+            zoom: 13
+        };
+
+        var map = new google.maps.Map(document.getElementById('map-canvas'),
+    mapOptions);
+
+        var marker = new google.maps.Marker({
+            map: map,
+            anchorPoint: new google.maps.Point(0, -29)
+        });
+
+        var input = document.getElementById('Name');
+        var autocomplete = new google.maps.places.Autocomplete(input, { types: ['(cities)'], region: 'EU' });
+        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+            if (!place.geometry) {
+                console.log('no location');
+                return;
+            }
+            else
+            {
+                var lat = place.geometry.location.lat();
+                var long = place.geometry.location.lng();
+                $('.register-form__latitude-holder').val(lat);
+                $('.register-form__longitude-holder').val(long);
+                
+               
+
+                if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                } else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(17);  // Why 17? Because it looks good.
+                }
+                marker.setIcon(/** @@type {google.maps.Icon} **/({
+                    url: place.icon,
+                    size: new google.maps.Size(71, 71),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(17, 34),
+                    scaledSize: new google.maps.Size(35, 35)
+                }));
+                marker.setPosition(place.geometry.location);
+                marker.setVisible(true);
+
+            }
+            console.log(place);
+        });
+    }
+
+</script>
 <div class="row">
     <p>
         @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
@@ -24,11 +93,17 @@
             <p></p>
             @Html.ValidationSummary(true)
             <p></p>
+            <div>
+                @Html.HiddenFor(model => model.lat, new { @class = "register-form__latitude-holder" })
+                @Html.HiddenFor(model => model.lng, new { @class = "register-form__longitude-holder" })
+            </div>
             <div><span class="RequiredField control-label">*&nbsp;</span><b>Location Name:</b></div>
             <div>
                 @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Name)
             </div>
+        <p></p>
+        <div id="map-canvas"></div>
         <p></p>
         <div><span class="RequiredField control-label">*&nbsp;</span><b>TimeZone for location</b></div>
         <div>
@@ -51,6 +126,9 @@
         else {
         }
     });
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
 </script>
 
 }

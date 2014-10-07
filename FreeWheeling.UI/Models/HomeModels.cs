@@ -42,5 +42,7 @@ namespace FreeWheeling.UI.Models
             get { return TimeZoneInfo.FindSystemTimeZoneById(TimeZoneId); }
             set { TimeZoneId = value.Id; }
         }
+        public string lat { get; set; }
+        public string lng { get; set; }
     }
 }

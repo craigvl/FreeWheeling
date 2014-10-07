@@ -3,6 +3,75 @@
 @{
     ViewBag.Title = "Create a bunch";
 }
+
+<style>
+    #map-canvas {
+        width:100%;
+        height:200px;
+    }
+
+    #panel {       
+    }
+</style>
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+
+<script>
+    var geocoder;
+    var map;
+    var marker;
+    function initialize() {
+        $.ajax({
+            type: "GET",
+            url: "http://private-d1ca0-bunchyapi.apiary-mock.com/bunch/location/frog",
+            dataType: "json",
+            success: function (data) {
+                geocoder = new google.maps.Geocoder();
+                var latlng = new google.maps.LatLng(data.lat, data.long);
+                var mapOptions = {
+                    zoom: 12,
+                    center: latlng
+                }
+                map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+                marker = new google.maps.Marker({
+                    position: latlng,
+                    map: map,
+                    draggable: true,
+                    animation: google.maps.Animation.DROP
+                });          
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });           
+    }
+
+    function codeAddress() {
+        var address = document.getElementById('StartLocation').value;
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                map.setCenter(results[0].geometry.location);
+                marker.setPosition(results[0].geometry.location);
+                var lat = results[0].geometry.location.lat();
+                var long = results[0].geometry.location.lng();
+                $('.register-form__latitude-holder').val(lat);
+                $('.register-form__longitude-holder').val(long);
+                google.maps.event.addListener(marker, 'dragend', function (event) {
+                    var lat = this.getPosition().lat();
+                    var long = this.getPosition().lng();
+                    $('.register-form__latitude-holder').val(lat);
+                    $('.register-form__longitude-holder').val(long);
+                });
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+
 <div class="row">
     <p>
         @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
@@ -86,6 +155,12 @@
             @Html.TextBoxFor(model => model.StartLocation, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.StartLocation)
         </div>
+        <p></p>
+        <div><input class="btn btn-success" type="button" value="Lookup Address" onclick="codeAddress()"></div>
+        <p></p>
+        <div id="map-canvas"></div>
+        @Html.HiddenFor(model => model.lat, new { @class = "register-form__latitude-holder" })
+        @Html.HiddenFor(model => model.lng, new { @class = "register-form__longitude-holder" })
         <p></p>
         <div><span class="RequiredField">*&nbsp;</span><b>Your name</b></div>
         <div>
