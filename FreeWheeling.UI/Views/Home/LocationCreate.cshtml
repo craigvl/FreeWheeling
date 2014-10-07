@@ -21,8 +21,6 @@
     }
 </style>
 
-
-
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
 <script>
 
@@ -102,6 +100,7 @@
                 @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Name)
             </div>
+        <p></p>
         <div id="map-canvas"></div>
         <p></p>
         <div><span class="RequiredField control-label">*&nbsp;</span><b>TimeZone for location</b></div>
