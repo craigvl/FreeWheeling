@@ -71,6 +71,10 @@
     <Compile Include="DataContexts\CycleMigrations\201407210358363_Added_Following.Designer.cs">
       <DependentUpon>201407210358363_Added_Following.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201410070534363_lat_lng.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201410070534363_lat_lng.Designer.cs">
+      <DependentUpon>201410070534363_lat_lng.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\AdHocComment.cs" />
     <Compile Include="Entities\UserFollowingUser.cs" />
@@ -109,6 +113,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\CycleMigrations\201407210358363_Added_Following.resx">
       <DependentUpon>201407210358363_Added_Following.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201410070534363_lat_lng.resx">
+      <DependentUpon>201410070534363_lat_lng.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
