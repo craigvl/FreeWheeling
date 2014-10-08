@@ -11,6 +11,7 @@ using FreeWheeling.Domain.Entities;
 using FreeWheeling.UI.Infrastructure;
 using System.Threading.Tasks;
 using FreeWheeling.UI.Filters;
+using NodaTime.TimeZones;
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -222,10 +223,23 @@ namespace FreeWheeling.UI.Controllers
             }
             else
             {
+
+                var mappings = TzdbDateTimeZoneSource.Default.WindowsMapping.MapZones;
+                var map = mappings.FirstOrDefault(x =>
+                    x.TzdbIds.Any(z => z.Equals(_LocationCreate.GoogletzTimeZone, StringComparison.OrdinalIgnoreCase)));
+                _LocationCreate.TimeZone = map == null ? null : TimeZoneInfo.FindSystemTimeZoneById(map.WindowsId);
+
                 Location NewLocation = new Location { Name = _LocationCreate.Name,
                                                       TimeZoneInfo = _LocationCreate.TimeZoneId,
                                                       Lat = _LocationCreate.lat,
-                                                      Lng = _LocationCreate.lng };
+                                                      Lng = _LocationCreate.lng,
+                                                      CurrentGoogleUTC = _LocationCreate.CurrentGoogleUTC,
+                                                      dstOffset = _LocationCreate.dstOffset,
+                                                      Google_ErrorMessage = _LocationCreate.Google_ErrorMessage,
+                                                      GoogleStatus = _LocationCreate.GoogleStatus,
+                                                      GoogletimeZoneName = _LocationCreate.GoogletimeZoneName,
+                                                      GoogletzTimeZone = _LocationCreate.GoogletzTimeZone,
+                                                      rawOffset = _LocationCreate.rawOffset};
                 repository.AddLocation(NewLocation);
                 var currentUser = idb.Users.Find(User.Identity.GetUserId());
                 currentUser.LocationID = NewLocation.id;
