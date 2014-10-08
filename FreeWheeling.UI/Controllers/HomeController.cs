@@ -218,16 +218,19 @@ namespace FreeWheeling.UI.Controllers
 
             if (_LocationCheck != null)
             {
-                ModelState.AddModelError(string.Empty, "It looks like this location has already been created?");
+                ModelState.AddModelError(string.Empty, "It looks like this location has already been created.");
                 return View(_LocationCreate);
             }
             else
             {
 
-                var mappings = TzdbDateTimeZoneSource.Default.WindowsMapping.MapZones;
-                var map = mappings.FirstOrDefault(x =>
-                    x.TzdbIds.Any(z => z.Equals(_LocationCreate.GoogletzTimeZone, StringComparison.OrdinalIgnoreCase)));
-                _LocationCreate.TimeZone = map == null ? null : TimeZoneInfo.FindSystemTimeZoneById(map.WindowsId);
+                _LocationCreate.TimeZone = TimeZoneInfo.FindSystemTimeZoneById(_CultureHelper.IanaToWindows(_LocationCreate.GoogletzTimeZone));
+
+                if (_LocationCreate.TimeZone == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Unable to lookup time zone for location please try again.");
+                    return View(_LocationCreate);
+                }
 
                 Location NewLocation = new Location { Name = _LocationCreate.Name,
                                                       TimeZoneInfo = _LocationCreate.TimeZoneId,
