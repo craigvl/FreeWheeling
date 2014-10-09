@@ -69,6 +69,26 @@
                 }));
                 marker.setPosition(place.geometry.location);
                 marker.setVisible(true);
+                timeStamp = (Date.now() || new Date().getTime()) / 1000;
+                timeZoneApiRequestUrl = "https://maps.googleapis.com/maps/api/timezone/json?location=" +
+                            place.geometry.location.lat() + "," + place.geometry.location.lng() +
+                            "&timestamp=" + timeStamp + "&key=AIzaSyCf2q3WNDcRRYqshDZ31lvpCOysgQBeOLg"
+
+                $.get(timeZoneApiRequestUrl, function (data) {
+                    var utcOffset = (data.rawOffset + data.dstOffset || 0) / 3600;
+
+                    $('.register-form__Google_ErrorMessage-holder').val(data.error_message);
+                    $('.register-form__GoogleStatus-holder').val(data.status);
+
+                    $('.register-form__GoogletimeZoneName-holder').val(data.timeZoneName);
+                    $('.register-form__GoogletzTimeZone-holder').val(data.timeZoneId);
+
+                    $('.register-form__rawOffset-holder').val(data.rawOffset);
+                    $('.register-form__dstOffset-holder').val(data.dstOffset);
+
+                    $('.register-form__CurrentGoogleUTC-holder').val(utcOffset);
+
+                }); // expand this to handle errors, just doing a get with success for now as a POC
             }
             console.log(place);
         });
@@ -91,6 +111,17 @@
             <div>
                 @Html.HiddenFor(model => model.lat, new { @class = "register-form__latitude-holder" })
                 @Html.HiddenFor(model => model.lng, new { @class = "register-form__longitude-holder" })
+
+                @Html.HiddenFor(model => model.Google_ErrorMessage, new { @class = "register-form__Google_ErrorMessage-holder" })
+                @Html.HiddenFor(model => model.GoogleStatus, new { @class = "register-form__GoogleStatus-holder" })
+
+                @Html.HiddenFor(model => model.GoogletimeZoneName, new { @class = "register-form__GoogletimeZoneName-holder" })
+                @Html.HiddenFor(model => model.GoogletzTimeZone, new { @class = "register-form__GoogletzTimeZone-holder" })
+
+                @Html.HiddenFor(model => model.rawOffset, new { @class = "register-form__rawOffset-holder" })
+                @Html.HiddenFor(model => model.dstOffset, new { @class = "register-form__dstOffset-holder" })
+
+                @Html.HiddenFor(model => model.CurrentGoogleUTC, new { @class = "register-form__CurrentGoogleUTC-holder" })
             </div>
             <div><span class="RequiredField control-label">*&nbsp;</span><b>Location Name:</b></div>
             <div>
@@ -100,10 +131,10 @@
         <p></p>
         <div id="map-canvas"></div>
         <p></p>
-        <div><span class="RequiredField control-label">*&nbsp;</span><b>TimeZone for location</b></div>
+        @*<div><span class="RequiredField control-label">*&nbsp;</span><b>TimeZone for location</b></div>
         <div>
             @Html.DropDownListFor(m => m.TimeZoneId, timeZoneList, new { @class = "form-control" })
-        </div>
+        </div>*@
             <p></p>
             <input class="btn btn-default" onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create" />
         }
