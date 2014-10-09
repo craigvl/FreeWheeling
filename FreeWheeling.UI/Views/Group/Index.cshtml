@@ -6,7 +6,7 @@
 }
 <style>
     #map_wrapper {
-        height: 400px;
+        height: 200px;
     }
 
     #map-canvas {
@@ -17,48 +17,50 @@
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
 <script>
 
-    function PlotMarker(lat, lon) {
-        var marker = new google.maps.Marker({
-            position: new google.maps.LatLng(lat, lon),
-            map: map,
-            draggable: false,
-            animation: google.maps.Animation.DROP
-        });
-        markerLocations.push(marker);
-    }
-
     var geocoder;
     var map;
-    
+   
     function initialize() {
 
         $.ajax({
             type: "GET",
-            url: "http://bunchyapi.azurewebsites.net/api/bunch/location/craig",
+            url: "http://bunchyapi.azurewebsites.net/api/bunch/get/craig",
             dataType: "json",
             success: function (data) {
                 console.debug(data);
                 geocoder = new google.maps.Geocoder();
-                var latlng = new google.maps.LatLng(data.lat, data.lng);
+                var startlat = @Html.Raw(Json.Encode(Model.lat));
+                var startlng = @Html.Raw(Json.Encode(Model.lng));
+                //alert(@Model.UserLocation);
+                var infowindow = new google.maps.InfoWindow({});
+                var latlng = new google.maps.LatLng(startlat, startlng);
                 var mapOptions = {
-                    zoom: 12,
+                    zoom: 8,
                     center: latlng
                 }
                 map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
                 $.each(data, function (key, data1) {
-                    console.debug(data1);
-                    var latLng = new google.maps.LatLng(data.lat, data.lng);
-                    console.log(latLng);
+                    var infowindow = new google.maps.InfoWindow();
+                    //console.debug(data1);
+                    var latLng = new google.maps.LatLng(data1.lat, data1.lng);
+                    //console.log(data1.Name);
                     // Creating a marker and putting it on the map
                     var marker = new google.maps.Marker({
                         position: latLng,
                         map: map,
-                    draggable: true,
-                    animation: google.maps.Animation.DROP
+                        draggable: false,
+                        animation: google.maps.Animation.DROP,
+                        title:data1.Name
                     });
-                  
-                    //var infowindow = new google.maps.InfoWindow();
-               
+
+                    var contentString ='<div class = "MarkerPopUp" style="width: 100%;height:50px;overflow:hidden;"><div class = "MarkerContext">'+data1.Name+'</div></div>'
+
+                    //infowindow.setContent(data1.Name);
+                    var infowindow = new google.maps.InfoWindow({
+                        content: contentString,
+                        maxWidth: 200
+                    });
+                    google.maps.event.addListener( marker, 'click', function() { infowindow.open( map, marker ); });
                 });
             },
             error: function (err) {
