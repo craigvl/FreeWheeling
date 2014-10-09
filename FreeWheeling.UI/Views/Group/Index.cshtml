@@ -4,18 +4,83 @@
 @{
     ViewBag.Title = "Index";
 }
-<div class="row">
-    @Html.ValidationSummary()
+<style>
+    #map_wrapper {
+        height: 200px;
+    }
 
-    <div class="backbaricon col-xs-12 col-md-12 col-sm-12 col-lg-12" style="padding-bottom:5px;">
-        @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
-    </div>
-</div>
-    <div class="row">
+    #map-canvas {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+<script>
+
+    var geocoder;
+    var map;
+   
+    function initialize() {
+
+        $.ajax({
+            type: "GET",
+            url: "http://bunchyapi.azurewebsites.net/api/bunch/get/craig",
+            dataType: "json",
+            success: function (data) {
+                console.debug(data);
+                geocoder = new google.maps.Geocoder();
+                var startlat = @Html.Raw(Json.Encode(Model.lat));
+                var startlng = @Html.Raw(Json.Encode(Model.lng));
+                //alert(@Model.UserLocation);
+                var infowindow = new google.maps.InfoWindow({});
+                var latlng = new google.maps.LatLng(startlat, startlng);
+                var mapOptions = {
+                    zoom: 8,
+                    center: latlng
+                }
+                map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                $.each(data, function (key, data1) {
+                    var infowindow = new google.maps.InfoWindow();
+                    //console.debug(data1);
+                    var latLng = new google.maps.LatLng(data1.lat, data1.lng);
+                    //console.log(data1.Name);
+                    // Creating a marker and putting it on the map
+                    var marker = new google.maps.Marker({
+                        position: latLng,
+                        map: map,
+                        draggable: false,
+                        animation: google.maps.Animation.DROP,
+                        title:data1.Name
+                    });
+
+                    var contentString ='<div class = "MarkerPopUp" style="width: 100%;height:50px;overflow:hidden;"><div class = "MarkerContext">'+data1.Name+'</div></div>'
+
+                    //infowindow.setContent(data1.Name);
+                    var infowindow = new google.maps.InfoWindow({
+                        content: contentString,
+                        maxWidth: 200
+                    });
+                    google.maps.event.addListener( marker, 'click', function() { infowindow.open( map, marker ); });
+                });
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+</script>
+        <div class="row">
+        @Html.ValidationSummary()
+
+            <div class="backbaricon col-xs-12 col-md-12 col-sm-12 col-lg-12" style="padding-bottom:5px;">
+                @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
+            </div>
+        </div>
+            <div class="row">
         @using (Html.BeginForm())
         {
             <div class="backbaricon col-xs-9 col-md-11 col-sm-11 col-lg-11">
-                @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder = "Search" })
+        @Html.TextBox("SearchString", null, new { @class = "form-control", @placeholder = "Search" })
             </div>
             <div class=" backbaricon col-xs-1 col-md-1 col-sm-1 col-lg-1">
             </div>
@@ -26,27 +91,30 @@
     </div>
     <p></p>
     <div class="row">
+        <div id="map_wrapper">
+            <div id="map-canvas" class="mapping"></div>
+        </div>
         <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;width:100%;">
-            <span class="btn btn-default col-xs-10">@Model.UserLocation</span> 
-            @Html.ActionLink(" ", "LocationChange", "Home", new { }, new { @class = "btn btn-default col-xs-2 glyphicon glyphicon-pencil", style = "text-align:center;top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })
+            <span class="btn btn-default col-xs-10">@Model.UserLocation</span>
+        @Html.ActionLink(" ", "LocationChange", "Home", new { }, new { @class = "btn btn-default col-xs-2 glyphicon glyphicon-pencil", style = "text-align:center;top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })
         </div>
     </div>
     <div class="row">
         <table class="table content-box">
             <tr>
-                @if (@Model.PrivateBunches.Count > 0)
+        @if (@Model.PrivateBunches.Count > 0)
                 {
                     @Html.Partial("_ListPrivateRides")
                 }
             </tr>
             <tr>
-                @if (@Model._Groups.Count > 0)
+        @if (@Model._Groups.Count > 0)
                 {
                     @Html.Partial("_ListRides")
                 }
             </tr>
             <tr>
-                @if (@Model._Groups.Count + @Model.PrivateBunches.Count <= 0)
+        @if (@Model._Groups.Count + @Model.PrivateBunches.Count <= 0)
                 {
                     <td>
                         <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="padding-left:10px">
@@ -63,6 +131,7 @@
         <script>
             jQuery(document).ready(function () {
                 HideProgress();
-            });          
-        </script>
+                initialize();
+            });
+</script>
 }

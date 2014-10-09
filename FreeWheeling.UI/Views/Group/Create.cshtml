@@ -188,7 +188,7 @@
     var marker;
     function initialize() {
         var userName = jQuery('#RideUserNameHidden').val();
-        console.log(userName);
+        //console.log(userName);
         $.ajax({
             type: "GET",
             url: "http://bunchyapi.azurewebsites.net/api/bunch/location/" + userName,
@@ -265,37 +265,12 @@
                             $('.register-form__latitude-holder').val(lat);
                             $('.register-form__longitude-holder').val(long);
                         });
-
-                        //infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
-                        //infowindow.open(map, marker);
                     });         
-
             },
             error: function (err) {
                 console.log(err);
             }
         });
     }
-    //function codeAddress() {
-    //    var address = document.getElementById('StartLocation').value;
-    //    geocoder.geocode({ 'address': address }, function (results, status) {
-    //        if (status == google.maps.GeocoderStatus.OK) {
-    //            map.setCenter(results[0].geometry.location);
-    //            marker.setPosition(results[0].geometry.location);
-    //            var lat = results[0].geometry.location.lat();
-    //            var long = results[0].geometry.location.lng();
-    //            $('.register-form__latitude-holder').val(lat);
-    //            $('.register-form__longitude-holder').val(long);
-    //            google.maps.event.addListener(marker, 'dragend', function (event) {
-    //                var lat = this.getPosition().lat();
-    //                var long = this.getPosition().lng();
-    //                $('.register-form__latitude-holder').val(lat);
-    //                $('.register-form__longitude-holder').val(long);
-    //            });
-    //        } else {
-    //            alert('Geocode was not successful for the following reason: ' + status);
-    //        }
-    //    });
-    //}
 </script>
 }
