@@ -1,6 +1,6 @@
 ﻿@model FreeWheeling.UI.Models.GroupModel
 @using FreeWheeling.Domain.Entities 
-
+@using Microsoft.AspNet.Identity;
 @{
     ViewBag.Title = "Index";
 }
@@ -19,15 +19,15 @@
 
     var geocoder;
     var map;
-   
+    var username = @Html.Raw(Json.Encode(User.Identity.GetUserName()));
     function initialize() {
 
         $.ajax({
             type: "GET",
-            url: "http://bunchyapi.azurewebsites.net/api/bunch/get/craig",
+            url: "http://bunchyapi.azurewebsites.net/api/bunch/get/"+ username ,
             dataType: "json",
             success: function (data) {
-                console.debug(data);
+                //console.debug(data);
                 geocoder = new google.maps.Geocoder();
                 var startlat = @Html.Raw(Json.Encode(Model.lat));
                 var startlng = @Html.Raw(Json.Encode(Model.lng));
