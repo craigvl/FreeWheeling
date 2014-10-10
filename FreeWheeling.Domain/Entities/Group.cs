@@ -29,5 +29,6 @@ namespace FreeWheeling.Domain.Entities
         public string MapUrl { get; set; }
         public string Lat { get; set; }
         public string Lng { get; set; }
+        public string Country { get; set; }
     }
 }
