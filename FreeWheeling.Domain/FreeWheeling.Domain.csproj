@@ -79,6 +79,10 @@
     <Compile Include="DataContexts\CycleMigrations\201410080711409_Location_Improvments.Designer.cs">
       <DependentUpon>201410080711409_Location_Improvments.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201410100218138_Add_Country.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201410100218138_Add_Country.Designer.cs">
+      <DependentUpon>201410100218138_Add_Country.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\AdHocComment.cs" />
     <Compile Include="Entities\UserFollowingUser.cs" />
@@ -123,6 +127,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\CycleMigrations\201410080711409_Location_Improvments.resx">
       <DependentUpon>201410080711409_Location_Improvments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201410100218138_Add_Country.resx">
+      <DependentUpon>201410100218138_Add_Country.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

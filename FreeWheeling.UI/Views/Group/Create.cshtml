@@ -146,6 +146,7 @@
         <div id="map-canvas"></div>
         @Html.HiddenFor(model => model.lat, new { @class = "register-form__latitude-holder" })
         @Html.HiddenFor(model => model.lng, new { @class = "register-form__longitude-holder" })
+        @Html.HiddenFor(model => model.country, new { @class = "register-form__country-holder" })
         <p></p>
         <div><span class="RequiredField">*&nbsp;</span><b>Your name</b></div>
         <div>
@@ -259,6 +260,7 @@
                                     country = place.address_components[i].short_name;
                                 }
                             }
+                            $('.register-form__country-holder').val(country);
                         }
 
                         var lat = place.geometry.location.lat();
@@ -278,7 +280,7 @@
                      
                         marker.setMap(null);
                         marker = null;
-
+                        
                         marker = new google.maps.Marker({
                             position: event.latLng,
                             map: map,
@@ -286,8 +288,8 @@
                             animation: google.maps.Animation.DROP
                         });
 
-                        var lat = this.getPosition().lat();
-                        var long = this.getPosition().lng();
+                        var lat = event.latLng.lat();
+                        var long = event.latLng.lng();
                         $('.register-form__latitude-holder').val(lat);
                         $('.register-form__longitude-holder').val(long);
 

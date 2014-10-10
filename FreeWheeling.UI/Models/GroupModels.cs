@@ -308,6 +308,7 @@ namespace FreeWheeling.UI.Models
     public string MapUrl { get; set; }
     public string lat { get; set; }
     public string lng { get; set; }
+    public string country { get; set; }
     public bool IsPrivate { get; set; }
     [Required(ErrorMessage = "Your name is require")]
     public string CreatorName { get; set; }

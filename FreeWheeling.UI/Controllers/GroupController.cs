@@ -432,7 +432,8 @@ namespace FreeWheeling.UI.Controllers
                 IsPrivate = _GroupCreateModel.IsPrivate,
                 CreatedByName = _GroupCreateModel.CreatorName,
                 Lat = _GroupCreateModel.lat,
-                Lng = _GroupCreateModel.lng
+                Lng = _GroupCreateModel.lng,
+                Country = _GroupCreateModel.country
             };
 
             repository.AddGroup(NewGroup);
