@@ -93,7 +93,16 @@ namespace FreeWheeling.UI.Controllers
 
             RideModel.FromHome = fromhome;
             RideModel.IsFavourite = repository.IsInFavouriteList(RideModel.Group.id, currentUser.Id);
+            if (_Group.Lat != null)
+            {
+                RideModel.lat = _Group.Lat;
+            }
 
+            if (_Group.Lng != null)
+            {
+                RideModel.lng = _Group.Lng;
+            }
+            
             if (RideModel.Group.IsPrivate)
             {
                 if (!repository.IsInvitedToPrivateBunch(RideModel.Group.id, currentUser.Id))

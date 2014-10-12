@@ -233,6 +233,8 @@ namespace FreeWheeling.UI.Models
         public Boolean IsFavourite { get; set; }
         public string MapUrl { get; set; }
         public string FromHome { get; set; }
+        public string lat { get; set; }
+        public string lng { get; set; }
 
         //Expand items
         public Boolean FirstBunch { get; set; }
