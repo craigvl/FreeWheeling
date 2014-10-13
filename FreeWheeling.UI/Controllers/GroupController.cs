@@ -430,7 +430,10 @@ namespace FreeWheeling.UI.Controllers
                 CreatedTimeStamp = LocalNow,
                 MapUrl = _GroupCreateModel.MapUrl,
                 IsPrivate = _GroupCreateModel.IsPrivate,
-                CreatedByName = _GroupCreateModel.CreatorName
+                CreatedByName = _GroupCreateModel.CreatorName,
+                Lat = _GroupCreateModel.lat,
+                Lng = _GroupCreateModel.lng,
+                Country = _GroupCreateModel.country
             };
 
             repository.AddGroup(NewGroup);

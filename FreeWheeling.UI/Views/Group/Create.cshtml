@@ -1,8 +1,62 @@
 ﻿@model FreeWheeling.UI.Models.GroupCreateModel
-
+@using Microsoft.AspNet.Identity;
 @{
     ViewBag.Title = "Create a bunch";
 }
+@Html.Hidden("RideUserNameHidden", User.Identity.GetUserName())
+<style>
+    #map-canvas {
+        width:100%;
+        height:200px;
+    }
+
+   .controls {
+        margin-top: 16px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+    #StartLocation {
+        background-color: #fff;
+        padding: 0 11px 0 13px;
+        width: 400px;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        text-overflow: ellipsis;
+      }
+
+      #StartLocation:focus {
+        border-color: #4d90fe;
+        margin-left: -1px;
+        padding-left: 14px;  /* Regular padding-left + 1. */
+        width: 401px;
+      }
+
+      .pac-container {
+        font-family: Roboto;
+      }
+
+      #type-selector {
+        color: #fff;
+        background-color: #4d90fe;
+        padding: 5px 11px 0px 11px;
+      }
+
+      #type-selector label {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: 300;
+      }
+
+</style>
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
 <div class="row">
     <p>
         @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
@@ -83,9 +137,16 @@
         <p></p>
         <div><span class="RequiredField">*&nbsp;</span><b>Start Location</b></div>
         <div>
-            @Html.TextBoxFor(model => model.StartLocation, new { @class = "form-control" })
+            @Html.TextBoxFor(model => model.StartLocation, new { @class = "controls", @placeholder = "Please enter location" })
             @Html.ValidationMessageFor(model => model.StartLocation)
         </div>
+        <p></p>
+        @*<div><input class="btn btn-success" type="button" value="Lookup Address" onclick="codeAddress()"></div>*@
+        <p></p>
+        <div id="map-canvas"></div>
+        @Html.HiddenFor(model => model.lat, new { @class = "register-form__latitude-holder" })
+        @Html.HiddenFor(model => model.lng, new { @class = "register-form__longitude-holder" })
+        @Html.HiddenFor(model => model.country, new { @class = "register-form__country-holder" })
         <p></p>
         <div><span class="RequiredField">*&nbsp;</span><b>Your name</b></div>
         <div>
@@ -109,18 +170,136 @@
         <p></p>
     }
 </div>
-@section Scripts {
+    @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
         jQuery(document).ready(function () {
             HideProgress();
+            initialize();
         });
-        $("form").submit(function () {
-            if (!$(this).valid()) {
-                HideProgress();
-            }
-            else {
+    $("form").submit(function () {
+        if (!$(this).valid()) {
+            HideProgress();
+        }
+        else {
+        }
+    });
+    var geocoder;
+    var map;
+    var marker;
+    function initialize() {
+        var userName = jQuery('#RideUserNameHidden').val();
+        //console.log(userName);
+        $.ajax({
+            type: "GET",
+            url: "http://bunchyapi.azurewebsites.net/api/bunch/location/" + userName,
+            dataType: "json",
+            success: function (data) {
+                //console.debug(data);
+                geocoder = new google.maps.Geocoder();
+                var latlng = new google.maps.LatLng(data.lat, data.lng);
+                var mapOptions = {
+                    zoom: 12,
+                    center: latlng
+                }
+                map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                var input = /** @@type {HTMLInputElement} */
+                (document.getElementById('StartLocation'));
+
+                var types = document.getElementById('type-selector');
+                map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
+
+                var autocomplete = new google.maps.places.Autocomplete(input);
+                autocomplete.bindTo('bounds', map);
+
+                //var infowindow = new google.maps.InfoWindow();
+                marker = new google.maps.Marker({
+                    position: latlng,
+                    map: map,
+                    draggable: true,
+                    animation: google.maps.Animation.DROP
+                });
+         
+                    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                        //infowindow.close();
+                        marker.setVisible(false);
+                        var place = autocomplete.getPlace();
+                        if (!place.geometry) {
+                            return;
+                        }
+
+                        // If the place has a geometry, then present it on a map.
+                        if (place.geometry.viewport) {
+                            map.fitBounds(place.geometry.viewport);
+                        } else {
+                            map.setCenter(place.geometry.location);
+                            map.setZoom(17);  // Why 17? Because it looks good.
+                        }
+                        marker.setIcon(/** @@type {google.maps.Icon} */({
+                            url: place.icon,
+                            size: new google.maps.Size(71, 71),
+                            origin: new google.maps.Point(0, 0),
+                            anchor: new google.maps.Point(17, 34),
+                            scaledSize: new google.maps.Size(35, 35)
+                        }));
+                        marker.setPosition(place.geometry.location);
+                        marker.setVisible(true);
+
+                        var address = '';
+                        var country;
+                        if (place.address_components) {
+                            address = [
+                              (place.address_components[0] && place.address_components[0].short_name || ''),
+                              (place.address_components[1] && place.address_components[1].short_name || ''),
+                              (place.address_components[2] && place.address_components[2].short_name || '')
+                            ].join(' ');
+
+                            for (var i = 0; i < place.address_components.length; i++) {
+                                if (place.address_components[i].types[0] == "country") {
+                                    country = place.address_components[i].short_name;
+                                }
+                            }
+                            $('.register-form__country-holder').val(country);
+                        }
+
+                        var lat = place.geometry.location.lat();
+                        var long = place.geometry.location.lng();
+                        $('.register-form__latitude-holder').val(lat);
+                        $('.register-form__longitude-holder').val(long);                      
+                    });
+
+                    google.maps.event.addListener(marker, 'dragend', function (event) {
+                        var lat = this.getPosition().lat();
+                        var long = this.getPosition().lng();
+                        $('.register-form__latitude-holder').val(lat);
+                        $('.register-form__longitude-holder').val(long);
+                    });
+
+                    google.maps.event.addListener(map, 'click', function (event) {
+                     
+                        marker.setMap(null);
+                        marker = null;
+                        
+                        marker = new google.maps.Marker({
+                            position: event.latLng,
+                            map: map,
+                            draggable: true,
+                            animation: google.maps.Animation.DROP
+                        });
+
+                        var lat = event.latLng.lat();
+                        var long = event.latLng.lng();
+                       
+                        $('.register-form__latitude-holder').val(lat);
+                        $('.register-form__longitude-holder').val(long);
+
+                    });
+            },
+            error: function (err) {
+                console.log(err);
             }
         });
-    </script>
+    }
+</script>
 }

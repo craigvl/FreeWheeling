@@ -37,10 +37,19 @@ namespace FreeWheeling.UI.Models
         [Required(ErrorMessage = "Location Name is required")]
         public string Name { get; set; }
         public string TimeZoneId { get; set; }
+        public string GoogletzTimeZone { get; set; }
+        public string GoogletimeZoneName { get; set; }
+        public string dstOffset { get; set; }
+        public string rawOffset { get; set; }
+        public string GoogleStatus { get; set; }
+        public string Google_ErrorMessage { get; set; }
+        public string CurrentGoogleUTC { get; set; }
         public TimeZoneInfo TimeZone
         {
             get { return TimeZoneInfo.FindSystemTimeZoneById(TimeZoneId); }
             set { TimeZoneId = value.Id; }
         }
+        public string lat { get; set; }
+        public string lng { get; set; }
     }
 }

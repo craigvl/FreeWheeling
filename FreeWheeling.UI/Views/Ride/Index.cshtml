@@ -13,6 +13,53 @@
 @Html.Hidden("CommentCountNext", @Model.NextCommentCount)
 @Html.Hidden("KeenCount", @Model.KeenCount)
 @Html.Hidden("KeenCountNext", @Model.NextKeenCount)
+<style>
+    #map_wrapper {
+        height: 200px;
+    }
+    #map-canvas {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+
+<script>
+    var geocoder;
+    var map;
+    var username = @Html.Raw(Json.Encode(User.Identity.GetUserName()));
+    function initialize() {
+        var startlat = @Html.Raw(Json.Encode(Model.Group.Lat));
+        var startlng = @Html.Raw(Json.Encode(Model.Group.Lng));
+        var markerlat = @Html.Raw(Json.Encode(Model.lat));
+        var markerlng = @Html.Raw(Json.Encode(Model.lng));
+        var infowindow = new google.maps.InfoWindow({});
+        var startlatlng = new google.maps.LatLng(startlat, startlng);
+        var mapOptions = {
+            zoom: 8,
+            center: startlatlng
+        }
+        //alert(markerlat);
+        if (markerlat != null) {
+            map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+            var infowindow = new google.maps.InfoWindow();
+            var markerlatLng = new google.maps.LatLng(markerlat, markerlng);
+            //alert(startlatlng);
+            //alert(markerlatLng);
+            // Creating a marker and putting it on the map
+            var marker = new google.maps.Marker({
+                position: markerlatLng,
+                map: map,
+                draggable: false,
+                animation: google.maps.Animation.DROP
+            });
+        }
+        else
+        {
+            $( "#map_wrapper" ).hide();      
+        }      
+    }
+</script>
 <div id="fb-root"></div>
 <script>
     window.fbAsyncInit = function () {
@@ -37,6 +84,10 @@
     }
 </script>
 <div class="row">
+    <div id="map_wrapper">
+        <div id="map-canvas" class="mapping"></div>
+    </div>
+    <p></p>
     <div class="pull-left col-xs-12 col-md-12 col-sm-12 col-xs-12">
 <div class="row">
 

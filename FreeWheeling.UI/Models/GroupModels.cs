@@ -26,6 +26,8 @@ namespace FreeWheeling.UI.Models
         public List<Group> PrivateBunches;
         public IEnumerable<NextRideGroupbyDayOfWeek> _NextRideGroupbyDayOfWeek;
         public IEnumerable<NextRideGroupbyDayOfWeekPrivate> _NextRideGroupbyDayOfWeekPrivate;
+        public string lat;
+        public string lng;
     }
 
     public class NextRideGroupbyDayOfWeek
@@ -88,6 +90,8 @@ namespace FreeWheeling.UI.Models
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Location.id);
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
             _GroupModel._OwnerGroupList = new List<int>();
+            _GroupModel.lat = _Location.Lat;
+            _GroupModel.lng = _Location.Lng;
 
             foreach (Group item in _GroupModel._Groups)
             {
@@ -302,6 +306,9 @@ namespace FreeWheeling.UI.Models
     public string AverageSpeed { get; set; }
     public string Description { get; set; }
     public string MapUrl { get; set; }
+    public string lat { get; set; }
+    public string lng { get; set; }
+    public string country { get; set; }
     public bool IsPrivate { get; set; }
     [Required(ErrorMessage = "Your name is require")]
     public string CreatorName { get; set; }
