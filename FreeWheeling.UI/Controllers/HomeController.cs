@@ -11,6 +11,7 @@ using FreeWheeling.Domain.Entities;
 using FreeWheeling.UI.Infrastructure;
 using System.Threading.Tasks;
 using FreeWheeling.UI.Filters;
+using NodaTime.TimeZones;
 
 namespace FreeWheeling.UI.Controllers
 {
@@ -217,12 +218,31 @@ namespace FreeWheeling.UI.Controllers
 
             if (_LocationCheck != null)
             {
-                ModelState.AddModelError(string.Empty, "It looks like this location has already been created?");
+                ModelState.AddModelError(string.Empty, "It looks like this location has already been created.");
                 return View(_LocationCreate);
             }
             else
             {
-                Location NewLocation = new Location { Name = _LocationCreate.Name, TimeZoneInfo = _LocationCreate.TimeZoneId };
+
+                _LocationCreate.TimeZone = TimeZoneInfo.FindSystemTimeZoneById(_CultureHelper.IanaToWindows(_LocationCreate.GoogletzTimeZone));
+
+                if (_LocationCreate.TimeZone == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Unable to lookup time zone for location please try again.");
+                    return View(_LocationCreate);
+                }
+
+                Location NewLocation = new Location { Name = _LocationCreate.Name,
+                                                      TimeZoneInfo = _LocationCreate.TimeZoneId,
+                                                      Lat = _LocationCreate.lat,
+                                                      Lng = _LocationCreate.lng,
+                                                      CurrentGoogleUTC = _LocationCreate.CurrentGoogleUTC,
+                                                      dstOffset = _LocationCreate.dstOffset,
+                                                      Google_ErrorMessage = _LocationCreate.Google_ErrorMessage,
+                                                      GoogleStatus = _LocationCreate.GoogleStatus,
+                                                      GoogletimeZoneName = _LocationCreate.GoogletimeZoneName,
+                                                      GoogletzTimeZone = _LocationCreate.GoogletzTimeZone,
+                                                      rawOffset = _LocationCreate.rawOffset};
                 repository.AddLocation(NewLocation);
                 var currentUser = idb.Users.Find(User.Identity.GetUserId());
                 currentUser.LocationID = NewLocation.id;
