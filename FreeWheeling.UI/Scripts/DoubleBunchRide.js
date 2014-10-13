@@ -77,6 +77,7 @@ function CommentComplete(data) {
 
 jQuery(document).ready(function () {
     HideProgress();
+    initialize();
     //Pusher
     var rideId = jQuery('#RideIdHidden').val();
     var NextRideIdHidden = jQuery('#NextRideIdHidden').val();
