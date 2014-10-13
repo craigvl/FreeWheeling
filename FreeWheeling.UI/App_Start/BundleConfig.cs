@@ -8,7 +8,7 @@ namespace FreeWheeling.UI
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.UseCdn = true;
+            bundles.UseCdn = false;
             //BundleTable.EnableOptimizations = true; //Un comment this to use CDN in debug.
 
             var jquery = new ScriptBundle("~/bundles/jquery", "//ajax.aspnetcdn.com/ajax/jquery/jquery-1.10.2.min.js").Include(
