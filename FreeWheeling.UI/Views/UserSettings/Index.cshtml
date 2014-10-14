@@ -64,8 +64,11 @@
                 HideProgress();
             });
             function OnSuccess(data) {
-                displayMessageAjax(data.message,"success","","tempoarayMessage");
                 HideProgress();
+                displayMessageAjax(data.message,"success","","tempoarayMessage");              
+                setTimeout(function(){
+                    window.location.href = '/Group';
+                }, 1500);
             }
             function OnFailure(data) {
                 displayMessageAjax(data.message, "error", "", "tempoarayMessage");
