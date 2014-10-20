@@ -525,6 +525,8 @@
     <Content Include="Scripts\locales\bootstrap-datepicker.vi.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-CN.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-TW.js" />
+    <Content Include="Scripts\markerclusterer\markerclusterer.js" />
+    <Content Include="Scripts\markerclusterer\markerclusterer_compiled.js" />
     <Content Include="Scripts\MobileServices.Web-1.1.5.min.js" />
     <Content Include="Scripts\mobiscroll-2.10.1.full.min.js" />
     <Content Include="Scripts\mobiscroll.core-2.10.1-cs.js" />

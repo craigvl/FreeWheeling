@@ -15,8 +15,17 @@
     }
 </style>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
-<script>
+<script src="~/Scripts/markerclusterer/markerclusterer_compiled.js"></script>
+<script type="text/javascript">
+    var script = '<script type="text/javascript" src="~/Scripts/markerclusterer/markerclusterer';
+    if (document.location.search.indexOf('compiled') !== -1) {
+        script += '_compiled';
+    }
+    script += '.js"><' + '/script>';
+    document.write(script);
+</script>
 
+<script>
     var geocoder;
     var map;
     var username = @Html.Raw(Json.Encode(User.Identity.GetUserName()));
