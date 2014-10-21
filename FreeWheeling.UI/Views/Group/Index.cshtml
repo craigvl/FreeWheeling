@@ -48,6 +48,7 @@
                     center: latlng
                 }
                 map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                var markers = [];
                 $.each(data, function (key, data1) {
                     var infowindow = new google.maps.InfoWindow();
                     //console.debug(data1);
@@ -61,7 +62,7 @@
                         animation: google.maps.Animation.DROP,
                         title:data1.Name
                     });
-
+                    markers.push(marker);
                     var contentString ='<div class = "MarkerPopUp" style="width: 100%;height:50px;overflow:hidden;"><div class = "MarkerContext">'+data1.Name+'</div></div>'
 
                     //infowindow.setContent(data1.Name);
@@ -71,6 +72,7 @@
                     });
                     google.maps.event.addListener( marker, 'click', function() { infowindow.open( map, marker ); });
                 });
+                var markerCluster = new MarkerClusterer(map, markers);
             },
             error: function (err) {
                 $( "#map_wrapper" ).hide();
