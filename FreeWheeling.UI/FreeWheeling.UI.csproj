@@ -186,6 +186,7 @@
     <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.Mvc.5.1.2\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -525,6 +526,10 @@
     <Content Include="Scripts\locales\bootstrap-datepicker.vi.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-CN.js" />
     <Content Include="Scripts\locales\bootstrap-datepicker.zh-TW.js" />
+    <Content Include="Scripts\markerclusterer\markerclusterer.js" />
+    <Content Include="Scripts\markerclusterer\markerclusterer_compiled.js" />
+    <Content Include="Scripts\markerclusterer\markerwithlabel.js" />
+    <Content Include="Scripts\markerclusterer\markerwithlabel_packed.js" />
     <Content Include="Scripts\MobileServices.Web-1.1.5.min.js" />
     <Content Include="Scripts\mobiscroll-2.10.1.full.min.js" />
     <Content Include="Scripts\mobiscroll.core-2.10.1-cs.js" />
