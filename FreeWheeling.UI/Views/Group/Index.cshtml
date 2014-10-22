@@ -18,10 +18,9 @@
      .labels {
      color: red;
      background-color: yellow;
-     font-family: "Lucida Grande", "Arial", sans-serif;
+     font-family:  "Arial", sans-serif;
      font-size: 10px;
-     font-weight: bold;
-     
+     font-weight: bold;    
      width: 40px; 
      height:40px;    
      border: 2px solid black;
@@ -42,13 +41,15 @@
 <script src="~/Scripts/markerclusterer/markerwithlabel.js"></script>
 
 <script>
-    var geocoder;
-    var map;
+   
     var username = @Html.Raw(Json.Encode(User.Identity.GetUserName()));
     //create empty LatLngBounds object
-    var bounds = new google.maps.LatLngBounds();
+   
     function initialize() {
-
+        var geocoder;
+        var map;
+        var bounds = new google.maps.LatLngBounds();
+        
         $.ajax({
             type: "GET",
             url: "http://bunchyapi.azurewebsites.net/api/bunch/get/"+ username ,
@@ -59,33 +60,25 @@
                 var startlat = @Html.Raw(Json.Encode(Model.lat));
                 var startlng = @Html.Raw(Json.Encode(Model.lng));
                 //alert(@Model.UserLocation);
-                var infowindow = new google.maps.InfoWindow({});
                 var latlng = new google.maps.LatLng(startlat, startlng);
                 var mapOptions = {
-                    zoom: 1,
+                    zoom: 10,
                     center: latlng
                 }
                 map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
                 var markers = [];
                 $.each(data, function (key, data1) {
-                    var infowindow = new google.maps.InfoWindow();
                     //console.debug(data1);
                     var latLng = new google.maps.LatLng(data1.lat, data1.lng);
                     console.log(data1.KeenCount);
-                    // Creating a marker and putting it on the map
+                   
+                    var contentString ='<div class = "MarkerPopUp" style="width: 100%;height:50px;overflow:hidden;"><div class = "MarkerContext">'+data1.Name+'</div></div>'
 
-                    //var marker =  new MarkerWithLabel({
-                    //    position: latLng,
-                    //    map: map,
-                    //    labelContent: "hhh",
-                    //    labelAnchor: new google.maps.Point(0, 0),
-                    //    labelClass: "labels", // the CSS class for the label
-                    //    labelInBackground: false,
-                    //    draggable: false,
-                    //    animation: google.maps.Animation.DROP,
-                    //    title:"fff",
-                    //    labelStyle: {opacity: 0.75}
-                    //});
+                    //infowindow.setContent(data1.Name);
+                    var infowindow = new google.maps.InfoWindow({
+                        content: contentString,
+                        position: latLng
+                    });
 
                     var marker = new MarkerWithLabel({
                         position: latLng,
@@ -93,37 +86,15 @@
                         draggable: true,
                         raiseOnDrag: true,
                         labelContent: "ABCDEFGHIJKLMNOP",
-                        labelAnchor: new google.maps.Point(0, 0),
+                        //labelAnchor: new google.maps.Point(0, 0),
                         labelClass: "labels", // the CSS class for the label
-                        labelInBackground: true
+                        labelInBackground: true,
+                        infobox: infowindow
                     });
-
-
-
-                    //var marker = new google.maps.Marker({
-                    //    position: latLng,
-                    //    map: map,
-                    //    labelContent: "hhh",
-                    //    labelAnchor: new google.maps.Point(0, 0),
-                    //    labelClass: "labels", // the CSS class for the label
-                    //    labelInBackground: false,
-                    //    draggable: false,
-                    //    animation: google.maps.Animation.DROP,
-                    //    title:"fff"
-                    //});
-                    //marker.set('labelContent', 'sdda');
-                   
-                    
-                    var contentString ='<div class = "MarkerPopUp" style="width: 100%;height:50px;overflow:hidden;"><div class = "MarkerContext">'+data1.Name+'</div></div>'
-
-                    //infowindow.setContent(data1.Name);
-                    var infowindow = new google.maps.InfoWindow({
-                        content: contentString,
-                        maxWidth: 200
-                    });
-                    google.maps.event.addListener( marker, 'click', function() { infowindow.open( map, marker ); });
+                                    
                     markers.push(marker);
                     bounds.extend(marker.position);
+                    google.maps.event.addListener( marker, 'click', function() { infowindow.open( map); });
                 });
                 
                 var markerCluster = new MarkerClusterer(map, markers, {
