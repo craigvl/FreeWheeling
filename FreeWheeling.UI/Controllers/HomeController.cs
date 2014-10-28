@@ -26,12 +26,14 @@ namespace FreeWheeling.UI.Controllers
             repository = repoParam;
         }
 
+        [AllowAnonymous]
         [Compress]
         public ActionResult Feedback()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public JsonResult Feedback(FeedBackModel _FeedBackModel)
         {
