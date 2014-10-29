@@ -187,7 +187,7 @@ namespace FreeWheeling.UI.Controllers
                     //return RedirectToLocal(returnUrl);
                     case SignInStatus.LockedOut:
                         return View("Lockout");
-                    case SignInStatus.RequiresTwoFactorAuthentication:
+                    case SignInStatus.RequiresVerification:
                         return RedirectToAction("SendCode", new { ReturnUrl = returnUrl });
                     case SignInStatus.Failure:
                     default:

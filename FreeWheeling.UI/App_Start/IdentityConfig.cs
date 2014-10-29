@@ -197,13 +197,13 @@ namespace FreeWheeling.UI.Models
         }
     }
 
-    public enum SignInStatus
-    {
-        Success,
-        LockedOut,
-        RequiresTwoFactorAuthentication,
-        Failure
-    }
+    //public enum SignInStatus
+    //{
+    //    Success,
+    //    LockedOut,
+    //    RequiresTwoFactorAuthentication,
+    //    Failure
+    //}
 
     // These help with sign and two factor (will possibly be moved into identity framework itself)
     public class SignInHelper
@@ -312,7 +312,7 @@ namespace FreeWheeling.UI.Models
                 var identity = new ClaimsIdentity(DefaultAuthenticationTypes.TwoFactorCookie);
                 identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
                 AuthenticationManager.SignIn(identity);
-                return SignInStatus.RequiresTwoFactorAuthentication;
+                return SignInStatus.RequiresVerification;
             }
             await SignInAsync(user, isPersistent, false);
             return SignInStatus.Success;
