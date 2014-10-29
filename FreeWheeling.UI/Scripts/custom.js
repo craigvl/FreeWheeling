@@ -279,3 +279,19 @@ function ClearMessagesAjax() {
 function ClearMessagesAjaxClick() {
     $("#messagewrapperajax").hide();
 }
+
+//Show when user clicks on follow button
+function FollowCompleteFollow() {
+    HideProgress();
+    $('a#followbutton').hide();
+    $('a#unfollowbutton').show();
+    displayMessageAjax("Following", "success", "BottomCentre", "tempoarayMessage");
+}
+
+//Show when user clicks on un follow button
+function FollowCompleteUnFollow() {
+    HideProgress();
+    $('a#followbutton').show();
+    $('a#unfollowbutton').hide();
+    displayMessageAjax("Not Following", "success", "BottomCentre", "tempoarayMessage");
+}

@@ -97,7 +97,7 @@ namespace FreeWheeling.UI.Controllers
             return View(_FollowingList);
         }
 
-        public ActionResult FollowAdd(string Id)
+        public JsonResult FollowAddJSON(string Id)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             repository.AddFollowingUser(currentUser.Id, Id);
@@ -128,10 +128,13 @@ namespace FreeWheeling.UI.Controllers
 
             E.Start();
 
-            return View("Follow",_FollowingList);
+            return Json(new
+            {
+                success = true              
+            }, JsonRequestBehavior.AllowGet);  
         }
 
-        public ActionResult Unfollow(string Id)
+        public JsonResult UnfollowJSON(string Id)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             repository.DeleteFollowingUser(currentUser.Id, Id);
@@ -151,7 +154,10 @@ namespace FreeWheeling.UI.Controllers
                 _FollowingList.Add(_Fmodel);
             }
 
-            return View("Follow",_FollowingList);
+            return Json(new
+            {
+                success = true
+            }, JsonRequestBehavior.AllowGet);
         }
 	}
 }

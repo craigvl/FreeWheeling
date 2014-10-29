@@ -7,7 +7,6 @@
     <div class="backbaricon col-xs-12 col-md-12 col-sm-12 col-lg-12" style="padding-bottom:5px;">
         @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
     </div>
-
     @if (Model.Count() == 0)
     {
         <p>No users to follow!</p>
@@ -44,13 +43,73 @@
                     @if (!item.following)
                     {
                         <td>
-                            @Html.ActionLink("Follow", "FollowAdd", new { id = item.UserID }, new { @class = "btn btn-success" })
+                            @Ajax.ActionLink("Follow", "FollowAddJSON",
+                            null,
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "FollowCompleteFollow",
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "btn btn-success",
+                     style = "color:#333333",
+                     id = "followbutton",
+                     onclick = "ShowProgress();"
+                 })
+
+                 @Ajax.ActionLink("Unfollow", "UnfollowJSON",
+                            null,
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "FollowCompleteUnFollow",
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "btn btn-success",
+                     style = "color:#333333;display:none;",
+                     id = "unfollowbutton",
+                     onclick = "ShowProgress();"
+                 })
                         </td>
                     }
                     else
                     {
                         <td>
-                            @Html.ActionLink("Unfollow", "Unfollow", new { id = item.UserID }, new { @class = "btn btn-success" })
+                 @Ajax.ActionLink("Unfollow", "UnfollowJSON",
+                            null,
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "FollowCompleteUnFollow",
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "btn btn-success",
+                     style = "color:#333333",
+                     id = "unfollowbutton",
+                     onclick = "ShowProgress();"
+                 })
+
+                 @Ajax.ActionLink("Follow", "FollowAddJSON",
+                            null,
+                 new AjaxOptions
+                 {
+                     HttpMethod = "POST",
+                     OnSuccess = "FollowCompleteFollow",
+                     OnBegin = "ShowProgress"
+                 },
+                 new
+                 {
+                     @class = "btn btn-success",
+                     style = "color:#333333;display:none;",
+                     id = "followbutton",
+                     onclick = "ShowProgress();"
+                 })
                         </td>
                     }
                 </tr>
@@ -58,3 +117,6 @@
         </table>
     }
 </div>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}
