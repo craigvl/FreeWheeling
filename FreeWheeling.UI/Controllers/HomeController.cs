@@ -225,6 +225,11 @@ namespace FreeWheeling.UI.Controllers
             }
             else
             {
+                if (_LocationCreate.GoogletzTimeZone == null)
+                {
+                   ModelState.AddModelError(string.Empty, "Unable to lookup time zone for location please try again.");
+                   return View(_LocationCreate); 
+                }
 
                 _LocationCreate.TimeZone = TimeZoneInfo.FindSystemTimeZoneById(_CultureHelper.IanaToWindows(_LocationCreate.GoogletzTimeZone));
 
