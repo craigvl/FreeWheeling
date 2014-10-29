@@ -301,7 +301,6 @@ namespace FreeWheeling.UI.Models
     [Required(ErrorMessage = "Please select a location")]
     public int LocationsId { get; set; }
     public List<Location> Locations { get; set; }
-    [Required(ErrorMessage = "Start location is required")]
     public string StartLocation { get; set; }
     public string AverageSpeed { get; set; }
     public string Description { get; set; }

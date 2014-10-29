@@ -383,6 +383,8 @@ namespace FreeWheeling.UI.Controllers
             _GroupCreateModel.CreatorName = currentUser.FirstName + " " + currentUser.LastName;
             Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
             _GroupCreateModel.LocationsId = _Location.id;
+            _GroupCreateModel.lat = _Location.Lat;
+            _GroupCreateModel.lng = _Location.Lng;
             return View(_GroupCreateModel);
         }
        
