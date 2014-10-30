@@ -192,7 +192,7 @@
         //console.log(userName);
         $.ajax({
             type: "GET",
-            url: "http://bunchyapi.azurewebsites.net/api/bunch/location/" + userName,
+            url: window.BunchyAPI + "/api/bunch/location/" + userName,
             dataType: "json",
             success: function (data) {
                 //console.debug(data);

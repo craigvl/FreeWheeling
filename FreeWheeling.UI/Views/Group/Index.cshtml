@@ -54,7 +54,7 @@
         
         $.ajax({
             type: "GET",
-            url: "http://bunchyapi.azurewebsites.net/api/bunch/get/"+ username ,
+            url: window.BunchyAPI + "/api/bunch/get/"+ username ,
             dataType: "json",
             success: function (data) {
                 //console.debug(data);
