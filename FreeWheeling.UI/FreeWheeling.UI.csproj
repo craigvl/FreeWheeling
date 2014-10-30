@@ -443,6 +443,7 @@
     <Content Include="Scripts\custom.min.js">
       <DependentUpon>custom.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\customconstants.js" />
     <Content Include="Scripts\DoubleBunchRide.min.js.map">
       <DependentUpon>DoubleBunchRide.min.js</DependentUpon>
     </Content>
