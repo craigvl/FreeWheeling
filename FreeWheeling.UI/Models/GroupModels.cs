@@ -309,6 +309,7 @@ namespace FreeWheeling.UI.Models
     public string lng { get; set; }
     public string country { get; set; }
     public bool IsPrivate { get; set; }
+    public bool OneOff { get; set; }
     [Required(ErrorMessage = "Your name is require")]
     public string CreatorName { get; set; }
     }

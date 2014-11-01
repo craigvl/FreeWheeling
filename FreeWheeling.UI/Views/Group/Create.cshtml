@@ -6,11 +6,11 @@
 @Html.Hidden("RideUserNameHidden", User.Identity.GetUserName())
 <style>
     #map-canvas {
-        width:100%;
-        height:200px;
+        width: 100%;
+        height: 200px;
     }
 
-   .controls {
+    .controls {
         margin-top: 16px;
         border: 1px solid transparent;
         border-radius: 2px 0 0 2px;
@@ -19,7 +19,7 @@
         height: 32px;
         outline: none;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-      }
+    }
 
     #StartLocation {
         background-color: #fff;
@@ -29,33 +29,32 @@
         font-size: 15px;
         font-weight: 300;
         text-overflow: ellipsis;
-      }
+    }
 
-      #StartLocation:focus {
-        border-color: #4d90fe;
-        margin-left: -1px;
-        padding-left: 14px;  /* Regular padding-left + 1. */
-        width: 401px;
-      }
+        #StartLocation:focus {
+            border-color: #4d90fe;
+            margin-left: -1px;
+            padding-left: 14px; /* Regular padding-left + 1. */
+            width: 401px;
+        }
 
-      .pac-container {
+    .pac-container {
         font-family: Roboto;
-      }
+    }
 
-      #type-selector {
+    #type-selector {
         color: #fff;
         background-color: #4d90fe;
         padding: 5px 11px 0px 11px;
-      }
+    }
 
-      #type-selector label {
-        font-family: Roboto;
-        font-size: 13px;
-        font-weight: 300;
-      }
-
+        #type-selector label {
+            font-family: Roboto;
+            font-size: 13px;
+            font-weight: 300;
+        }
 </style>
-
+@Styles.Render("~/Content/datepicker")
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
 <div class="row">
     <p>
@@ -93,6 +92,21 @@
             @Html.ValidationMessageFor(model => model.LocationsId)
             <p></p>
         </div>
+        <div>
+            <hr />
+            <b>This is a one off ride:</b>
+               @Html.CheckBoxFor(f => f.OneOff, new
+          {
+              @id = "OneOff",
+              @onclick = "setOneOffStatus.call(this)"
+          })
+            <p></p>
+            <hr />
+        </div>
+    <div id="daysofweekstimepanel">
+        Time....
+    </div>
+    <div id="daysofweekspanel">
         <div><b>Days Of Week</b></div>
         <p></p>
         <div>
@@ -106,21 +120,7 @@
             }
         </div>
         <hr />
-        <div>
-            <b>Private:</b>
-            @Html.CheckBoxFor(f => f.IsPrivate)
-            <p></p>
-            <p><b>Note:</b> If this is a private group you will be able to invite users later.</p>
-            <p>
-                Only you as the bunch creator will be able to invite users.
-            </p>
-            <p>
-                Only those users that you invite will be
-                able to see this bunch.
-            </p>
-        </div>
         <p></p>
-        <hr />
         <div><b>Time</b></div>
         <hr />
         <div><span class="RequiredField">*&nbsp;</span><b>Hour (24 Hour)</b></div>
@@ -135,6 +135,7 @@
             @Html.ValidationMessageFor(model => model.Minute)
         </div>
         <p></p>
+    </div>
         <div><span class="RequiredField">*&nbsp;</span><b>Start Location</b></div>
         <div>
             @Html.TextBoxFor(model => model.StartLocation, new { @class = "controls", @placeholder = "Please enter location" })
@@ -159,10 +160,23 @@
             @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
         </div>
         <p></p>
-        <div><b>Map</b> (<a style="color:#333333;text-decoration:underline" target="_blank" href="http://veloroutes.org/bikemaps/">veloroutes</a> number)</div>
+        @*<div><b>Map</b> (<a style="color:#333333;text-decoration:underline" target="_blank" href="http://veloroutes.org/bikemaps/">veloroutes</a> number)</div>
         <div>
             @Html.TextBoxFor(model => model.MapUrl, new { @class = "form-control", type = "number" })
-        </div>
+        </div>*@
+    <div>
+        <b>Private:</b>
+        @Html.CheckBoxFor(f => f.IsPrivate)
+        <p></p>
+        <p><b>Note:</b> If this is a private group you will be able to invite users later.</p>
+        <p>
+            Only you as the bunch creator will be able to invite users.
+        </p>
+        <p>
+            Only those users that you invite will be
+            able to see this bunch.
+        </p>
+    </div>
         <div>
             <p></p>
             <input class="btn btn-default" onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create" />
@@ -170,57 +184,78 @@
         <p></p>
     }
 </div>
-    @section Scripts {
+@section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/datepicker")
     <script type="text/javascript">
         jQuery(document).ready(function () {
             HideProgress();
-            initialize();
+            initialize();           
+            if ($('#OneOff').prop('checked')) {
+                $('#daysofweekspanel').hide();
+                $('#daysofweekstimepanel').show();
+            }
+            else {
+                $('#daysofweekstimepanel').hide();
+            }
         });
-    $("form").submit(function () {
-        if (!$(this).valid()) {
-            HideProgress();
+        $("form").submit(function () {
+            if (!$(this).valid()) {
+                HideProgress();
+            }
+            else {
+            }
+        });
+
+        function setOneOffStatus() {
+            //alert(this.checked);
+            if (this.checked) {
+                $('#daysofweekspanel').hide();
+                $('#daysofweekstimepanel').show();
+            }
+            else {
+                $('#daysofweekspanel').show();
+                $('#daysofweekstimepanel').hide();
+            }
         }
-        else {
-        }
-    });
-    var geocoder;
-    var map;
-    var marker;
-    function initialize() {
-        var userName = jQuery('#RideUserNameHidden').val();
-        //console.log(userName);
-        $.ajax({
-            type: "GET",
-            url: window.BunchyAPI + "/api/bunch/location/" + userName,
-            dataType: "json",
-            success: function (data) {
-                //console.debug(data);
-                geocoder = new google.maps.Geocoder();
-                var latlng = new google.maps.LatLng(data.lat, data.lng);
-                var mapOptions = {
-                    zoom: 14,
-                    center: latlng
-                }
-                map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-                var input = /** @@type {HTMLInputElement} */
-                (document.getElementById('StartLocation'));
 
-                var types = document.getElementById('type-selector');
-                map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-                map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
+        var geocoder;
+        var map;
+        var marker;
+        function initialize() {
+            var userName = jQuery('#RideUserNameHidden').val();
+            //console.log(userName);
+            $.ajax({
+                type: "GET",
+                url: window.BunchyAPI + "/api/bunch/location/" + userName,
+                dataType: "json",
+                success: function (data) {
+                    //console.debug(data);
+                    geocoder = new google.maps.Geocoder();
+                    var latlng = new google.maps.LatLng(data.lat, data.lng);
+                    var mapOptions = {
+                        zoom: 14,
+                        center: latlng
+                    }
+                    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                    var input = /** @@type {HTMLInputElement} */
+                    (document.getElementById('StartLocation'));
 
-                var autocomplete = new google.maps.places.Autocomplete(input);
-                autocomplete.bindTo('bounds', map);
+                    var types = document.getElementById('type-selector');
+                    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                    map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
 
-                //var infowindow = new google.maps.InfoWindow();
-                marker = new google.maps.Marker({
-                    position: latlng,
-                    map: map,
-                    draggable: true,
-                    animation: google.maps.Animation.DROP
-                });
-         
+                    var autocomplete = new google.maps.places.Autocomplete(input);
+                    autocomplete.bindTo('bounds', map);
+
+                    //var infowindow = new google.maps.InfoWindow();
+                    marker = new google.maps.Marker({
+                        position: latlng,
+                        map: map,
+                        draggable: true,
+                        animation: google.maps.Animation.DROP
+                    });
+
                     google.maps.event.addListener(autocomplete, 'place_changed', function () {
                         //infowindow.close();
                         marker.setVisible(false);
@@ -254,7 +289,7 @@
                         var lat = place.geometry.location.lat();
                         var long = place.geometry.location.lng();
                         $('.register-form__latitude-holder').val(lat);
-                        $('.register-form__longitude-holder').val(long);                      
+                        $('.register-form__longitude-holder').val(long);
                     });
 
                     google.maps.event.addListener(marker, 'dragend', function (event) {
@@ -265,10 +300,10 @@
                     });
 
                     google.maps.event.addListener(map, 'click', function (event) {
-                     
+
                         marker.setMap(null);
                         marker = null;
-                        
+
                         marker = new google.maps.Marker({
                             position: event.latLng,
                             map: map,
@@ -281,12 +316,13 @@
 
                         $('.register-form__latitude-holder').val(lat);
                         $('.register-form__longitude-holder').val(long);
-                    });
-            },
-            error: function (err) {
-                console.log(err);
-            }
-        });
-    }
-</script>
+                    });
+
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+    </script>
 }
