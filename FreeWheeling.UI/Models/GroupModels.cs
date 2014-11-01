@@ -292,11 +292,7 @@ namespace FreeWheeling.UI.Models
     public IList<DayOfWeekViewModel> DaysOfWeek { get; set; }
     [Required(ErrorMessage="Name is required")]
     public string Name { get; set; }
-    [Required(ErrorMessage = "Hour is required")]
-    [Range(0,24,ErrorMessage="Between 0 and 24")]
     public int Hour { get; set; }
-    [Required(ErrorMessage = "Minute is required")]
-    [Range(0, 60, ErrorMessage = "Between 0 and 60")]
     public int Minute { get; set; }
     [Required(ErrorMessage = "Please select a location")]
     public int LocationsId { get; set; }
@@ -305,6 +301,8 @@ namespace FreeWheeling.UI.Models
     public string AverageSpeed { get; set; }
     public string Description { get; set; }
     public string MapUrl { get; set; }
+    public string OneOffDateTime { get; set; }
+    public string BunchTime { get; set; }
     public string lat { get; set; }
     public string lng { get; set; }
     public string country { get; set; }

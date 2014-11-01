@@ -398,64 +398,80 @@ namespace FreeWheeling.UI.Controllers
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             bool DayOfWeekSelected = false;
-            
-            foreach (DayOfWeekViewModel item in _GroupCreateModel.DaysOfWeek)
+
+            //Is a one off ride
+            if (_GroupCreateModel.OneOff)
             {
-                if (item.Checked)
+                long msSinceEpoch = Convert.ToInt64(_GroupCreateModel.OneOffDateTime); // Value from Date.getTime() in JavaScript
+                DateTime OneOffRideDateTime = new DateTime(1970, 1, 1).AddTicks(msSinceEpoch * 10000);
+            }
+            //Is a recuring bunch
+            else
+            {
+                foreach (DayOfWeekViewModel item in _GroupCreateModel.DaysOfWeek)
                 {
-                    CycleDays NewDay = new CycleDays { DayOfWeek = item.Name };
-                    _CycleDays.Add(NewDay);
-                    DayOfWeekSelected = true;
+                    if (item.Checked)
+                    {
+                        CycleDays NewDay = new CycleDays { DayOfWeek = item.Name };
+                        _CycleDays.Add(NewDay);
+                        DayOfWeekSelected = true;
+                    }
                 }
+
+                if (!DayOfWeekSelected)
+                {
+                    ModelState.AddModelError(string.Empty, "Please select one or more days");
+                    _GroupCreateModel.Locations = repository.GetLocations().ToList();
+                    _GroupCreateModel.LocationsId = _Location.id;
+                    this.ShowMessage(MessageType.Error, "Please select one or more days", true, MessagePosition.TopCentre, false);
+                    return View(_GroupCreateModel);
+                }
+
+                string[] time = _GroupCreateModel.BunchTime.Split(':');
+
+                Group NewGroup = new Group
+                {
+                    name = _GroupCreateModel.Name,
+                    RideTime = _GroupCreateModel.Hour.ToString() + ":" + _GroupCreateModel.Minute.ToString() + " " + _GroupCreateModel.AM_PM,
+                    RideDays = _CycleDays,
+                    Location = _Location,
+                    Rides = new List<Ride>(),
+                    AverageSpeed = _GroupCreateModel.AverageSpeed,
+                    StartLocation = _GroupCreateModel.StartLocation,
+                    Description = _GroupCreateModel.Description,
+                    RideHour = Convert.ToInt32(time[0]),
+                    RideMinute = Convert.ToInt32(time[1]),
+                    CreatedBy = currentUser.Id,
+                    ModifiedTimeStamp = LocalNow,
+                    CreatedTimeStamp = LocalNow,
+                    MapUrl = _GroupCreateModel.MapUrl,
+                    IsPrivate = _GroupCreateModel.IsPrivate,
+                    CreatedByName = _GroupCreateModel.CreatorName,
+                    Lat = _GroupCreateModel.lat,
+                    Lng = _GroupCreateModel.lng,
+                    Country = _GroupCreateModel.country
+                };
+
+                repository.AddGroup(NewGroup);
+                repository.Save();
+                NewGroup = repository.PopulateRideDates(NewGroup, TZone);
+                repository.Save();
+
+                if (_GroupCreateModel.IsPrivate)
+                {
+                    return RedirectToAction("InviteOthersToPrivateBunch", "Group", new { GroupId = NewGroup.id });
+                }
+
+                Task T = new Task(() =>
+                {
+                    UserHelper _UserHelp = new UserHelper();
+                    _UserHelp.SendNewGroupCreated(_GroupCreateModel.Name);
+                });
+
+                T.Start();
+
             }
-
-            if(!DayOfWeekSelected)
-            {
-                ModelState.AddModelError(string.Empty, "Please select one or more days");
-                _GroupCreateModel.Locations = repository.GetLocations().ToList();
-                _GroupCreateModel.LocationsId = _Location.id;
-                this.ShowMessage(MessageType.Error, "Please select one or more days", true, MessagePosition.TopCentre, false);
-                return View(_GroupCreateModel);
-            }
-
-            Group NewGroup = new Group
-            {
-                name = _GroupCreateModel.Name,
-                RideTime = _GroupCreateModel.Hour.ToString() +":"+ _GroupCreateModel.Minute.ToString() + " " + _GroupCreateModel.AM_PM,
-                RideDays = _CycleDays, Location = _Location, Rides = new List<Ride>(), AverageSpeed = _GroupCreateModel.AverageSpeed, 
-                StartLocation = _GroupCreateModel.StartLocation,
-                Description = _GroupCreateModel.Description,
-                RideHour = _GroupCreateModel.Hour,
-                RideMinute = _GroupCreateModel.Minute,
-                CreatedBy = currentUser.Id,
-                ModifiedTimeStamp = LocalNow,              
-                CreatedTimeStamp = LocalNow,
-                MapUrl = _GroupCreateModel.MapUrl,
-                IsPrivate = _GroupCreateModel.IsPrivate,
-                CreatedByName = _GroupCreateModel.CreatorName,
-                Lat = _GroupCreateModel.lat,
-                Lng = _GroupCreateModel.lng,
-                Country = _GroupCreateModel.country
-            };
-
-            repository.AddGroup(NewGroup);
-            repository.Save();
-            NewGroup = repository.PopulateRideDates(NewGroup,TZone);
-            repository.Save();
-
-            if (_GroupCreateModel.IsPrivate)
-            {
-                return RedirectToAction("InviteOthersToPrivateBunch", "Group", new { GroupId = NewGroup.id });
-            }
-
-            Task T = new Task(() =>
-            {
-                UserHelper _UserHelp = new UserHelper();
-                _UserHelp.SendNewGroupCreated(_GroupCreateModel.Name);
-            });
-
-            T.Start();
-
+                         
             return RedirectToAction("Index", "Group");
         }
 
