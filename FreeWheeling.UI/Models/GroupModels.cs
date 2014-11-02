@@ -182,54 +182,6 @@ namespace FreeWheeling.UI.Models
                 }
             }
 
-            ////Same as above but for Private bunches.
-            ////TODO: think about combining functions.
-            //foreach (Group item in _GroupModel.PrivateBunches)
-            //{
-            //    int RideCount = item.Rides.Count();
-            //    _GroupModel._NextRideDetailsPrivate = new List<NextRideDetailsPrivate>();
-            //    //If Ride count does not equal rides greater than now then there are old ride so 
-            //    //call delete rides and populate new from latest ride date, note this should have been done by console app
-            //    if (item.Rides.Where(t => t.RideDate >= LocalNow).Count() != RideCount)
-            //    {
-            //        repository.DeleteOldRides(item.id, TZone);
-            //        repository.PopulateRideDatesFromDate(item, item.Rides.OrderByDescending(g => g.RideDate).Select(h => h.RideDate).FirstOrDefault(), TZone);
-            //    }
-
-            //    item.Rides = item.Rides.Where(t => t.RideDate >= LocalNow).ToList();
-            //    Ride NextRide = repository.GetClosestNextRide(item, TZone);
-
-            //    if (NextRide != null)
-            //    {
-            //        _GroupModel._NextRideDetailsPrivate.Add(new NextRideDetailsPrivate
-            //        {
-            //            Date = NextRide.RideDate,
-            //            GroupId = item.id,
-            //            NumberofKeenRiders = NextRide.Riders.Where(i => i.PercentKeen == "In").Count()
-            //        });
-            //    }
-            //    else
-            //    {
-            //        if (item.RideDays != null)
-            //        {
-            //            repository.PopulateRideDates(item, TZone);
-            //            repository.Save();
-            //            NextRide = repository.GetClosestNextRide(item, TZone);
-            //            _GroupModel._NextRideDetailsPrivate.Add(new NextRideDetailsPrivate
-            //            {
-            //                Date = NextRide.RideDate,
-            //                GroupId = item.id,
-            //                NumberofKeenRiders = NextRide.Riders.Where(i => i.PercentKeen == "In").Count()
-            //            });
-            //        }
-            //    }
-
-            //    if (repository.IsGroupCreator(item.id, UserId))
-            //    {
-            //        _GroupModel._OwnerGroupList.Add(item.id);
-            //    }
-            //}
-
             if (_GroupModel._NextRideDetails != null)
             {
                 _GroupModel._NextRideGroupbyDayOfWeek = _GroupModel._NextRideDetails.GroupBy(g => g.Date.DayOfWeek, g => g.GroupId, (key, p) =>
