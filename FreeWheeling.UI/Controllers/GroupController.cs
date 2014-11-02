@@ -42,7 +42,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         // GET: /Group/
-        [Compress]
+        //[Compress]
         public ActionResult Index(string searchString)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
