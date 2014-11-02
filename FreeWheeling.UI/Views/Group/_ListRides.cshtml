@@ -124,10 +124,10 @@
                 <tr>
                     <td>
                 @{
-        bool isMember = Model.CurrentGroupMembership.Contains(item.id);
-        DateTime NextRideDate = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(g => g.Date).FirstOrDefault();
-        int KeenCount = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(a => a.NumberofKeenRiders).FirstOrDefault();
-        bool isCreator = Model._OwnerGroupList.Contains(item.id);
+                    bool isMember = Model.CurrentGroupMembership.Contains(item.id);
+                    DateTime NextRideDate = Model._NextRideDetails.Where(g => g.GroupId == item.id).Select(g => g.Date).FirstOrDefault();
+                    int KeenCount = NextRideDay.NumberofKeenRiders;
+                    bool isCreator = Model._OwnerGroupList.Contains(item.id);
                 }
 
                 @if (item.Rides.Count > 0)
