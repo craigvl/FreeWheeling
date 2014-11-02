@@ -93,7 +93,24 @@ namespace FreeWheeling.UI.Models
             _GroupModel.lat = _Location.Lat;
             _GroupModel.lng = _Location.Lng;
 
-            foreach (Group item in _GroupModel._Groups)
+            foreach (Group item in _GroupModel._Groups.Where(o => o.OneOff == true))
+            {
+                if (item.RideDate <= LocalNow.AddDays(7))
+                {
+                    Ride NextRide = repository.GetClosestNextRide(item, TZone);
+                    if (NextRide != null)
+                    {
+                        _GroupModel._NextRideDetails.Add(new NextRideDetails
+                        {
+                            Date = NextRide.RideDate,
+                            GroupId = item.id,
+                            NumberofKeenRiders = NextRide.Riders.Where(i => i.PercentKeen == "In").Count()
+                        });
+                    }
+                }
+            }
+
+            foreach (Group item in _GroupModel._Groups.Where(o => o.OneOff == false))
             {
                 int RideCount = item.Rides.Count();
 

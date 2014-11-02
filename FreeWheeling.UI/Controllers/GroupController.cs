@@ -404,6 +404,48 @@ namespace FreeWheeling.UI.Controllers
             {
                 long msSinceEpoch = Convert.ToInt64(_GroupCreateModel.OneOffDateTime); // Value from Date.getTime() in JavaScript
                 DateTime OneOffRideDateTime = new DateTime(1970, 1, 1).AddTicks(msSinceEpoch * 10000);
+
+                //DateTime da = DateTime.ParseExact(OneOffRideDateTime, "dd/MM/yyyy", null);
+                //DateTime _RideDate = da.Date.Add(new TimeSpan(_AdHocCreateModel.Hour, _AdHocCreateModel.Minute, 0));
+
+                CycleDays NewDay = new CycleDays { DayOfWeek = OneOffRideDateTime.ToString("dddd") };
+                _CycleDays.Add(NewDay);
+
+                Group NewGroup = new Group
+                {
+                    name = _GroupCreateModel.Name,
+                    RideTime = OneOffRideDateTime.Hour.ToString() + ":" + OneOffRideDateTime.Minute.ToString(),
+                    RideDays = _CycleDays,
+                    Location = _Location,
+                    Rides = new List<Ride>(),
+                    AverageSpeed = _GroupCreateModel.AverageSpeed,
+                    StartLocation = _GroupCreateModel.StartLocation,
+                    Description = _GroupCreateModel.Description,
+                    RideHour = OneOffRideDateTime.Hour,
+                    RideMinute = OneOffRideDateTime.Minute,
+                    CreatedBy = currentUser.Id,
+                    ModifiedTimeStamp = LocalNow,
+                    CreatedTimeStamp = LocalNow,
+                    MapUrl = _GroupCreateModel.MapUrl,
+                    IsPrivate = _GroupCreateModel.IsPrivate,
+                    CreatedByName = _GroupCreateModel.CreatorName,
+                    Lat = _GroupCreateModel.lat,
+                    Lng = _GroupCreateModel.lng,
+                    RideDate = OneOffRideDateTime,
+                    Country = _GroupCreateModel.country,
+                    OneOff = true
+                };
+
+                Ride OneOffRide = new Ride { Group = NewGroup, RideDate = OneOffRideDateTime, RideTime = NewGroup.RideTime };
+                NewGroup.Rides.Add(OneOffRide);
+
+                repository.AddGroup(NewGroup);
+                repository.Save();
+
+                if (_GroupCreateModel.IsPrivate)
+                {
+                    return RedirectToAction("InviteOthersToPrivateBunch", "Group", new { GroupId = NewGroup.id });
+                }
             }
             //Is a recuring bunch
             else
@@ -449,7 +491,9 @@ namespace FreeWheeling.UI.Controllers
                     CreatedByName = _GroupCreateModel.CreatorName,
                     Lat = _GroupCreateModel.lat,
                     Lng = _GroupCreateModel.lng,
-                    Country = _GroupCreateModel.country
+                    Country = _GroupCreateModel.country,
+                    RideDate = DateTime.Now,
+                    OneOff = false
                 };
 
                 repository.AddGroup(NewGroup);
@@ -461,16 +505,15 @@ namespace FreeWheeling.UI.Controllers
                 {
                     return RedirectToAction("InviteOthersToPrivateBunch", "Group", new { GroupId = NewGroup.id });
                 }
-
-                Task T = new Task(() =>
-                {
-                    UserHelper _UserHelp = new UserHelper();
-                    _UserHelp.SendNewGroupCreated(_GroupCreateModel.Name);
-                });
-
-                T.Start();
-
             }
+
+            Task T = new Task(() =>
+            {
+                UserHelper _UserHelp = new UserHelper();
+                _UserHelp.SendNewGroupCreated(_GroupCreateModel.Name);
+            });
+
+            T.Start();
                          
             return RedirectToAction("Index", "Group");
         }

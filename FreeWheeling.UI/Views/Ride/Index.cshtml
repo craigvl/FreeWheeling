@@ -7,12 +7,15 @@
 @Html.Hidden("RideIdHidden", @Model.Ride.id)
 @Html.Hidden("GroupName",@Model.Group.name)
 @Html.Hidden("GroupIdHidden", @Model.Group.id)
-@Html.Hidden("NextRideIdHidden", @Model.NextRide.id)
 @Html.Hidden("RideUserNameHidden", User.Identity.GetUserName())
 @Html.Hidden("CommentCount", @Model.CommentCount)
-@Html.Hidden("CommentCountNext", @Model.NextCommentCount)
 @Html.Hidden("KeenCount", @Model.KeenCount)
+@if (Model.Group.OneOff == false)
+{
+@Html.Hidden("NextRideIdHidden", @Model.NextRide.id)
+@Html.Hidden("CommentCountNext", @Model.NextCommentCount)
 @Html.Hidden("KeenCountNext", @Model.NextKeenCount)
+}
 <style>
     #map_wrapper {
         height: 200px;
@@ -147,7 +150,11 @@
     </div>
 }
 @Html.Partial("_RidePanel", Model, new ViewDataDictionary { { "position", "1" } })
+@if (Model.Group.OneOff == false)
+{
 @Html.Partial("_RidePanel", Model, new ViewDataDictionary { { "position", "2" } })
+}
+
 @section scripts{
   @Scripts.Render("http://bunchy.hoocreative.netdna-cdn.com/Scripts/jquery.timeago.js")
   @Scripts.Render("~/bundles/jqueryval")
