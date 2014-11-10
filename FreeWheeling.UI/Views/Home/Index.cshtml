@@ -46,13 +46,7 @@
         <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;margin-top:10px;">
 		    @Html.ActionLink("Bunches (" + @Model.BunchCount + ")", "Index", "Group", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
 		    @Html.ActionLink(" ", "Create", "Group", new { }, new { @class = "btn btn-default col-xs-3 glyphicon glyphicon-plus", style = "text-align:center;top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })
-	    </div>
-
-        <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:5px;">
-            @Html.ActionLink("Random Bunches (" + @Model.UpCommingAd_HocCount + ")", "AdHocList", "Ride", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
-            @Html.ActionLink(" ", "CreateAdHoc", "Group", new { }, new { @class = "btn btn-default col-xs-3 glyphicon glyphicon-plus", style = "text-align:center;top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })
-        </div>
-    
+	    </div>    
          <div class="btn-group btn-block col-xs-12 col-md-3 col-sm-6" style="margin-bottom:15px;">
             @Html.ActionLink("Following (" + @Model.Followingcount + ")", "Follow", "Usersettings", new { }, new { @class = "btn col-xs-9 btn-default", onclick = "ShowProgress();" })
             @Html.ActionLink(" ", "Follow", "Usersettings", new { }, new { @class = "btn btn-default col-xs-3 glyphicon glyphicon-plus", style = "text-align:center;top: 0px; line-height: 1.45;", onclick = "ShowProgress();" })

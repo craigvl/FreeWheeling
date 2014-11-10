@@ -117,22 +117,25 @@ namespace FreeWheeling.UI.Models
             RideModel.OutFirst = repository.IsOut(RideModel.Ride.id, UserId);
             RideModel.OnWayFirst = repository.IsOnWay(RideModel.Ride.id, UserId);
 
-            RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
-            if (RideModel.NextRide == null)
+            if (RideModel.Group.OneOff == false)
             {
-                //If no next ride need to poulate from the latest date, will catch some issues.
-                repository.PopulateRideDatesFromDate(_Group,RideModel.RideDate,TZone);
                 RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
+                if (RideModel.NextRide == null)
+                {
+                    //If no next ride need to poulate from the latest date, will catch some issues.
+                    repository.PopulateRideDatesFromDate(_Group, RideModel.RideDate, TZone);
+                    RideModel.NextRide = _Group.Rides.Where(u => u.RideDate > RideModel.Ride.RideDate).OrderBy(i => i.RideDate).FirstOrDefault();
+                }
+                RideModel.NextRideDate = RideModel.NextRide.RideDate;
+                RideModel.NextComments = repository.GetTop2CommentsForRide(RideModel.NextRide.id);
+                RideModel.NextCommentCount = repository.GetCommentCountForRide(RideModel.NextRide.id);
+                RideModel.NextKeenCount = repository.GetKeenCountForRide(RideModel.NextRide.id);
+                RideModel.NextRiders = repository.GetRidersForRide(RideModel.NextRide.id, TZone);
+                RideModel.InSecond = repository.IsIn(RideModel.NextRide.id, UserId);
+                RideModel.OutSecond = repository.IsOut(RideModel.NextRide.id, UserId);
+                RideModel.OnWaySecond = repository.IsOnWay(RideModel.NextRide.id, UserId);
             }
-            RideModel.NextRideDate = RideModel.NextRide.RideDate;
-            RideModel.NextComments = repository.GetTop2CommentsForRide(RideModel.NextRide.id);
-            RideModel.NextCommentCount = repository.GetCommentCountForRide(RideModel.NextRide.id);
-            RideModel.NextKeenCount = repository.GetKeenCountForRide(RideModel.NextRide.id);
-            RideModel.NextRiders = repository.GetRidersForRide(RideModel.NextRide.id, TZone);
-            RideModel.InSecond = repository.IsIn(RideModel.NextRide.id, UserId);
-            RideModel.OutSecond = repository.IsOut(RideModel.NextRide.id, UserId);
-            RideModel.OnWaySecond = repository.IsOnWay(RideModel.NextRide.id, UserId);
-            
+
             if (_UserExpands != null)
             {
                 RideModel.FirstBunch = _UserExpands.FirstBunch;

@@ -193,7 +193,7 @@ namespace FreeWheeling.Domain.Concrete
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZone);
             Ride _Ride = context.Rides.Include("Riders").Where(t => t.Group.id == _Group.id && t.RideDate >= LocalNow).OrderBy(r => r.RideDate).FirstOrDefault();
 
-            if (context.Rides.Where(t => t.Group.id == _Group.id && t.RideDate >= LocalNow).Count() == 1)
+            if (context.Rides.Where(t => t.Group.id == _Group.id && t.RideDate >= LocalNow && _Group.OneOff == false).Count() == 1)
             {
                 PopulateRideDatesFromDate(_Group, _Ride.RideDate, TimeZone);
             }

@@ -48,6 +48,9 @@ namespace FreeWheeling.UI
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include("~/Scripts/jquery-ui-1.10.4.custom.min.js",
                         "~/Scripts/jquery-ui-1.10.4.custom.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/datepicker").Include("~/Scripts/bootstrap-datetimepicker.min.js",
+                       "~/Scripts/bootstrap-datetimepicker.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/respond").Include(
                        "~/Scripts/respond.js"));
 
@@ -83,6 +86,10 @@ namespace FreeWheeling.UI
             bundles.Add(azuremobile);
 
             //Custom css
+            bundles.Add(new StyleBundle("~/Content/datepicker").Include(
+                      "~/Content/bootstrap-datetimepicker.css",
+                      "~/Content/bootstrap-datetimepicker.min.css"));
+
             bundles.Add(new StyleBundle("~/Content/custom", "http://bunchy.hoocreative.netdna-cdn.com/Content/Site.min.css").Include(
                       "~/Content/Site.min.css"));
 
