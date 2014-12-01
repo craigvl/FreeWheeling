@@ -20,6 +20,7 @@ namespace FreeWheeling.UI.Models
         public List<int> CurrentGroupMembership;
         public List<NextRideDetails> _NextRideDetails;
         public List<NextRideDetailsPrivate> _NextRideDetailsPrivate;
+        public List<NextRideDetails> _NextRideDetailsOneWeekAway;
         public string UserLocation;
         public string Title;
         public List<int> _OwnerGroupList;
@@ -84,7 +85,10 @@ namespace FreeWheeling.UI.Models
             _GroupModel.PrivateBunches = repository.GetPrivateGroupsByUserID(UserId,
                        _Location);
 
+            _GroupModel._Groups.AddRange(_GroupModel.PrivateBunches);
+
             _GroupModel._NextRideDetails = new List<NextRideDetails>();
+            _GroupModel._NextRideDetailsOneWeekAway = new List<NextRideDetails>();
             _GroupModel.UserLocation = _Location.Name;
             CultureHelper _CultureHelper = new CultureHelper(repository);
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_Location.id);
@@ -93,7 +97,48 @@ namespace FreeWheeling.UI.Models
             _GroupModel.lat = _Location.Lat;
             _GroupModel.lng = _Location.Lng;
 
-            foreach (Group item in _GroupModel._Groups)
+            foreach (Group item in _GroupModel._Groups.Where(o => o.OneOff == true))
+            {
+                if (item.RideDate <= LocalNow.AddDays(7))
+                {
+                    Ride NextRide = repository.GetClosestNextRide(item, TZone);
+                    if (NextRide != null)
+                    {
+                        _GroupModel._NextRideDetails.Add(new NextRideDetails
+                        {
+                            Date = NextRide.RideDate,
+                            GroupId = item.id,
+                            NumberofKeenRiders = NextRide.Riders.Where(i => i.PercentKeen == "In").Count()
+                        });
+                    }
+                }
+            }
+
+            foreach (Group item in _GroupModel._Groups.Where(o => o.OneOff == true))
+            {
+                if (item.RideDate > LocalNow.AddDays(7))
+                {
+                    Ride NextRide = repository.GetClosestNextRide(item, TZone);
+                    if (NextRide != null)
+                    {
+                        _GroupModel._NextRideDetailsOneWeekAway.Add(new NextRideDetails
+                        {
+                            Date = NextRide.RideDate,
+                            GroupId = item.id,
+                            NumberofKeenRiders = NextRide.Riders.Where(i => i.PercentKeen == "In").Count()
+                        });
+                    }
+                }
+                if (repository.IsGroupCreator(item.id, UserId))
+                {
+                    _GroupModel._OwnerGroupList.Add(item.id);
+                }
+
+            }
+
+            _GroupModel._NextRideDetailsOneWeekAway = _GroupModel._NextRideDetailsOneWeekAway.OrderBy(o => o.Date).ToList();
+
+            foreach (Group item in _GroupModel._Groups.Where(o => o.OneOff == false))
             {
                 int RideCount = item.Rides.Count();
 
@@ -128,54 +173,6 @@ namespace FreeWheeling.UI.Models
                         _GroupModel._NextRideDetails.Add(new NextRideDetails { Date = NextRide.RideDate,
                             GroupId = item.id,
                             NumberofKeenRiders = NextRide.Riders.Where(i => i.PercentKeen == "In").Count() });
-                    }
-                }
-
-                if (repository.IsGroupCreator(item.id, UserId))
-                {
-                    _GroupModel._OwnerGroupList.Add(item.id);
-                }
-            }
-
-            //Same as above but for Private bunches.
-            //TODO: think about combining functions.
-            foreach (Group item in _GroupModel.PrivateBunches)
-            {
-                int RideCount = item.Rides.Count();
-                _GroupModel._NextRideDetailsPrivate = new List<NextRideDetailsPrivate>();
-                //If Ride count does not equal rides greater than now then there are old ride so 
-                //call delete rides and populate new from latest ride date, note this should have been done by console app
-                if (item.Rides.Where(t => t.RideDate >= LocalNow).Count() != RideCount)
-                {
-                    repository.DeleteOldRides(item.id, TZone);
-                    repository.PopulateRideDatesFromDate(item, item.Rides.OrderByDescending(g => g.RideDate).Select(h => h.RideDate).FirstOrDefault(), TZone);
-                }
-
-                item.Rides = item.Rides.Where(t => t.RideDate >= LocalNow).ToList();
-                Ride NextRide = repository.GetClosestNextRide(item, TZone);
-
-                if (NextRide != null)
-                {
-                    _GroupModel._NextRideDetailsPrivate.Add(new NextRideDetailsPrivate
-                    {
-                        Date = NextRide.RideDate,
-                        GroupId = item.id,
-                        NumberofKeenRiders = NextRide.Riders.Where(i => i.PercentKeen == "In").Count()
-                    });
-                }
-                else
-                {
-                    if (item.RideDays != null)
-                    {
-                        repository.PopulateRideDates(item, TZone);
-                        repository.Save();
-                        NextRide = repository.GetClosestNextRide(item, TZone);
-                        _GroupModel._NextRideDetailsPrivate.Add(new NextRideDetailsPrivate
-                        {
-                            Date = NextRide.RideDate,
-                            GroupId = item.id,
-                            NumberofKeenRiders = NextRide.Riders.Where(i => i.PercentKeen == "In").Count()
-                        });
                     }
                 }
 
@@ -292,11 +289,7 @@ namespace FreeWheeling.UI.Models
     public IList<DayOfWeekViewModel> DaysOfWeek { get; set; }
     [Required(ErrorMessage="Name is required")]
     public string Name { get; set; }
-    [Required(ErrorMessage = "Hour is required")]
-    [Range(0,24,ErrorMessage="Between 0 and 24")]
     public int Hour { get; set; }
-    [Required(ErrorMessage = "Minute is required")]
-    [Range(0, 60, ErrorMessage = "Between 0 and 60")]
     public int Minute { get; set; }
     [Required(ErrorMessage = "Please select a location")]
     public int LocationsId { get; set; }
@@ -305,10 +298,13 @@ namespace FreeWheeling.UI.Models
     public string AverageSpeed { get; set; }
     public string Description { get; set; }
     public string MapUrl { get; set; }
+    public string OneOffDateTime { get; set; }
+    public string BunchTime { get; set; }
     public string lat { get; set; }
     public string lng { get; set; }
     public string country { get; set; }
     public bool IsPrivate { get; set; }
+    public bool OneOff { get; set; }
     [Required(ErrorMessage = "Your name is require")]
     public string CreatorName { get; set; }
     }

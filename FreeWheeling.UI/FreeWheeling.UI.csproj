@@ -318,6 +318,8 @@
     <Content Include="500.html" />
     <Content Include="Content\bootstrap-datepicker.css" />
     <Content Include="Content\bootstrap-datepicker3.css" />
+    <Content Include="Content\bootstrap-datetimepicker.css" />
+    <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap-social.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -379,6 +381,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\app\extendDataService.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
@@ -611,7 +615,6 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Group\Create.cshtml" />
     <Content Include="Views\Group\Index.cshtml" />
-    <Content Include="Views\Group\CreateAdHoc.cshtml" />
     <Content Include="Views\Shared\_GroupDetailPartial.cshtml" />
     <Content Include="Views\Ride\AdHocList.cshtml" />
     <Content Include="Views\Ride\ViewAdHocRide.cshtml" />
@@ -643,7 +646,6 @@
     <Content Include="Views\Emails\SendUsersPrivateAdHocBunchInviteEmail.cshtml" />
     <Content Include="Views\Emails\SendUserReset.cshtml" />
     <Content Include="Views\Ride\_RidersKeen.cshtml" />
-    <Content Include="Views\Group\_ListPrivateRides.cshtml" />
     <Content Include="Views\Group\_ListRides.cshtml" />
     <Content Include="Views\Ride\_ListPrivateRandomRides.cshtml" />
     <Content Include="Views\Ride\_ListRandomRides.cshtml" />

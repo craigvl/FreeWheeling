@@ -83,6 +83,10 @@
     <Compile Include="DataContexts\CycleMigrations\201410100218138_Add_Country.Designer.cs">
       <DependentUpon>201410100218138_Add_Country.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201411012254516_AddOneOff.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201411012254516_AddOneOff.Designer.cs">
+      <DependentUpon>201411012254516_AddOneOff.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\AdHocComment.cs" />
     <Compile Include="Entities\UserFollowingUser.cs" />
@@ -130,6 +134,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\CycleMigrations\201410100218138_Add_Country.resx">
       <DependentUpon>201410100218138_Add_Country.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201411012254516_AddOneOff.resx">
+      <DependentUpon>201411012254516_AddOneOff.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

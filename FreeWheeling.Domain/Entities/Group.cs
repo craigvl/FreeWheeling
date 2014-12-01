@@ -30,5 +30,7 @@ namespace FreeWheeling.Domain.Entities
         public string Lat { get; set; }
         public string Lng { get; set; }
         public string Country { get; set; }
+        public bool OneOff { get; set; }
+        public DateTime RideDate { get; set; } 
     }
 }
