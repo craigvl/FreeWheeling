@@ -357,7 +357,13 @@ namespace FreeWheeling.UI.Models
         public IList<DayOfWeekViewModel> DaysOfWeek { get; set; }
         public string Description { get; set; }
         public bool IsPrivate { get; set; }
+        public bool IsOneOff { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime Date { get; set; }
         public string MapUrl { get; set; }
+        public int Day { get; set; }
+        public int Month { get; set; }
+        public int Year { get; set; }
     }
 
     public class DeleteGroupModel

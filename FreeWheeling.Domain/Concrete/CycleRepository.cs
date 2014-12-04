@@ -978,6 +978,10 @@ namespace FreeWheeling.Domain.Concrete
             CurrentGroup.IsPrivate = _Group.IsPrivate;
             CurrentGroup.Description = _Group.Description;
             CurrentGroup.CreatedByName = _Group.CreatedByName;
+            if (CurrentGroup.OneOff)
+            {
+                CurrentGroup.RideDate = _Group.RideDate;
+            }
             context.Entry(CurrentGroup).State = System.Data.Entity.EntityState.Modified;
             context.SaveChanges();
         }

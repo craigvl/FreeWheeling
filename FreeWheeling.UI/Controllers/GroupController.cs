@@ -42,7 +42,7 @@ namespace FreeWheeling.UI.Controllers
         }
 
         // GET: /Group/
-        //[Compress]
+        [Compress]
         public ActionResult Index(string searchString)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
@@ -66,141 +66,6 @@ namespace FreeWheeling.UI.Controllers
             _MoreGroupDetailsModel.Description = _Group.Description;
             _MoreGroupDetailsModel.CreatedByName = _Group.CreatedByName;
             return PartialView("_GroupDetailPartial", _MoreGroupDetailsModel);
-        }
-
-        [Compress]
-        public ActionResult CreateAdHoc()
-        {
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            CultureHelper _CultureHelper = new CultureHelper(repository);
-            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);          
-            Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
-            AdHocCreateModel _Ad_HocRide = new AdHocCreateModel();
-            _Ad_HocRide.Locations = repository.GetLocations().ToList();
-            _Ad_HocRide.RideDate = LocalNow;
-            _Ad_HocRide.DateString = LocalNow.ToString("dd/MM/yyyy");
-            _Ad_HocRide.LocationsId = _Location.id;
-            _Ad_HocRide.Hour = 5;
-            _Ad_HocRide.Minute = 30;
-            _Ad_HocRide.CreatorName = currentUser.FirstName + " " + currentUser.LastName;
-            return View(_Ad_HocRide);
-        }
-
-        [HttpPost]
-        public JsonResult CreateAdHoc(AdHocCreateModel _AdHocCreateModel)
-        {
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            Location _Location = repository.GetLocations().Where(l => l.id == _AdHocCreateModel.LocationsId).FirstOrDefault();
-            CultureHelper _CultureHelper = new CultureHelper(repository);
-            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
-            DateTime dateResult;
-
-            if (!DateTime.TryParse(_AdHocCreateModel.DateString, _CultureHelper.GetCulture(_Location.id), DateTimeStyles.None, out dateResult))
-            {
-                ModelState.AddModelError(string.Empty, "Date is not in a valid date format");
-                _AdHocCreateModel.Locations = repository.GetLocations().ToList();
-                _AdHocCreateModel.LocationsId = _Location.id;
-                return Json(new { success = false, Message = "Date is not a valid Date" }, JsonRequestBehavior.AllowGet);
-                //return View(_AdHocCreateModel);
-            }
-            else
-            {
-                DateTime da = DateTime.ParseExact(_AdHocCreateModel.DateString, "dd/MM/yyyy", null);
-                DateTime _RideDate = da.Date.Add(new TimeSpan(_AdHocCreateModel.Hour, _AdHocCreateModel.Minute, 0));
-
-                if (_RideDate < LocalNow)
-                {
-                    ModelState.AddModelError(string.Empty, "Please select date and time that is greater than current date and time");
-                    _AdHocCreateModel.Locations = repository.GetLocations().ToList();
-                    _AdHocCreateModel.LocationsId = _Location.id;
-                    return Json(new { success = false,
-                        Message = "Please select date and time that is greater than current date and time" }, JsonRequestBehavior.AllowGet);
-                }
-
-                Ad_HocRide NewAdHoc = new Ad_HocRide
-                {
-                    Name = _AdHocCreateModel.Name,
-                    AverageSpeed = _AdHocCreateModel.AverageSpeed,
-                    Location = _Location,
-                    RideDate = _RideDate,
-                    Creator = currentUser.UserName,
-                    StartLocation = _AdHocCreateModel.StartLocation,
-                    Description = _AdHocCreateModel.Description,
-                    RideTime = _RideDate.TimeOfDay.ToString(),
-                    RideHour = _RideDate.Hour,
-                    RideMinute = _RideDate.Minute,
-                    CreatedBy = currentUser.Id,
-                    CreatedTimeStamp = LocalNow,
-                    ModifiedTimeStamp = LocalNow,
-                    MapUrl = _AdHocCreateModel.MapUrl,
-                    IsPrivate = _AdHocCreateModel.IsPrivate,
-                    CreatedByName = _AdHocCreateModel.CreatorName
-                };
-
-                repository.AddAdHocRide(NewAdHoc);
-                repository.Save();
-
-                if (_AdHocCreateModel.InviteUsers != null)
-                {
-                    Task T = new Task(() =>
-                    {
-                        List<string> UserNames = new List<string>();
-                        UserHelper _UserHelp = new UserHelper();
-                        List<PrivateRandomUsers> _PrivateRandomUsersList = new List<PrivateRandomUsers>();
-
-                        foreach (InviteUser item in _AdHocCreateModel.InviteUsers)
-                        {
-                            UserNames.Add(item.UserName);
-
-                            if (_AdHocCreateModel.IsPrivate)
-                            {
-                                if (_UserHelp.IsValidUserName(item.UserName))
-                                {
-                                    var _User = idb.Users.Where(g => g.UserName == item.UserName).FirstOrDefault();
-                                    PrivateRandomUsers _PrivateRandomUsers = new PrivateRandomUsers
-                                    {
-                                        RideId = NewAdHoc.id,
-                                        Email = _User.Email,
-                                        UserId = _User.Id
-                                    };
-                                    _PrivateRandomUsersList.Add(_PrivateRandomUsers);
-                                }
-                                else
-                                {
-                                    PrivateRandomUsers _PrivateRandomUsers = new PrivateRandomUsers
-                                    {
-                                        RideId = NewAdHoc.id,
-                                        Email = item.UserName,
-                                    };
-                                    _PrivateRandomUsersList.Add(_PrivateRandomUsers);
-                                }
-                            }
-                        }
-                        repository.AddPrivateAdHocInvite(_PrivateRandomUsersList);
-                        repository.Save();
-                        _UserHelp.SendUsersCreateAdHocEmail(_UserHelp.GetEmailsForUserNames(UserNames),
-                            NewAdHoc.id,
-                            NewAdHoc.CreatedBy,
-                            NewAdHoc.Name);
-                    });
-
-                    T.Start();
-                }
-
-                Task E = new Task(() =>
-                {
-                    UserHelper _UserHelp = new UserHelper();
-                    _UserHelp.SendNewGroupCreated(NewAdHoc.Name);
-                });
-
-                E.Start();
-
-                return Json(new { success = true, Message = "New AdHoc Ride has been created." }, 
-                    JsonRequestBehavior.AllowGet);  
-            }
-            
         }
 
         //Get user names for auto lookup
@@ -265,7 +130,12 @@ namespace FreeWheeling.UI.Controllers
                     MapUrl = CurrentGroup.MapUrl,
                     IsPrivate = CurrentGroup.IsPrivate,
                     Description = CurrentGroup.Description,
-                    CreatorName = CurrentGroup.CreatedByName  
+                    CreatorName = CurrentGroup.CreatedByName,
+                    IsOneOff = CurrentGroup.OneOff,
+                    Date = CurrentGroup.RideDate,
+                    Day = CurrentGroup.RideDate.Day,
+                    Month = CurrentGroup.RideDate.Month,
+                    Year = CurrentGroup.RideDate.Year
                 };
 
                 _EditGroupModel.LocationsId = repository.GetLocations()
@@ -326,6 +196,13 @@ namespace FreeWheeling.UI.Controllers
                 IsPrivate = _EditGroupModel.IsPrivate,
                 CreatedByName = _EditGroupModel.CreatorName
             };
+
+            if (CurrentGroup.OneOff)
+            {
+                DateTime da = DateTime.ParseExact(_EditGroupModel.Day.ToString() + "/" + _EditGroupModel.Month.ToString() + "/" + _EditGroupModel.Year.ToString(), "dd/MM/yyyy", null);
+                UpdatedGroup.RideDate = da;
+                
+            }
 
             repository.UpdateGroup(UpdatedGroup);
             repository.Save();
