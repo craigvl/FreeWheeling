@@ -101,7 +101,7 @@ namespace FreeWheeling.UI.Models
             {
                 if (item.RideDate <= LocalNow.AddDays(7))
                 {
-                    Ride NextRide = repository.GetClosestNextRide(item, TZone);
+                    Ride NextRide = repository.GetOneOffRideByGroupID(item.id);
                     if (NextRide != null)
                     {
                         _GroupModel._NextRideDetails.Add(new NextRideDetails
@@ -118,7 +118,7 @@ namespace FreeWheeling.UI.Models
             {
                 if (item.RideDate > LocalNow.AddDays(7))
                 {
-                    Ride NextRide = repository.GetClosestNextRide(item, TZone);
+                    Ride NextRide = repository.GetOneOffRideByGroupID(item.id);
                     if (NextRide != null)
                     {
                         _GroupModel._NextRideDetailsOneWeekAway.Add(new NextRideDetails
@@ -361,9 +361,9 @@ namespace FreeWheeling.UI.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime Date { get; set; }
         public string MapUrl { get; set; }
-        public int Day { get; set; }
-        public int Month { get; set; }
-        public int Year { get; set; }
+        public string Day { get; set; }
+        public string Month { get; set; }
+        public string Year { get; set; }
     }
 
     public class DeleteGroupModel

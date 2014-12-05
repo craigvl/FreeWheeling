@@ -40,20 +40,20 @@
             {
                 <div><b>Day:</b></div>
                 <div>                 
-                    @Html.EditorFor(m => m.Day)
+                    @Html.EditorFor(m => m.Day, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.Day)
                   @* @Html.TextBox("Date", String.Format("{0:dd/MM/yyyy}", Model.Date ))*@                                 
                 </div>
                 <div><b>Month:</b></div>
                 <div>
-                    @Html.EditorFor(m => m.Month)
+                    @Html.EditorFor(m => m.Month, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.Month)
                     @* @Html.TextBox("Date", String.Format("{0:dd/MM/yyyy}", Model.Date ))*@
                 </div>
 
                 <div><b>Year:</b></div>
                 <div>
-                    @Html.EditorFor(m => m.Year)
+                    @Html.EditorFor(m => m.Year, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.Year)
                     @* @Html.TextBox("Date", String.Format("{0:dd/MM/yyyy}", Model.Date ))*@
                 </div>

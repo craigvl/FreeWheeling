@@ -37,6 +37,7 @@ namespace FreeWheeling.Domain.Abstract
         IEnumerable<Ride> GetRides();
         IEnumerable<Ride> GetRidesWithRiders();
         Ride GetRideByID(int id);
+        Ride GetOneOffRideByGroupID(int id);
         Ride GetRideByIDIncludeGroup(int id);
         Ride GetClosestNextRide(Group _Group, TimeZoneInfo TimeZone);
         Ride Get2ndClosestNextRide(Group _Group, TimeZoneInfo TimeZone);

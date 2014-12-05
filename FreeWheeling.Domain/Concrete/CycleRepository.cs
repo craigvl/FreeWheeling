@@ -96,6 +96,11 @@ namespace FreeWheeling.Domain.Concrete
             return context.Rides;
         }
 
+        public Ride GetOneOffRideByGroupID(int id)
+        {
+            return context.Rides.Include("Riders").Where(g => g.Group.id == id).FirstOrDefault();
+        }
+
         public IEnumerable<Ad_HocRide> GetRandomRides()
         {
             return context.Ad_HocRide;
