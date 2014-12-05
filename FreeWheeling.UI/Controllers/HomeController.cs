@@ -98,10 +98,6 @@ namespace FreeWheeling.UI.Controllers
                         Session["Culture"] = _CultureHelper.GetCulture(Convert.ToInt32(currentUser.LocationID));
                         _HomeIndexModel.LocationsId = _Location.id;
                         _HomeIndexModel.CurrentUserLocation = _Location.Name;
-                        _HomeIndexModel.UpCommingAd_HocCount = repository.GetUpCommingAd_HocCount(repository.GetLocations()
-                            .Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone);
-                        _HomeIndexModel.UpCommingAd_HocCount = _HomeIndexModel.UpCommingAd_HocCount + repository.GetPrivateAdHocRideByUserID(currentUser.Id
-                            , _Location, TZone).Count();
                         _HomeIndexModel.BunchCount = repository.GetGroupCount(currentUser.LocationID);
                         _HomeIndexModel.Followingcount = repository.GetFollowingCount(currentUser.Id);
                         _HomeIndexModel.HomePageRide = repository.GetHomePageRideByUserID(currentUser.Id);
@@ -152,10 +148,6 @@ namespace FreeWheeling.UI.Controllers
                 Session["Culture"] = _CultureHelper.GetCulture(Convert.ToInt32(currentUser.LocationID));
                 _HomeIndexModel.LocationsId = _Location.id;
                 _HomeIndexModel.CurrentUserLocation = _Location.Name;
-                _HomeIndexModel.UpCommingAd_HocCount = repository.GetUpCommingAd_HocCount(repository.GetLocations()
-                    .Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone);
-                _HomeIndexModel.UpCommingAd_HocCount = _HomeIndexModel.UpCommingAd_HocCount + repository.GetPrivateAdHocRideByUserID(currentUser.Id
-                    , _Location, TZone).Count();
                 _HomeIndexModel.BunchCount = repository.GetGroupCount(currentUser.LocationID);
                 _HomeIndexModel.Followingcount = repository.GetFollowingCount(currentUser.Id);
                 _HomeIndexModel.HomePageRide = repository.GetHomePageRideByUserID(currentUser.Id);

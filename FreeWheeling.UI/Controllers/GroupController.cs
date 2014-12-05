@@ -167,49 +167,79 @@ namespace FreeWheeling.UI.Controllers
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);         
             Group CurrentGroup = repository.GetGroupByID(_EditGroupModel.GroupId);
 
-            foreach (DayOfWeekViewModel item in _EditGroupModel.DaysOfWeek)
+            if (!CurrentGroup.OneOff)
             {
-                if (item.Checked)
+                foreach (DayOfWeekViewModel item in _EditGroupModel.DaysOfWeek)
                 {
-                    CycleDays NewDay = new CycleDays { DayOfWeek = item.Name };
-                    _CycleDays.Add(NewDay);
+                    if (item.Checked)
+                    {
+                        CycleDays NewDay = new CycleDays { DayOfWeek = item.Name };
+                        _CycleDays.Add(NewDay);
+                    }
                 }
+
+                Group UpdatedGroup = new Group
+                {
+                    name = _EditGroupModel.Name,
+                    RideTime = _EditGroupModel.Hour.ToString() + ":" + _EditGroupModel.Minute.ToString(),
+                    RideDays = _CycleDays,
+                    Location = _Location,
+                    Rides = new List<Ride>(),
+                    AverageSpeed = _EditGroupModel.AverageSpeed,
+                    StartLocation = _EditGroupModel.StartLocation,
+                    RideHour = _EditGroupModel.Hour,
+                    RideMinute = _EditGroupModel.Minute,
+                    CreatedBy = CurrentGroup.CreatedBy,
+                    CreatedTimeStamp = CurrentGroup.CreatedTimeStamp,
+                    ModifiedTimeStamp = LocalNow,
+                    MapUrl = _EditGroupModel.MapUrl,
+                    Description = _EditGroupModel.Description,
+                    id = _EditGroupModel.GroupId,
+                    IsPrivate = _EditGroupModel.IsPrivate,
+                    CreatedByName = _EditGroupModel.CreatorName,
+                    OneOff = _EditGroupModel.IsOneOff
+                };
+
+                repository.UpdateGroup(UpdatedGroup);
+                repository.Save();
+                repository.UpdateRideTimes(UpdatedGroup, TZone);
+                repository.Save();
             }
-
-            Group UpdatedGroup = new Group
+            else
             {
-                name = _EditGroupModel.Name,
-                RideTime = _EditGroupModel.Hour.ToString() + ":" + _EditGroupModel.Minute.ToString(),
-                RideDays = _CycleDays,
-                Location = _Location,
-                Rides = new List<Ride>(),
-                AverageSpeed = _EditGroupModel.AverageSpeed,
-                StartLocation = _EditGroupModel.StartLocation,
-                RideHour = _EditGroupModel.Hour,
-                RideMinute = _EditGroupModel.Minute,
-                CreatedBy = CurrentGroup.CreatedBy,
-                CreatedTimeStamp = CurrentGroup.CreatedTimeStamp,
-                ModifiedTimeStamp = LocalNow,
-                MapUrl = _EditGroupModel.MapUrl,
-                Description = _EditGroupModel.Description,
-                id = _EditGroupModel.GroupId,
-                IsPrivate = _EditGroupModel.IsPrivate,
-                CreatedByName = _EditGroupModel.CreatorName
-            };
+                Group UpdatedGroup = new Group
+                {
+                    name = _EditGroupModel.Name,
+                    RideTime = _EditGroupModel.Hour.ToString() + ":" + _EditGroupModel.Minute.ToString(),
+                    Location = _Location,
+                    AverageSpeed = _EditGroupModel.AverageSpeed,
+                    StartLocation = _EditGroupModel.StartLocation,
+                    RideHour = _EditGroupModel.Hour,
+                    RideMinute = _EditGroupModel.Minute,
+                    CreatedBy = CurrentGroup.CreatedBy,
+                    CreatedTimeStamp = CurrentGroup.CreatedTimeStamp,
+                    ModifiedTimeStamp = LocalNow,
+                    MapUrl = _EditGroupModel.MapUrl,
+                    Description = _EditGroupModel.Description,
+                    id = _EditGroupModel.GroupId,
+                    IsPrivate = _EditGroupModel.IsPrivate,
+                    CreatedByName = _EditGroupModel.CreatorName,
+                    OneOff = _EditGroupModel.IsOneOff
+                };
 
-            if (CurrentGroup.OneOff)
-            {
-                string datestring = _EditGroupModel.Day.ToString("00") + "/" + _EditGroupModel.Month.ToString() + "/" + _EditGroupModel.Year.ToString();
-                DateTime da = DateTime.ParseExact(datestring, "dd/MM/yyyy", null);
+                string datestring = _EditGroupModel.Day.ToString("00") + "/" + _EditGroupModel.Month.ToString() + "/" + _EditGroupModel.Year.ToString() + " " + _EditGroupModel.Hour.ToString("00") + ":" + _EditGroupModel.Minute.ToString("00");
+                DateTime da = DateTime.ParseExact(datestring, "dd/MM/yyyy HH:mm", null);
                 UpdatedGroup.RideDate = da;
                 Ride RideToUpdate = repository.GetOneOffRideByGroupID(_EditGroupModel.GroupId);
                 RideToUpdate.RideDate = da;
-            }
 
-            repository.UpdateGroup(UpdatedGroup);
-            repository.Save();
-            repository.UpdateRideTimes(UpdatedGroup,TZone);
-            repository.Save();
+                repository.UpdateGroup(UpdatedGroup);
+                repository.Save();
+                repository.UpdateRideTimes(UpdatedGroup, TZone);
+                repository.Save();
+
+            }
+          
             //Not needed if not able to change days would need to do some work here if allowed.
             //NewGroup = repository.PopulateRideDates(NewGroup);
             //repository.Save();
@@ -287,14 +317,14 @@ namespace FreeWheeling.UI.Controllers
                 //DateTime da = DateTime.ParseExact(OneOffRideDateTime, "dd/MM/yyyy", null);
                 //DateTime _RideDate = da.Date.Add(new TimeSpan(_AdHocCreateModel.Hour, _AdHocCreateModel.Minute, 0));
 
-                CycleDays NewDay = new CycleDays { DayOfWeek = OneOffRideDateTime.ToString("dddd") };
-                _CycleDays.Add(NewDay);
+                //CycleDays NewDay = new CycleDays { DayOfWeek = OneOffRideDateTime.ToString("dddd") };
+                //_CycleDays.Add(NewDay);
 
                 Group NewGroup = new Group
                 {
                     name = _GroupCreateModel.Name,
                     RideTime = OneOffRideDateTime.Hour.ToString() + ":" + OneOffRideDateTime.Minute.ToString(),
-                    RideDays = _CycleDays,
+                    //RideDays = _CycleDays,
                     Location = _Location,
                     Rides = new List<Ride>(),
                     AverageSpeed = _GroupCreateModel.AverageSpeed,

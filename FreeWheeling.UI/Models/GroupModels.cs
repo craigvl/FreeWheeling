@@ -99,7 +99,7 @@ namespace FreeWheeling.UI.Models
 
             foreach (Group item in _GroupModel._Groups.Where(o => o.OneOff == true))
             {
-                if (item.RideDate <= LocalNow.AddDays(7))
+                if (item.RideDate <= LocalNow.AddDays(7) && item.RideDate >= DateTime.Now.AddHours(-2))
                 {
                     Ride NextRide = repository.GetOneOffRideByGroupID(item.id);
                     if (NextRide != null)
