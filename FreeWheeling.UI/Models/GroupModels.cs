@@ -340,8 +340,7 @@ namespace FreeWheeling.UI.Models
         }
 
         public int GroupId { get; set; }
-        public string Name { get; set; }
-        [Required(ErrorMessage = "Start location is required")]
+        public string Name { get; set; }       
         public string StartLocation { get; set; }
         public string AverageSpeed { get; set; }
         [Required(ErrorMessage = "Hour is required")]
@@ -361,9 +360,13 @@ namespace FreeWheeling.UI.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime Date { get; set; }
         public string MapUrl { get; set; }
-        public string Day { get; set; }
-        public string Month { get; set; }
-        public string Year { get; set; }
+        //[Range(0, 31, ErrorMessage = "Between 0 and 31")]
+        //[MinLength(2, ErrorMessage = "Day needs to be 2 chars long")]
+        public int Day { get; set; }
+        //[Range(0, 12, ErrorMessage = "Between 0 and 12")]
+        public int Month { get; set; }
+        //[MinLength(4, ErrorMessage = "Day needs to be 4 chars long")]
+        public int Year { get; set; }
     }
 
     public class DeleteGroupModel

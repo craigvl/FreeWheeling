@@ -133,9 +133,9 @@ namespace FreeWheeling.UI.Controllers
                     CreatorName = CurrentGroup.CreatedByName,
                     IsOneOff = CurrentGroup.OneOff,
                     Date = CurrentGroup.RideDate,
-                    Day = CurrentGroup.RideDate.Day.ToString(),
-                    Month = CurrentGroup.RideDate.Month.ToString(),
-                    Year = CurrentGroup.RideDate.Year.ToString()
+                    Day = CurrentGroup.RideDate.Day,
+                    Month = CurrentGroup.RideDate.Month,
+                    Year = CurrentGroup.RideDate.Year
                 };
 
                 _EditGroupModel.LocationsId = repository.GetLocations()
@@ -199,7 +199,7 @@ namespace FreeWheeling.UI.Controllers
 
             if (CurrentGroup.OneOff)
             {
-                string datestring = _EditGroupModel.Day.ToString() + "/" + _EditGroupModel.Month.ToString() + "/" + _EditGroupModel.Year.ToString();
+                string datestring = _EditGroupModel.Day.ToString("00") + "/" + _EditGroupModel.Month.ToString() + "/" + _EditGroupModel.Year.ToString();
                 DateTime da = DateTime.ParseExact(datestring, "dd/MM/yyyy", null);
                 UpdatedGroup.RideDate = da;
                 Ride RideToUpdate = repository.GetOneOffRideByGroupID(_EditGroupModel.GroupId);
