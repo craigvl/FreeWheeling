@@ -99,9 +99,9 @@ namespace FreeWheeling.UI.Models
 
             foreach (Group item in _GroupModel._Groups.Where(o => o.OneOff == true))
             {
-                if (item.RideDate <= LocalNow.AddDays(7))
+                if (item.RideDate <= LocalNow.AddDays(7) && item.RideDate >= DateTime.Now.AddHours(-2))
                 {
-                    Ride NextRide = repository.GetClosestNextRide(item, TZone);
+                    Ride NextRide = repository.GetOneOffRideByGroupID(item.id);
                     if (NextRide != null)
                     {
                         _GroupModel._NextRideDetails.Add(new NextRideDetails
@@ -118,7 +118,7 @@ namespace FreeWheeling.UI.Models
             {
                 if (item.RideDate > LocalNow.AddDays(7))
                 {
-                    Ride NextRide = repository.GetClosestNextRide(item, TZone);
+                    Ride NextRide = repository.GetOneOffRideByGroupID(item.id);
                     if (NextRide != null)
                     {
                         _GroupModel._NextRideDetailsOneWeekAway.Add(new NextRideDetails
@@ -340,8 +340,7 @@ namespace FreeWheeling.UI.Models
         }
 
         public int GroupId { get; set; }
-        public string Name { get; set; }
-        [Required(ErrorMessage = "Start location is required")]
+        public string Name { get; set; }       
         public string StartLocation { get; set; }
         public string AverageSpeed { get; set; }
         [Required(ErrorMessage = "Hour is required")]
@@ -357,7 +356,17 @@ namespace FreeWheeling.UI.Models
         public IList<DayOfWeekViewModel> DaysOfWeek { get; set; }
         public string Description { get; set; }
         public bool IsPrivate { get; set; }
+        public bool IsOneOff { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime Date { get; set; }
         public string MapUrl { get; set; }
+        //[Range(0, 31, ErrorMessage = "Between 0 and 31")]
+        //[MinLength(2, ErrorMessage = "Day needs to be 2 chars long")]
+        public int Day { get; set; }
+        //[Range(0, 12, ErrorMessage = "Between 0 and 12")]
+        public int Month { get; set; }
+        //[MinLength(4, ErrorMessage = "Day needs to be 4 chars long")]
+        public int Year { get; set; }
     }
 
     public class DeleteGroupModel
