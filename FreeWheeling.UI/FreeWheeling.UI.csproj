@@ -674,6 +674,7 @@
     <Content Include="Views\Home\LocationCreate.cshtml" />
     <Content Include="Views\UserSettings\Follow.cshtml" />
     <Content Include="Views\Emails\Following.cshtml" />
+    <Content Include="Views\Ride\_Routes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

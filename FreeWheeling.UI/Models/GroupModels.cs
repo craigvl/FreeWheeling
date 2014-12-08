@@ -307,6 +307,12 @@ namespace FreeWheeling.UI.Models
     public bool OneOff { get; set; }
     [Required(ErrorMessage = "Your name is require")]
     public string CreatorName { get; set; }
+    public string Route1Desc { get; set; }
+    public string Route1URL { get; set; }
+    public string Route2Desc { get; set; }
+    public string Route2URL { get; set; }
+    public string Route3Desc { get; set; }
+    public string Route3URL { get; set; }
     }
 
     public class MyGroupsModel

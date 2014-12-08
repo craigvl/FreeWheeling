@@ -116,6 +116,23 @@ namespace FreeWheeling.UI.Models
             RideModel.InFirst = repository.IsIn(RideModel.Ride.id,UserId);
             RideModel.OutFirst = repository.IsOut(RideModel.Ride.id, UserId);
             RideModel.OnWayFirst = repository.IsOnWay(RideModel.Ride.id, UserId);
+            RideModel.Routes = new List<RouteWithVoteCount>();
+            List<RouteWithVoteCount> _RouteWithVoteCount = new List<RouteWithVoteCount>();
+            foreach (Route item in _Group.Routes)
+            {
+                RouteWithVoteCount _RVC = new RouteWithVoteCount
+                {
+                    Desc = item.Desc,
+                    Group = item.Group,
+                    MapURL = item.MapURL,
+                    RouteId = item.id,
+                    VoteCount = repository.RouteVoteCountByRideid(_Ride.id)
+                };
+
+                RideModel.Routes.Add(_RVC);  
+            }
+
+            //RideModel.Routes = _RouteWithVoteCount;
 
             if (RideModel.Group.OneOff == false)
             {
@@ -227,8 +244,8 @@ namespace FreeWheeling.UI.Models
         public string RideTime { get; set; }
         public Group Group { get; set; }
         public Ride Ride { get; set; }
-        public List<Rider> Riders { get; set; } 
-        public List<Route> Routes { get; set; }
+        public List<Rider> Riders { get; set; }
+        public List<RouteWithVoteCount> Routes { get; set; }
         public List<Comment> Comments { get; set; }
         public int CommentCount { get; set; }
         public int KeenCount { get; set; }
@@ -265,7 +282,7 @@ namespace FreeWheeling.UI.Models
         public string NextRideTime { get; set; }
         public Ride NextRide { get; set; }
         public List<Rider> NextRiders { get; set; }
-        public List<Route> NextRoutes { get; set; }
+        public List<RouteWithVoteCount> NextRoutes { get; set; }
         public List<Comment> NextComments { get; set; }
         public int NextCommentCount { get; set; }
         public int NextKeenCount { get; set; }
@@ -277,6 +294,18 @@ namespace FreeWheeling.UI.Models
         public bool InSecond { get; set; }
         public bool OutSecond { get; set; }
         public bool OnWaySecond { get; set; }
+
+        //Routes
+        public int RouteCount { get; set; }
+    }
+
+    public class RouteWithVoteCount
+    {
+        public int RouteId { get; set; }
+        public string MapURL { get; set; }
+        public string Desc { get; set; }
+        public Group Group { get; set; }
+        public int VoteCount { get; set; }
     }
 
     public class RideCommentModel

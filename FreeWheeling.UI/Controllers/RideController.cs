@@ -35,7 +35,7 @@ namespace FreeWheeling.UI.Controllers
                 .CreateClientFromConnectionString(cn, "bunchy");
         }
 
-        [Compress]
+        //[Compress]
         public ActionResult Index(int groupid = -1, int rideid = -1, int InviteId = -1, string fromhome = "false")
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
@@ -113,6 +113,8 @@ namespace FreeWheeling.UI.Controllers
                     return RedirectToAction("index", "group", GroupModel);
                 }
             }
+
+            RideModel.RouteCount = repository.RouteCountForGroup(RideModel.Group.id);
 
             return View(RideModel);
         }
@@ -669,6 +671,17 @@ namespace FreeWheeling.UI.Controllers
             {
                 return Json(new { success = false, Message = "Please enter a comment." }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        [HttpPost]
+        public JsonResult Vote(int routeid, int rideid, int ParentRideID)
+        {
+            Ride CurrentRide = repository.GetRideByID(rideid);
+            Route CurrentRoute = repository.GetRouteById(routeid);
+            var currentUser = idb.Users.Find(User.Identity.GetUserId());
+            repository.AddVote(currentUser.Id, CurrentRoute, CurrentRide);
+            return Json(new { success = false, Message = "Vote counted" }, JsonRequestBehavior.AllowGet);
+
         }
 
         [HttpPost]

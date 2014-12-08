@@ -87,8 +87,17 @@
     <Compile Include="DataContexts\CycleMigrations\201411012254516_AddOneOff.Designer.cs">
       <DependentUpon>201411012254516_AddOneOff.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201412080025092_Routes.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201412080025092_Routes.Designer.cs">
+      <DependentUpon>201412080025092_Routes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201412080042453_Routes-Desc.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201412080042453_Routes-Desc.Designer.cs">
+      <DependentUpon>201412080042453_Routes-Desc.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\AdHocComment.cs" />
+    <Compile Include="Entities\RouteVote.cs" />
     <Compile Include="Entities\UserFollowingUser.cs" />
     <Compile Include="Entities\PrivateRandomUsers.cs" />
     <Compile Include="Entities\Comment.cs" />
@@ -137,6 +146,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\CycleMigrations\201411012254516_AddOneOff.resx">
       <DependentUpon>201411012254516_AddOneOff.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201412080025092_Routes.resx">
+      <DependentUpon>201412080025092_Routes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201412080042453_Routes-Desc.resx">
+      <DependentUpon>201412080042453_Routes-Desc.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

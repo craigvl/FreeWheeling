@@ -68,6 +68,11 @@ namespace FreeWheeling.Domain.Abstract
         int GetCommentCountForRide(int Rideid);
         List<Comment> GetAllCommentsForRide(int Rideid);
 
+        //Get .. Routes
+        int RouteCountForGroup(int Groupid);
+        int RouteVoteCountByRideid(int Rideid);
+        Route GetRouteById(int Routeid);
+
         //Get .. Members
         IEnumerable<Member> GetMembersWithGroups();
         IEnumerable<Member> GetMembersWithGroupsIncludePrivate();
@@ -98,6 +103,7 @@ namespace FreeWheeling.Domain.Abstract
         void AddPrivateAdHocInvite(List<PrivateRandomUsers> _PrivateRandomUsers);
         void AddPrivateGroupInvite(List<PrivateGroupUsers> _PrivateGroupUsers);
         void AddFollowingUser(string CurrentUserId, string UserId);
+        void AddVote(string UserId, Route _Route, Ride _Ride);
 
         //Delete
         void RemoveMember(string UserId, Group _Group);

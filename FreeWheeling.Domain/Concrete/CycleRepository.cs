@@ -133,6 +133,7 @@ namespace FreeWheeling.Domain.Concrete
                 .Include("Rides")
                 .Include("Location")
                 .Include("RideDays")
+                .Include("Routes")
                 .Where(i => i.id == id).FirstOrDefault();
             return group;
         }
@@ -145,6 +146,7 @@ namespace FreeWheeling.Domain.Concrete
                 .Include("Rides")
                 .Include("Location")
                 .Include("RideDays")
+                .Include("Routes")
                 .Where(i => i.id == _Ride.Group.id).FirstOrDefault();
             return group;
         }
@@ -191,6 +193,16 @@ namespace FreeWheeling.Domain.Concrete
         public Ride GetRideByIDIncludeGroup(int id)
         {
             return context.Rides.Include("Group").Where(r => r.id == id).FirstOrDefault();
+        }
+
+        public int RouteCountForGroup(int id)
+        {
+            return context.Routes.Where(g => g.Group.id == id).Count();
+        }
+
+        public int RouteVoteCountByRideid(int id)
+        {
+            return context.RoutesVotes.Where(r => r.ride.id == id).Count();
         }
 
         public Ride GetClosestNextRide(Group _Group, TimeZoneInfo TimeZone)
@@ -377,6 +389,11 @@ namespace FreeWheeling.Domain.Concrete
         public int GetKeenCountForRide(int Rideid)
         {
             return context.Riders.Where(r => (r.Ride.id == Rideid && r.PercentKeen == "In") || (r.Ride.id == Rideid && r.PercentKeen == "OnWay")).Count();
+        }
+
+        public Route GetRouteById(int Routeid)
+        {
+            return context.Routes.Where(f => f.id == Routeid).FirstOrDefault();
         }
 
         public Ride GetHomePageRideByUserID(string UserId)
@@ -576,7 +593,7 @@ namespace FreeWheeling.Domain.Concrete
             context.Entry(_Group).State = System.Data.Entity.EntityState.Added;
             context.SaveChanges();
         }
-
+        
         public void AddPrivateAdHocInvite(List<PrivateRandomUsers> _PrivateRandomUsers)
         {
             foreach (PrivateRandomUsers item in _PrivateRandomUsers)
@@ -670,6 +687,13 @@ namespace FreeWheeling.Domain.Concrete
         {
             UserFollowingUser _UserFollowingUser = new UserFollowingUser { userId = CurrentUserId, followedUserId = UserId };
             context.UserFollowingUsers.Add(_UserFollowingUser);
+            context.SaveChanges();
+        }
+
+        public void AddVote(string UserId, Route _Route, Ride _Ride)
+        {
+            RouteVote _RouteVote = new RouteVote { ride = _Ride, route = _Route, UserID = UserId };
+            context.RoutesVotes.Add(_RouteVote);
             context.SaveChanges();
         }
 

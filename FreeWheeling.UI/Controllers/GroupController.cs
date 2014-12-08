@@ -301,12 +301,15 @@ namespace FreeWheeling.UI.Controllers
         public ActionResult Create(GroupCreateModel _GroupCreateModel)
         {
             List<CycleDays> _CycleDays = new List<CycleDays>();
+            List<Route> _Routes = new List<Route>();
             Location _Location = repository.GetLocations().Where(l => l.id == _GroupCreateModel.LocationsId).FirstOrDefault();
             CultureHelper _CultureHelper = new CultureHelper(repository);
             TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(_GroupCreateModel.LocationsId);
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             bool DayOfWeekSelected = false;
+
+            
 
             //Is a one off ride
             if (_GroupCreateModel.OneOff)
@@ -327,6 +330,7 @@ namespace FreeWheeling.UI.Controllers
                     //RideDays = _CycleDays,
                     Location = _Location,
                     Rides = new List<Ride>(),
+                    Routes = new List<Route>(),
                     AverageSpeed = _GroupCreateModel.AverageSpeed,
                     StartLocation = _GroupCreateModel.StartLocation,
                     Description = _GroupCreateModel.Description,
@@ -347,6 +351,17 @@ namespace FreeWheeling.UI.Controllers
 
                 Ride OneOffRide = new Ride { Group = NewGroup, RideDate = OneOffRideDateTime, RideTime = NewGroup.RideTime };
                 NewGroup.Rides.Add(OneOffRide);
+
+                //Routes:Need to update this so that it can be a dynamic number of routes
+                Route _Route1 = new Route { Desc = _GroupCreateModel.Route1Desc, Group = NewGroup, MapURL = _GroupCreateModel.Route1URL };
+                Route _Route2 = new Route { Desc = _GroupCreateModel.Route2Desc, Group = NewGroup, MapURL = _GroupCreateModel.Route2URL };
+                Route _Route3 = new Route { Desc = _GroupCreateModel.Route3Desc, Group = NewGroup, MapURL = _GroupCreateModel.Route3URL };
+
+                _Routes.Add(_Route1);
+                _Routes.Add(_Route2);
+                _Routes.Add(_Route3);
+
+                NewGroup.Routes = _Routes;
 
                 repository.AddGroup(NewGroup);
                 repository.Save();
@@ -387,6 +402,7 @@ namespace FreeWheeling.UI.Controllers
                     RideDays = _CycleDays,
                     Location = _Location,
                     Rides = new List<Ride>(),
+                    Routes = new List<Route>(),
                     AverageSpeed = _GroupCreateModel.AverageSpeed,
                     StartLocation = _GroupCreateModel.StartLocation,
                     Description = _GroupCreateModel.Description,
@@ -405,8 +421,20 @@ namespace FreeWheeling.UI.Controllers
                     OneOff = false
                 };
 
+                //Routes:Need to update this so that it can be a dynamic number of routes
+                Route _Route1 = new Route { Desc = _GroupCreateModel.Route1Desc, Group = NewGroup, MapURL = _GroupCreateModel.Route1URL };
+                Route _Route2 = new Route { Desc = _GroupCreateModel.Route2Desc, Group = NewGroup, MapURL = _GroupCreateModel.Route2URL };
+                Route _Route3 = new Route { Desc = _GroupCreateModel.Route3Desc, Group = NewGroup, MapURL = _GroupCreateModel.Route3URL };
+
+                _Routes.Add(_Route1);
+                _Routes.Add(_Route2);
+                _Routes.Add(_Route3);
+
+                NewGroup.Routes = _Routes;
+
                 repository.AddGroup(NewGroup);
                 repository.Save();
+
                 NewGroup = repository.PopulateRideDates(NewGroup, TZone);
                 repository.Save();
 
