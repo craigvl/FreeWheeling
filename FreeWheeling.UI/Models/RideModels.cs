@@ -20,28 +20,6 @@ namespace FreeWheeling.UI.Models
             repository = repoParam;
         }
 
-        public SingleRideAndRandomRideViewModel PopulateAdHocModel(int adhocrideid, string UserId)
-        {
-            Ad_HocRide Ah = repository.GetAdHocRideByID(adhocrideid);
-            SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel { RandomRide = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime, MapUrl = Ah.MapUrl };
-            _SingleRideRandomRideViewModel.CommentCount = repository.GetCommentCountForAdHocRide(adhocrideid);
-            _SingleRideRandomRideViewModel.IsOwner = repository.IsAdHocCreator(adhocrideid, UserId);
-
-            if (_SingleRideRandomRideViewModel.MapUrl != null)
-            {
-                _SingleRideRandomRideViewModel.MapUrl =
-                string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", Ah.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
-                //https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D108681
-            }
-            CultureHelper _CultureHelper = new CultureHelper(repository);
-            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(Ah.Location.id);
-            _SingleRideRandomRideViewModel.RandomRiders = repository.GetRidersForAdHocRide(adhocrideid, TZone);
-            _SingleRideRandomRideViewModel.KeenCount = repository.GetKeenCountForAdHocRide(Ah.id);
-            _SingleRideRandomRideViewModel.RandomComments = repository.GetTop2CommentsForAdHocRide(adhocrideid);
-
-            return _SingleRideRandomRideViewModel;
-        }
-
         public SingleRideAndRandomRideViewModel PopulateSingleRideModel(int RideId, string UserId)
         {
             Ride _Ride = repository.GetRideByIDIncludeGroup(RideId);
