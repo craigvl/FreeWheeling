@@ -117,6 +117,7 @@ namespace FreeWheeling.UI.Models
             RideModel.OutFirst = repository.IsOut(RideModel.Ride.id, UserId);
             RideModel.OnWayFirst = repository.IsOnWay(RideModel.Ride.id, UserId);
             RideModel.Routes = new List<RouteWithVoteCount>();
+            RideModel.NextRoutes = new List<RouteWithVoteCount>();
             List<RouteWithVoteCount> _RouteWithVoteCount = new List<RouteWithVoteCount>();
             foreach (Route item in _Group.Routes)
             {
@@ -126,7 +127,7 @@ namespace FreeWheeling.UI.Models
                     Group = item.Group,
                     MapURL = item.MapURL,
                     RouteId = item.id,
-                    VoteCount = repository.RouteVoteCountByRideid(_Ride.id)
+                    VoteCount = repository.RouteVoteCountByRideid(item.id, RideModel.Ride.id)
                 };
 
                 RideModel.Routes.Add(_RVC);  
@@ -151,6 +152,21 @@ namespace FreeWheeling.UI.Models
                 RideModel.InSecond = repository.IsIn(RideModel.NextRide.id, UserId);
                 RideModel.OutSecond = repository.IsOut(RideModel.NextRide.id, UserId);
                 RideModel.OnWaySecond = repository.IsOnWay(RideModel.NextRide.id, UserId);
+
+                foreach (Route item in _Group.Routes)
+                {
+                    RouteWithVoteCount _RVCNext = new RouteWithVoteCount
+                    {
+                        Desc = item.Desc,
+                        Group = item.Group,
+                        MapURL = item.MapURL,
+                        RouteId = item.id,
+                        VoteCount = repository.RouteVoteCountByRideid(item.id, RideModel.NextRide.id)
+                    };
+
+                    RideModel.NextRoutes.Add(_RVCNext);
+                }
+
             }
 
             if (_UserExpands != null)

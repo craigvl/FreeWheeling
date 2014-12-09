@@ -35,7 +35,7 @@ namespace FreeWheeling.UI.Controllers
                 .CreateClientFromConnectionString(cn, "bunchy");
         }
 
-        //[Compress]
+        [Compress]
         public ActionResult Index(int groupid = -1, int rideid = -1, int InviteId = -1, string fromhome = "false")
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());

@@ -13,6 +13,7 @@
 
     if (position == 2)
     {
+        routes = Model.NextRoutes;
         rideid = Model.NextRide.id;
         commenttextid = "CommentStringSecond";
         submitid = "submit_Second";
@@ -30,7 +31,7 @@
                 }, new AjaxOptions
         {
             HttpMethod = "Post",
-            OnSuccess = "CommentComplete",
+            OnSuccess = "VoteComplete",
             OnBegin = "ShowProgress"
         }))
             {

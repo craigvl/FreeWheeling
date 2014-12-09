@@ -70,7 +70,7 @@ namespace FreeWheeling.Domain.Abstract
 
         //Get .. Routes
         int RouteCountForGroup(int Groupid);
-        int RouteVoteCountByRideid(int Rideid);
+        int RouteVoteCountByRideid(int Routeid, int Rideid);
         Route GetRouteById(int Routeid);
 
         //Get .. Members

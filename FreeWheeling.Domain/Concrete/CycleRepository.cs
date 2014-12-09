@@ -200,9 +200,9 @@ namespace FreeWheeling.Domain.Concrete
             return context.Routes.Where(g => g.Group.id == id).Count();
         }
 
-        public int RouteVoteCountByRideid(int id)
+        public int RouteVoteCountByRideid(int Routeid, int id)
         {
-            return context.RoutesVotes.Where(r => r.ride.id == id).Count();
+            return context.RoutesVotes.Where(r => r.ride.id == id && r.route.id == Routeid).Count();
         }
 
         public Ride GetClosestNextRide(Group _Group, TimeZoneInfo TimeZone)
@@ -692,6 +692,16 @@ namespace FreeWheeling.Domain.Concrete
 
         public void AddVote(string UserId, Route _Route, Ride _Ride)
         {
+            //Delete existing votes
+            List<RouteVote> _CurrentRouteVotes = context.RoutesVotes.Where(r => r.ride.id == _Ride.id && r.UserID == UserId).ToList();
+
+            foreach (RouteVote item in _CurrentRouteVotes)
+            {
+                context.RoutesVotes.Remove(item);
+                context.Entry(item).State = System.Data.Entity.EntityState.Deleted;
+                context.SaveChanges();    
+            }
+
             RouteVote _RouteVote = new RouteVote { ride = _Ride, route = _Route, UserID = UserId };
             context.RoutesVotes.Add(_RouteVote);
             context.SaveChanges();
