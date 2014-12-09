@@ -27,6 +27,7 @@
     string riderskeenpartial = "_RidersKeen";
     string keenactionpartial = "_KeenActions";
     string commentpartial = "_Comments";
+    string routepartial = "_Routes";
 
     int rideid = Model.Ride.id;
     int keencount = Model.KeenCount;
@@ -128,8 +129,39 @@
                                 }
                             </div>
                         </div>
+
+                        @if (Model.RouteCount > 0)
+                        {
+                            <div class='panel'>
+                                <div class="SecondaryHeading panel-heading" id="@commentcollapsearea">
+                                    <div class="col-xs-12 col-md-12 col-sm-12">
+                                        <div class="col-xs-10 col-md-11 col-sm-10">
+                                            <a data-toggle="collapse" href="@collapseCommentHash">Routes</a>
+                                            <a id="@("CommentCountSpan" + @rideid)"></a>
+                                        </div>
+
+                                        <div class="col-xs-1 col-md-1 col-sm-1">
+                                            <a id="@commentcountid" class="SecondaryHeading @commentchevronclass" data-toggle="collapse" href="@collapseCommentHash"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="@commentpanelid" class="@commentpannelclass">
+                                    <div id="@commentcollapsearea">
+                                        <div class="panel-body panelBody">
+                                            @if (@Model.Comments != null)
+                                            {
+                                                @Html.Partial(@routepartial, Model, new ViewDataDictionary { { "position", @position } })
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+         
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

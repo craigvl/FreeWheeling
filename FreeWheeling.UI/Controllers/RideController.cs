@@ -23,7 +23,7 @@ namespace FreeWheeling.UI.Controllers
     [Authorize]
     public class RideController : Controller
     {
-        private IdentityDb idb = new IdentityDb(); 
+        private IdentityDb idb = new IdentityDb();
         private ICycleRepository repository;
         private NotificationHubClient hubClient;
 
@@ -45,7 +45,7 @@ namespace FreeWheeling.UI.Controllers
                 {
                     repository.UpdateInvitePrivateUser(currentUser.Id, currentUser.Email, InviteId);
                     repository.Save();
-                }            
+                }
             }
 
             RideModelIndex RideModel = new RideModelIndex();
@@ -81,7 +81,7 @@ namespace FreeWheeling.UI.Controllers
             }
 
             if (RideModel.Ride != null)
-            {              
+            {
             }
             else
             {
@@ -102,7 +102,7 @@ namespace FreeWheeling.UI.Controllers
             {
                 RideModel.lng = _Group.Lng;
             }
-            
+
             if (RideModel.Group.IsPrivate)
             {
                 if (!repository.IsInvitedToPrivateBunch(RideModel.Group.id, currentUser.Id))
@@ -113,6 +113,8 @@ namespace FreeWheeling.UI.Controllers
                     return RedirectToAction("index", "group", GroupModel);
                 }
             }
+
+            RideModel.RouteCount = repository.RouteCountForGroup(RideModel.Group.id);
 
             return View(RideModel);
         }
@@ -209,71 +211,6 @@ namespace FreeWheeling.UI.Controllers
         }
 
         [Compress]
-        public ActionResult AdHocList()
-        {
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            Location _Location = repository.GetLocations().Where(l => l.id == currentUser.LocationID).FirstOrDefault();
-            Member _Member = repository.GetMemberByUserID(currentUser.Id);
-            AdHocRidesModel _AdHocRidesModel = new AdHocRidesModel();
-            CultureHelper _CultureHelper = new CultureHelper(repository);
-            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-            _AdHocRidesModel._Ad_HocRide = repository.GetAdHocRides(repository.GetLocations()
-                .Where(o => o.id == currentUser.LocationID).FirstOrDefault(), TZone).OrderBy(c => c.RideDate).ToList();
-            _AdHocRidesModel.PrivateRandomBunches = repository.GetPrivateAdHocRideByUserID(currentUser.Id,
-                _Location, TZone);
-            return View(_AdHocRidesModel);
-        }
-
-        [Compress]
-        public ActionResult ViewAdHocRide(int adhocrideid = -1, int InviteRandomId = -1, string fromhome = "false")
-        {    
-            if(adhocrideid == -1)
-            {
-                return RedirectToAction("index", "Home");
-            }
-
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-
-            if (InviteRandomId != -1)
-            {
-                if (repository.PrivateRandomBunchInviteUserEmailNotSet(InviteRandomId))
-                {
-                    repository.UpdateInviteRandomPrivateUser(currentUser.Id, currentUser.Email, InviteRandomId);
-                    repository.Save();
-                }
-            }
-
-            Ad_HocRide _Ad_HocRide = repository.GetAdHocRideByID(adhocrideid);
-
-            //Just in case location ID has not been set, set to same as ride.
-            if (currentUser.LocationID == null)
-            {
-                currentUser.LocationID = _Ad_HocRide.Location.id;
-                idb.SaveChanges();
-            }
-
-            if (_Ad_HocRide == null)
-            {
-                return RedirectToAction("AdHocList", "ride");
-            }
-            else
-            {
-                if (_Ad_HocRide.IsPrivate)
-                {
-                    if (!repository.IsInvitedToPrivateRandomBunch(adhocrideid, currentUser.Id))
-                    {
-                        return RedirectToAction("index", "Home");
-                    }
-                }
-                SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel();
-                RideModelHelper _AdHocHelper = new RideModelHelper(repository);
-                _SingleRideRandomRideViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
-                _SingleRideRandomRideViewModel.FromHome = fromhome;
-                return View(_SingleRideRandomRideViewModel);
-            }
-        }
-
-        [Compress]
         public ActionResult ViewSingleRide(int RideId, string fromhome = "false")
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
@@ -304,14 +241,6 @@ namespace FreeWheeling.UI.Controllers
             _AllRideComments.Comments = repository.GetAllCommentsForRide(RideId);
             _AllRideComments.PreviousID = PreviousID;
             return View(_AllRideComments);
-        }
-
-        public ActionResult SeeAllAdHocComments(int adhocrideid)
-        {
-            AllAdHocRideComments _AllAdHocRideComments = new AllAdHocRideComments();
-            _AllAdHocRideComments.adhocrideid = adhocrideid;
-            _AllAdHocRideComments.Comments = repository.GetAllCommentsForAdHocRide(adhocrideid);
-            return View(_AllAdHocRideComments);
         }
 
         public ActionResult InviteOthersToBunch(int RideId, int PreviousID = -1)
@@ -345,7 +274,7 @@ namespace FreeWheeling.UI.Controllers
                     UserHelper _UserHelp = new UserHelper();
                     _UserHelp.SendUsersBunchInviteEmail(_UserHelp.GetEmailsForUserNames(UserNames),
                     _InviteOthersToBunchModel.RideId,
-                    currentUser.UserName, _Ride.RideDate.ToString("dd/MM/yyyy"), _Ride.Group.name ); 
+                    currentUser.UserName, _Ride.RideDate.ToString("dd/MM/yyyy"), _Ride.Group.name);
                 }
             });
 
@@ -358,326 +287,24 @@ namespace FreeWheeling.UI.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult InviteOthersToAdHocBunch(int adhocrideid)
-        {
-            Ad_HocRide _AdHocRide = repository.GetAdHocRideByID(adhocrideid);
-            InviteOthersToAdHocBunchModel _InviteOthersToAdHocBunchModel = new InviteOthersToAdHocBunchModel
-            {
-                adhocrideid = adhocrideid,  
-                Name = _AdHocRide.Name,
-                RideDate = _AdHocRide.RideDate.ToString("dd/MM/yyyy")
-            };
-
-            return View(_InviteOthersToAdHocBunchModel);
-        }
-
         [HttpPost]
-        public JsonResult InviteOthersToAdHocBunch(InviteOthersToAdHocBunchModel _InviteOthersToAdHocBunchModel)
+        public JsonResult Vote(int routeid, int rideid, int ParentRideID)
         {
+            Ride CurrentRide = repository.GetRideByID(rideid);
+            Route CurrentRoute = repository.GetRouteById(routeid);
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            Ad_HocRide CurrentRide = repository.GetAdHocRideByID(_InviteOthersToAdHocBunchModel.adhocrideid);
+            repository.AddVote(currentUser.Id, CurrentRoute, CurrentRide);
+            return Json(new { success = false, Message = "Vote counted" }, JsonRequestBehavior.AllowGet);
 
-            Task T = new Task(() =>
-            {
-                Ad_HocRide _Ride = repository.GetAdHocRideByID(_InviteOthersToAdHocBunchModel.adhocrideid);
-                List<string> UserNames = new List<string>();
-                UserHelper _UserHelp = new UserHelper();
-                List<PrivateRandomUsers> _PrivateRandomUsersList = new List<PrivateRandomUsers>();
-
-                if (_InviteOthersToAdHocBunchModel.InviteUsers != null)
-                {
-                    foreach (InviteUser item in _InviteOthersToAdHocBunchModel.InviteUsers)
-                    {
-                        UserNames.Add(item.UserName);
-                        if (CurrentRide.IsPrivate)
-                        {
-                            if (_UserHelp.IsValidUserName(item.UserName))
-                            {
-                                var _User = idb.Users.Where(g => g.UserName == item.UserName).FirstOrDefault();
-                                PrivateRandomUsers _PrivateRandomUsers = new PrivateRandomUsers
-                                {
-                                    RideId = _InviteOthersToAdHocBunchModel.adhocrideid,
-                                    Email = _User.Email,
-                                    UserId = _User.Id
-                                };
-                                _PrivateRandomUsersList.Add(_PrivateRandomUsers);
-                            }
-                            else
-                            {
-                                PrivateRandomUsers _PrivateRandomUsers = new PrivateRandomUsers
-                                {
-                                    RideId = _InviteOthersToAdHocBunchModel.adhocrideid,
-                                    Email = item.UserName,
-                                };
-                                _PrivateRandomUsersList.Add(_PrivateRandomUsers);
-                            }
-
-                            repository.AddPrivateAdHocInvite(_PrivateRandomUsersList);
-                            repository.Save();
-                        }
-                        else
-                        {
-                           
-                        }
-                    }
-
-                    if (CurrentRide.IsPrivate)
-                    {
-                        _UserHelp.SendUsersPrivateAdHocBunchInviteEmail(
-                               _PrivateRandomUsersList,
-                               _InviteOthersToAdHocBunchModel.adhocrideid,
-                               currentUser.UserName,
-                               _Ride.RideDate.ToString("dd/MM/yyyy"),
-                               _Ride.Name);
-                    }
-                    else
-                    {
-                        _UserHelp.SendUsersAdHocBunchInviteEmail(_UserHelp.GetEmailsForUserNames(UserNames),
-                               _InviteOthersToAdHocBunchModel.adhocrideid,
-                               currentUser.UserName,
-                               _Ride.RideDate.ToString("dd/MM/yyyy"),
-                               _Ride.Name);
-                    }
-
-                }
-              
-            });
-
-            T.Start();
-
-            return Json(new
-            {
-                success = true,
-                message = "Emails Sent",
-                RideId = _InviteOthersToAdHocBunchModel.adhocrideid
-            }, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult DeleteAdHocRide(int adhocrideid)
-        {
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-
-            if (!repository.IsAdHocCreator(adhocrideid, currentUser.Id))
-            {
-                return RedirectToAction("AdHocList", "Ride");
-            }
-            else
-            {
-                Ad_HocRide CurrentRide = repository.GetAdHocRideByID(adhocrideid);
-                DeleteAdHocRideModel _DeleteAdHocRideModel = new DeleteAdHocRideModel { AdHocId = adhocrideid, Name = CurrentRide.Name };
-                return View(_DeleteAdHocRideModel);
-            }
-        }
-
-        [HttpPost, ActionName("DeleteAdHocRide")]
-        public ActionResult DeleteConfirmed(int adhocrideid)
-        {
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            CultureHelper _CultureHelper = new CultureHelper(repository);
-            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-            Ad_HocRide _Ad_HocRide = repository.GetAdHocRideByID(adhocrideid);
-            string AdHocRideName = _Ad_HocRide.Name;
-
-            if (!repository.IsAdHocCreator(adhocrideid, currentUser.Id))
-            {
-                return RedirectToAction("AdHocList", "Ride");
-            }
-            else
-            {
-                List<AdHocRider> _AdHocRiders = repository.GetRidersForAdHocRide(adhocrideid, TZone);
-                repository.DeleteAdHocRide(adhocrideid);
-                repository.Save();
-
-                Task T = new Task(() =>
-                {
-                    UserHelper _UserHelp = new UserHelper();
-                    List<string> Emails = new List<string>();
-
-                    foreach (AdHocRider item in _AdHocRiders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
-                    {
-                        string email = _UserHelp.GetUserEmailViaUserId(item.userId);
-                        Emails.Add(email);
-                    }
-
-                    _UserHelp.SendUsersDeleteAdHocEmail(Emails, AdHocRideName, currentUser.UserName);
-                });
-
-                T.Start();
-                return RedirectToAction("AdHocList", "Ride");
-            }
-        }
-
-        public ActionResult EditAdHocRide(int adhocrideid = -1)
-        {
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-
-            if (adhocrideid == -1)
-            {
-                return RedirectToAction("AdHocList", "Ride");
-            }
-
-            if (!repository.IsAdHocCreator(adhocrideid,currentUser.Id))
-            {
-                 return RedirectToAction("AdHocList", "Ride");
-            }
-            else
-            {
-                CultureHelper _CultureHelper = new CultureHelper(repository);
-                TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-                DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
-                Ad_HocRide CurrentRide = repository.GetAdHocRideByID(adhocrideid);
-
-                EditAdHocRideModel _EditAdHocRideModel = new EditAdHocRideModel
-                {
-                    AverageSpeed = CurrentRide.AverageSpeed,
-                    Locations = repository.GetLocations().ToList(),
-                    Name = CurrentRide.Name,
-                    RideDate = CurrentRide.RideDate,
-                    RideHour = CurrentRide.RideHour,
-                    RideMinute = CurrentRide.RideMinute,
-                    RideTime = CurrentRide.RideTime,
-                    StartLocation = CurrentRide.StartLocation,
-                    LocationsId = CurrentRide.Location.id,
-                    adhocrideid = adhocrideid,
-                    DateString = CurrentRide.RideDate.ToString("dd/MM/yyyy"),
-                    Description = CurrentRide.Description,
-                    MapUrl = CurrentRide.MapUrl,
-                    IsPrivate = CurrentRide.IsPrivate,
-                    CreatedByName = CurrentRide.CreatedByName  
-                };
-
-                return View(_EditAdHocRideModel);
-            }
-        }
-
-        [HttpPost]
-        public ActionResult EditAdHocRide(EditAdHocRideModel _EditAdHocRideModel)
-        {
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            CultureHelper _CultureHelper = new CultureHelper(repository);
-            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-            DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
-            Location _Location = repository.GetLocations().Where(l => l.id == _EditAdHocRideModel.LocationsId).FirstOrDefault();
-            DateTime dateResult;
-
-            if (!DateTime.TryParse(_EditAdHocRideModel.DateString, _CultureHelper.GetCulture(_Location.id), DateTimeStyles.None, out dateResult))
-            {
-                ModelState.AddModelError(string.Empty, "Date is not in a valid date format");
-                _EditAdHocRideModel.Locations = repository.GetLocations().ToList();
-                _EditAdHocRideModel.LocationsId = _Location.id;
-                return View(_EditAdHocRideModel);
-            }
-            else
-            {
-                DateTime da = DateTime.ParseExact(_EditAdHocRideModel.DateString, "dd/MM/yyyy", null);
-                DateTime _RideDate = da.Date.Add(new TimeSpan(_EditAdHocRideModel.RideHour, _EditAdHocRideModel.RideMinute, 0));
-
-                if (_RideDate < LocalNow)
-                {
-                    ModelState.AddModelError(string.Empty, "Please select date and time that is greater than current date and time");
-                    _EditAdHocRideModel.Locations = repository.GetLocations().ToList();
-                    _EditAdHocRideModel.LocationsId = _Location.id;
-                    return View(_EditAdHocRideModel);
-                }
-
-                Ad_HocRide adhoc = new Ad_HocRide
-                {
-                    AverageSpeed = _EditAdHocRideModel.AverageSpeed,
-                    ModifiedTimeStamp = LocalNow,
-                    Name = _EditAdHocRideModel.Name,
-                    RideDate = _RideDate,
-                    RideHour = _RideDate.Hour,
-                    RideMinute = _RideDate.Minute,
-                    RideTime = _RideDate.TimeOfDay.ToString(),
-                    StartLocation = _EditAdHocRideModel.StartLocation,
-                    Location = _Location,
-                    id = _EditAdHocRideModel.adhocrideid,
-                    Description = _EditAdHocRideModel.Description,
-                    MapUrl = _EditAdHocRideModel.MapUrl,
-                    IsPrivate = _EditAdHocRideModel.IsPrivate,
-                    CreatedByName = _EditAdHocRideModel.CreatedByName
-                };
-
-                repository.UpdateAdHocRide(adhoc);
-                repository.Save();
-                SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel();
-                RideModelHelper _AdHocHelper = new RideModelHelper(repository);
-                _SingleRideRandomRideViewModel = _AdHocHelper.PopulateAdHocModel(_EditAdHocRideModel.adhocrideid, currentUser.Id);
-                return View("ViewAdHocRide", _SingleRideRandomRideViewModel);
-            }
-        }
-
-        public ActionResult AddAdHocComment(int adhocrideid)
-        {
-            AdHocRideCommentModel _RideCommentModel = new AdHocRideCommentModel();
-            _RideCommentModel.adhocrideid = adhocrideid;
-            _RideCommentModel.Ride = repository.GetAdHocRideByID(adhocrideid);
-            return View(_RideCommentModel);
-        }
-
-        [HttpPost]
-        public JsonResult AddAdHocComment(int adhocrideid, string CommentString)
-        {
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-          
-            if (CommentString != string.Empty)
-            {
-                repository.AddAdHocRideComment(CommentString, adhocrideid, currentUser.UserName, currentUser.Id);
-                repository.Save();
-                SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel();
-                RideModelHelper _AdHocHelper = new RideModelHelper(repository);
-                _SingleRideRandomRideViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
-                int commentCount = repository.GetCommentCountForAdHocRide(adhocrideid);
-
-               Task E = new Task(() =>
-               {
-                   CultureHelper _CultureHelper = new CultureHelper(repository);
-                   TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-                   Ad_HocRide _Ad_HocRide = repository.GetAdHocRideByID(adhocrideid);
-                   string AdHocRideName = _Ad_HocRide.Name;
-                   UserHelper _UserHelp = new UserHelper();
-                   List<AdHocRider> _AdHocRiders = repository.GetRidersAndCommentersForAdHocRideDontIncludeCurrentUser(adhocrideid, TZone, currentUser.Id);
-                   List<string> Emails = new List<string>();
-                   
-                   foreach (AdHocRider item in _AdHocRiders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
-                   {
-                       var ThisUser = idb.Users.Find(item.userId);
-                       if (ThisUser != null)
-                       {
-                           if (ThisUser.ReceiveEmails)
-                           {
-                               string email = _UserHelp.GetUserEmailViaUserId(item.userId);
-                               Emails.Add(email);
-                           }
-                       }
-                   }
-                   _UserHelp.SendUsersNewCommentAdHocEmail(Emails, AdHocRideName, currentUser.UserName, CommentString, adhocrideid);
-               });
-
-               E.Start();
-
-               return Json(new
-               {
-                   success = true,
-                   message = CommentString,
-                   rideid = adhocrideid,
-                   username = currentUser.UserName,
-                   commentcount = commentCount
-               }, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                return Json(new { success = false, Message = "Please enter a comment." }, JsonRequestBehavior.AllowGet);
-            }
         }
 
         [HttpPost]
         public JsonResult AddComment(int groupid, int rideid, string CommentString, int ParentRideID)
-        {          
+        {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
 
-            if(CommentString != string.Empty)
-            {            
+            if (CommentString != string.Empty)
+            {
                 repository.AddRideComment(CommentString, rideid, currentUser.UserName, currentUser.Id);
                 repository.Save();
                 RideModelIndex RideModel = new RideModelIndex();
@@ -713,18 +340,20 @@ namespace FreeWheeling.UI.Controllers
                 });
 
                 E.Start();
-          
-                return Json(new { success = true,
-                                  message = CommentString,
-                                  rideid = rideid,
-                                  username = currentUser.UserName,
-                                  commentcount = commentCount,
-                                  parentid = ParentRideID
-                }, JsonRequestBehavior.AllowGet);  
+
+                return Json(new
+                {
+                    success = true,
+                    message = CommentString,
+                    rideid = rideid,
+                    username = currentUser.UserName,
+                    commentcount = commentCount,
+                    parentid = ParentRideID
+                }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new { success = false, Message = "Please enter a comment." }, JsonRequestBehavior.AllowGet);  
+                return Json(new { success = false, Message = "Please enter a comment." }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -735,132 +364,6 @@ namespace FreeWheeling.UI.Controllers
             Group _Group = new Group();
             _Ride = repository.GetRideByID(RideId);
             _Group = repository.GetGroupByID(Groupid);
-            Rider _Rider = new Rider { userId = currentUser.Id,
-                                       Name = currentUser.UserName,
-                                       Ride = _Ride,
-                                       LeaveTime = DateTime.UtcNow,
-                                       PercentKeen = Commitment };
-                
-            repository.AddRider(_Rider, _Group);
-            repository.Save();
-            RideModelIndex RideModel = new RideModelIndex();
-            RideModelHelper _RideHelper = new RideModelHelper(repository);
-            RideModel = _RideHelper.PopulateRideModel(ParentRideID, Groupid, currentUser.Id, false);
-            string KeenCount = repository.GetKeenCountForRide(RideId).ToString();
-            
-            Task E = new Task(() =>
-            {
-                CultureHelper _CultureHelper = new CultureHelper(repository);
-                TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
-                string RideDate = _Ride.RideDate.ToShortDateString();
-                string GroupName = _Ride.Group.name;
-                UserHelper _UserHelp = new UserHelper();
-                List<Rider> _Riders = repository.GetRidersAndCommentersForRideDontIncludeCurrentUser(_Ride.id, TZone, currentUser.Id);
-                List<string> Emails = new List<string>();
-
-                foreach (Rider item in _Riders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
-                {
-                     var ThisUser = idb.Users.Find(item.userId);
-                     if (ThisUser != null)
-                     {
-                         if (ThisUser.ReceiveEmails)
-                         {
-                             string email = _UserHelp.GetUserEmailViaUserId(item.userId);
-                             Emails.Add(email);
-                         }
-                     }                   
-                }
-
-                foreach (string u in repository.GetFollowers(currentUser.Id))
-                {
-                    var ThisUser = idb.Users.Find(u);
-                    if (ThisUser != null)
-                    {
-                        if (ThisUser.ReceiveEmails)
-                        {
-                            string email = _UserHelp.GetUserEmailViaUserId(u);
-                            Emails.Add(email);
-                        }
-                    }
-                }
-
-                Emails = Emails.Distinct().ToList();
-
-                foreach (string e in Emails)
-                {
-                    ApplicationUser _user = idb.Users.Where(d => d.Email == e).FirstOrDefault();
-                    sendNotification(currentUser.UserName + " Is " + Commitment + " Ride " + _Group.name, _user.UserName);
-                }
-
-                _UserHelp.SendUsersGroupAttendStatusEmail(Emails, GroupName, Commitment, currentUser.UserName, _Ride.Group.id, _Ride.RideDate);
-            });
-
-            E.Start();
-
-            Task T = new Task(() =>
-            {
-                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
-                ConfigurationManager.ConnectionStrings["AzureJobsData"].ConnectionString);
-
-                // Create the queue client.
-                CloudQueueClient queueClient = storageAccount.CreateCloudQueueClient();
-
-                // Retrieve a reference to a queue.
-                CloudQueue queue = queueClient.GetQueueReference("updatehomepage");
-
-                // Create the queue if it doesn't already exist.
-                queue.CreateIfNotExists();
-
-                // Create a message and add it to the queue.
-                CloudQueueMessage message = new CloudQueueMessage("Hello, World");
-                queue.AddMessage(message);
-
-            });
-
-            T.Start();
-
-            return Json(new { success = true,
-                                  message = Commitment,
-                                  rideid = RideId,
-                                  username = currentUser.UserName,
-                                  keencount = KeenCount,
-                                  leavetime = DateTime.UtcNow,
-                                  parentid = ParentRideID
-                }, JsonRequestBehavior.AllowGet);  
-        }
-
-        private async Task sendNotification(string notificationText, string tag)
-        {
-            try
-            {
-                // Create notifications for both Windows Store and iOS platforms.
-                var toast = @"<toast><visual><binding template=""ToastText01""><text id=""1"">" +
-                    notificationText + "</text></binding></visual></toast>";
-                var alert = "{\"aps\":{\"alert\":\"" + notificationText +
-                    "\"}, \"inAppMessage\":\"" + notificationText + "\"}";
-                string gcmMessage = "{\"data\":{\"message\":\"" + notificationText + "\"}}";
-
-                // Send a notification to the logged-in user on both platforms.
-                //await hubClient.SendWindowsNativeNotificationAsync(toast, tag);
-                //await hubClient.SendAppleNativeNotificationAsync(alert, tag);
-                await hubClient.SendGcmNativeNotificationAsync(gcmMessage, tag);
-            }
-            catch (ArgumentException ex)
-            {
-                // This is expected when an APNS registration doesn't exist.
-                Console.WriteLine(ex.Message);
-            }
-        }
-
-
-        public JsonResult AttendSingleRide(int RideId, string Commitment, int Groupid, int ParentRideID)
-        {
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            Ride _Ride = new Ride();
-            Group _Group = new Group();
-            _Ride = repository.GetRideByID(RideId);
-            _Group = repository.GetGroupByID(Groupid);
-
             Rider _Rider = new Rider
             {
                 userId = currentUser.Id,
@@ -872,9 +375,9 @@ namespace FreeWheeling.UI.Controllers
 
             repository.AddRider(_Rider, _Group);
             repository.Save();
-            SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel();
+            RideModelIndex RideModel = new RideModelIndex();
             RideModelHelper _RideHelper = new RideModelHelper(repository);
-            _SingleRideRandomRideViewModel = _RideHelper.PopulateSingleRideModel(RideId, currentUser.Id);
+            RideModel = _RideHelper.PopulateRideModel(ParentRideID, Groupid, currentUser.Id, false);
             string KeenCount = repository.GetKeenCountForRide(RideId).ToString();
 
             Task E = new Task(() =>
@@ -886,17 +389,18 @@ namespace FreeWheeling.UI.Controllers
                 UserHelper _UserHelp = new UserHelper();
                 List<Rider> _Riders = repository.GetRidersAndCommentersForRideDontIncludeCurrentUser(_Ride.id, TZone, currentUser.Id);
                 List<string> Emails = new List<string>();
+
                 foreach (Rider item in _Riders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
                 {
-                     var ThisUser = idb.Users.Find(item.userId);
-                     if (ThisUser != null)
-                     {
-                         if (ThisUser.ReceiveEmails)
-                         {
-                             string email = _UserHelp.GetUserEmailViaUserId(item.userId);
-                             Emails.Add(email);
-                         }
-                     }
+                    var ThisUser = idb.Users.Find(item.userId);
+                    if (ThisUser != null)
+                    {
+                        if (ThisUser.ReceiveEmails)
+                        {
+                            string email = _UserHelp.GetUserEmailViaUserId(item.userId);
+                            Emails.Add(email);
+                        }
+                    }
                 }
 
                 foreach (string u in repository.GetFollowers(currentUser.Id))
@@ -958,40 +462,75 @@ namespace FreeWheeling.UI.Controllers
                 parentid = ParentRideID
             }, JsonRequestBehavior.AllowGet);
         }
-     
-        public JsonResult AttendAdHocRider(int adhocrideid, string Commitment)
+
+        private async Task sendNotification(string notificationText, string tag)
+        {
+            try
+            {
+                // Create notifications for both Windows Store and iOS platforms.
+                var toast = @"<toast><visual><binding template=""ToastText01""><text id=""1"">" +
+                    notificationText + "</text></binding></visual></toast>";
+                var alert = "{\"aps\":{\"alert\":\"" + notificationText +
+                    "\"}, \"inAppMessage\":\"" + notificationText + "\"}";
+                string gcmMessage = "{\"data\":{\"message\":\"" + notificationText + "\"}}";
+
+                // Send a notification to the logged-in user on both platforms.
+                //await hubClient.SendWindowsNativeNotificationAsync(toast, tag);
+                //await hubClient.SendAppleNativeNotificationAsync(alert, tag);
+                await hubClient.SendGcmNativeNotificationAsync(gcmMessage, tag);
+            }
+            catch (ArgumentException ex)
+            {
+                // This is expected when an APNS registration doesn't exist.
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+
+        public JsonResult AttendSingleRide(int RideId, string Commitment, int Groupid, int ParentRideID)
         {
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            Ad_HocRide _Ride = new Ad_HocRide();           
-            _Ride = repository.GetAdHocRideByID(adhocrideid);
-            AdHocRider _Rider = new AdHocRider { userId = currentUser.Id, Name = currentUser.UserName, AdHocRide = _Ride, LeaveTime = DateTime.UtcNow, PercentKeen = Commitment };
-            repository.AddAdHocRider(_Rider, _Ride);
+            Ride _Ride = new Ride();
+            Group _Group = new Group();
+            _Ride = repository.GetRideByID(RideId);
+            _Group = repository.GetGroupByID(Groupid);
+
+            Rider _Rider = new Rider
+            {
+                userId = currentUser.Id,
+                Name = currentUser.UserName,
+                Ride = _Ride,
+                LeaveTime = DateTime.UtcNow,
+                PercentKeen = Commitment
+            };
+
+            repository.AddRider(_Rider, _Group);
             repository.Save();
             SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel();
-            RideModelHelper _AdHocHelper = new RideModelHelper(repository);
-            _SingleRideRandomRideViewModel = _AdHocHelper.PopulateAdHocModel(adhocrideid, currentUser.Id);
-            string KeenCount = repository.GetKeenCountForAdHocRide(adhocrideid).ToString();
+            RideModelHelper _RideHelper = new RideModelHelper(repository);
+            _SingleRideRandomRideViewModel = _RideHelper.PopulateSingleRideModel(RideId, currentUser.Id);
+            string KeenCount = repository.GetKeenCountForRide(RideId).ToString();
 
             Task E = new Task(() =>
             {
                 CultureHelper _CultureHelper = new CultureHelper(repository);
                 TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(currentUser.LocationID);
                 string RideDate = _Ride.RideDate.ToShortDateString();
+                string GroupName = _Ride.Group.name;
                 UserHelper _UserHelp = new UserHelper();
-                List<AdHocRider> _Riders = repository.GetRidersAndCommentersForAdHocRideDontIncludeCurrentUser(_Ride.id, TZone, currentUser.Id);
+                List<Rider> _Riders = repository.GetRidersAndCommentersForRideDontIncludeCurrentUser(_Ride.id, TZone, currentUser.Id);
                 List<string> Emails = new List<string>();
-
-                foreach (AdHocRider item in _Riders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
+                foreach (Rider item in _Riders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
                 {
-                     var ThisUser = idb.Users.Find(item.userId);
-                     if (ThisUser != null)
-                     {
-                         if (ThisUser.ReceiveEmails)
-                         {
-                             string email = _UserHelp.GetUserEmailViaUserId(item.userId);
-                             Emails.Add(email);
-                         }
-                     }
+                    var ThisUser = idb.Users.Find(item.userId);
+                    if (ThisUser != null)
+                    {
+                        if (ThisUser.ReceiveEmails)
+                        {
+                            string email = _UserHelp.GetUserEmailViaUserId(item.userId);
+                            Emails.Add(email);
+                        }
+                    }
                 }
 
                 foreach (string u in repository.GetFollowers(currentUser.Id))
@@ -1012,10 +551,10 @@ namespace FreeWheeling.UI.Controllers
                 foreach (string e in Emails)
                 {
                     ApplicationUser _user = idb.Users.Where(d => d.Email == e).FirstOrDefault();
-                    sendNotification(currentUser.UserName + " Is " + Commitment + "The Random Ride " + _Ride.Name, _user.UserName);
+                    sendNotification(currentUser.UserName + " Is " + Commitment + " Ride " + _Group.name, _user.UserName);
                 }
 
-                _UserHelp.SendUsersAdHocAttendStatusEmail(Emails, _Ride.Name, currentUser.UserName, Commitment, _Ride.id, _Ride.RideDate);
+                _UserHelp.SendUsersGroupAttendStatusEmail(Emails, GroupName, Commitment, currentUser.UserName, _Ride.Group.id, _Ride.RideDate);
             });
 
             E.Start();
@@ -1046,11 +585,12 @@ namespace FreeWheeling.UI.Controllers
             {
                 success = true,
                 message = Commitment,
-                rideid = adhocrideid,
+                rideid = RideId,
                 username = currentUser.UserName,
                 keencount = KeenCount,
-                leavetime = DateTime.UtcNow
-            }, JsonRequestBehavior.AllowGet);  
-        }     
-	}
+                leavetime = DateTime.UtcNow,
+                parentid = ParentRideID
+            }, JsonRequestBehavior.AllowGet);
+        }
+    }        
 }

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace FreeWheeling.Domain.Entities
 {
-    public class Route
+    public class RouteVote
     {
         public int id { get; set; }
-        public string MapURL { get; set; }
-        public string Desc { get; set; }
-        public Group Group { get; set; }
+        public Route route { get; set; }
+        public string UserID { get; set; }
+        public Ride ride { get; set; }
     }
 }

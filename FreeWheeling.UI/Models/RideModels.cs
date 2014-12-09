@@ -20,28 +20,6 @@ namespace FreeWheeling.UI.Models
             repository = repoParam;
         }
 
-        public SingleRideAndRandomRideViewModel PopulateAdHocModel(int adhocrideid, string UserId)
-        {
-            Ad_HocRide Ah = repository.GetAdHocRideByID(adhocrideid);
-            SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel { RandomRide = Ah, RideDate = Ah.RideDate, RideTime = Ah.RideTime, MapUrl = Ah.MapUrl };
-            _SingleRideRandomRideViewModel.CommentCount = repository.GetCommentCountForAdHocRide(adhocrideid);
-            _SingleRideRandomRideViewModel.IsOwner = repository.IsAdHocCreator(adhocrideid, UserId);
-
-            if (_SingleRideRandomRideViewModel.MapUrl != null)
-            {
-                _SingleRideRandomRideViewModel.MapUrl =
-                string.Concat("<iframe id=mapmyfitness_route src=https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D", Ah.MapUrl, "&output=embed height=300px width=300px frameborder=0></iframe>");
-                //https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=http://veloroutes.org/k/%3Fr%3D108681
-            }
-            CultureHelper _CultureHelper = new CultureHelper(repository);
-            TimeZoneInfo TZone = _CultureHelper.GetTimeZoneInfo(Ah.Location.id);
-            _SingleRideRandomRideViewModel.RandomRiders = repository.GetRidersForAdHocRide(adhocrideid, TZone);
-            _SingleRideRandomRideViewModel.KeenCount = repository.GetKeenCountForAdHocRide(Ah.id);
-            _SingleRideRandomRideViewModel.RandomComments = repository.GetTop2CommentsForAdHocRide(adhocrideid);
-
-            return _SingleRideRandomRideViewModel;
-        }
-
         public SingleRideAndRandomRideViewModel PopulateSingleRideModel(int RideId, string UserId)
         {
             Ride _Ride = repository.GetRideByIDIncludeGroup(RideId);
@@ -116,6 +94,24 @@ namespace FreeWheeling.UI.Models
             RideModel.InFirst = repository.IsIn(RideModel.Ride.id,UserId);
             RideModel.OutFirst = repository.IsOut(RideModel.Ride.id, UserId);
             RideModel.OnWayFirst = repository.IsOnWay(RideModel.Ride.id, UserId);
+            RideModel.Routes = new List<RouteWithVoteCount>();
+            RideModel.NextRoutes = new List<RouteWithVoteCount>();
+            List<RouteWithVoteCount> _RouteWithVoteCount = new List<RouteWithVoteCount>();
+            foreach (Route item in _Group.Routes)
+            {
+                RouteWithVoteCount _RVC = new RouteWithVoteCount
+                {
+                    Desc = item.Desc,
+                    Group = item.Group,
+                    MapURL = item.MapURL,
+                    RouteId = item.id,
+                    VoteCount = repository.RouteVoteCountByRideid(item.id, RideModel.Ride.id)
+                };
+
+                RideModel.Routes.Add(_RVC);  
+            }
+
+            //RideModel.Routes = _RouteWithVoteCount;
 
             if (RideModel.Group.OneOff == false)
             {
@@ -134,6 +130,21 @@ namespace FreeWheeling.UI.Models
                 RideModel.InSecond = repository.IsIn(RideModel.NextRide.id, UserId);
                 RideModel.OutSecond = repository.IsOut(RideModel.NextRide.id, UserId);
                 RideModel.OnWaySecond = repository.IsOnWay(RideModel.NextRide.id, UserId);
+
+                foreach (Route item in _Group.Routes)
+                {
+                    RouteWithVoteCount _RVCNext = new RouteWithVoteCount
+                    {
+                        Desc = item.Desc,
+                        Group = item.Group,
+                        MapURL = item.MapURL,
+                        RouteId = item.id,
+                        VoteCount = repository.RouteVoteCountByRideid(item.id, RideModel.NextRide.id)
+                    };
+
+                    RideModel.NextRoutes.Add(_RVCNext);
+                }
+
             }
 
             if (_UserExpands != null)
@@ -227,8 +238,8 @@ namespace FreeWheeling.UI.Models
         public string RideTime { get; set; }
         public Group Group { get; set; }
         public Ride Ride { get; set; }
-        public List<Rider> Riders { get; set; } 
-        public List<Route> Routes { get; set; }
+        public List<Rider> Riders { get; set; }
+        public List<RouteWithVoteCount> Routes { get; set; }
         public List<Comment> Comments { get; set; }
         public int CommentCount { get; set; }
         public int KeenCount { get; set; }
@@ -265,7 +276,7 @@ namespace FreeWheeling.UI.Models
         public string NextRideTime { get; set; }
         public Ride NextRide { get; set; }
         public List<Rider> NextRiders { get; set; }
-        public List<Route> NextRoutes { get; set; }
+        public List<RouteWithVoteCount> NextRoutes { get; set; }
         public List<Comment> NextComments { get; set; }
         public int NextCommentCount { get; set; }
         public int NextKeenCount { get; set; }
@@ -277,6 +288,18 @@ namespace FreeWheeling.UI.Models
         public bool InSecond { get; set; }
         public bool OutSecond { get; set; }
         public bool OnWaySecond { get; set; }
+
+        //Routes
+        public int RouteCount { get; set; }
+    }
+
+    public class RouteWithVoteCount
+    {
+        public int RouteId { get; set; }
+        public string MapURL { get; set; }
+        public string Desc { get; set; }
+        public Group Group { get; set; }
+        public int VoteCount { get; set; }
     }
 
     public class RideCommentModel
