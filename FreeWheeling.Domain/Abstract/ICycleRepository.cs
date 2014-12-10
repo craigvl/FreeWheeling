@@ -70,11 +70,9 @@ namespace FreeWheeling.Domain.Abstract
 
         //Get HomePageRide
         Ride GetHomePageRideByUserID(string UserId);
-        Ad_HocRide GetHomePageRandomRideByUserID(string UserId);
 
         //Get Private
         List<Group> GetPrivateGroupsByUserID(string UserId, Location _Location);
-        List<Ad_HocRide> GetPrivateAdHocRideByUserID(string UserId, Location _Location, TimeZoneInfo TimeZone);
         
         //Add
         void AddMember(string UserId, Group _Group);
@@ -83,7 +81,6 @@ namespace FreeWheeling.Domain.Abstract
         void AddLocation(Location _Location);
         void AddRideComment(string Comment, int RideId, string UserName, string UserId);
         void AddUserExpand(UserExpand _UserExpand);
-        void AddPrivateAdHocInvite(List<PrivateRandomUsers> _PrivateRandomUsers);
         void AddPrivateGroupInvite(List<PrivateGroupUsers> _PrivateGroupUsers);
         void AddFollowingUser(string CurrentUserId, string UserId);
         void AddVote(string UserId, Route _Route, Ride _Ride);
@@ -100,7 +97,6 @@ namespace FreeWheeling.Domain.Abstract
         void UpdateRideTimes(Group _Group, TimeZoneInfo TimeZone);
         void UpdateUserExpand(UserExpand _UserExpand);
         void UpdateInvitePrivateUser(String UserId, String UserEmail, int id);
-        void UpdateInviteRandomPrivateUser(String UserId, String UserEmail, int id);
 
         //Checks
         Boolean IsGroupCreator(int _GroupId, string UserId);
