@@ -58,6 +58,7 @@ namespace FreeWheeling.Domain.Abstract
         int RouteCountForGroup(int Groupid);
         int RouteVoteCountByRideid(int Routeid, int Rideid);
         Route GetRouteById(int Routeid);
+        List<Route> GetRoutesByGroupId(int GroupId);
 
         //Get .. Members
         IEnumerable<Member> GetMembersWithGroups();

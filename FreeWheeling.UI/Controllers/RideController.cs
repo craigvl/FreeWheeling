@@ -294,7 +294,16 @@ namespace FreeWheeling.UI.Controllers
             Route CurrentRoute = repository.GetRouteById(routeid);
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             repository.AddVote(currentUser.Id, CurrentRoute, CurrentRide);
-            return Json(new { success = false, Message = "Vote counted" }, JsonRequestBehavior.AllowGet);
+            int TotalVotes = repository.RouteVoteCountByRideid(routeid, rideid);
+            return Json(new
+            {
+                success = true,
+                message = "Vote Added",
+                rideid = rideid,
+                routeid = routeid,
+                totalvotes = TotalVotes
+                
+            }, JsonRequestBehavior.AllowGet);
 
         }
 

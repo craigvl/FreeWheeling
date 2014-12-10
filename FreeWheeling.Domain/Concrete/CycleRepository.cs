@@ -346,6 +346,11 @@ namespace FreeWheeling.Domain.Concrete
             }
         }
 
+        public List<Route> GetRoutesByGroupId(int GroupId)
+        {
+            return context.Routes.Where(g => g.Group.id == GroupId).ToList();
+        }
+
         public UserExpand GetUserExpandByUserID(string UserId)
         {
             return context.UserExpands.Where(e => e.userId == UserId).FirstOrDefault();
@@ -735,7 +740,8 @@ namespace FreeWheeling.Domain.Concrete
             CurrentGroup.IsPrivate = _Group.IsPrivate;
             CurrentGroup.Description = _Group.Description;
             CurrentGroup.CreatedByName = _Group.CreatedByName;
-            CurrentGroup.RideDate = _Group.RideDate;
+            CurrentGroup.Routes = _Group.Routes;
+            //CurrentGroup.RideDate = _Group.RideDate;
             if (CurrentGroup.OneOff)
             {
                 CurrentGroup.RideDate = _Group.RideDate;

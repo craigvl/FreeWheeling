@@ -201,47 +201,10 @@ namespace FreeWheeling.UI.Models
         }
     }
 
-    public class AdHocRidesModel
-    {
-        public List<Ad_HocRide> _Ad_HocRide { get; set; }
-        public List<Ad_HocRide> PrivateRandomBunches { get; set; }
-    }
-
     public class DayOfWeekViewModel
     {
         public string Name { get; set; }    
         public bool Checked { get; set; }
-    }
-
-    public class AdHocCreateModel
-    {
-        [DataType(DataType.Date, ErrorMessage = "Please enter a valid date in the format dd/mm/yyyy")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime RideDate { get; set; }
-        [Required(ErrorMessage = "Hour is required")]
-        [Range(0, 24, ErrorMessage = "Between 0 and 24")]
-        public int Hour { get; set; }
-        [Required(ErrorMessage = "Minute is required")]
-        [Range(0, 60, ErrorMessage = "Between 0 and 60")]
-        public int Minute { get; set; }
-        [Required(ErrorMessage = "Please select a date")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
-        public string DateString { get; set; }
-        [Required(ErrorMessage = "Name is required")]
-        public string Name { get; set; }
-        [Required]
-        public int LocationsId { get; set; }
-        public List<Location> Locations { get; set; }
-        [Required(ErrorMessage = "Start location is required")]
-        public string StartLocation { get; set; }
-        public string AverageSpeed { get; set; }
-        public string Creator { get; set; }
-        [Required(ErrorMessage = "Your name is required")]
-        public string CreatorName { get; set; }
-        public string Description { get; set; }
-        public string MapUrl { get; set; }
-        public bool IsPrivate { get; set; }
-        public List<InviteUser> InviteUsers { get; set; }
     }
 
     public class InviteUser
@@ -373,6 +336,7 @@ namespace FreeWheeling.UI.Models
         public int Month { get; set; }
         //[MinLength(4, ErrorMessage = "Day needs to be 4 chars long")]
         public int Year { get; set; }
+        public List<Route> Routes { get; set; }
     }
 
     public class DeleteGroupModel

@@ -138,6 +138,8 @@ namespace FreeWheeling.UI.Controllers
                     Year = CurrentGroup.RideDate.Year
                 };
 
+                _EditGroupModel.Routes = repository.GetRoutesByGroupId(groupId);
+
                 _EditGroupModel.LocationsId = repository.GetLocations()
                     .Where(l => l.id == CurrentGroup.Location.id).Select(t => t.id).FirstOrDefault();
 
@@ -197,7 +199,8 @@ namespace FreeWheeling.UI.Controllers
                     id = _EditGroupModel.GroupId,
                     IsPrivate = _EditGroupModel.IsPrivate,
                     CreatedByName = _EditGroupModel.CreatorName,
-                    OneOff = _EditGroupModel.IsOneOff
+                    OneOff = _EditGroupModel.IsOneOff,
+                    Routes = _EditGroupModel.Routes
                 };
 
                 repository.UpdateGroup(UpdatedGroup);
@@ -224,7 +227,8 @@ namespace FreeWheeling.UI.Controllers
                     id = _EditGroupModel.GroupId,
                     IsPrivate = _EditGroupModel.IsPrivate,
                     CreatedByName = _EditGroupModel.CreatorName,
-                    OneOff = _EditGroupModel.IsOneOff
+                    OneOff = _EditGroupModel.IsOneOff,
+                    Routes = _EditGroupModel.Routes
                 };
 
                 string datestring = _EditGroupModel.Day.ToString("00") + "/" + _EditGroupModel.Month.ToString() + "/" + _EditGroupModel.Year.ToString() + " " + _EditGroupModel.Hour.ToString("00") + ":" + _EditGroupModel.Minute.ToString("00");
@@ -353,13 +357,23 @@ namespace FreeWheeling.UI.Controllers
                 NewGroup.Rides.Add(OneOffRide);
 
                 //Routes:Need to update this so that it can be a dynamic number of routes
-                Route _Route1 = new Route { Desc = _GroupCreateModel.Route1Desc, Group = NewGroup, MapURL = _GroupCreateModel.Route1URL };
-                Route _Route2 = new Route { Desc = _GroupCreateModel.Route2Desc, Group = NewGroup, MapURL = _GroupCreateModel.Route2URL };
-                Route _Route3 = new Route { Desc = _GroupCreateModel.Route3Desc, Group = NewGroup, MapURL = _GroupCreateModel.Route3URL };
+                if (_GroupCreateModel.Route1Desc != string.Empty)
+                {
+                    Route _Route1 = new Route { Desc = _GroupCreateModel.Route1Desc, Group = NewGroup, MapURL = _GroupCreateModel.Route1URL };
+                    _Routes.Add(_Route1);
+                }
+                
+                if (_GroupCreateModel.Route2Desc != string.Empty)
+                {
+                    Route _Route2 = new Route { Desc = _GroupCreateModel.Route2Desc, Group = NewGroup, MapURL = _GroupCreateModel.Route2URL };
+                    _Routes.Add(_Route2);
+                }
 
-                _Routes.Add(_Route1);
-                _Routes.Add(_Route2);
-                _Routes.Add(_Route3);
+                if (_GroupCreateModel.Route3Desc != string.Empty)
+                {
+                    Route _Route3 = new Route { Desc = _GroupCreateModel.Route3Desc, Group = NewGroup, MapURL = _GroupCreateModel.Route3URL };
+                    _Routes.Add(_Route3);
+                }
 
                 NewGroup.Routes = _Routes;
 
@@ -422,13 +436,23 @@ namespace FreeWheeling.UI.Controllers
                 };
 
                 //Routes:Need to update this so that it can be a dynamic number of routes
-                Route _Route1 = new Route { Desc = _GroupCreateModel.Route1Desc, Group = NewGroup, MapURL = _GroupCreateModel.Route1URL };
-                Route _Route2 = new Route { Desc = _GroupCreateModel.Route2Desc, Group = NewGroup, MapURL = _GroupCreateModel.Route2URL };
-                Route _Route3 = new Route { Desc = _GroupCreateModel.Route3Desc, Group = NewGroup, MapURL = _GroupCreateModel.Route3URL };
+                if (_GroupCreateModel.Route1Desc != string.Empty)
+                {
+                    Route _Route1 = new Route { Desc = _GroupCreateModel.Route1Desc, Group = NewGroup, MapURL = _GroupCreateModel.Route1URL };
+                    _Routes.Add(_Route1);
+                }
 
-                _Routes.Add(_Route1);
-                _Routes.Add(_Route2);
-                _Routes.Add(_Route3);
+                if (_GroupCreateModel.Route2Desc != string.Empty)
+                {
+                    Route _Route2 = new Route { Desc = _GroupCreateModel.Route2Desc, Group = NewGroup, MapURL = _GroupCreateModel.Route2URL };
+                    _Routes.Add(_Route2);
+                }
+
+                if (_GroupCreateModel.Route3Desc != string.Empty)
+                {
+                    Route _Route3 = new Route { Desc = _GroupCreateModel.Route3Desc, Group = NewGroup, MapURL = _GroupCreateModel.Route3URL };
+                    _Routes.Add(_Route3);
+                }
 
                 NewGroup.Routes = _Routes;
 
