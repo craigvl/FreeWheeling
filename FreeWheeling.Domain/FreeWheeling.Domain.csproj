@@ -95,6 +95,10 @@
     <Compile Include="DataContexts\CycleMigrations\201412080042453_Routes-Desc.Designer.cs">
       <DependentUpon>201412080042453_Routes-Desc.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\CycleMigrations\201412100547535_VoteRideRequired.cs" />
+    <Compile Include="DataContexts\CycleMigrations\201412100547535_VoteRideRequired.Designer.cs">
+      <DependentUpon>201412100547535_VoteRideRequired.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\CycleMigrations\Configuration.cs" />
     <Compile Include="Entities\AdHocComment.cs" />
     <Compile Include="Entities\RouteVote.cs" />
@@ -152,6 +156,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\CycleMigrations\201412080042453_Routes-Desc.resx">
       <DependentUpon>201412080042453_Routes-Desc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\CycleMigrations\201412100547535_VoteRideRequired.resx">
+      <DependentUpon>201412100547535_VoteRideRequired.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

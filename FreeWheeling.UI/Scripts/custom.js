@@ -295,3 +295,11 @@ function FollowCompleteUnFollow() {
     $('a#unfollowbutton').hide();
     displayMessageAjax("Not Following", "success", "BottomCentre", "tempoarayMessage");
 }
+
+//Shown when user clicks the route voute button
+function VoteComplete(data) {
+    HideProgress();
+    displayMessageAjax(data.message, "success", "BottomCentre", "tempoarayMessage");
+    //alert(data.totalvotes);
+    location.reload();
+}

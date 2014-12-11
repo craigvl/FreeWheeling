@@ -73,6 +73,22 @@
             </div>
             }
             <hr />
+            <div><b>Routes</b></div>
+
+            @for (var f = 0; f < Model.Routes.Count; f++)
+            {
+                <div>
+                    Description:
+                    @Html.TextBoxFor(i => Model.Routes[f].Desc, new { @class = "form-control" })
+                </div>
+                <p></p>
+                <div>
+                    Strava link: @Html.TextBoxFor(i => Model.Routes[f].MapURL, new { @class = "form-control" })
+                </div>
+                <p></p>
+            }
+
+            <hr />
             <div><b>Private</b></div>
             <div>@Html.CheckBoxFor(model => model.IsPrivate)</div>
             <hr />
