@@ -246,6 +246,10 @@ namespace FreeWheeling.UI.Controllers
                     ReceiveComments = true,
                     ReceiveSummary = false,
                     ReceiveEmails = false,
+                    ReceiveMobileFollowingNotifications = true,
+                    ReceiveMobileGroupNotifications = true,
+                    ReceiveMobileKeenNotifications = true,
+                    ReceiveMobileNotifications = true,
                     TimeBefore = "0",
                     FirstName = model.FirstName,
                     LastName = model.LastName};

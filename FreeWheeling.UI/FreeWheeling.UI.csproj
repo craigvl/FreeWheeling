@@ -288,6 +288,10 @@
     <Compile Include="DataContexts\IdentityMigrations\201407152156497_Added_FirstNameLastName.Designer.cs">
       <DependentUpon>201407152156497_Added_FirstNameLastName.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201412222358343_AddedMobileNotificationProfileOptions.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201412222358343_AddedMobileNotificationProfileOptions.Designer.cs">
+      <DependentUpon>201412222358343_AddedMobileNotificationProfileOptions.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Filters\CompressAttribute.cs" />
     <Compile Include="Filters\RoleAttribute.cs" />
@@ -683,6 +687,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201407152156497_Added_FirstNameLastName.resx">
       <DependentUpon>201407152156497_Added_FirstNameLastName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201412222358343_AddedMobileNotificationProfileOptions.resx">
+      <DependentUpon>201412222358343_AddedMobileNotificationProfileOptions.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
