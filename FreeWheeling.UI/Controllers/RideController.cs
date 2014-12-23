@@ -398,6 +398,7 @@ namespace FreeWheeling.UI.Controllers
                 UserHelper _UserHelp = new UserHelper();
                 List<Rider> _Riders = repository.GetRidersAndCommentersForRideDontIncludeCurrentUser(_Ride.id, TZone, currentUser.Id);
                 List<string> Emails = new List<string>();
+                List<string> PhoneNotifications = new List<string>();
 
                 foreach (Rider item in _Riders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
                 {
@@ -408,6 +409,11 @@ namespace FreeWheeling.UI.Controllers
                         {
                             string email = _UserHelp.GetUserEmailViaUserId(item.userId);
                             Emails.Add(email);
+                        }
+                        if (ThisUser.ReceiveMobileNotifications)
+                        {
+                            string phone = _UserHelp.GetUserEmailViaUserId(item.userId);
+                            PhoneNotifications.Add(phone);
                         }
                     }
                 }
@@ -422,14 +428,19 @@ namespace FreeWheeling.UI.Controllers
                             string email = _UserHelp.GetUserEmailViaUserId(u);
                             Emails.Add(email);
                         }
+                        if (ThisUser.ReceiveMobileNotifications)
+                        {
+                            string phone = _UserHelp.GetUserEmailViaUserId(u);
+                            PhoneNotifications.Add(phone);
+                        }
                     }
                 }
 
                 Emails = Emails.Distinct().ToList();
 
-                foreach (string e in Emails)
+                foreach (string p in PhoneNotifications)
                 {
-                    ApplicationUser _user = idb.Users.Where(d => d.Email == e).FirstOrDefault();
+                    ApplicationUser _user = idb.Users.Where(d => d.Email == p).FirstOrDefault();
                     sendNotification(currentUser.UserName + " Is " + Commitment + " Ride " + _Group.name, _user.UserName);
                 }
 
@@ -529,6 +540,7 @@ namespace FreeWheeling.UI.Controllers
                 UserHelper _UserHelp = new UserHelper();
                 List<Rider> _Riders = repository.GetRidersAndCommentersForRideDontIncludeCurrentUser(_Ride.id, TZone, currentUser.Id);
                 List<string> Emails = new List<string>();
+                List<string> PhoneNotifications = new List<string>();
                 foreach (Rider item in _Riders.GroupBy(x => x.userId).Select(x => x.FirstOrDefault()))
                 {
                     var ThisUser = idb.Users.Find(item.userId);
@@ -538,6 +550,11 @@ namespace FreeWheeling.UI.Controllers
                         {
                             string email = _UserHelp.GetUserEmailViaUserId(item.userId);
                             Emails.Add(email);
+                        }
+                        if (ThisUser.ReceiveMobileNotifications)
+                        {
+                            string phone = _UserHelp.GetUserEmailViaUserId(item.userId);
+                            PhoneNotifications.Add(phone);
                         }
                     }
                 }
@@ -552,14 +569,19 @@ namespace FreeWheeling.UI.Controllers
                             string email = _UserHelp.GetUserEmailViaUserId(u);
                             Emails.Add(email);
                         }
+                        if (ThisUser.ReceiveMobileNotifications)
+                        {
+                            string phone = _UserHelp.GetUserEmailViaUserId(u);
+                            PhoneNotifications.Add(phone);
+                        }
                     }
                 }
 
                 Emails = Emails.Distinct().ToList();
 
-                foreach (string e in Emails)
+                foreach (string p in PhoneNotifications)
                 {
-                    ApplicationUser _user = idb.Users.Where(d => d.Email == e).FirstOrDefault();
+                    ApplicationUser _user = idb.Users.Where(d => d.Email == p).FirstOrDefault();
                     sendNotification(currentUser.UserName + " Is " + Commitment + " Ride " + _Group.name, _user.UserName);
                 }
 
