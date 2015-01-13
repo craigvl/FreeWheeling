@@ -22,8 +22,10 @@
 <div id="@("collapseCommentPanel" + @rideid)" style="padding-left:20px">
     @foreach (RouteWithVoteCount item in @routes)
     {
-        <div>
-            @using (Ajax.BeginForm("Vote", "Ride", new
+        if (item.Desc != null)
+        {
+            <div>
+                @using (Ajax.BeginForm("Vote", "Ride", new
                 {
                     routeid = @item.RouteId,
                     rideid = @rideid,
@@ -35,15 +37,19 @@
             OnBegin = "ShowProgress"
         }))
             {
-                <div class="form-group">
-                    <span>@item.Desc (@item.VoteCount vote/s)</span>
-                    <span class="input-group-addon-C">
-                        <button class="pull-right btn btn-default btn-sm" id="@submitid" type="submit">Vote</button>
-                    </span>
-                    <p></p>
-                    <hr />
-                </div>
+                    <div class="form-group">
+                        <span>@item.Desc (@item.VoteCount vote/s)</span>
+                        
+                        <span class="input-group-addon-C">
+                            <button class="pull-right btn btn-default btn-sm" id="@submitid" type="submit">Vote</button>
+                        </span>
+                        <p></p>
+                        <div><a class="btn btn-sm btn-success " target="_blank" href="@item.MapURL">View Route</a></div>
+                        <p></p>
+                        <hr />
+                    </div>
             }
-        </div>       
+            </div>       
+        }
     }
 </div>

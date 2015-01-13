@@ -158,21 +158,31 @@
         <p></p>
         <div>
             <p>Below enter routes that this group will ride to allow others to vote each week on which route to take.</p>
+            <p>Enter the Strava route URL's like "https://www.strava.com/routes/1324200"</p>
             <hr />
-            <div> Route 1 Description </div>
+            <div> <b>Route 1</b></div>
+            <div>Description</div>
             <div>
                 @Html.TextBoxFor(model => model.Route1Desc, new { @class = "form-control" })
             </div>
-
-            <div> Route 2 Description </div>
+            <div>Strava route link</div>
+            <div> @Html.TextBoxFor(model => model.Route1URL, new { @class = "form-control" }) </div>
+            <p></p>
+            <div> <b>Route 2</b></div>
+            <div>Description </div>
             <div>
                 @Html.TextBoxFor(model => model.Route2Desc, new { @class = "form-control" })
             </div>
-
-            <div> Route 3 Description </div>
+            <div>Strava route link</div>
+            <div> @Html.TextBoxFor(model => model.Route2URL, new { @class = "form-control" }) </div>
+            <p></p>
+            <div> <b>Route 3</b></div>
+            <div>Description </div>
             <div>
                 @Html.TextBoxFor(model => model.Route3Desc, new { @class = "form-control" })
             </div>
+            <div>Strava route link</div>
+            <div> @Html.TextBoxFor(model => model.Route3URL, new { @class = "form-control" }) </div>
 
             <p></p>
             <div><span class="RequiredField">*&nbsp;</span><b>Your name</b></div>

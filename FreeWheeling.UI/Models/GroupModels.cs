@@ -268,7 +268,7 @@ namespace FreeWheeling.UI.Models
     public string country { get; set; }
     public bool IsPrivate { get; set; }
     public bool OneOff { get; set; }
-    [Required(ErrorMessage = "Your name is require")]
+    [Required(ErrorMessage = "Your name is required")]
     public string CreatorName { get; set; }
     public string Route1Desc { get; set; }
     public string Route1URL { get; set; }

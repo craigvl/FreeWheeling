@@ -148,7 +148,7 @@
                                 <div id="@commentpanelid" class="@commentpannelclass">
                                     <div id="@commentcollapsearea">
                                         <div class="panel-body panelBody">
-                                            @if (@Model.Comments != null)
+                                            @if (@Model.Routes != null)
                                             {
                                                 @Html.Partial(@routepartial, Model, new ViewDataDictionary { { "position", @position } })
                                             }
