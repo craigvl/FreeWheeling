@@ -15,6 +15,10 @@ namespace FreeWheeling.UI.Models
     {
         public int? LocationID {get;set;}
         public bool ReceiveEmails { get; set; }
+        public bool ReceiveMobileNotifications { get; set; }
+        public bool ReceiveMobileFollowingNotifications { get; set; }
+        public bool ReceiveMobileKeenNotifications { get; set; }
+        public bool ReceiveMobileGroupNotifications { get; set; }
         public bool ReceiveKeen { get; set; }
         public bool ReceiveComments { get; set; }
         public bool ReceiveSummary { get; set; }

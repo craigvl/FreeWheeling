@@ -15,6 +15,7 @@ namespace FreeWheeling.Domain.Entities
         [Required]
         public Group Group { get; set; }
         public List<Rider> Riders { get; set; }
-        public List<Comment> Comments { get; set; } 
+        public List<Comment> Comments { get; set; }
+        public List<RouteVote> RoutesVotes { get; set; }
     }
 }

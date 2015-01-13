@@ -95,7 +95,7 @@
         <div>
             <hr />
             <b>This is a one off ride:</b>
-               @Html.CheckBoxFor(f => f.OneOff, new
+            @Html.CheckBoxFor(f => f.OneOff, new
           {
               @id = "OneOff",
               @onclick = "setOneOffStatus.call(this)"
@@ -103,44 +103,44 @@
             <p></p>
             <hr />
         </div>
-    <div id="daysofweekstimepanel">
-        <div class="form-group">
-            <label for="dtp_input1" class="control-label">Date and time of ride:</label>
-            <div class="input-group date form_datetime col-md-5" data-date-format="dd MM yyyy - hh:ii" data-link-field="dtp_input1">
-                <input class="form-control" size="16" type="text" value="" readonly>
-                @*<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>*@
-                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-            </div>
-            @*<input type="hidden" id="dtp_input1" value="" /><br />*@
-            @Html.HiddenFor(model => model.OneOffDateTime, new { @class = "register-form__oneoffdatetime-holder"})
-        </div>
-    </div>
-    <div id="daysofweekspanel">
-        <div><b>Days Of Week</b></div>
-        <p></p>
-        <div>
-            @for (int i = 0; i < Model.DaysOfWeek.Count; i++)
-            {
-                <div>
-                    @Html.HiddenFor(x => x.DaysOfWeek[i].Name)
-                    @Html.CheckBoxFor(x => x.DaysOfWeek[i].Checked)
-                    @Html.LabelFor(x => x.DaysOfWeek[i].Checked, Model.DaysOfWeek[i].Name)
+        <div id="daysofweekstimepanel">
+            <div class="form-group">
+                <label for="dtp_input1" class="control-label">Date and time of ride:</label>
+                <div class="input-group date form_datetime col-md-5" data-date-format="dd MM yyyy - hh:ii" data-link-field="dtp_input1">
+                    <input class="form-control" size="16" type="text" value="" readonly>
+                    @*<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>*@
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                 </div>
-            }
-        </div>
-        <hr />
-        <p></p>
-        <div class="form-group">
-            <label for="dtp_input3" class="control-label">Time</label>
-            <div class="input-group date form_time col-md-5" data-date="" data-date-format="hh:ii" data-link-field="dtp_input3" data-link-format="hh:ii">
-                <input id="bunchhourminute" class="form-control" size="16" type="text" value="" readonly>
-                @*<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>*@
-                <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                @*<input type="hidden" id="dtp_input1" value="" /><br />*@
+                @Html.HiddenFor(model => model.OneOffDateTime, new { @class = "register-form__oneoffdatetime-holder" })
             </div>
-            @Html.HiddenFor(model => model.BunchTime, new { @class = "register-form__bunchtime-holder" })
         </div>
+        <div id="daysofweekspanel">
+            <div><b>Days Of Week</b></div>
+            <p></p>
+            <div>
+                @for (int i = 0; i < Model.DaysOfWeek.Count; i++)
+                {
+                    <div>
+                        @Html.HiddenFor(x => x.DaysOfWeek[i].Name)
+                        @Html.CheckBoxFor(x => x.DaysOfWeek[i].Checked)
+                        @Html.LabelFor(x => x.DaysOfWeek[i].Checked, Model.DaysOfWeek[i].Name)
+                    </div>
+                }
+            </div>
+            <hr />
+            <p></p>
+            <div class="form-group">
+                <label for="dtp_input3" class="control-label">Time</label>
+                <div class="input-group date form_time col-md-5" data-date="" data-date-format="hh:ii" data-link-field="dtp_input3" data-link-format="hh:ii">
+                    <input id="bunchhourminute" class="form-control" size="16" type="text" value="" readonly>
+                    @*<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>*@
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                </div>
+                @Html.HiddenFor(model => model.BunchTime, new { @class = "register-form__bunchtime-holder" })
+            </div>
 
-    </div>
+        </div>
         <div><span class="RequiredField">*&nbsp;</span><b>Start Location</b></div>
         <div>
             @Html.TextBoxFor(model => model.StartLocation, new { @class = "controls", @placeholder = "Please enter location" })
@@ -154,210 +154,233 @@
         @Html.HiddenFor(model => model.lng, new { @class = "register-form__longitude-holder" })
         @Html.HiddenFor(model => model.country, new { @class = "register-form__country-holder" })
         <p></p>
-        <div><span class="RequiredField">*&nbsp;</span><b>Your name</b></div>
-        <div>
-            @Html.TextBoxFor(model => model.CreatorName, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.CreatorName)
-        </div>
+        <div><span></span><b>Routes</b></div>
         <p></p>
-        <div><b>Description</b></div>
         <div>
-            @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
-        </div>
-        <p></p>
-        @*<div><b>Map</b> (<a style="color:#333333;text-decoration:underline" target="_blank" href="http://veloroutes.org/bikemaps/">veloroutes</a> number)</div>
-        <div>
-            @Html.TextBoxFor(model => model.MapUrl, new { @class = "form-control", type = "number" })
-        </div>*@
-    <div>
-        <b>Private:</b>
-        @Html.CheckBoxFor(f => f.IsPrivate)
-        <p></p>
-        <p><b>Note:</b> If this is a private group you will be able to invite users later.</p>
-        <p>
-            Only you as the bunch creator will be able to invite users.
-        </p>
-        <p>
-            Only those users that you invite will be
-            able to see this bunch.
-        </p>
-    </div>
-        <div>
+            <p>Below enter routes that this group will ride to allow others to vote each week on which route to take.</p>
+            <hr />
+            <div> Route 1 Description </div>
+            <div>
+                @Html.TextBoxFor(model => model.Route1Desc, new { @class = "form-control" })
+            </div>
+
+            <div> Route 2 Description </div>
+            <div>
+                @Html.TextBoxFor(model => model.Route2Desc, new { @class = "form-control" })
+            </div>
+
+            <div> Route 3 Description </div>
+            <div>
+                @Html.TextBoxFor(model => model.Route3Desc, new { @class = "form-control" })
+            </div>
+
             <p></p>
-            <input class="btn btn-default" onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create" />
+            <div><span class="RequiredField">*&nbsp;</span><b>Your name</b></div>
+            <div>
+                @Html.TextBoxFor(model => model.CreatorName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CreatorName)
+            </div>
+            
+            <p></p>
+            <div><b>Description</b></div>
+            <div>
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+            </div>
+            <p></p>
+            @*<div><b>Map</b> (<a style="color:#333333;text-decoration:underline" target="_blank" href="http://veloroutes.org/bikemaps/">veloroutes</a> number)</div>
+                <div>
+                    @Html.TextBoxFor(model => model.MapUrl, new { @class = "form-control", type = "number" })
+                </div>*@
+            <div>
+                <b>Private:</b>
+                @Html.CheckBoxFor(f => f.IsPrivate)
+                <p></p>
+                <p><b>Note:</b> If this is a private group you will be able to invite users later.</p>
+                <p>
+                    Only you as the bunch creator will be able to invite users.
+                </p>
+                <p>
+                    Only those users that you invite will be
+                    able to see this bunch.
+                </p>
+            </div>
+            <div>
+                <p></p>
+                <input class="btn btn-default" onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create" />
+            </div>
+            
         </div>
-        <p></p>
     }
-</div>
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/datepicker")
-    <script type="text/javascript">
-        jQuery(document).ready(function () {
-            HideProgress();
-            initialize();           
-            if ($('#OneOff').prop('checked')) {
-                $('#daysofweekspanel').hide();
-                $('#daysofweekstimepanel').show();
-            }
-            else {
-                $('#daysofweekstimepanel').hide();
-            }
-
-            function addZero(i) {
-                if (i < 10) {
-                    i = "0" + i;
-                }
-                return i;
-            }
-
-            $('.form_time').datetimepicker({
-                todayBtn: 0,
-                autoclose: 1,
-                todayHighlight: 1,
-                startView: 1,
-                minView: 0,
-                maxView: 1,
-                forceParse: 1
-            }).on('changeDate', function (evw) {
-                $('.register-form__bunchtime-holder').val($('#bunchhourminute').val());
-            });
-            $('.form_datetime').datetimepicker({
-                //language:  'fr',
-                todayBtn: 1,
-                autoclose: 1,
-                todayHighlight: 1,
-                startView: 2,
-                forceParse: 0,
-                showMeridian: 0,
-            }).on('changeDate', function(ev){
-                $('.register-form__oneoffdatetime-holder').val(ev.date.getTime());
-            });
-        });
-        $("form").submit(function () {
-            if (!$(this).valid()) {
-                HideProgress();
-            }
-            else {
-            }
-        });
-
-        function setOneOffStatus() {
-            //alert(this.checked);
-            if (this.checked) {
-                $('#daysofweekspanel').hide();
-                $('#daysofweekstimepanel').show();
-            }
-            else {
-                $('#daysofweekspanel').show();
-                $('#daysofweekstimepanel').hide();
-            }
-        }
-
-        var geocoder;
-        var map;
-        var marker;
-        function initialize() {
-            var userName = jQuery('#RideUserNameHidden').val();
-            //console.log(userName);
-            $.ajax({
-                type: "GET",
-                url: window.BunchyAPI + "/api/bunch/location/" + userName,
-                dataType: "json",
-                success: function (data) {
-                    //console.debug(data);
-                    geocoder = new google.maps.Geocoder();
-                    var latlng = new google.maps.LatLng(data.lat, data.lng);
-                    var mapOptions = {
-                        zoom: 14,
-                        center: latlng
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+            @Scripts.Render("~/bundles/datepicker")
+            <script type="text/javascript">
+                jQuery(document).ready(function () {
+                    HideProgress();
+                    initialize();
+                    if ($('#OneOff').prop('checked')) {
+                        $('#daysofweekspanel').hide();
+                        $('#daysofweekstimepanel').show();
                     }
-                    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-                    var input = /** @@type {HTMLInputElement} */
-                    (document.getElementById('StartLocation'));
+                    else {
+                        $('#daysofweekstimepanel').hide();
+                    }
 
-                    var types = document.getElementById('type-selector');
-                    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-                    map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
-
-                    var autocomplete = new google.maps.places.Autocomplete(input);
-                    autocomplete.bindTo('bounds', map);
-
-                    //var infowindow = new google.maps.InfoWindow();
-                    marker = new google.maps.Marker({
-                        position: latlng,
-                        map: map,
-                        draggable: true,
-                        animation: google.maps.Animation.DROP
-                    });
-
-                    google.maps.event.addListener(autocomplete, 'place_changed', function () {
-                        //infowindow.close();
-                        marker.setVisible(false);
-                        var place = autocomplete.getPlace();
-                        if (!place.geometry) {
-                            return;
+                    function addZero(i) {
+                        if (i < 10) {
+                            i = "0" + i;
                         }
+                        return i;
+                    }
 
-                        map.setCenter(place.geometry.location);
-                        map.setZoom(14);
-                        marker.setPosition(place.geometry.location);
-                        marker.setVisible(true);
-
-                        var address = '';
-                        var country;
-                        if (place.address_components) {
-                            address = [
-                              (place.address_components[0] && place.address_components[0].short_name || ''),
-                              (place.address_components[1] && place.address_components[1].short_name || ''),
-                              (place.address_components[2] && place.address_components[2].short_name || '')
-                            ].join(' ');
-
-                            for (var i = 0; i < place.address_components.length; i++) {
-                                if (place.address_components[i].types[0] == "country") {
-                                    country = place.address_components[i].short_name;
-                                }
-                            }
-                            $('.register-form__country-holder').val(country);
-                        }
-
-                        var lat = place.geometry.location.lat();
-                        var long = place.geometry.location.lng();
-                        $('.register-form__latitude-holder').val(lat);
-                        $('.register-form__longitude-holder').val(long);
+                    $('.form_time').datetimepicker({
+                        todayBtn: 0,
+                        autoclose: 1,
+                        todayHighlight: 1,
+                        startView: 1,
+                        minView: 0,
+                        maxView: 1,
+                        forceParse: 1
+                    }).on('changeDate', function (evw) {
+                        $('.register-form__bunchtime-holder').val($('#bunchhourminute').val());
                     });
 
-                    google.maps.event.addListener(marker, 'dragend', function (event) {
-                        var lat = this.getPosition().lat();
-                        var long = this.getPosition().lng();
-                        $('.register-form__latitude-holder').val(lat);
-                        $('.register-form__longitude-holder').val(long);
+                    $('.form_datetime').datetimepicker({
+                        //language:  'fr',
+                        todayBtn: 1,
+                        autoclose: 1,
+                        todayHighlight: 1,
+                        startView: 2,
+                        forceParse: 0,
+                        showMeridian: 0,
+                    }).on('changeDate', function (ev) {
+                        $('.register-form__oneoffdatetime-holder').val(ev.date.getTime());
                     });
+                });
+                $("form").submit(function () {
+                    if (!$(this).valid()) {
+                        HideProgress();
+                    }
+                    else {
+                    }
+                });
 
-                    google.maps.event.addListener(map, 'click', function (event) {
-
-                        marker.setMap(null);
-                        marker = null;
-
-                        marker = new google.maps.Marker({
-                            position: event.latLng,
-                            map: map,
-                            draggable: true,
-                            animation: google.maps.Animation.DROP
-                        });
-
-                        var lat = event.latLng.lat();
-                        var long = event.latLng.lng();
-
-                        $('.register-form__latitude-holder').val(lat);
-                        $('.register-form__longitude-holder').val(long);
-                    });
-
-                },
-                error: function (err) {
-                    console.log(err);
+                function setOneOffStatus() {
+                    //alert(this.checked);
+                    if (this.checked) {
+                        $('#daysofweekspanel').hide();
+                        $('#daysofweekstimepanel').show();
+                    }
+                    else {
+                        $('#daysofweekspanel').show();
+                        $('#daysofweekstimepanel').hide();
+                    }
                 }
-            });
+
+                var geocoder;
+                var map;
+                var marker;
+                function initialize() {
+                    var userName = jQuery('#RideUserNameHidden').val();
+                    //console.log(userName);
+                    $.ajax({
+                        type: "GET",
+                        url: window.BunchyAPI + "/api/bunch/location/" + userName,
+                        dataType: "json",
+                        success: function (data) {
+                            //console.debug(data);
+                            geocoder = new google.maps.Geocoder();
+                            var latlng = new google.maps.LatLng(data.lat, data.lng);
+                            var mapOptions = {
+                                zoom: 14,
+                                center: latlng
+                            }
+                            map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                            var input = /** @@type {HTMLInputElement} */
+                            (document.getElementById('StartLocation'));
+
+                            var types = document.getElementById('type-selector');
+                            map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                            map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
+
+                            var autocomplete = new google.maps.places.Autocomplete(input);
+                            autocomplete.bindTo('bounds', map);
+
+                            //var infowindow = new google.maps.InfoWindow();
+                            marker = new google.maps.Marker({
+                                position: latlng,
+                                map: map,
+                                draggable: true,
+                                animation: google.maps.Animation.DROP
+                            });
+
+                            google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                                //infowindow.close();
+                                marker.setVisible(false);
+                                var place = autocomplete.getPlace();
+                                if (!place.geometry) {
+                                    return;
+                                }
+
+                                map.setCenter(place.geometry.location);
+                                map.setZoom(14);
+                                marker.setPosition(place.geometry.location);
+                                marker.setVisible(true);
+
+                                var address = '';
+                                var country;
+                                if (place.address_components) {
+                                    address = [
+                                      (place.address_components[0] && place.address_components[0].short_name || ''),
+                                      (place.address_components[1] && place.address_components[1].short_name || ''),
+                                      (place.address_components[2] && place.address_components[2].short_name || '')
+                                    ].join(' ');
+
+                                    for (var i = 0; i < place.address_components.length; i++) {
+                                        if (place.address_components[i].types[0] == "country") {
+                                            country = place.address_components[i].short_name;
+                                        }
+                                    }
+                                    $('.register-form__country-holder').val(country);
+                                }
+
+                                var lat = place.geometry.location.lat();
+                                var long = place.geometry.location.lng();
+                                $('.register-form__latitude-holder').val(lat);
+                                $('.register-form__longitude-holder').val(long);
+                            });
+
+                            google.maps.event.addListener(marker, 'dragend', function (event) {
+                                var lat = this.getPosition().lat();
+                                var long = this.getPosition().lng();
+                                $('.register-form__latitude-holder').val(lat);
+                                $('.register-form__longitude-holder').val(long);
+                            });
+
+                            google.maps.event.addListener(map, 'click', function (event) {
+
+                                marker.setMap(null);
+                                marker = null;
+
+                                marker = new google.maps.Marker({
+                                    position: event.latLng,
+                                    map: map,
+                                    draggable: true,
+                                    animation: google.maps.Animation.DROP
+                                });
+
+                                var lat = event.latLng.lat();
+                                var long = event.latLng.lng();
+
+                                $('.register-form__latitude-holder').val(lat);
+                                $('.register-form__longitude-holder').val(long);
+                            });
+
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        }
+                    });
+                }
+            </script>
         }
-    </script>
-}

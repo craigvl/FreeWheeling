@@ -1,0 +1,49 @@
+﻿@model FreeWheeling.UI.Models.RideModelIndex
+@using FreeWheeling.Domain.Entities;
+@using FreeWheeling.UI.Models;
+@{
+    List<RouteWithVoteCount> routes = new List<RouteWithVoteCount>();
+    int position = Convert.ToInt32(ViewData["position"]);
+    int rideid = Model.Ride.id;
+    int routecount = Model.RouteCount;
+    string submitid = "submit_First";
+    string commenttextid = "CommentStringFirst";
+    int parentid = Model.Ride.id;
+    routes = Model.Routes;
+
+    if (position == 2)
+    {
+        routes = Model.NextRoutes;
+        rideid = Model.NextRide.id;
+        commenttextid = "CommentStringSecond";
+        submitid = "submit_Second";
+    }
+}
+<div id="@("collapseCommentPanel" + @rideid)" style="padding-left:20px">
+    @foreach (RouteWithVoteCount item in @routes)
+    {
+        <div>
+            @using (Ajax.BeginForm("Vote", "Ride", new
+                {
+                    routeid = @item.RouteId,
+                    rideid = @rideid,
+                    ParentRideID = @parentid
+                }, new AjaxOptions
+        {
+            HttpMethod = "Post",
+            OnSuccess = "VoteComplete",
+            OnBegin = "ShowProgress"
+        }))
+            {
+                <div class="form-group">
+                    <span>@item.Desc (@item.VoteCount vote/s)</span>
+                    <span class="input-group-addon-C">
+                        <button class="pull-right btn btn-default btn-sm" id="@submitid" type="submit">Vote</button>
+                    </span>
+                    <p></p>
+                    <hr />
+                </div>
+            }
+        </div>       
+    }
+</div>

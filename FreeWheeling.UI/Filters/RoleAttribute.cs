@@ -27,32 +27,9 @@ namespace FreeWheeling.UI.Filters
             if (!httpContext.Request.IsAuthenticated)
                 return false;
 
-            var adhocid = (httpContext.Request.RequestContext.RouteData.Values["adhocrideid"] as string)
-             ??
-             (httpContext.Request["adhocrideid"] as string);
-
             var groupid = (httpContext.Request.RequestContext.RouteData.Values["groupId"] as string)
              ??
              (httpContext.Request["groupId"] as string);
-
-            if (adhocid != null)
-            {
-
-                if (repository.IsAdHocCreator(Convert.ToInt32(adhocid), httpContext.User.Identity.GetUserId().ToString()))
-                {
-
-                    return true;
-
-                }
-                else
-                {
-
-                    return false;
-
-                }
-
-
-            }
 
             if (groupid != null)
             {

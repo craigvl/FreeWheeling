@@ -14,6 +14,7 @@ namespace FreeWheeling.Domain.DataContexts
         {
         }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<RouteVote> RoutesVotes { get; set; }
         public DbSet<Member> Members { get; set; }
         public DbSet<Route> Routes { get; set; }
         public DbSet<Ride> Rides { get; set; }

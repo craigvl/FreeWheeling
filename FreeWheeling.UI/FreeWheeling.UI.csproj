@@ -288,6 +288,10 @@
     <Compile Include="DataContexts\IdentityMigrations\201407152156497_Added_FirstNameLastName.Designer.cs">
       <DependentUpon>201407152156497_Added_FirstNameLastName.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\IdentityMigrations\201412222358343_AddedMobileNotificationProfileOptions.cs" />
+    <Compile Include="DataContexts\IdentityMigrations\201412222358343_AddedMobileNotificationProfileOptions.Designer.cs">
+      <DependentUpon>201412222358343_AddedMobileNotificationProfileOptions.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="Filters\CompressAttribute.cs" />
     <Compile Include="Filters\RoleAttribute.cs" />
@@ -616,53 +620,36 @@
     <Content Include="Views\Group\Create.cshtml" />
     <Content Include="Views\Group\Index.cshtml" />
     <Content Include="Views\Shared\_GroupDetailPartial.cshtml" />
-    <Content Include="Views\Ride\AdHocList.cshtml" />
-    <Content Include="Views\Ride\ViewAdHocRide.cshtml" />
     <Content Include="Views\Home\LocationChange.cshtml" />
     <Content Include="Views\Ride\SeeAllComments.cshtml" />
-    <Content Include="Views\Ride\SeeAllAdHocComments.cshtml" />
-    <Content Include="Views\Ride\EditAdHocRide.cshtml" />
     <Content Include="Views\Group\EditGroup.cshtml" />
-    <Content Include="Views\Ride\DeleteAdHocRide.cshtml" />
     <Content Include="Views\Group\DeleteGroup.cshtml" />
     <Content Include="Views\Ride\Index.cshtml" />
     <Content Include="Scripts\underscore.min.map" />
     <Content Include="Views\Emails\Web.config" />
     <Content Include="Views\Emails\_ViewStart.cshtml" />
-    <Content Include="Views\Emails\SendAdHocEmails.cshtml" />
-    <Content Include="Views\Emails\SendAdHocEmailsDelete.cshtml" />
     <Content Include="Views\Emails\SendGroupRideNewCommentEmails.cshtml" />
-    <Content Include="Views\Emails\SendAdHocNewCommentEmails.cshtml" />
     <Content Include="Views\Emails\SendGroupRideEmailsAttend.cshtml" />
-    <Content Include="Views\Emails\SendAdHocEmailsAttend.cshtml" />
     <Content Include="Views\Ride\InviteOthersToBunch.cshtml" />
-    <Content Include="Views\Ride\InviteOthersToAdHocBunch.cshtml" />
     <Content Include="Views\Emails\SendUsersBunchInviteEmail.cshtml" />
     <Content Include="Views\Ride\ViewSingleRide.cshtml" />
-    <Content Include="Views\Emails\SendUsersAdHocBunchInviteEmail.cshtml" />
     <Content Include="Views\UserSettings\Index.cshtml" />
     <Content Include="Views\Group\InviteOthersToPrivateBunch.cshtml" />
     <Content Include="Views\Emails\SendUsersPrivateBunchInviteEmail.cshtml" />
-    <Content Include="Views\Emails\SendUsersPrivateAdHocBunchInviteEmail.cshtml" />
     <Content Include="Views\Emails\SendUserReset.cshtml" />
     <Content Include="Views\Ride\_RidersKeen.cshtml" />
     <Content Include="Views\Group\_ListRides.cshtml" />
-    <Content Include="Views\Ride\_ListPrivateRandomRides.cshtml" />
-    <Content Include="Views\Ride\_ListRandomRides.cshtml" />
     <Content Include="Views\Ride\_RidePanel.cshtml" />
     <Content Include="Views\Ride\_KeenActions.cshtml" />
     <Content Include="Views\Ride\_Comments.cshtml" />
     <Content Include="Views\Ride\_RidersKeenRandomAndSingle.cshtml" />
     <Content Include="Views\Ride\_CommentsRandomAndSingle.cshtml" />
-    <Content Include="Views\Ride\_KeenActionsRandomAndSingle.cshtml" />
     <Content Include="Views\Home\Feedback.cshtml" />
     <Content Include="Views\Emails\SendFeedback.cshtml" />
     <Content Include="Views\Ride\_JsonFavIcon.cshtml" />
     <Content Include="Views\Home\_HomePageKeenActions.cshtml" />
     <Content Include="Views\Home\_HomePageKeenStatus.cshtml" />
     <Content Include="Views\Home\_HomePageNextRide.cshtml" />
-    <Content Include="Views\Home\_HomePageNextRandomRide.cshtml" />
-    <Content Include="Views\Home\_HomePageKeenActionsRandom.cshtml" />
     <Content Include="Views\Emails\SendUserVerify.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\DisplayEmail.cshtml" />
@@ -674,6 +661,7 @@
     <Content Include="Views\Home\LocationCreate.cshtml" />
     <Content Include="Views\UserSettings\Follow.cshtml" />
     <Content Include="Views\Emails\Following.cshtml" />
+    <Content Include="Views\Ride\_Routes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -699,6 +687,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\IdentityMigrations\201407152156497_Added_FirstNameLastName.resx">
       <DependentUpon>201407152156497_Added_FirstNameLastName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\IdentityMigrations\201412222358343_AddedMobileNotificationProfileOptions.resx">
+      <DependentUpon>201412222358343_AddedMobileNotificationProfileOptions.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
