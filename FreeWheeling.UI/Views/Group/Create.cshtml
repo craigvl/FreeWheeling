@@ -298,6 +298,7 @@
                 var userName = jQuery('#RideUserNameHidden').val();
                 //console.log(userName);
                 $.ajax({
+                    async: false,
                     type: "GET",
                     url: window.BunchyAPI + "/api/bunch/location/" + userName,
                     dataType: "json",
