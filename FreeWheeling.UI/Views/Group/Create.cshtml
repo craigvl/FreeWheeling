@@ -10,6 +10,9 @@
         height: 200px;
     }
 
+    .google-map-canvas,
+    .google-map-canvas * { .box-sizing(content-box); }
+
     .controls {
         margin-top: 16px;
         border: 1px solid transparent;
@@ -148,7 +151,7 @@
         <p></p>
         @*<div><input class="btn btn-success" type="button" value="Lookup Address" onclick="codeAddress()"></div>*@
         <p></p>
-        <div id="map-canvas"></div>
+        <div class="google-map-canvas" id="map-canvas"></div>
         @Html.HiddenFor(model => model.lat, new { @class = "register-form__latitude-holder" })
         @Html.HiddenFor(model => model.lng, new { @class = "register-form__longitude-holder" })
         @Html.HiddenFor(model => model.country, new { @class = "register-form__country-holder" })
