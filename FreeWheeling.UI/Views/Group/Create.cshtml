@@ -6,11 +6,14 @@
 @Html.Hidden("RideUserNameHidden", User.Identity.GetUserName())
 <style>
     #map-canvas {
-
+        width: 100%;
+        height: 200px;
     }
 
     .google-map-canvas,
-    .google-map-canvas * { .box-sizing(content-box); }
+    .google-map-canvas * {
+        .box-sizing(content-box);
+    }
 
     .controls {
         margin-top: 16px;
@@ -57,7 +60,7 @@
         }
 </style>
 @Styles.Render("~/Content/datepicker")
-<div class="row">
+<div class="row" style="min-height:1900px;">
     <p>
         @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
     </p>
@@ -191,7 +194,7 @@
                 @Html.TextBoxFor(model => model.CreatorName, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.CreatorName)
             </div>
-            
+
             <p></p>
             <div><b>Description</b></div>
             <div>
@@ -219,179 +222,180 @@
                 <p></p>
                 <input class="btn btn-default" onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create" />
             </div>
-            
+
         </div>
-    }   
-        @section Scripts {       
-            @Scripts.Render("~/bundles/jqueryval")
-            @Scripts.Render("~/bundles/datepicker")
-            <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
-            <script type="text/javascript">
-                jQuery(document).ready(function () {
-                    HideProgress();
-                    google.maps.event.addDomListener(window, 'load', initialize);
-                    if ($('#OneOff').prop('checked')) {
-                        $('#daysofweekspanel').hide();
-                        $('#daysofweekstimepanel').show();
-                    }
-                    else {
-                        $('#daysofweekstimepanel').hide();
-                    }
-
-                    function addZero(i) {
-                        if (i < 10) {
-                            i = "0" + i;
-                        }
-                        return i;
-                    }
-
-                    $('.form_time').datetimepicker({
-                        todayBtn: 0,
-                        autoclose: 1,
-                        todayHighlight: 1,
-                        startView: 1,
-                        minView: 0,
-                        maxView: 1,
-                        forceParse: 1
-                    }).on('changeDate', function (evw) {
-                        $('.register-form__bunchtime-holder').val($('#bunchhourminute').val());
-                    });
-
-                    $('.form_datetime').datetimepicker({
-                        //language:  'fr',
-                        todayBtn: 1,
-                        autoclose: 1,
-                        todayHighlight: 1,
-                        startView: 2,
-                        forceParse: 0,
-                        showMeridian: 0,
-                    }).on('changeDate', function (ev) {
-                        $('.register-form__oneoffdatetime-holder').val(ev.date.getTime());
-                    });
-                });
-                $("form").submit(function () {
-                    if (!$(this).valid()) {
-                        HideProgress();
-                    }
-                    else {
-                    }
-                });
-
-                function setOneOffStatus() {
-                    //alert(this.checked);
-                    if (this.checked) {
-                        $('#daysofweekspanel').hide();
-                        $('#daysofweekstimepanel').show();
-                    }
-                    else {
-                        $('#daysofweekspanel').show();
-                        $('#daysofweekstimepanel').hide();
-                    }
+    }
+</div>
+        @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/datepicker")
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+                HideProgress();
+                google.maps.event.addDomListener(window, 'load', initialize);
+                if ($('#OneOff').prop('checked')) {
+                    $('#daysofweekspanel').hide();
+                    $('#daysofweekstimepanel').show();
                 }
-        var geocoder;
-        var map;
-        var marker;
-        function initialize() {
-            var userName = jQuery('#RideUserNameHidden').val();
-            //console.log(userName);
-            $.ajax({
-                type: "GET",
-                url: window.BunchyAPI + "/api/bunch/location/" + userName,
-                dataType: "json",
-                success: function (data) {
-                    //console.debug(data);
-                    geocoder = new google.maps.Geocoder();
-                    var latlng = new google.maps.LatLng(data.lat, data.lng);
-                    var mapOptions = {
-                        zoom: 14,
-                        center: latlng
+                else {
+                    $('#daysofweekstimepanel').hide();
+                }
+
+                function addZero(i) {
+                    if (i < 10) {
+                        i = "0" + i;
                     }
-                    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-                    var input = /** @@type {HTMLInputElement} */
-                    (document.getElementById('StartLocation'));
+                    return i;
+                }
 
-                    var types = document.getElementById('type-selector');
-                    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-                    map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
+                $('.form_time').datetimepicker({
+                    todayBtn: 0,
+                    autoclose: 1,
+                    todayHighlight: 1,
+                    startView: 1,
+                    minView: 0,
+                    maxView: 1,
+                    forceParse: 1
+                }).on('changeDate', function (evw) {
+                    $('.register-form__bunchtime-holder').val($('#bunchhourminute').val());
+                });
 
-                    var autocomplete = new google.maps.places.Autocomplete(input);
-                    autocomplete.bindTo('bounds', map);
+                $('.form_datetime').datetimepicker({
+                    //language:  'fr',
+                    todayBtn: 1,
+                    autoclose: 1,
+                    todayHighlight: 1,
+                    startView: 2,
+                    forceParse: 0,
+                    showMeridian: 0,
+                }).on('changeDate', function (ev) {
+                    $('.register-form__oneoffdatetime-holder').val(ev.date.getTime());
+                });
+            });
+            $("form").submit(function () {
+                if (!$(this).valid()) {
+                    HideProgress();
+                }
+                else {
+                }
+            });
 
-                    //var infowindow = new google.maps.InfoWindow();
-                    marker = new google.maps.Marker({
-                        position: latlng,
-                        map: map,
-                        draggable: true,
-                        animation: google.maps.Animation.DROP
-                    });
-
-                    google.maps.event.addListener(autocomplete, 'place_changed', function () {
-                        //infowindow.close();
-                        marker.setVisible(false);
-                        var place = autocomplete.getPlace();
-                        if (!place.geometry) {
-                            return;
+            function setOneOffStatus() {
+                //alert(this.checked);
+                if (this.checked) {
+                    $('#daysofweekspanel').hide();
+                    $('#daysofweekstimepanel').show();
+                }
+                else {
+                    $('#daysofweekspanel').show();
+                    $('#daysofweekstimepanel').hide();
+                }
+            }
+            var geocoder;
+            var map;
+            var marker;
+            function initialize() {
+                var userName = jQuery('#RideUserNameHidden').val();
+                //console.log(userName);
+                $.ajax({
+                    type: "GET",
+                    url: window.BunchyAPI + "/api/bunch/location/" + userName,
+                    dataType: "json",
+                    success: function (data) {
+                        //console.debug(data);
+                        geocoder = new google.maps.Geocoder();
+                        var latlng = new google.maps.LatLng(data.lat, data.lng);
+                        var mapOptions = {
+                            zoom: 14,
+                            center: latlng
                         }
+                        map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                        var input = /** @@type {HTMLInputElement} */
+                        (document.getElementById('StartLocation'));
 
-                        map.setCenter(place.geometry.location);
-                        map.setZoom(14);
-                        marker.setPosition(place.geometry.location);
-                        marker.setVisible(true);
+                        var types = document.getElementById('type-selector');
+                        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                        map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
 
-                        var address = '';
-                        var country;
-                        if (place.address_components) {
-                            address = [
-                              (place.address_components[0] && place.address_components[0].short_name || ''),
-                              (place.address_components[1] && place.address_components[1].short_name || ''),
-                              (place.address_components[2] && place.address_components[2].short_name || '')
-                            ].join(' ');
+                        var autocomplete = new google.maps.places.Autocomplete(input);
+                        autocomplete.bindTo('bounds', map);
 
-                            for (var i = 0; i < place.address_components.length; i++) {
-                                if (place.address_components[i].types[0] == "country") {
-                                    country = place.address_components[i].short_name;
-                                }
-                            }
-                            $('.register-form__country-holder').val(country);
-                        }
-
-                        var lat = place.geometry.location.lat();
-                        var long = place.geometry.location.lng();
-                        $('.register-form__latitude-holder').val(lat);
-                        $('.register-form__longitude-holder').val(long);
-                    });
-
-                    google.maps.event.addListener(marker, 'dragend', function (event) {
-                        var lat = this.getPosition().lat();
-                        var long = this.getPosition().lng();
-                        $('.register-form__latitude-holder').val(lat);
-                        $('.register-form__longitude-holder').val(long);
-                    });
-
-                    google.maps.event.addListener(map, 'click', function (event) {
-
-                        marker.setMap(null);
-                        marker = null;
-
+                        //var infowindow = new google.maps.InfoWindow();
                         marker = new google.maps.Marker({
-                            position: event.latLng,
+                            position: latlng,
                             map: map,
                             draggable: true,
                             animation: google.maps.Animation.DROP
                         });
 
-                        var lat = event.latLng.lat();
-                        var long = event.latLng.lng();
+                        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                            //infowindow.close();
+                            marker.setVisible(false);
+                            var place = autocomplete.getPlace();
+                            if (!place.geometry) {
+                                return;
+                            }
 
-                        $('.register-form__latitude-holder').val(lat);
-                        $('.register-form__longitude-holder').val(long);
-                    });
+                            map.setCenter(place.geometry.location);
+                            map.setZoom(14);
+                            marker.setPosition(place.geometry.location);
+                            marker.setVisible(true);
 
-                },
-                error: function (err) {
-                    console.log(err);
-                }
-            });
-        }
-    </script>
-        }
+                            var address = '';
+                            var country;
+                            if (place.address_components) {
+                                address = [
+                                  (place.address_components[0] && place.address_components[0].short_name || ''),
+                                  (place.address_components[1] && place.address_components[1].short_name || ''),
+                                  (place.address_components[2] && place.address_components[2].short_name || '')
+                                ].join(' ');
+
+                                for (var i = 0; i < place.address_components.length; i++) {
+                                    if (place.address_components[i].types[0] == "country") {
+                                        country = place.address_components[i].short_name;
+                                    }
+                                }
+                                $('.register-form__country-holder').val(country);
+                            }
+
+                            var lat = place.geometry.location.lat();
+                            var long = place.geometry.location.lng();
+                            $('.register-form__latitude-holder').val(lat);
+                            $('.register-form__longitude-holder').val(long);
+                        });
+
+                        google.maps.event.addListener(marker, 'dragend', function (event) {
+                            var lat = this.getPosition().lat();
+                            var long = this.getPosition().lng();
+                            $('.register-form__latitude-holder').val(lat);
+                            $('.register-form__longitude-holder').val(long);
+                        });
+
+                        google.maps.event.addListener(map, 'click', function (event) {
+
+                            marker.setMap(null);
+                            marker = null;
+
+                            marker = new google.maps.Marker({
+                                position: event.latLng,
+                                map: map,
+                                draggable: true,
+                                animation: google.maps.Animation.DROP
+                            });
+
+                            var lat = event.latLng.lat();
+                            var long = event.latLng.lng();
+
+                            $('.register-form__latitude-holder').val(lat);
+                            $('.register-form__longitude-holder').val(long);
+                        });
+
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }
+        </script>
+    }
