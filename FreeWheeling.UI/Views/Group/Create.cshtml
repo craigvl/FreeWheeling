@@ -6,12 +6,11 @@
 @Html.Hidden("RideUserNameHidden", User.Identity.GetUserName())
 <style>
    #map-canvas {
-        height: 100%;
-        margin: 0px;
-        padding: 0px
+        height: 200px;
+
       }
 
-    .controls {
+     .controls {
         margin-top: 16px;
         border: 1px solid transparent;
         border-radius: 2px 0 0 2px;
@@ -53,7 +52,7 @@
             font-family: Roboto;
             font-size: 13px;
             font-weight: 300;
-        }
+
 </style>
 @Styles.Render("~/Content/datepicker")
 <div class="row" style="min-height:1900px;">
@@ -69,17 +68,35 @@
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
         <p></p>
-        <div class="form-group">
-            <div><span class="RequiredField control-label">*&nbsp;</span><b>Bunch Name:</b></div>
-            <div>
-                @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Name)
-            </div>
-            <div>
-            </div>
+    <div class="form-group">
+
+        <div><span class="RequiredField">*&nbsp;</span><b>Start Location</b></div>
+        <div>
+            @Html.TextBoxFor(model => model.StartLocation, new { @class = "controls", @placeholder = "Please enter location" })
+            @Html.ValidationMessageFor(model => model.StartLocation)
+        </div>
+        <p></p>
+        @*<div><input class="btn btn-success" type="button" value="Lookup Address" onclick="codeAddress()"></div>*@
+        <p></p>
+        <div>
+            <div id="map-canvas"></div>
+        </div>
+        <div>
             <p></p>
-            <div><span class="RequiredField">*&nbsp;</span><b>Location:</b></div>
-            @Html.DropDownListFor(
+            <input class="btn btn-default" onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create" />
+        </div>
+
+
+        <div><span class="RequiredField control-label">*&nbsp;</span><b>Bunch Name:</b></div>
+        <div>
+            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+        <div>
+        </div>
+        <p></p>
+        <div><span class="RequiredField">*&nbsp;</span><b>Location:</b></div>
+        @Html.DropDownListFor(
              x => x.LocationsId,
     new SelectList(
         Model.Locations.ToList().Select(
@@ -89,142 +106,56 @@
                  "Text", Model.LocationsId
     ), "-- Group Location --", new { @class = "form-control" }
 )
-            @Html.ValidationMessageFor(model => model.LocationsId)
-            <p></p>
-        </div>
-        <div>
-            <hr />
-            <b>This is a one off ride:</b>
-            @Html.CheckBoxFor(f => f.OneOff, new
+        @Html.ValidationMessageFor(model => model.LocationsId)
+        <p></p>
+ 
+    <div>
+        <hr />
+        <b>This is a one off ride:</b>
+        @Html.CheckBoxFor(f => f.OneOff, new
           {
               @id = "OneOff",
               @onclick = "setOneOffStatus.call(this)"
           })
-            <p></p>
-            <hr />
-        </div>
-        <div id="daysofweekstimepanel">
-            <div class="form-group">
-                <label for="dtp_input1" class="control-label">Date and time of ride:</label>
-                <div class="input-group date form_datetime col-md-5" data-date-format="dd MM yyyy - hh:ii" data-link-field="dtp_input1">
-                    <input class="form-control" size="16" type="text" value="" readonly>
-                    @*<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>*@
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-                </div>
-                @*<input type="hidden" id="dtp_input1" value="" /><br />*@
-                @Html.HiddenFor(model => model.OneOffDateTime, new { @class = "register-form__oneoffdatetime-holder" })
-            </div>
-        </div>
-        <div id="daysofweekspanel">
-            <div><b>Days Of Week</b></div>
-            <p></p>
-            <div>
-                @for (int i = 0; i < Model.DaysOfWeek.Count; i++)
-                {
-                    <div>
-                        @Html.HiddenFor(x => x.DaysOfWeek[i].Name)
-                        @Html.CheckBoxFor(x => x.DaysOfWeek[i].Checked)
-                        @Html.LabelFor(x => x.DaysOfWeek[i].Checked, Model.DaysOfWeek[i].Name)
-                    </div>
-                }
-            </div>
-            <hr />
-            <p></p>
-            <div class="form-group">
-                <label for="dtp_input3" class="control-label">Time</label>
-                <div class="input-group date form_time col-md-5" data-date="" data-date-format="hh:ii" data-link-field="dtp_input3" data-link-format="hh:ii">
-                    <input id="bunchhourminute" class="form-control" size="16" type="text" value="" readonly>
-                    @*<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>*@
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
-                </div>
-                @Html.HiddenFor(model => model.BunchTime, new { @class = "register-form__bunchtime-holder" })
-            </div>
-
-        </div>
-        
-        @Html.HiddenFor(model => model.lat, new { @class = "register-form__latitude-holder" })
-        @Html.HiddenFor(model => model.lng, new { @class = "register-form__longitude-holder" })
-        @Html.HiddenFor(model => model.country, new { @class = "register-form__country-holder" })
         <p></p>
-        <div><span></span><b>Routes</b></div>
+        <hr />
+    </div>
+    <div id="daysofweekstimepanel">
+        <div class="form-group">
+            <label for="dtp_input1" class="control-label">Date and time of ride:</label>
+            <div class="input-group date form_datetime col-md-5" data-date-format="dd MM yyyy - hh:ii" data-link-field="dtp_input1">
+                <input class="form-control" size="16" type="text" value="" readonly>
+                @*<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>*@
+                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+            </div>
+            @*<input type="hidden" id="dtp_input1" value="" /><br />*@
+            @Html.HiddenFor(model => model.OneOffDateTime, new { @class = "register-form__oneoffdatetime-holder" })
+        </div>
+    </div>
+    <div id="daysofweekspanel">
+        <div><b>Days Of Week</b></div>
         <p></p>
         <div>
-            <p>Below enter routes that this group will ride to allow others to vote each week on which route to take.</p>
-            <p>Enter the Strava route URL's like "https://www.strava.com/routes/1324200"</p>
-            <hr />
-            <div> <b>Route 1</b></div>
-            <div>Description</div>
-            <div>
-                @Html.TextBoxFor(model => model.Route1Desc, new { @class = "form-control" })
-            </div>
-            <div>Strava route link</div>
-            <div> @Html.TextBoxFor(model => model.Route1URL, new { @class = "form-control" }) </div>
-            <p></p>
-            <div> <b>Route 2</b></div>
-            <div>Description </div>
-            <div>
-                @Html.TextBoxFor(model => model.Route2Desc, new { @class = "form-control" })
-            </div>
-            <div>Strava route link</div>
-            <div> @Html.TextBoxFor(model => model.Route2URL, new { @class = "form-control" }) </div>
-            <p></p>
-            <div> <b>Route 3</b></div>
-            <div>Description </div>
-            <div>
-                @Html.TextBoxFor(model => model.Route3Desc, new { @class = "form-control" })
-            </div>
-            <div>Strava route link</div>
-            <div> @Html.TextBoxFor(model => model.Route3URL, new { @class = "form-control" }) </div>
-
-            <p></p>
-            <div><span class="RequiredField">*&nbsp;</span><b>Your name</b></div>
-            <div>
-                @Html.TextBoxFor(model => model.CreatorName, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CreatorName)
-            </div>
-
-            <p></p>
-            <div><b>Description</b></div>
-            <div>
-                @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
-            </div>
-            <p></p>
-            @*<div><b>Map</b> (<a style="color:#333333;text-decoration:underline" target="_blank" href="http://veloroutes.org/bikemaps/">veloroutes</a> number)</div>
+            @for (int i = 0; i < Model.DaysOfWeek.Count; i++)
+            {
                 <div>
-                    @Html.TextBoxFor(model => model.MapUrl, new { @class = "form-control", type = "number" })
-                </div>*@
-            <div>
-                <b>Private:</b>
-                @Html.CheckBoxFor(f => f.IsPrivate)
-                <p></p>
-                <p><b>Note:</b> If this is a private group you will be able to invite users later.</p>
-                <p>
-                    Only you as the bunch creator will be able to invite users.
-                </p>
-                <p>
-                    Only those users that you invite will be
-                    able to see this bunch.
-                </p>
-            </div>
-            <div><span class="RequiredField">*&nbsp;</span><b>Start Location</b></div>
-            <div>
-                @Html.TextBoxFor(model => model.StartLocation, new { @class = "controls", @placeholder = "Please enter location" })
-                @Html.ValidationMessageFor(model => model.StartLocation)
-            </div>
-            <p></p>
-            @*<div><input class="btn btn-success" type="button" value="Lookup Address" onclick="codeAddress()"></div>*@
-            <p></p>
-            <div class="row" style="height:200px">
-                <div id="map-canvas" style="width: 100%; height: 100%"></div>
-            </div>
-            <div>
-                <p></p>
-                <input class="btn btn-default" onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create" />
-            </div>
+                    @Html.HiddenFor(x => x.DaysOfWeek[i].Name)
+                    @Html.CheckBoxFor(x => x.DaysOfWeek[i].Checked)
+                    @Html.LabelFor(x => x.DaysOfWeek[i].Checked, Model.DaysOfWeek[i].Name)
+                </div>
+            }
+        </div>
+        <hr />
+        <p></p>
+
 
         </div>
+    </div>
+        <!-- End of Form -->
+        
+           
     }
-</div>
+    </div>
         @section Scripts {
         @Scripts.Render("~/bundles/jqueryval")
         @Scripts.Render("~/bundles/datepicker")
@@ -298,7 +229,6 @@
                 var userName = jQuery('#RideUserNameHidden').val();
                 //console.log(userName);
                 $.ajax({
-                    async: false,
                     type: "GET",
                     url: window.BunchyAPI + "/api/bunch/location/" + userName,
                     dataType: "json",
