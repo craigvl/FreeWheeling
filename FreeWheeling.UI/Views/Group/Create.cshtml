@@ -58,114 +58,6 @@
         }
 </style>
 @Styles.Render("~/Content/datepicker")
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
-<script>
-    var geocoder;
-    var map;
-    var marker;
-    function initialize() {
-        var userName = jQuery('#RideUserNameHidden').val();
-        //console.log(userName);
-        $.ajax({
-            type: "GET",
-            url: window.BunchyAPI + "/api/bunch/location/" + userName,
-            dataType: "json",
-            success: function (data) {
-                //console.debug(data);
-                geocoder = new google.maps.Geocoder();
-                var latlng = new google.maps.LatLng(data.lat, data.lng);
-                var mapOptions = {
-                    zoom: 14,
-                    center: latlng
-                }
-                map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-                var input = /** @@type {HTMLInputElement} */
-                (document.getElementById('StartLocation'));
-
-                var types = document.getElementById('type-selector');
-                map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-                map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
-
-                var autocomplete = new google.maps.places.Autocomplete(input);
-                autocomplete.bindTo('bounds', map);
-
-                //var infowindow = new google.maps.InfoWindow();
-                marker = new google.maps.Marker({
-                    position: latlng,
-                    map: map,
-                    draggable: true,
-                    animation: google.maps.Animation.DROP
-                });
-
-                google.maps.event.addListener(autocomplete, 'place_changed', function () {
-                    //infowindow.close();
-                    marker.setVisible(false);
-                    var place = autocomplete.getPlace();
-                    if (!place.geometry) {
-                        return;
-                    }
-
-                    map.setCenter(place.geometry.location);
-                    map.setZoom(14);
-                    marker.setPosition(place.geometry.location);
-                    marker.setVisible(true);
-
-                    var address = '';
-                    var country;
-                    if (place.address_components) {
-                        address = [
-                          (place.address_components[0] && place.address_components[0].short_name || ''),
-                          (place.address_components[1] && place.address_components[1].short_name || ''),
-                          (place.address_components[2] && place.address_components[2].short_name || '')
-                        ].join(' ');
-
-                        for (var i = 0; i < place.address_components.length; i++) {
-                            if (place.address_components[i].types[0] == "country") {
-                                country = place.address_components[i].short_name;
-                            }
-                        }
-                        $('.register-form__country-holder').val(country);
-                    }
-
-                    var lat = place.geometry.location.lat();
-                    var long = place.geometry.location.lng();
-                    $('.register-form__latitude-holder').val(lat);
-                    $('.register-form__longitude-holder').val(long);
-                });
-
-                google.maps.event.addListener(marker, 'dragend', function (event) {
-                    var lat = this.getPosition().lat();
-                    var long = this.getPosition().lng();
-                    $('.register-form__latitude-holder').val(lat);
-                    $('.register-form__longitude-holder').val(long);
-                });
-
-                google.maps.event.addListener(map, 'click', function (event) {
-
-                    marker.setMap(null);
-                    marker = null;
-
-                    marker = new google.maps.Marker({
-                        position: event.latLng,
-                        map: map,
-                        draggable: true,
-                        animation: google.maps.Animation.DROP
-                    });
-
-                    var lat = event.latLng.lat();
-                    var long = event.latLng.lng();
-
-                    $('.register-form__latitude-holder').val(lat);
-                    $('.register-form__longitude-holder').val(long);
-                });
-
-            },
-            error: function (err) {
-                console.log(err);
-            }
-        });
-    }
-</script>
 <div class="row">
     <p>
         @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
@@ -334,11 +226,11 @@
         @section Scripts {       
             @Scripts.Render("~/bundles/jqueryval")
             @Scripts.Render("~/bundles/datepicker")
+            <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
             <script type="text/javascript">
-                initialize();
                 jQuery(document).ready(function () {
                     HideProgress();
-                  
+                    google.maps.event.addDomListener(window, 'load', initialize);
                     if ($('#OneOff').prop('checked')) {
                         $('#daysofweekspanel').hide();
                         $('#daysofweekstimepanel').show();
@@ -397,5 +289,110 @@
                         $('#daysofweekstimepanel').hide();
                     }
                 }
-            </script>
+        var geocoder;
+        var map;
+        var marker;
+        function initialize() {
+            var userName = jQuery('#RideUserNameHidden').val();
+            //console.log(userName);
+            $.ajax({
+                type: "GET",
+                url: window.BunchyAPI + "/api/bunch/location/" + userName,
+                dataType: "json",
+                success: function (data) {
+                    //console.debug(data);
+                    geocoder = new google.maps.Geocoder();
+                    var latlng = new google.maps.LatLng(data.lat, data.lng);
+                    var mapOptions = {
+                        zoom: 14,
+                        center: latlng
+                    }
+                    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                    var input = /** @@type {HTMLInputElement} */
+                    (document.getElementById('StartLocation'));
+
+                    var types = document.getElementById('type-selector');
+                    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                    map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
+
+                    var autocomplete = new google.maps.places.Autocomplete(input);
+                    autocomplete.bindTo('bounds', map);
+
+                    //var infowindow = new google.maps.InfoWindow();
+                    marker = new google.maps.Marker({
+                        position: latlng,
+                        map: map,
+                        draggable: true,
+                        animation: google.maps.Animation.DROP
+                    });
+
+                    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                        //infowindow.close();
+                        marker.setVisible(false);
+                        var place = autocomplete.getPlace();
+                        if (!place.geometry) {
+                            return;
+                        }
+
+                        map.setCenter(place.geometry.location);
+                        map.setZoom(14);
+                        marker.setPosition(place.geometry.location);
+                        marker.setVisible(true);
+
+                        var address = '';
+                        var country;
+                        if (place.address_components) {
+                            address = [
+                              (place.address_components[0] && place.address_components[0].short_name || ''),
+                              (place.address_components[1] && place.address_components[1].short_name || ''),
+                              (place.address_components[2] && place.address_components[2].short_name || '')
+                            ].join(' ');
+
+                            for (var i = 0; i < place.address_components.length; i++) {
+                                if (place.address_components[i].types[0] == "country") {
+                                    country = place.address_components[i].short_name;
+                                }
+                            }
+                            $('.register-form__country-holder').val(country);
+                        }
+
+                        var lat = place.geometry.location.lat();
+                        var long = place.geometry.location.lng();
+                        $('.register-form__latitude-holder').val(lat);
+                        $('.register-form__longitude-holder').val(long);
+                    });
+
+                    google.maps.event.addListener(marker, 'dragend', function (event) {
+                        var lat = this.getPosition().lat();
+                        var long = this.getPosition().lng();
+                        $('.register-form__latitude-holder').val(lat);
+                        $('.register-form__longitude-holder').val(long);
+                    });
+
+                    google.maps.event.addListener(map, 'click', function (event) {
+
+                        marker.setMap(null);
+                        marker = null;
+
+                        marker = new google.maps.Marker({
+                            position: event.latLng,
+                            map: map,
+                            draggable: true,
+                            animation: google.maps.Animation.DROP
+                        });
+
+                        var lat = event.latLng.lat();
+                        var long = event.latLng.lng();
+
+                        $('.register-form__latitude-holder').val(lat);
+                        $('.register-form__longitude-holder').val(long);
+                    });
+
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+    </script>
         }
