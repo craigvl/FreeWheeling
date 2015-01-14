@@ -56,7 +56,7 @@
 
 </style>
 
-<div class="row" style="min-height:1900px;">
+<div class="row" id="mainrow" style="min-height:1900px;">
     <p>
         @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
     </p>
@@ -179,7 +179,8 @@
             window.onload = loadScript;
 
             $(window).resize(function () {
-                
+                $('#mainrow').css('height', '1900px');
+                $('#mainrow').css('background-color', 'red');
                 var h = $(window).height(),
                     offsetTop = 190; // Calculate the top offset
 
