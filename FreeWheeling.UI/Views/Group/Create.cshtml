@@ -146,17 +146,7 @@
             </div>
 
         </div>
-        <div><span class="RequiredField">*&nbsp;</span><b>Start Location</b></div>
-        <div>
-            @Html.TextBoxFor(model => model.StartLocation, new { @class = "controls", @placeholder = "Please enter location" })
-            @Html.ValidationMessageFor(model => model.StartLocation)
-        </div>
-        <p></p>
-        @*<div><input class="btn btn-success" type="button" value="Lookup Address" onclick="codeAddress()"></div>*@
-        <p></p>
-    <div>
-        <div class="span12" id="map-canvas"></div>
-    </div>
+        
         @Html.HiddenFor(model => model.lat, new { @class = "register-form__latitude-holder" })
         @Html.HiddenFor(model => model.lng, new { @class = "register-form__longitude-holder" })
         @Html.HiddenFor(model => model.country, new { @class = "register-form__country-holder" })
@@ -220,6 +210,17 @@
                     Only those users that you invite will be
                     able to see this bunch.
                 </p>
+            </div>
+            <div><span class="RequiredField">*&nbsp;</span><b>Start Location</b></div>
+            <div>
+                @Html.TextBoxFor(model => model.StartLocation, new { @class = "controls", @placeholder = "Please enter location" })
+                @Html.ValidationMessageFor(model => model.StartLocation)
+            </div>
+            <p></p>
+            @*<div><input class="btn btn-success" type="button" value="Lookup Address" onclick="codeAddress()"></div>*@
+            <p></p>
+            <div>
+                <div class="span12" id="map-canvas"></div>
             </div>
             <div>
                 <p></p>
