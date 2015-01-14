@@ -30,7 +30,7 @@ namespace FreeWheeling.UI
             modernizr.CdnFallbackExpression = "window.jQuery";
             bundles.Add(modernizr);
 
-            var bootstrap = new ScriptBundle("~/bundles/bootstrap", "//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js").Include(
+            var bootstrap = new ScriptBundle("~/bundles/bootstrap", "//netdna.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js").Include(
                       "~/Scripts/bootstrap.js");
             bootstrap.CdnFallbackExpression = "window.jQuery";
             bundles.Add(bootstrap);
