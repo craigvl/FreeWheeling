@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Create a bunch";
 }
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+@*<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>*@
 @Html.Hidden("RideUserNameHidden", User.Identity.GetUserName())
 <style>
    #map-canvas {
@@ -165,6 +165,17 @@
         @Scripts.Render("~/bundles/datepicker")
         
         <script type="text/javascript">
+
+            function loadScript() {
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&' +
+                    'callback=initialize';
+                document.body.appendChild(script);
+            }
+
+            window.onload = loadScript;
+
             $(window).resize(function () {
                 
                 var h = $(window).height(),
@@ -174,10 +185,7 @@
             }).resize();
             jQuery(document).ready(function () {
                 HideProgress();
-                setTimeout(function() {
-                initialize();
-                }, 3000)
-
+               
                 if ($('#OneOff').prop('checked')) {
                     $('#daysofweekspanel').hide();
                     $('#daysofweekstimepanel').show();
