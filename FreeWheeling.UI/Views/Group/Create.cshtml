@@ -81,10 +81,7 @@
         <div>
             <div id="map-canvas"></div>
         </div>
-        <div>
-            <p></p>
-            <input class="btn btn-default" onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create" />
-        </div>
+       
 
 
         <div><span class="RequiredField control-label">*&nbsp;</span><b>Bunch Name:</b></div>
@@ -150,6 +147,12 @@
 
 
         </div>
+
+        <div>
+            <p></p>
+            <input class="btn btn-default" onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create" />
+        </div>
+
     </div>
         <!-- End of Form -->
         
@@ -161,6 +164,13 @@
         @Scripts.Render("~/bundles/datepicker")
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
         <script type="text/javascript">
+            $(window).resize(function () {
+                alert('fff');
+                var h = $(window).height(),
+                    offsetTop = 190; // Calculate the top offset
+
+                $('#map-canvas').css('height', (h - offsetTop));
+            }).resize();
             jQuery(document).ready(function () {
                 HideProgress();
                 google.maps.event.addDomListener(window, 'load', initialize);
