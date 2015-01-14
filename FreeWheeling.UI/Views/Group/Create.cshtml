@@ -96,7 +96,6 @@
 )
             @Html.ValidationMessageFor(model => model.LocationsId)
             <p></p>
-        </div>
         <div>
             <hr />
             <b>This is a one off ride:</b>
@@ -211,23 +210,14 @@
                     able to see this bunch.
                 </p>
             </div>
-            <div><span class="RequiredField">*&nbsp;</span><b>Start Location</b></div>
-            <div>
-                @Html.TextBoxFor(model => model.StartLocation, new { @class = "controls", @placeholder = "Please enter location" })
-                @Html.ValidationMessageFor(model => model.StartLocation)
-            </div>
-            <p></p>
-            @*<div><input class="btn btn-success" type="button" value="Lookup Address" onclick="codeAddress()"></div>*@
-            <p></p>
-            <div>
-                <div class="span12" id="map-canvas"></div>
-            </div>
+           
             <div>
                 <p></p>
                 <input class="btn btn-default" onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create" />
             </div>
 
         </div>
+     </div>
     }
 </div>
         @section Scripts {
