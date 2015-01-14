@@ -174,7 +174,10 @@
             }).resize();
             jQuery(document).ready(function () {
                 HideProgress();
-                google.maps.event.addDomListener(window, 'load', initialize);
+                setTimeout(function() {
+                initialize();
+                }, 3000)
+
                 if ($('#OneOff').prop('checked')) {
                     $('#daysofweekspanel').hide();
                     $('#daysofweekstimepanel').show();
@@ -249,7 +252,6 @@
                         var latlng = new google.maps.LatLng(data.lat, data.lng);
                         var mapOptions = {
                             zoom: 14,
-                            disableDefaultUI: true,
                             center: latlng
                         }
                         map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
