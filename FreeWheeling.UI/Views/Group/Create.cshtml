@@ -55,7 +55,6 @@
         }
 </style>
 @Styles.Render("~/Content/datepicker")
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
 <div class="row">
     <p>
         @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
@@ -220,8 +219,9 @@
             </div>
             
         </div>
-    }
+    }   
         @section Scripts {
+            <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
             @Scripts.Render("~/bundles/jqueryval")
             @Scripts.Render("~/bundles/datepicker")
             <script type="text/javascript">
