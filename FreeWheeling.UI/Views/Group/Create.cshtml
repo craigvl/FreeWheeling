@@ -218,6 +218,18 @@
 
         </div>
      </div>
+
+    <div><span class="RequiredField">*&nbsp;</span><b>Start Location</b></div>
+    <div>
+        @Html.TextBoxFor(model => model.StartLocation, new { @class = "controls", @placeholder = "Please enter location" })
+        @Html.ValidationMessageFor(model => model.StartLocation)
+    </div>
+    <p></p>
+    @*<div><input class="btn btn-success" type="button" value="Lookup Address" onclick="codeAddress()"></div>*@
+    <p></p>
+    <div>
+        <div class="span12" id="map-canvas"></div>
+    </div>
     }
 </div>
         @section Scripts {
