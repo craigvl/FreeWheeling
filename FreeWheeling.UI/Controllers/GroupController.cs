@@ -312,6 +312,23 @@ namespace FreeWheeling.UI.Controllers
             DateTime LocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TZone);
             var currentUser = idb.Users.Find(User.Identity.GetUserId());
             bool DayOfWeekSelected = false;
+            if (_GroupCreateModel.BunchTime == null)
+            {
+                    ModelState.AddModelError(string.Empty, "Please select a time");
+                    _GroupCreateModel.Locations = repository.GetLocations().ToList();
+                    _GroupCreateModel.LocationsId = _Location.id;
+                    this.ShowMessage(MessageType.Error, "Please select a time", true, MessagePosition.TopCentre, false);
+                    return View(_GroupCreateModel);
+            }
+
+            if (_GroupCreateModel.StartLocation == null)
+            {
+                ModelState.AddModelError(string.Empty, "Please pick a start location");
+                _GroupCreateModel.Locations = repository.GetLocations().ToList();
+                _GroupCreateModel.LocationsId = _Location.id;
+                this.ShowMessage(MessageType.Error, "Please pick a start location", true, MessagePosition.TopCentre, false);
+                return View(_GroupCreateModel);
+            }
 
             
 
