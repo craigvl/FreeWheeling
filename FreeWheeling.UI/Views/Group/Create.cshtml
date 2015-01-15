@@ -6,8 +6,7 @@
 @Html.Hidden("RideUserNameHidden", User.Identity.GetUserName())
 <style>
     #map-canvas {
-        width: 100%;
-        height: 200px;
+       
     }
 
     .controls {
@@ -114,21 +113,22 @@
                 @Html.HiddenFor(model => model.OneOffDateTime, new { @class = "register-form__oneoffdatetime-holder" })
             </div>
         </div>
-        <div id="daysofweekspanel">
-            <div><b>Days Of Week</b></div>
-            <p></p>
-            <div>
-                @for (int i = 0; i < Model.DaysOfWeek.Count; i++)
-                {
-                    <div>
-                        @Html.HiddenFor(x => x.DaysOfWeek[i].Name)
-                        @Html.CheckBoxFor(x => x.DaysOfWeek[i].Checked)
-                        @Html.LabelFor(x => x.DaysOfWeek[i].Checked, Model.DaysOfWeek[i].Name)
-                    </div>
-                }
+            <div id="daysofweekspanel">
+                <div><b>Days Of Week</b></div>
+                <p></p>
+                <div>
+                    @for (int i = 0; i < Model.DaysOfWeek.Count; i++)
+                    {
+                        <div>
+                            @Html.HiddenFor(x => x.DaysOfWeek[i].Name)
+                            @Html.CheckBoxFor(x => x.DaysOfWeek[i].Checked)
+                            @Html.LabelFor(x => x.DaysOfWeek[i].Checked, Model.DaysOfWeek[i].Name)
+                        </div>
+                    }
+                </div>
+                <hr />
+                <p></p>
             </div>
-            <hr />
-            <p></p>
             <div class="form-group">
                 <label for="dtp_input3" class="control-label">Time</label>
                 <div class="input-group date form_time col-md-5" data-date="" data-date-format="hh:ii" data-link-field="dtp_input3" data-link-format="hh:ii">
@@ -139,7 +139,7 @@
                 @Html.HiddenFor(model => model.BunchTime, new { @class = "register-form__bunchtime-holder" })
             </div>
 
-        </div>
+        
         <div><span class="RequiredField">*&nbsp;</span><b>Start Location</b></div>
         <div>
             @Html.TextBoxFor(model => model.StartLocation, new { @class = "controls", @placeholder = "Please enter location" })
@@ -182,7 +182,7 @@
             </div>
             <div>Strava route link</div>
             <div> @Html.TextBoxFor(model => model.Route3URL, new { @class = "form-control" }) </div>
-
+        </div>
             <p></p>
             <div><span class="RequiredField">*&nbsp;</span><b>Your name</b></div>
             <div>
@@ -218,7 +218,6 @@
                 <input class="btn btn-default" onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create" />
             </div>
           </div>
-        </div>
     }
         @section Scripts {
             @Scripts.Render("~/bundles/jqueryval")
