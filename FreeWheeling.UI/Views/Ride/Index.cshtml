@@ -129,26 +129,7 @@
 @if (@Model.IsOwner)
 {
 }
-@if (@Model.MapUrl != null)
-{
-    <div class="row">
-        <div class='panel-group'>
-            <div class='panel panel-default'>
-                <div class="SecondaryHeading panel-heading">
-                    <div class="col-xs-10 col-md-11 col-sm-10">
-                        Map
-                        </div>
-                        <div class="col-xs-1 col-md-1 col-sm-1">
-                            <a class="glyphicon glyphicon glyphicon-plus" id="MapPanel" data-toggle="collapse" href="#CollapseMap"></a>
-                        </div>
-                    </div>
-                <div class='panel-collapse collapse out' id="CollapseMap">
-                    @Html.Raw(@Model.MapUrl)
-                </div>
-            </div>
-        </div>
-    </div>
-}
+
 @Html.Partial("_RidePanel", Model, new ViewDataDictionary { { "position", "1" } })
 @if (Model.Group.OneOff == false)
 {
