@@ -4,11 +4,31 @@
     ViewBag.Title = "Create a bunch";
 }
 @Html.Hidden("RideUserNameHidden", User.Identity.GetUserName())
+
 <style>
-    #map-canvas {
-        width: 100%;
-        height: 200px;
-    }
+
+/*#map-canvas {
+  height:200px;
+  width:200px;
+}*/
+
+#map-canvas {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 15px;
+  border: 2px solid #fff;
+  max-width:550px;
+}
+
+#myMapModal {
+
+    padding-top:100px;
+
+}
+
+.modal-backdrop {
+  z-index: -1;
+}
 
     .controls {
         margin-top: 16px;
@@ -24,7 +44,7 @@
     #StartLocation {
         background-color: #fff;
         padding: 0 11px 0 13px;
-        width: 400px;
+        width: 350px;
         font-family: Roboto;
         font-size: 15px;
         font-weight: 300;
@@ -56,7 +76,6 @@
 </style>
 @Styles.Render("~/Content/datepicker")
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
-<div class="row">
     <p>
         @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
     </p>
@@ -66,6 +85,37 @@
 
     @using (Html.BeginForm())
     {
+
+        <div class="modal fade" id="myMapModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Start Location</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div id="startbox"><span class="RequiredField">*&nbsp;</span><b>Start Location</b></div>
+                                <div>
+                                    @Html.TextBoxFor(model => model.StartLocation, new { @class = "controls", @placeholder = "Please enter location" })
+                                    
+                                </div>
+                                <div id="map-canvas"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Pick</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
         <p></p>
@@ -74,8 +124,6 @@
             <div>
                 @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Name)
-            </div>
-            <div>
             </div>
             <p></p>
             <div><span class="RequiredField">*&nbsp;</span><b>Location:</b></div>
@@ -90,9 +138,7 @@
     ), "-- Group Location --", new { @class = "form-control" }
 )
             @Html.ValidationMessageFor(model => model.LocationsId)
-            <p></p>
-        </div>
-        <div>
+            <p></p>      
             <hr />
             <b>This is a one off ride:</b>
             @Html.CheckBoxFor(f => f.OneOff, new
@@ -102,7 +148,10 @@
           })
             <p></p>
             <hr />
-        </div>
+            <p></p>
+        <a href="#myMapModal" class="btn btn-success" data-toggle="modal">Pick start location</a>
+            <p></p>
+            <hr />
         <div id="daysofweekstimepanel">
             <div class="form-group">
                 <label for="dtp_input1" class="control-label">Date and time of ride:</label>
@@ -115,21 +164,22 @@
                 @Html.HiddenFor(model => model.OneOffDateTime, new { @class = "register-form__oneoffdatetime-holder" })
             </div>
         </div>
-        <div id="daysofweekspanel">
-            <div><b>Days Of Week</b></div>
-            <p></p>
-            <div>
-                @for (int i = 0; i < Model.DaysOfWeek.Count; i++)
-                {
-                    <div>
-                        @Html.HiddenFor(x => x.DaysOfWeek[i].Name)
-                        @Html.CheckBoxFor(x => x.DaysOfWeek[i].Checked)
-                        @Html.LabelFor(x => x.DaysOfWeek[i].Checked, Model.DaysOfWeek[i].Name)
-                    </div>
-                }
+            <div id="daysofweekspanel">
+                <div><b>Days Of Week</b></div>
+                <p></p>
+                <div>
+                    @for (int i = 0; i < Model.DaysOfWeek.Count; i++)
+                    {
+                        <div>
+                            @Html.HiddenFor(x => x.DaysOfWeek[i].Name)
+                            @Html.CheckBoxFor(x => x.DaysOfWeek[i].Checked)
+                            @Html.LabelFor(x => x.DaysOfWeek[i].Checked, Model.DaysOfWeek[i].Name)
+                        </div>
+                    }
+                </div>
+                <hr />
+                <p></p>
             </div>
-            <hr />
-            <p></p>
             <div class="form-group">
                 <label for="dtp_input3" class="control-label">Time</label>
                 <div class="input-group date form_time col-md-5" data-date="" data-date-format="hh:ii" data-link-field="dtp_input3" data-link-format="hh:ii">
@@ -138,18 +188,12 @@
                     <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
                 </div>
                 @Html.HiddenFor(model => model.BunchTime, new { @class = "register-form__bunchtime-holder" })
-            </div>
-
-        </div>
-        <div><span class="RequiredField">*&nbsp;</span><b>Start Location</b></div>
-        <div>
-            @Html.TextBoxFor(model => model.StartLocation, new { @class = "controls", @placeholder = "Please enter location" })
-            @Html.ValidationMessageFor(model => model.StartLocation)
-        </div>
+            </div>        
         <p></p>
         @*<div><input class="btn btn-success" type="button" value="Lookup Address" onclick="codeAddress()"></div>*@
         <p></p>
-        <div id="map-canvas"></div>
+        
+
         @Html.HiddenFor(model => model.lat, new { @class = "register-form__latitude-holder" })
         @Html.HiddenFor(model => model.lng, new { @class = "register-form__longitude-holder" })
         @Html.HiddenFor(model => model.country, new { @class = "register-form__country-holder" })
@@ -183,7 +227,7 @@
             </div>
             <div>Strava route link</div>
             <div> @Html.TextBoxFor(model => model.Route3URL, new { @class = "form-control" }) </div>
-
+        </div>
             <p></p>
             <div><span class="RequiredField">*&nbsp;</span><b>Your name</b></div>
             <div>
@@ -218,16 +262,40 @@
                 <p></p>
                 <input class="btn btn-default" onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create" />
             </div>
-            
-        </div>
+          </div>
     }
+
+    
+
         @section Scripts {
             @Scripts.Render("~/bundles/jqueryval")
             @Scripts.Render("~/bundles/datepicker")
             <script type="text/javascript">
+                google.maps.event.addDomListener(window, 'load', initialize);
+
+                google.maps.event.addDomListener(window, "resize", resizingMap());
+
+                $('#myMapModal').on('show.bs.modal', function () {
+                    $("#startbox").css("z-index", "2000");
+                    //Must wait until the render of the modal appear, thats why we use the resizeMap and NOT resizingMap!! ;-)
+                    resizeMap();
+                })
+
+                function resizeMap() {
+                    if (typeof map == "undefined") return;
+                    setTimeout(function () { resizingMap(); }, 400);
+                }
+
+                function resizingMap() {
+                    if (typeof map == "undefined") return;
+                    var center = map.getCenter();
+                    google.maps.event.trigger(map, "resize");
+                    map.setCenter(center);
+                }
+
                 jQuery(document).ready(function () {
                     HideProgress();
-                    initialize();
+                   
                     if ($('#OneOff').prop('checked')) {
                         $('#daysofweekspanel').hide();
                         $('#daysofweekstimepanel').show();
