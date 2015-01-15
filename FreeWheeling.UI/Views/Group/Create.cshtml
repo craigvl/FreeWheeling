@@ -56,7 +56,6 @@
 </style>
 @Styles.Render("~/Content/datepicker")
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
-<div class="row">
     <p>
         @Html.ActionLink(" ", "Index", "Home", null, new { @style = "background-color: #FFF; color: #333333;", @class = "glyphicon glyphicon-chevron-left", onclick = "ShowProgress();" })
     </p>
@@ -91,7 +90,7 @@
 )
             @Html.ValidationMessageFor(model => model.LocationsId)
             <p></p>
-        </div>
+        
         <div>
             <hr />
             <b>This is a one off ride:</b>
@@ -218,7 +217,7 @@
                 <p></p>
                 <input class="btn btn-default" onclick="ShowProgress();" id="btnSubmit" type="submit" value="Create" />
             </div>
-            
+          </div>
         </div>
     }
         @section Scripts {
