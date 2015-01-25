@@ -245,7 +245,7 @@ namespace FreeWheeling.UI.Controllers
                     ReceiveKeen = true,
                     ReceiveComments = true,
                     ReceiveSummary = false,
-                    ReceiveEmails = false,
+                    ReceiveEmails = true,
                     ReceiveMobileFollowingNotifications = true,
                     ReceiveMobileGroupNotifications = true,
                     ReceiveMobileKeenNotifications = true,
