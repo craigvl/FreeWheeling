@@ -131,14 +131,19 @@ namespace FreeWheeling.Domain.Concrete
         public Group GetGroupByRideID(int Rideid)
         {
             Ride _Ride = context.Rides.Include("Group").Where(r => r.id == Rideid).FirstOrDefault();
-            Group group = context.Groups
-                .Include("Members")
-                .Include("Rides")
-                .Include("Location")
-                .Include("RideDays")
-                .Include("Routes")
-                .Where(i => i.id == _Ride.Group.id).FirstOrDefault();
-            return group;
+            if (_Ride != null)
+            {
+                Group group = context.Groups
+                    .Include("Members")
+                    .Include("Rides")
+                    .Include("Location")
+                    .Include("RideDays")
+                    .Include("Routes")
+                    .Where(i => i.id == _Ride.Group.id).FirstOrDefault();
+                return group;
+            }
+            
+            return null;
         }
 
         public Group GetGroupByIDNoIncludes(int id)
