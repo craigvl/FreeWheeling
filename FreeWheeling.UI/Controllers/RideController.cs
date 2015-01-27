@@ -51,6 +51,18 @@ namespace FreeWheeling.UI.Controllers
             RideModelIndex RideModel = new RideModelIndex();
             Group _Group = repository.GetGroupByID(groupid);
 
+            //If group is null, see if we can get the group from the rideid and if so recall action with just the groupid set.
+            if (_Group == null)
+            {
+                _Group = repository.GetGroupByRideID(rideid);
+                if (_Group != null)
+                {
+                    rideid = -1;
+                    groupid = _Group.id;
+                    return RedirectToAction("Index", new { groupid = _Group.id });
+                }               
+            }
+
             if (_Group == null)
             {
                 GroupModel GroupModel = new GroupModel();
@@ -213,24 +225,12 @@ namespace FreeWheeling.UI.Controllers
         [Compress]
         public ActionResult ViewSingleRide(int RideId, string fromhome = "false")
         {
-            var currentUser = idb.Users.Find(User.Identity.GetUserId());
-            Ride _Ride = repository.GetRideByIDIncludeGroup(RideId);
-            if (_Ride == null)
+            //This action is nolonger needed but is use by the facebook links (need to fix this), 
+            //so will just redirect to index action passing the ride id
+            return RedirectToAction("Index", new
             {
-                GroupModel GroupModel = new GroupModel();
-                GroupModel._Groups = repository.GetGroups().ToList();
-                GroupModel.CurrentGroupMembership = repository.CurrentGroupsForUser(currentUser.Id);
-                return RedirectToAction("index", "group", GroupModel);
-            }
-            else
-            {
-                SingleRideAndRandomRideViewModel _SingleRideRandomRideViewModel = new SingleRideAndRandomRideViewModel();
-                RideModelHelper _AdHocHelper = new RideModelHelper(repository);
-                _SingleRideRandomRideViewModel = _AdHocHelper.PopulateSingleRideModel(RideId, currentUser.Id);
-                _SingleRideRandomRideViewModel.FromHome = fromhome;
-                _SingleRideRandomRideViewModel.IsFavourite = repository.IsInFavouriteList(_Ride.Group.id, currentUser.Id);
-                return View(_SingleRideRandomRideViewModel);
-            }
+                rideid = RideId
+            });
         }
 
         public ActionResult SeeAllComments(int RideId, int GroupId, int PreviousID = -1)
