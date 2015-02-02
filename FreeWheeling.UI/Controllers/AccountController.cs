@@ -172,6 +172,13 @@ namespace FreeWheeling.UI.Controllers
                 switch (result)
                 {
                     case SignInStatus.Success:
+                    Task T = new Task(() =>
+                    {
+                        UserHelper _UserHelp = new UserHelper();
+                        _UserHelp.SendUserLogin(model.UserName);
+                    });
+
+                    T.Start();
                     //await SignInAsync(user, true);
 
                     ////Create cookie if select remember me to expire in a year.
@@ -411,6 +418,13 @@ namespace FreeWheeling.UI.Controllers
             if (user != null)
             {
                 await SignInAsync(user, isPersistent: true);
+                Task T = new Task(() =>
+                {
+                    UserHelper _UserHelp = new UserHelper();
+                    _UserHelp.SendUserLogin(user.UserName);
+                });
+
+                T.Start();
                 return RedirectToLocal(returnUrl);
             }
             else

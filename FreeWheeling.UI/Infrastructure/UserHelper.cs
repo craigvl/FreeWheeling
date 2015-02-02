@@ -132,6 +132,13 @@ namespace FreeWheeling.UI.Infrastructure
             emailToUser.Send();
         }
 
+        public void SendUserLogin(string Name)
+        {
+            dynamic emailToUser = new Email("SendUserLogin");
+            emailToUser.Name = Name;
+            emailToUser.Send();
+        }
+
         public void SendUsersPrivateAdHocBunchInviteEmail(
            List<PrivateRandomUsers> _PrivateRandomUsers,
            int RideId,
