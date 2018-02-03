@@ -1,3 +1,3 @@
 Bunchy
-Life is better in a bunch
+Life is better in a bunch.
 ============
