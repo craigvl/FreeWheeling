@@ -18,4 +18,4 @@
 - change to one off bunches
 - cancel ad hoc and email attendees 
 - email group attendees when group deleted.
--
+- GDPR must be observed added by Tuoyo in Lagos
